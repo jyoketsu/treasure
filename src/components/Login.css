@@ -1,0 +1,88 @@
+.login {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.login-box {
+    padding: 50px;
+    width: 420px;
+}
+
+.tree-icon {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.thirdLogin-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.thirdLongin {
+    display: inline-block;
+    width: 100px;
+    margin: 0 30px 10px;
+}
+
+.thirdLongin>i {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: 5px 25px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.thirdLongin>i:hover {
+    cursor: pointer;
+}
+
+.thirdLongin>span {
+    color: #545B5C;
+    user-select: none;
+}
+
+.loginByQQ {
+    background-image: url(/image/icon/QQ.png);
+}
+
+.loginByQQ>a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.loginByQQ>a>img {
+    display: none;
+}
+
+.loginByFS {
+    background-image: url(/image/icon/familysearch.png);
+}
+
+@media screen and (max-width:768px) {
+    .login-box {
+        width: unset;
+        height: unset;
+        background: unset;
+    }
+
+    .thirdLogin-container {
+        flex-direction: row;
+    }
+}

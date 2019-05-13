@@ -1,0 +1,30 @@
+.loading-box {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333333;
+}
+
+.loading-dialog {
+    position: absolute;
+    width: 300px;
+    text-align: center;
+    /* background-color: white; */
+    font-style: normal;
+    display: flex;
+    /* height: 70px; */
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    /* letter-spacing: .5px; */
+    /* border-radius: 3px; */
+    color: white;
+    flex-direction: column;
+}
