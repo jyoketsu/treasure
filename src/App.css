@@ -37,7 +37,8 @@
     left: 0;
     overflow: auto;
 }
-.loading-mask{
+
+.loading-mask {
     position: fixed;
     top: 0;
     right: 0;
@@ -47,6 +48,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.main-content {
+    position: relative;
+    width: 800px;
+    margin: auto;
 }
 
 @keyframes App-logo-spin {
@@ -67,5 +74,10 @@
         bottom: 64px;
         left: 0;
         overflow: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 0 15px;
     }
 }

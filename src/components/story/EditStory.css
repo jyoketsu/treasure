@@ -1,0 +1,84 @@
+.story-head {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgb(214, 248, 247);
+}
+
+.delete-story-content {
+    position: absolute;
+    right: 20px;
+    bottom: 9px;
+    width: 20px;
+    height: 20px;
+    background-image: url(/image/icon/delete.svg);
+}
+
+.story-content-edit-content {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 30px;
+    text-align: center;
+    padding: 0 50px;
+}
+
+.story-content-edit-content.edit {
+    position: relative;
+    min-height: 100px;
+    background: #FAFAFA;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    margin-top: 30px;
+    text-align: center;
+    padding: 0 50px;
+}
+
+.story-content-edit-content.show {
+    min-height: unset;
+}
+
+.story-edit-button {
+    display: inline-block;
+    width: 34px;
+    height: 46px;
+    margin: 8px;
+    text-align: center;
+}
+
+.story-edit-button>i {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    left: 50%;
+    margin-left: -12px;
+}
+
+.story-edit-button>i:hover {
+    cursor: pointer;
+}
+
+.story-edit-button>span {
+    font-size: 12px;
+}
+
+.story-edit-button-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.story-edit-button-container button {
+    display: inline-block;
+    width: 24px;
+    height: 36px;
+    margin: 12px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: transparent;
+}

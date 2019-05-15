@@ -4,9 +4,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: bottom;
     display: flex;
     justify-content: center;
     align-items: center;

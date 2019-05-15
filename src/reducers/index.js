@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
 import common from './common';
-import home from './home';
+import station from './station';
+import story from './story';
 
 export default combineReducers({
     auth,
     common,
-    home,
+    station,
+    story,
 });

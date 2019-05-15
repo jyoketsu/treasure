@@ -221,6 +221,22 @@ const common = {
         return lanLat;
     },
 
+    // 获取图片基本信息
+    getImageInfo(url) {
+        // return requests.get(`${url}?imageInfo`);
+        let image = new Image();
+        image.src = url;
+        return new Promise((resolve, reject) => {
+            image.onload = function () {
+                resolve({
+                    width: image.width,
+                    height: image.height,
+                });
+            }
+        });
+
+    },
+
     // 判断当前是否在小程序内
     isMiniProgram() {
         return window.__wxjs_environment === 'miniprogram';

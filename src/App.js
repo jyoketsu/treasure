@@ -9,8 +9,10 @@ import Explore from './components/Explore';
 import Message from './components/Message';
 import Me from './components/Me';
 import Create from './components/Create';
-import Station from './components/Station';
+import MyStation from './components/MyStation';
+import EditStation from './components/EditStation';
 import Login from './components/Login';
+import Story from './components/story/Story'
 
 const mapStateToProps = state => ({
   loading: state.common.loading,
@@ -29,8 +31,10 @@ class App extends Component {
             <Route path="/message" component={Message} />
             <Route path="/me" component={Me} />
             <Route path="/create" component={Create} />
-            <Route path="/station" component={Station} />
+            <Route path="/myStation" component={MyStation} />
             <Route path="/login" component={Login} />
+            <Route path="/editStation" component={EditStation} />
+            <Route path="/story" component={Story} />
           </div>
           {loading ? (
             <div className="loading-mask">

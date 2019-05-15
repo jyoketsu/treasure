@@ -416,7 +416,7 @@ class FileUpload extends Component {
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
             // let observable = qiniu.upload(file, encodeURIComponent(file.name), uptoken, putExtra, config);
-            let observable = qiniu.upload(file, util.common.guid(8, 16), uptoken, putExtra, config);
+            let observable = qiniu.upload(file, `${util.common.guid(8, 16)}${file.name.substr(file.name.lastIndexOf('.'))}`, uptoken, putExtra, config);
             // 上传开始
             observable.subscribe(observer);
         }

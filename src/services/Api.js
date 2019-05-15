@@ -207,24 +207,80 @@ const auth = {
 }
 
 const station = {
+    // 获取微站列表
     getStationList() {
-        return requests.get(APIURL + '/star/careAndMyList', {
+        // return requests.get(APIURL + '/star/careAndMyList', {
+        return requests.get(APIURL + '/star/careAndMyDetail', {
             token: token
         });
     },
-    getNewsDetail(key) {
-        return requests.get(APIURL + '/album/detail2', {
-            key: key,
+
+    /**
+     * 创建微站
+     * @param {String} name 
+     * @param {Number} type 
+     * @param {String} memo 
+     * @param {Boolean} isMainStar 
+     * @param {String} cover 
+     * @param {Object} size 
+     */
+    createStation(name, type, memo, isMainStar, cover, size) {
+        return requests.post(APIURL + '/star/createStar', {
+            token: token,
+            name: name,
+            type: type,
+            memo: memo,
+            isMainStar: isMainStar,
+            cover: cover,
+            size: size,
+        });
+    },
+
+    deleteStation(key) {
+        return requests.delete(APIURL + '/star/deleteStar', {
+            token: token,
+            starKey: key,
+        });
+    },
+
+    editStation(key, name, type, memo, isMainStar, cover, size) {
+        return requests.patch(APIURL + '/star/setStarProperty', {
+            token: token,
+            starKey: key,
+            name: name,
+            type: type,
+            memo: memo,
+            isMainStar: isMainStar,
+            cover: cover,
+            size: size,
+        });
+    },
+    getStationDetail(key) {
+        return requests.get(APIURL + '/star/starDetail', {
+            token: token,
+            starKey: key,
         });
     }
+}
+
+const story = {
+    getStoryList(type, seriesKey, curPage, perPage) {
+        return requests.get(APIURL + '/album', {
+            'token': token,
+            type: type,
+            seriesKey: seriesKey,
+            curPage: curPage,
+            perPage: perPage
+        });
+    },
 }
 
 export default {
     auth,
     station,
+    story,
     setToken: _token => {
         window.localStorage.setItem('TOKEN', _token);
         token = _token;
-        console.log('setToken-----------', token);
     },
 };

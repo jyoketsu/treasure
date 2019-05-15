@@ -12,7 +12,7 @@
     line-height: 46px;
     padding: 0 80px;
     border-bottom: 1px solid #ddd;
-    background: radial-gradient(at center top,#7B8492,#292D42);
+    background: radial-gradient(at center top, #7B8492, #292D42);
     color: white;
 }
 
@@ -22,6 +22,11 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #7B8492;
+}
+
+.station-item.selected {
+    color: #fff;
 }
 
 .station-item:hover {
@@ -32,7 +37,53 @@
     margin-left: 0;
 }
 
+/* --------------------------------Station-home--------------------------------------------- */
+.station-cover {
+    width: 100%;
+    height: 320px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
+.station-name {
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    font-size: 32px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ddd;
+}
+
+.station-memo-title {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.operation-panel {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    width: 70px;
+}
+
+.operation-panel>div {
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    background-color: rgba(85, 66, 54, 0.8);
+    color: #fff;
+    margin: 15px 0;
+    text-align: center;
+    line-height: 70px;
+}
+
+.operation-panel>div:hover {
+    cursor: pointer;
+}
+
+/* --------------------------------媒体查询--------------------------------------------- */
 @media screen and (max-width:768px) {
     .station-list {
         padding: 0 20px;
