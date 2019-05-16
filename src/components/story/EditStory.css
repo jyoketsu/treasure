@@ -1,3 +1,8 @@
+.edit-story {
+    height: 100%;
+    overflow: auto;
+}
+
 .story-head {
     position: relative;
     width: 100%;
@@ -15,6 +20,13 @@
     width: 20px;
     height: 20px;
     background-image: url(/image/icon/delete.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.delete-story-content:hover {
+    cursor: pointer;
 }
 
 .story-content-edit-content {
@@ -30,8 +42,7 @@
     position: relative;
     min-height: 100px;
     background: #FAFAFA;
-    border-top: 1px solid #DDDDDD;
-    border-bottom: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
     margin-top: 30px;
     text-align: center;
     padding: 0 50px;
@@ -81,4 +92,61 @@
     background-position: center;
     background-size: contain;
     background-color: transparent;
+}
+
+.story-title {
+    width: 100%;
+    font-size: 20px;
+    color: #333333;
+    background: unset;
+    border: none;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.story-text-title {
+    position: relative;
+    top: 22px;
+    width: 400px;
+    font-size: 18px;
+    color: #333333;
+    background: unset;
+    border: none;
+    text-align: center;
+}
+
+.story-content-textArea {
+    width: 100%;
+    height: 100px;
+    background: unset;
+    border: unset;
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+    resize: none;
+}
+
+.story-image,
+.story-video {
+    width: 100%;
+}
+
+.story-footer {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 80px;
+    align-items: center;
+}
+
+.story-footer .ant-btn {
+    margin-right: 15px;
+}
+
+.channel-select {
+    position: absolute;
+    right: 15px;
+    top: 15px;
 }

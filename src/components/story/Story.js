@@ -9,7 +9,9 @@ const mapStateToProps = state => ({
 class Story extends Component {
     render() {
         return (
-            <div className="story-container">
+            <div
+                className="story-container"
+            >
                 <EditStory/>
             </div>
         );

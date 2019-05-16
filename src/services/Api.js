@@ -266,12 +266,15 @@ const station = {
 const story = {
     getStoryList(type, seriesKey, curPage, perPage) {
         return requests.get(APIURL + '/album', {
-            'token': token,
+            token: token,
             type: type,
             seriesKey: seriesKey,
             curPage: curPage,
             perPage: perPage
         });
+    },
+    addStory(story) {
+        return requests.post(APIURL + '/album', Object.assign(story, { token: token }));
     },
 }
 

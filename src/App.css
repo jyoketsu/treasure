@@ -1,12 +1,22 @@
-.App {
-    text-align: center;
-    box-sizing: border-box;
+/* 触摸滚动 */
+* {
+    -webkit-overflow-scrolling: touch;
+}
+
+:focus {
+    outline: 0 !important;
 }
 
 *:not(input) {
     user-select: none;
     outline: none;
 }
+
+.App {
+    text-align: center;
+    box-sizing: border-box;
+}
+
 
 .App-logo {
     animation: App-logo-spin infinite 20s linear;
