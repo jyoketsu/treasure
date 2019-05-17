@@ -273,9 +273,20 @@ const story = {
             perPage: perPage
         });
     },
+
     addStory(story) {
         return requests.post(APIURL + '/album', Object.assign(story, { token: token }));
     },
+    editStory(story) {
+        return requests.patch(APIURL + '/album', Object.assign(story, { token: token }));
+    },
+
+    getStoryDetail(storyKey) {
+        return requests.get(APIURL + '/album/detailNew', {
+            token: token,
+            key: storyKey,
+        });
+    }
 }
 
 export default {

@@ -1,5 +1,6 @@
 .homepage {
-    height: 1000px;
+    height: 100%;
+    overflow: auto;
 }
 
 .station-list {

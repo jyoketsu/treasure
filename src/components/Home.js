@@ -1,25 +1,39 @@
 import React, { Component } from 'react';
 import './Home.css';
+import StoryList from './story/StoryList';
 import { connect } from 'react-redux';
 import { getStationList, changeStation, getStationDetail, getStoryList } from '../actions/app';
 
 const mapStateToProps = state => ({
+    waiting: state.common.waiting,
     stationList: state.station.stationList,
     nowStationKey: state.station.nowStationKey,
     stationMap: state.station.stationMap,
+    storyNumber: state.story.storyNumber,
+    nowStoryNumber: state.story.storyList.length,
 });
 
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.curPage = 1;
+        this.perPage = 2;
+        this.handleMouseWheel = this.handleMouseWheel.bind(this);
+    }
+
+    // 滚动查看更多故事
+    handleMouseWheel(e) {
+        const { getStoryList, waiting, stationMap, nowStationKey, nowStoryNumber, storyNumber } = this.props;
+        if (nowStoryNumber < storyNumber && !waiting && (this.homepage.scrollTop + this.homepage.clientHeight === this.homepage.scrollHeight)) {
+            this.curPage++;
+            getStoryList(1, stationMap[nowStationKey].seriesInfo[0].seriesKey, this.curPage, this.perPage);
         }
     }
 
     render() {
         const { changeStation, getStoryList, stationList, nowStationKey, stationMap, history } = this.props;
         return (
-            <div className="homepage">
+            <div className="homepage" ref={node => this.homepage = node} onWheel={this.handleMouseWheel}>
                 <div className="station-list">
                     <div
                         className={`station-item ${nowStationKey === 'all' ? 'selected' : ''}`}
@@ -46,6 +60,8 @@ class Home extends Component {
                             content={stationMap[nowStationKey]}
                             getStoryList={getStoryList}
                             history={history}
+                            curPage={this.curPage}
+                            perPage={this.perPage}
                         /> :
                         '订阅'
                 }
@@ -57,6 +73,10 @@ class Home extends Component {
         const { getStationList, stationList } = this.props;
         if (stationList.length === 0) {
             getStationList();
+        }
+        if (this.homepage) {
+            let scrollTop = sessionStorage.getItem('home-scroll');
+            this.homepage.scrollTop = scrollTop;
         }
     }
 
@@ -73,12 +93,19 @@ class Home extends Component {
             }
         }
     }
+
+    componentWillUnmount() {
+        sessionStorage.setItem('home-scroll', this.homepage.scrollTop);
+    }
 }
 
 class Station extends React.Component {
     handleClickAdd() {
         const { history } = this.props;
-        history.push('/story');
+        history.push({
+            pathname: '/editStory',
+            search: '?type=new',
+        });
     }
 
     render() {
@@ -104,6 +131,7 @@ class Station extends React.Component {
                         </div>
                         <div className="stories"></div>
                     </div>
+                    <StoryList />
                 </div>
                 <div className="operation-panel">
                     <div className="share-station">分享</div>
@@ -114,7 +142,7 @@ class Station extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { content = {}, getStoryList } = this.props;
+        const { content = {}, getStoryList, curPage, perPage } = this.props;
         const { starInfo = {}, seriesInfo = [] } = content;
 
         const { content: prevContent = {} } = prevProps;
@@ -124,7 +152,7 @@ class Station extends React.Component {
             console.log('切换了微站', starInfo._key);
             // 获取第一个专辑的故事
             if (seriesInfo[0]) {
-                getStoryList(1, seriesInfo[0].seriesKey, 1, 5);
+                getStoryList(1, seriesInfo[0].seriesKey, curPage, perPage);
             }
         }
     }

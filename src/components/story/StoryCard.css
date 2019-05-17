@@ -1,0 +1,122 @@
+.story-card:first-child {
+    margin-top: 0;
+}
+
+.story-card {
+    position: relative;
+    width: 100%;
+    height: 310px;
+    border: 1px solid gainsboro;
+    background: #FFFFFF;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.story-card.type-article {
+    height: 80px;
+}
+
+.story-card:hover {
+    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+}
+
+.story-card-cover {
+    width: 100%;
+    height: 230px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px 8px 0 0;
+}
+.story-card-cover:hover{
+    cursor: pointer;
+}
+
+.story-card-icon:hover{
+    cursor: pointer;
+}
+
+.story-card-title {
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    line-height: 40px;
+    padding: 0 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.story-card-info {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 12px;
+}
+
+.story-card-avatar {
+    position: relative;
+    top: 8px;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border-radius: 15px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 6px;
+    background-color: bisque;
+}
+
+.story-card-name {
+    margin-right: 6px;
+}
+
+.story-card-record {
+    float: right;
+    margin-left: 10px;
+}
+
+.story-card-record>.story-card-icon {
+    position: relative;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.picture-count {
+    position: absolute;
+    top: 200px;
+    right: 12px;
+    color: #FFFFFF;
+}
+
+.picture-count-icon {
+    position: relative;
+    top: 1px;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    margin-right: 5px;
+    background-image: url(/image/icon/image.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.picture-count>span {
+    position: relative;
+    top: -5px;
+}
+
+.story-loading {
+    display: flex;
+    justify-content: center;
+    height: 80px;
+    align-items: center;
+}

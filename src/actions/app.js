@@ -62,11 +62,23 @@ export function getStationDetail(key) {
 // story
 export const GET_STORY_LIST = 'GET_STORY_LIST';
 export const ADD_STORY = 'ADD_STORY';
+export const EDIT_STORY = 'EDIT_STORY';
+export const GET_STORY_DETAIL = 'GET_STORY_DETAIL';
 export function getStoryList(type, seriesKey, curPage, perPage) {
     let request = api.story.getStoryList(type, seriesKey, curPage, perPage);
-    return { type: GET_STORY_LIST, payload: request }
+    return { type: GET_STORY_LIST, curPage: curPage, noLoading: true, payload: request }
 }
 export function addStory(story) {
     let request = api.story.addStory(story);
     return { type: ADD_STORY, payload: request }
+}
+
+export function editStory(story) {
+    let request = api.story.editStory(story);
+    return { type: EDIT_STORY, payload: request }
+}
+
+export function getStoryDetail(storyKey) {
+    let request = api.story.getStoryDetail(storyKey);
+    return { type: GET_STORY_DETAIL, payload: request }
 }

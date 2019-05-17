@@ -12,7 +12,8 @@ import Create from './components/Create';
 import MyStation from './components/MyStation';
 import EditStation from './components/EditStation';
 import Login from './components/Login';
-import Story from './components/story/Story'
+import Story from './components/story/Story';
+import EditStory from './components/story/EditStory';
 
 const mapStateToProps = state => ({
   loading: state.common.loading,
@@ -35,6 +36,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/editStation" component={EditStation} />
             <Route path="/story" component={Story} />
+            <Route path="/editStory" component={EditStory}></Route>
           </div>
           {loading ? (
             <div className="loading-mask">

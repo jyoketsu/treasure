@@ -5,4 +5,77 @@
     bottom: 0;
     left: 0;
     background: #fff;
+    overflow: auto;
+}
+
+.story-avatar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: -30px;
+}
+
+.story-avatar>span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.story-avatar>i {
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 30px;
+    border: 1px solid white;
+    background-color: bisque;
+}
+
+.story-text-title-show {
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+.story-content-view {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 0;
+    background-color: #fff;
+    word-break: break-all;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.story-container .story-content-edit-box {
+    margin: 15px 0;
+}
+
+.story-container .story-image:hover {
+    cursor: pointer;
+}
+
+.to-edit-story {
+    color: #3a94cc;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: cornsilk;
+    display: block;
+    width: 50px;
+    height: 30px;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.to-edit-story:hover {
+    cursor: pointer;
 }

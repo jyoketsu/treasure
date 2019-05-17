@@ -5,7 +5,7 @@ import { Button, Tooltip, message, Select } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
-import {addStory} from '../../actions/app';
+import { addStory, editStory } from '../../actions/app';
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.stationMap[state.station.nowStationKey] ?
@@ -21,8 +21,9 @@ const Option = Select.Option;
 class EditStory extends Component {
     constructor(props) {
         super(props);
+        let type = util.common.getSearchParamValue(props.location.search, 'type');
         this.state = {
-            story: props.story,
+            story: type === 'new' ? {} : props.story,
         }
         this.addContent = this.addContent.bind(this);
         this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -39,9 +40,9 @@ class EditStory extends Component {
     }
 
     handleCommit() {
-        const { user, nowStationKey,addStory } = this.props;
+        const { user, nowStationKey, addStory } = this.props;
         const { story } = this.state;
-        if (!story || !story.starSeriesKey) {
+        if (!story || (!story.starSeriesKey && !story._key)) {
             message.error('请选择一个频道！');
             return;
         }
@@ -55,7 +56,7 @@ class EditStory extends Component {
         }
         // 编辑
         if (story._key) {
-
+            editStory(story);
         } else {
             // 新增
             // 封面大小
@@ -66,10 +67,10 @@ class EditStory extends Component {
                 starKey: nowStationKey,
                 publish: 1,
                 size: size,
-                isSimple:0,
+                isSimple: 0,
             });
+            addStory(story);
         }
-        addStory(story);
     }
 
     /**
@@ -182,7 +183,7 @@ class EditStory extends Component {
 
     render() {
         const { story = {} } = this.state;
-        const { cover, title = '', richContent = [] } = story;
+        const { cover, title = '', series = {}, richContent = [] } = story;
         const { seriesInfo } = this.props;
         let centent = richContent.map((content, index) => {
             let result = null;
@@ -218,23 +219,25 @@ class EditStory extends Component {
 
         return (
             <div className="edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
-                <div className="main-content ">
-                    <div className="story-head" style={{
-                        backgroundImage: `url(${cover}?imageView2/2/w/960/)`
-                    }}>
-                        <div className="channel-select">
-                            <span>选择频道：</span>
-                            <Select
-                                style={{ width: 120 }} onChange={this.selectChannel}
-                            >
-                                {
-                                    seriesInfo.map((series, index) => (
-                                        <Option key={index} value={series.seriesKey}>{series.seriesName}</Option>
-                                    ))
-                                }
-                            </Select>
-                        </div>
+                <div className="story-head" style={{
+                    backgroundImage: `url(${cover}?imageView2/2/w/960/)`
+                }}>
+                    <div className="channel-select">
+                        <span>选择频道：</span>
+                        <Select
+                            defaultValue={series._key}
+                            style={{ width: 120 }}
+                            onChange={this.selectChannel}
+                        >
+                            {
+                                seriesInfo.map((series, index) => (
+                                    <Option key={index} value={series.seriesKey}>{series.seriesName}</Option>
+                                ))
+                            }
+                        </Select>
                     </div>
+                </div>
+                <div className="main-content ">
                     <StoryContentEditBox
                         className="story-title-box"
                         hideDeleteButton={true}
@@ -457,5 +460,5 @@ class StoryVideo extends Component {
 export default withRouter(
     connect(
         mapStateToProps,
-        {addStory},
+        { addStory, editStory },
     )(EditStory));
