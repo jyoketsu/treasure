@@ -264,13 +264,15 @@ const station = {
 }
 
 const story = {
-    getStoryList(type, seriesKey, curPage, perPage) {
+    getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage) {
         return requests.get(APIURL + '/album', {
             token: token,
             type: type,
             seriesKey: seriesKey,
+            sortType: sortType,
+            sortOrder: sortOrder,
             curPage: curPage,
-            perPage: perPage
+            perPage: perPage,
         });
     },
 
@@ -286,10 +288,18 @@ const story = {
             token: token,
             key: storyKey,
         });
+    },
+    like(storyKey) {
+        return requests.post(APIURL + '/comment/like', {
+            token: token,
+            type: 6,
+            key: storyKey,
+        });
     }
 }
 
 export default {
+    requests,
     auth,
     station,
     story,

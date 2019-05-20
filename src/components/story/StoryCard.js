@@ -19,7 +19,7 @@ class Card extends Component {
     }
 
     render() {
-        const { story } = this.props;
+        const { story, like } = this.props;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
         let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/375/')` };
@@ -56,6 +56,7 @@ class Card extends Component {
                     <span className="story-card-record">
                         <i
                             className="story-card-icon"
+                            onClick={like.bind(this, story._key)}
                             style={{ backgroundImage: `url(/image/icon/${story.islike ? 'like' : 'like2'}.svg)` }}
                         >
                         </i>

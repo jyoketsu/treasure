@@ -9,21 +9,30 @@
     letter-spacing: 2px;
     font-size: 16px;
     color: #333;
-    display: flex;
     line-height: 46px;
     padding: 0 80px;
     border-bottom: 1px solid #ddd;
     background: radial-gradient(at center top, #7B8492, #292D42);
     color: white;
+    overflow: auto;
+    box-sizing: content-box;
 }
 
 .station-item {
     margin-left: 14px;
-    max-width: 80px;
+    max-width: 100px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #7B8492;
+    display: inline;
+    /* 火狐 隐藏滚动条 */
+    overflow: -moz-scrollbars-none;
+}
+
+/* chrome 隐藏滚动条 */
+.station-item::-webkit-scrollbar {
+    width: 0 !important
 }
 
 .station-item.selected {
@@ -69,24 +78,65 @@
     width: 70px;
 }
 
+.operation-panel>div:hover {
+    cursor: pointer;
+}
+
+.sortType.active {
+    color: #40a9ff !important;
+}
+
+.sortType:hover {
+    cursor: pointer;
+}
+
+.station-memo>pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 0;
+    background-color: #fff;
+    word-break: break-all;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
 .operation-panel>div {
     width: 70px;
     height: 70px;
     border-radius: 35px;
-    background-color: rgba(85, 66, 54, 0.8);
+    /* background-color: rgba(85, 66, 54, 0.8); */
     color: #fff;
     margin: 15px 0;
     text-align: center;
     line-height: 70px;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.operation-panel>div:hover {
-    cursor: pointer;
+.operation-panel>div:hover{
+    background-color: rgba(85, 66, 54, 0.8);
+}
+
+.sort-story {
+    background-image: url(/image/icon/sortStory.svg);
+}
+
+.add-story {
+    background-image: url(/image/icon/addStory.svg);
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */
 @media screen and (max-width:768px) {
     .station-list {
         padding: 0 20px;
+    }
+
+    .station-item {
+        width: 100px;
+        max-width: unset;
     }
 }

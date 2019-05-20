@@ -5,7 +5,7 @@ import { Button, Tooltip, message, Select } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
-import { addStory, editStory } from '../../actions/app';
+import { addStory, modifyStory } from '../../actions/app';
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.stationMap[state.station.nowStationKey] ?
@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
     story: state.story.story,
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
+    loading: state.common.loading,
 });
 
 const Option = Select.Option;
@@ -40,9 +41,9 @@ class EditStory extends Component {
     }
 
     handleCommit() {
-        const { user, nowStationKey, addStory } = this.props;
+        const { user, nowStationKey, addStory, modifyStory } = this.props;
         const { story } = this.state;
-        if (!story || (!story.starSeriesKey && !story._key)) {
+        if (!story || (!story.series && !story._key)) {
             message.error('请选择一个频道！');
             return;
         }
@@ -56,7 +57,19 @@ class EditStory extends Component {
         }
         // 编辑
         if (story._key) {
-            editStory(story);
+            story.key = story._key;
+            if (typeof story.series === 'object') {
+                story.series = story.series._key;
+            }
+            // 封面大小
+            let size = util.common.getImageInfo(story.cover);
+            story.size = size;
+            for (let i = 0; i < story.richContent.length; i++) {
+                if (story.richContent[i].metaType === 'image') {
+                    delete story.richContent[i].exif;
+                }
+            }
+            modifyStory(story);
         } else {
             // 新增
             // 封面大小
@@ -177,7 +190,7 @@ class EditStory extends Component {
     selectChannel(value) {
         const { story = {} } = this.state;
         let changedStory = JSON.parse(JSON.stringify(story));
-        changedStory.starSeriesKey = value;
+        changedStory.series = value;
         this.setState({ story: changedStory });
     }
 
@@ -208,8 +221,9 @@ class EditStory extends Component {
                 <StoryContentEditBox
                     key={index}
                     index={index + 1}
+                    metaType={content.metaType}
                     addContent={this.addContent}
-                    deleteContent={this.deleteContent.bind(this, content.metaType)}
+                    deleteContent={this.deleteContent.bind(this)}
                     uploadImageCallback={this.uploadImageCallback}
                     uploadVideoCallback={this.uploadVideoCallback}>
                     {result}
@@ -231,7 +245,7 @@ class EditStory extends Component {
                         >
                             {
                                 seriesInfo.map((series, index) => (
-                                    <Option key={index} value={series.seriesKey}>{series.seriesName}</Option>
+                                    <Option key={index} value={series._key}>{series.name}</Option>
                                 ))
                             }
                         </Select>
@@ -282,9 +296,12 @@ class EditStory extends Component {
             this.scrollDown = false;
             this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
         }
-        const { storyList, history } = this.props;
+        const { storyList, history, loading } = this.props;
         if (storyList.length !== prevProps.storyList.length) {
             message.success('创建成功！');
+            history.goBack();
+        } else if (!loading && prevProps.loading) {
+            message.success('编辑成功！');
             history.goBack();
         }
     }
@@ -296,7 +313,7 @@ class StoryContentEditBox extends Component {
         if (!this.props.hideDeleteButton) {
             deleteButton =
                 <i className="delete-story-content"
-                    onClick={this.props.deleteContent.bind(this, this.props.index)}></i>;
+                    onClick={this.props.deleteContent.bind(this, this.props.index, this.props.metaType)}></i>;
         }
         let buttonGroup = <StoryEditButtonGroup index={this.props.index}
             addContent={this.props.addContent}
@@ -460,5 +477,5 @@ class StoryVideo extends Component {
 export default withRouter(
     connect(
         mapStateToProps,
-        { addStory, editStory },
+        { addStory, modifyStory },
     )(EditStory));

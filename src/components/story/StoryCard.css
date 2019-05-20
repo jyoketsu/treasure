@@ -1,15 +1,11 @@
-.story-card:first-child {
-    margin-top: 0;
-}
-
 .story-card {
     position: relative;
-    width: 100%;
+    width: 390px;
     height: 310px;
     border: 1px solid gainsboro;
     background: #FFFFFF;
     border-radius: 8px;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .story-card.type-article {
@@ -28,11 +24,12 @@
     background-position: center;
     border-radius: 8px 8px 0 0;
 }
-.story-card-cover:hover{
+
+.story-card-cover:hover {
     cursor: pointer;
 }
 
-.story-card-icon:hover{
+.story-card-icon:hover {
     cursor: pointer;
 }
 
@@ -115,6 +112,7 @@
 }
 
 .story-loading {
+    width: 100%;
     display: flex;
     justify-content: center;
     height: 80px;

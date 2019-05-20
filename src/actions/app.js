@@ -62,23 +62,48 @@ export function getStationDetail(key) {
 // story
 export const GET_STORY_LIST = 'GET_STORY_LIST';
 export const ADD_STORY = 'ADD_STORY';
-export const EDIT_STORY = 'EDIT_STORY';
+export const MODIFY_STORY = 'MODIFY_STORY';
 export const GET_STORY_DETAIL = 'GET_STORY_DETAIL';
-export function getStoryList(type, seriesKey, curPage, perPage) {
-    let request = api.story.getStoryList(type, seriesKey, curPage, perPage);
-    return { type: GET_STORY_LIST, curPage: curPage, noLoading: true, payload: request }
+export const CLEAR_STORY_DETAIL = 'CLEAR_STORY_DETAIL';
+export const LIKE_STORY = 'LIKE_STORY';
+export const UPDATE_EXIF = 'UPDATE_EXIF';
+
+export function getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage) {
+    let request = api.story.getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage);
+    return {
+        type: GET_STORY_LIST,
+        curPage: curPage,
+        sortType: sortType,
+        sortOrder: sortOrder,
+        noLoading: true,
+        payload: request
+    }
 }
+
 export function addStory(story) {
     let request = api.story.addStory(story);
     return { type: ADD_STORY, payload: request }
 }
 
-export function editStory(story) {
-    let request = api.story.editStory(story);
-    return { type: EDIT_STORY, payload: request }
-}
-
 export function getStoryDetail(storyKey) {
     let request = api.story.getStoryDetail(storyKey);
     return { type: GET_STORY_DETAIL, payload: request }
+}
+
+export function clearStoryDetail() {
+    return { type: CLEAR_STORY_DETAIL }
+}
+
+export function modifyStory(story) {
+    let request = api.story.editStory(story);
+    return { type: MODIFY_STORY, payload: request }
+}
+
+export function like(storyKey) {
+    let request = api.story.like(storyKey);
+    return { type: LIKE_STORY, storyKey: storyKey, noLoading: true, payload: request }
+}
+
+export function updateExif(story) {
+    return { type: UPDATE_EXIF, story: story }
 }

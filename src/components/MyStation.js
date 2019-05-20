@@ -61,8 +61,8 @@ class MyStation extends Component {
                             render={series => (
                                 <span>
                                     {series.map(serie => (
-                                        <Tag color="blue" key={serie.seriesKey}>
-                                            {serie.seriesName}
+                                        <Tag color="blue" key={serie._key}>
+                                            {serie.name}
                                         </Tag>
                                     ))}
                                 </span>
