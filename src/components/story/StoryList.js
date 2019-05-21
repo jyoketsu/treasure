@@ -29,7 +29,7 @@ class StoryList extends Component {
                         : null
                 }
                 {
-                    storyList.length === 0 ?
+                    !waiting && storyList.length === 0 ?
                         <div className="story-is-all">没有故事，请先创建</div>
                         : null
                 }

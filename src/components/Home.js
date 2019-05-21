@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './Home.css';
 import StoryList from './story/StoryList';
+import HomeSubscribe from './HomeSubscribe';
 import { Modal, Tooltip } from 'antd';
 import { connect } from 'react-redux';
-import { getStationList, changeStation, getStationDetail, getStoryList } from '../actions/app';
+import { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
 
 const mapStateToProps = state => ({
     waiting: state.common.waiting,
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
     nowStoryNumber: state.story.storyList.length,
     sortType: state.story.sortType,
     sortOrder: state.story.sortOrder,
+    nowChannelKey: state.story.nowChannelKey,
 });
 
 class Home extends Component {
@@ -27,27 +29,45 @@ class Home extends Component {
         this.switchSortModal = this.switchSortModal.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.handleSort = this.handleSort.bind(this);
+        this.changeChannel = this.changeChannel.bind(this);
     }
 
     // 滚动查看更多故事
     handleMouseWheel(e) {
         const {
+            nowStationKey,
             getStoryList,
             waiting,
-            stationMap,
-            nowStationKey,
             nowStoryNumber,
             storyNumber,
             sortType,
-            sortOrder, } = this.props;
+            sortOrder,
+            nowChannelKey, } = this.props;
         if (
             nowStoryNumber < storyNumber &&
             !waiting &&
             (this.homepage.scrollTop + this.homepage.clientHeight === this.homepage.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(1, stationMap[nowStationKey].seriesInfo[0]._key, sortType, sortOrder, this.curPage, this.perPage);
+            if (nowStationKey === 'all') {
+                getStoryList(4, null, null, 1, 1, this.curPage, this.perPage);
+            } else {
+                getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+            }
         }
+    }
+
+    changeChannel(channelKey) {
+        const {
+            nowStationKey,
+            getStoryList,
+            clearStoryList,
+            sortType,
+            sortOrder,
+        } = this.props;
+        this.curPage = 1;
+        clearStoryList();
+        getStoryList(1, nowStationKey, channelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     switchSortModal() {
@@ -59,14 +79,14 @@ class Home extends Component {
     handleSort(sortType, sortOrder) {
         const {
             getStoryList,
-            stationMap,
             nowStationKey,
+            nowChannelKey,
         } = this.props;
         this.curPage = 1;
         this.setState({
             showSort: false,
         });
-        getStoryList(1, stationMap[nowStationKey].seriesInfo[0]._key, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     render() {
@@ -77,7 +97,8 @@ class Home extends Component {
             stationMap,
             history,
             sortType,
-            sortOrder } = this.props;
+            sortOrder,
+            nowChannelKey } = this.props;
         const { showSort } = this.state;
         return (
             <div className="homepage" ref={node => this.homepage = node} onWheel={this.handleMouseWheel}>
@@ -99,30 +120,37 @@ class Home extends Component {
                             </div>
                         ))
                     }
-                    <div className={`station-item`}>查看所有</div>
+                    {/* <div className={`station-item`}>查看所有</div> */}
                 </div>
                 {
                     nowStationKey !== 'all' ?
                         <Station
+                            nowStationKey={nowStationKey}
+                            nowChannelKey={nowChannelKey}
                             content={stationMap[nowStationKey]}
                             sortType={sortType}
                             sortOrder={sortOrder}
                             getStoryList={getStoryList}
                             handleSort={this.handleSort}
+                            changeChannel={this.changeChannel}
                             switchSortModal={this.switchSortModal}
                             history={history}
                             showSort={showSort}
                             curPage={this.curPage}
                             perPage={this.perPage}
                         /> :
-                        '订阅'
+                        <HomeSubscribe
+                            getStoryList={getStoryList}
+                            curPage={this.curPage}
+                            perPage={this.perPage}
+                        />
                 }
             </div>
         );
     };
 
     componentDidMount() {
-        const { getStationList, stationList } = this.props;
+        const { getStationList, stationList, nowStationKey, getStoryList } = this.props;
         if (stationList.length === 0) {
             getStationList();
         }
@@ -130,17 +158,23 @@ class Home extends Component {
             let scrollTop = sessionStorage.getItem('home-scroll');
             this.homepage.scrollTop = scrollTop;
         }
+        if (nowStationKey === 'all') {
+            // 订阅的所有微站的频道故事
+            getStoryList(4, null, null, 1, 1, 1, this.perPage);
+        }
     }
 
     componentDidUpdate(prevProps) {
-        const { nowStationKey, stationMap, getStationDetail, } = this.props;
+        const { nowStationKey, stationMap, getStationDetail, getStoryList } = this.props;
         // 切换微站时
         if (nowStationKey !== prevProps.nowStationKey) {
+            this.curPage = 1;
             if (!stationMap[nowStationKey]) {
                 if (nowStationKey !== 'all') {
                     getStationDetail(nowStationKey);
                 } else {
-                    console.log('订阅');
+                    // 订阅的所有微站的频道故事
+                    getStoryList(4, null, null, 1, 1, 1, this.perPage);
                 }
             }
         }
@@ -160,8 +194,24 @@ class Station extends React.Component {
         });
     }
 
+    toChannelOption() {
+        const { history } = this.props;
+        history.push({
+            pathname: '/channel',
+        });
+    }
+
     render() {
-        const { content = {}, sortType, sortOrder, handleSort, showSort, switchSortModal } = this.props;
+        const {
+            content = {},
+            sortType,
+            sortOrder,
+            handleSort,
+            showSort,
+            switchSortModal,
+            nowChannelKey,
+            changeChannel
+        } = this.props;
         const { starInfo = {}, seriesInfo = [] } = content;
         return (
             <div className="station-home">
@@ -177,11 +227,23 @@ class Station extends React.Component {
                     </div>
                     <div className="series-container">
                         <div className="series-tabs">
+                            <div
+                                className={`channel-item ${nowChannelKey === 'allSeries' ? 'selected' : ''}`}
+                                onClick={changeChannel.bind(this, 'allSeries')}
+                            >
+                                全部
+                            </div>
                             {seriesInfo.map((serie, index) => (
-                                <div key={index}>{serie.name}</div>
+                                <div
+                                    key={index}
+                                    className={`channel-item ${nowChannelKey === serie._key ? 'selected' : ''}`}
+                                    onClick={changeChannel.bind(this, serie._key)}
+                                >
+                                    {serie.name}
+                                </div>
                             ))}
                         </div>
-                        <div className="stories"></div>
+                        <div className="series-options" onClick={this.toChannelOption.bind(this)}>...</div>
                     </div>
                     <StoryList />
                 </div>
@@ -225,24 +287,37 @@ class Station extends React.Component {
         );
     }
 
+    componentDidMount() {
+        const { content = {}, getStoryList, sortType, sortOrder, perPage, nowStationKey } = this.props;
+        const { starInfo = {}, seriesInfo = [] } = content;
+        if (starInfo._key && seriesInfo.length !== 0) {
+            // 获取第一个专辑的故事
+            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);
+        }
+    }
+
     componentDidUpdate(prevProps) {
-        const { content = {}, getStoryList, sortType, sortOrder, curPage, perPage } = this.props;
+        const { content = {}, getStoryList, sortType, sortOrder, perPage, nowStationKey, } = this.props;
         const { starInfo = {}, seriesInfo = [] } = content;
 
-        const { content: prevContent = {} } = prevProps;
+        const { content: prevContent = {}, nowStationKey: prevStationKey } = prevProps;
         const { starInfo: prevStarInfo = {} } = prevContent;
 
+        // 切换微站
         if (starInfo._key !== prevStarInfo._key) {
-            console.log('切换了微站', starInfo._key);
-            // 获取第一个专辑的故事
+            // 获取微站全部故事
             if (seriesInfo[0]) {
-                getStoryList(1, seriesInfo[0]._key, sortType, sortOrder, curPage, perPage);
+                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);
             }
+        }
+        // 从订阅切换到微站
+        if (prevStationKey === 'all') {
+            alert('从订阅切换到微站');
         }
     }
 }
 
 export default connect(
     mapStateToProps,
-    { getStationList, changeStation, getStationDetail, getStoryList },
+    { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList },
 )(Home);

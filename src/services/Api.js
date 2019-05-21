@@ -264,10 +264,11 @@ const station = {
 }
 
 const story = {
-    getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage) {
+    getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage) {
         return requests.get(APIURL + '/album', {
             token: token,
             type: type,
+            starKey: starKey,
             seriesKey: seriesKey,
             sortType: sortType,
             sortOrder: sortOrder,
@@ -294,6 +295,31 @@ const story = {
             token: token,
             type: 6,
             key: storyKey,
+        });
+    },
+
+    addChannel(stationKey, name, type) {
+        return requests.post(APIURL + '/series', {
+            token: token,
+            starKey: stationKey,
+            name: name,
+            type: type,
+            groupArray: [],
+        });
+    },
+    editChannel(channelKey, name, type) {
+        return requests.patch(APIURL + '/series', {
+            token: token,
+            key: channelKey,
+            name: name,
+            type: type,
+            groupArray: [],
+        });
+    },
+    deleteChannel(channelKey) {
+        return requests.delete(APIURL + '/series', {
+            token: token,
+            key: channelKey,
         });
     }
 }

@@ -1,5 +1,6 @@
 import {
     GET_STORY_LIST,
+    CLEAR_STORY_LIST,
     ADD_STORY,
     MODIFY_STORY,
     GET_STORY_DETAIL,
@@ -13,6 +14,7 @@ const defaultState = {
     story: {},
     sortType: 1,
     sortOrder: 1,
+    nowChannelKey: 'allSeries',
 };
 
 const story = (state = defaultState, action) => {
@@ -32,10 +34,17 @@ const story = (state = defaultState, action) => {
                     storyNumber: action.payload.totalNumber,
                     sortType: action.sortType,
                     sortOrder: action.sortOrder,
+                    nowChannelKey: action.channelKey,
                 };
             } else {
                 return state;
             }
+        case CLEAR_STORY_LIST:
+            return {
+                ...state,
+                storyList: [],
+            }
+
         case ADD_STORY:
             if (!action.error) {
                 let storyList = Object.assign([], state.storyList);

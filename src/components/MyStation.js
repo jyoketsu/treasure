@@ -53,7 +53,7 @@ class MyStation extends Component {
             <div className="my-station">
                 <div className="my-station-head">我的微站</div>
                 <div className="main-content">
-                    <Table dataSource={data} rowKey="starKey">
+                    <Table dataSource={data} rowKey="starKey" pagination={false}>
                         <Column title="微站" dataIndex="starName" />
                         <Column
                             title="频道"
@@ -69,7 +69,7 @@ class MyStation extends Component {
                             )}
                         />
                         <Column
-                            title="Action"
+                            title="操作"
                             render={(text, record) => (
                                 <span className="tabel-actions">
                                     <span onClick={this.toEditStation.bind(this, record.starKey)}>编辑</span>

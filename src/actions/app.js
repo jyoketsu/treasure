@@ -61,6 +61,7 @@ export function getStationDetail(key) {
 
 // story
 export const GET_STORY_LIST = 'GET_STORY_LIST';
+export const CLEAR_STORY_LIST = 'CLEAR_STORY_LIST';
 export const ADD_STORY = 'ADD_STORY';
 export const MODIFY_STORY = 'MODIFY_STORY';
 export const GET_STORY_DETAIL = 'GET_STORY_DETAIL';
@@ -68,16 +69,21 @@ export const CLEAR_STORY_DETAIL = 'CLEAR_STORY_DETAIL';
 export const LIKE_STORY = 'LIKE_STORY';
 export const UPDATE_EXIF = 'UPDATE_EXIF';
 
-export function getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage) {
-    let request = api.story.getStoryList(type, seriesKey, sortType, sortOrder, curPage, perPage);
+export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage) {
+    let request = api.story.getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage);
     return {
         type: GET_STORY_LIST,
         curPage: curPage,
         sortType: sortType,
         sortOrder: sortOrder,
         noLoading: true,
+        channelKey: seriesKey,
         payload: request
     }
+}
+
+export function clearStoryList() {
+    return { type: CLEAR_STORY_LIST }
 }
 
 export function addStory(story) {
@@ -106,4 +112,24 @@ export function like(storyKey) {
 
 export function updateExif(story) {
     return { type: UPDATE_EXIF, story: story }
+}
+
+// 频道
+export const ADD_CHANNEL = 'ADD_CHANNEL';
+export const EDIT_CHANNEL = 'EDIT_CHANNEL';
+export const DELETE_CHANNEL = 'DELETE_CHANNEL';
+
+export function addChannel(stationKey, name, type) {
+    let request = api.story.addChannel(stationKey, name, type);
+    return { type: ADD_CHANNEL, stationKey: stationKey, payload: request }
+}
+
+export function editChannel(channelKey, name, type) {
+    let request = api.story.editChannel(channelKey, name, type);
+    return { type: EDIT_CHANNEL, channelKey: channelKey, payload: request }
+}
+
+export function deleteChannel(channelKey) {
+    let request = api.story.deleteChannel(channelKey);
+    return { type: DELETE_CHANNEL, channelKey: channelKey, payload: request }
 }

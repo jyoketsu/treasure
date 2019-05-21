@@ -117,7 +117,7 @@
     background-position: center;
 }
 
-.operation-panel>div:hover{
+.operation-panel>div:hover {
     background-color: rgba(85, 66, 54, 0.8);
 }
 
@@ -127,6 +127,63 @@
 
 .add-story {
     background-image: url(/image/icon/addStory.svg);
+}
+
+.series-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.series-tabs {
+    height: 46px;
+    font-size: 16px;
+    line-height: 46px;
+    flex: 1;
+    overflow: auto;
+    /* 火狐 隐藏滚动条 */
+    overflow: -moz-scrollbars-none;
+}
+
+/* chrome 隐藏滚动条 */
+.series-tabs::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.series-options {
+    width: 46px;
+    height: 46px;
+    background-color: #ddd;
+    text-align: center;
+}
+
+.series-options:hover {
+    cursor: pointer;
+}
+
+.channel-item {
+    border-right: 1px solid #ddd;
+    padding: 0 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #7B8492;
+    display: inline;
+}
+
+.channel-item:hover {
+    cursor: pointer;
+}
+
+.channel-item:last-child {
+    border-right: unset;
+}
+
+.channel-item:first-child {
+    padding-left: 0;
+}
+
+.channel-item.selected {
+    color: #3a94cc;
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */

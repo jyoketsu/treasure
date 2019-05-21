@@ -4,6 +4,9 @@ import {
     CHANGE_STATION,
     DELETE_STATION, EDIT_STATION,
     GET_STATION_DETAIL,
+    ADD_CHANNEL,
+    EDIT_CHANNEL,
+    DELETE_CHANNEL,
 } from '../actions/app';
 const defaultState = {
     competitionInfo: {},
@@ -79,6 +82,52 @@ const station = (state = defaultState, action) => {
                 let res = action.payload.result;
                 let stationMap = JSON.parse(JSON.stringify(state.stationMap));
                 stationMap[action.stationKey] = res;
+                return {
+                    ...state,
+                    stationMap: stationMap,
+                };
+            } else {
+                return state;
+            }
+        case ADD_CHANNEL:
+            if (!action.error) {
+                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
+                let channels = stationMap[action.stationKey].seriesInfo;
+                channels.unshift(action.payload.result);
+                return {
+                    ...state,
+                    stationMap: stationMap,
+                };
+            } else {
+                return state;
+            }
+        case EDIT_CHANNEL:
+            if (!action.error) {
+                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
+                let channels = stationMap[state.nowStationKey].seriesInfo;
+                for (let i = 0; i < channels.length; i++) {
+                    if (channels[i]._key === action.channelKey) {
+                        channels[i] = action.payload.result;
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    stationMap: stationMap,
+                };
+            } else {
+                return state;
+            }
+        case DELETE_CHANNEL:
+            if (!action.error) {
+                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
+                let channels = stationMap[state.nowStationKey].seriesInfo;
+                for (let i = 0; i < channels.length; i++) {
+                    if (channels[i]._key === action.channelKey) {
+                        channels.splice(i, 1);
+                        break;
+                    }
+                }
                 return {
                     ...state,
                     stationMap: stationMap,
