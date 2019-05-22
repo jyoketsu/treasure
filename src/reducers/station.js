@@ -34,7 +34,6 @@ const station = (state = defaultState, action) => {
                 return {
                     ...state,
                     stationList: stationList,
-                    nowStationKey: res.starKey,
                 };
             } else {
                 return state;

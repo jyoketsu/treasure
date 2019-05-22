@@ -12,6 +12,10 @@ class HomeSubscribe extends Component {
             </div>
         );
     };
+
+    componentDidMount() {
+        document.title = '时光宝库';
+    }
 }
 
 export default HomeSubscribe;

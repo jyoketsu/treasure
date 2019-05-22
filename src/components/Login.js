@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Login.css';
 import { FormGroup, Button, CheckBox, Link, Select, FormTextInput } from './common/Form.js';
+// import { Select } from 'antd';
 import api from '../services/Api';
 import { message } from 'antd';
 import Loading from './common/Loading';
@@ -8,6 +9,8 @@ import util from '../services/Util';
 
 import { connect } from 'react-redux';
 import { LOGIN, REGISTER, BIND_MOBILE } from '../actions/app';
+
+// const Option = Select.Option;
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -158,13 +161,17 @@ class Login extends Component {
         const selectOptions = [{
             value: '+86',
             text: '中国大陆'
-        }, {
-            value: '+81',
-            text: '日本'
-        }, {
-            value: '+1',
-            text: '美国'
-        }];
+        },
+            // {
+            //     value: '+81',
+            //     text: '日本'
+            // }, {
+            //     value: '+1',
+            //     text: '美国'
+            // }
+        ];
+
+        let style = { borderBottom: '1px solid #DDDDDD' }
 
         let item = null;
         switch (this.state.type) {
@@ -180,7 +187,7 @@ class Login extends Component {
                 break;
             case 'register':
                 item = [
-                    <FormGroup key="password">
+                    <FormGroup key="password" style={style}>
                         <FormTextInput type="password" name="passwordRepeat" showType='edit' placeholder="请再次输入密码"
                             onChange={this.handleInputChange} />
                     </FormGroup>,
@@ -196,7 +203,7 @@ class Login extends Component {
                 break;
             case 'password':
                 item = [
-                    <FormGroup key="password">
+                    <FormGroup key="password" style={style}>
                         <FormTextInput type="password" name="passwordRepeat" showType='edit' placeholder="请再次输入密码"
                             onChange={this.handleInputChange} />
                     </FormGroup>,
@@ -216,13 +223,16 @@ class Login extends Component {
         return (
             <div className="login">
                 <div className="login-box">
-                    <FormGroup>
+                    <FormGroup style={style}>
                         <Select
                             defaultValue={this.params.mobileArea}
                             name="mobileArea" placeholder="区号"
                             options={selectOptions}
                             onChange={this.handleInputChange}
                             style={{ display: 'inline-block', width: '30%' }} />
+                        {/* <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleInputChange}>
+                            <Option value="+86">中国大陆</Option>
+                        </Select> */}
                         <FormTextInput
                             name="mobile" showType='edit' placeholder="请输入手机号"
                             style={{ marginTop: '15px', display: 'inline-block', width: '70%' }}
@@ -230,7 +240,7 @@ class Login extends Component {
                     </FormGroup>
                     {
                         this.state.type === 'register' || this.state.type === 'password' || this.state.type === 'bind' ?
-                            <FormGroup>
+                            <FormGroup style={style}>
                                 <FormTextInput name="code" showType='edit' placeholder="请输入验证码"
                                     onChange={this.handleInputChange} />
                                 <Button
@@ -242,7 +252,7 @@ class Login extends Component {
                     }
                     {
                         this.state.type !== 'bind' ?
-                            <FormGroup>
+                            <FormGroup style={style}>
                                 <FormTextInput type="password" name="password" showType='edit' placeholder="请输入密码"
                                     onChange={this.handleInputChange} />
                             </FormGroup> : null

@@ -31,7 +31,9 @@ const promiseMiddleware = store => next => action => {
                 else {
                     action.error = true;
                     action.payload = res;
-                    message.error(res.msg);
+                    if (res.statusCode !== "701") {
+                        message.error(res.msg);
+                    }
                     store.dispatch({ type: ASYNC_END });
                     store.dispatch(action);
                 }

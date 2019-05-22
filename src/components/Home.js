@@ -22,7 +22,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.curPage = 1;
-        this.perPage = 10;
+        this.perPage = 30;
         this.state = {
             showSort: false,
         }
@@ -222,7 +222,7 @@ class Station extends React.Component {
                 <div className="main-content">
                     <span className="station-name">{starInfo.name}</span>
                     <div className="station-memo">
-                        <span className="station-memo-title">概述</span>
+                        {/* <span className="station-memo-title">概述</span> */}
                         <pre>{starInfo.memo}</pre>
                     </div>
                     <div className="series-container">
@@ -243,7 +243,12 @@ class Station extends React.Component {
                                 </div>
                             ))}
                         </div>
-                        <div className="series-options" onClick={this.toChannelOption.bind(this)}>...</div>
+                        {
+                            content.editRight ?
+                                <div className="series-options" onClick={this.toChannelOption.bind(this)}></div> :
+                                null
+                        }
+
                     </div>
                     <StoryList />
                 </div>
@@ -305,6 +310,7 @@ class Station extends React.Component {
 
         // 切换微站
         if (starInfo._key !== prevStarInfo._key) {
+            document.title = starInfo.name ? starInfo.name : '时光宝库';
             // 获取微站全部故事
             if (seriesInfo[0]) {
                 getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);

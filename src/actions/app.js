@@ -35,8 +35,8 @@ export function getStationList() {
     return { type: GET_STATION_LIST, payload: request }
 }
 
-export function createStation(name, type, memo, isMainStar, cover, size) {
-    let request = api.station.createStation(name, type, memo, isMainStar, cover, size);
+export function createStation(name, type, memo, open, isMainStar, cover, logo, size) {
+    let request = api.station.createStation(name, type, memo, open, isMainStar, cover, logo, size);
     return { type: CREATE_STATION, payload: request }
 }
 
@@ -45,8 +45,8 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, type, memo, isMainStar, cover, size) {
-    let request = api.station.editStation(key, name, type, memo, isMainStar, cover, size);
+export function editStation(key, name, type, memo, open, isMainStar, cover, logo, size) {
+    let request = api.station.editStation(key, name, type, memo, open, isMainStar, cover, logo, size);
     return { type: EDIT_STATION, stationKey: key, payload: request }
 }
 

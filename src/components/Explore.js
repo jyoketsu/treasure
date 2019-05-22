@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import './Explore.css';
 
 class Explore extends Component {
     render() {
         return (
-            <div>Explore</div>
+            <div className="explore">功能开发中，敬请期待！</div>
         );
     };
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './EditStory.css';
 import { withRouter } from "react-router-dom";
-import { Button, Tooltip, message, Select } from 'antd';
+import { Button, Tooltip, message, Select, Input } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
@@ -32,6 +32,7 @@ class EditStory extends Component {
         this.deleteContent = this.deleteContent.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.selectChannel = this.selectChannel.bind(this);
+        this.selectAddress = this.selectAddress.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleCommit = this.handleCommit.bind(this);
     }
@@ -194,10 +195,18 @@ class EditStory extends Component {
         this.setState({ story: changedStory });
     }
 
+    selectAddress(value) {
+        const { story = {} } = this.state;
+        let changedStory = JSON.parse(JSON.stringify(story));
+        changedStory.address = value;
+        this.setState({ story: changedStory });
+    }
+
     render() {
         const { story = {} } = this.state;
-        const { cover, title = '', series = {}, richContent = [] } = story;
+        const { cover, title = '', series = {}, richContent = [], address } = story;
         const { seriesInfo } = this.props;
+        const addressList = ["北京赛区", "天津赛区", "河北赛区", "山西赛区", "内蒙古赛区", "辽宁赛区", "吉林赛区", "黑龙江赛区", "上海赛区", "江苏赛区", "浙江赛区", "安徽赛区", "福建赛区", "江西赛区", "山东赛区", "河南赛区", "湖北赛区", "湖南赛区", "广东赛区", "广西赛区", "四川赛区", "重庆赛区", "贵州赛区", "云南赛区", "陕西赛区", "甘肃赛区", "新疆赛区", "海南赛区", "宁夏赛区", "海外赛区"];
         let centent = richContent.map((content, index) => {
             let result = null;
 
@@ -209,10 +218,10 @@ class EditStory extends Component {
                     result = <TextTitle index={index} memo={content.memo} handleInput={this.handleInput} />;
                     break;
                 case 'image':
-                    result = <StoryImage url={content.url} memo={content.memo} />
+                    result = <StoryImage index={index} url={content.url} memo={content.memo} handleInput={this.handleInput} />
                     break;
                 case 'video':
-                    result = <StoryVideo url={content.url} memo={content.memo} />
+                    result = <StoryVideo index={index} url={content.url} memo={content.memo} />
                     break;
                 default: break;
             }
@@ -252,6 +261,16 @@ class EditStory extends Component {
                     </div>
                 </div>
                 <div className="main-content ">
+                    <div className="edit-group">
+                        <label>请选择赛区：</label>
+                        <Select defaultValue={address} style={{ width: 120 }} onChange={this.selectAddress}>
+                            {
+                                addressList.map((address, index) => (
+                                    <Option key={index} index={index} value={address}>{address}</Option>
+                                ))
+                            }
+                        </Select>
+                    </div>
                     <StoryContentEditBox
                         className="story-title-box"
                         hideDeleteButton={true}
@@ -296,13 +315,18 @@ class EditStory extends Component {
             this.scrollDown = false;
             this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
         }
-        const { storyList, history, loading } = this.props;
-        if (storyList.length !== prevProps.storyList.length) {
-            message.success('创建成功！');
-            history.goBack();
-        } else if (!loading && prevProps.loading) {
-            message.success('编辑成功！');
-            history.goBack();
+        const { history, loading } = this.props;
+        const { story } = this.state;
+        if (!loading && prevProps.loading) {
+            if (story._key) {
+                message.success('编辑成功！');
+                history.goBack();
+            } else {
+                message.success('创建成功！');
+                // history.push('/');
+                history.goBack();
+            }
+
         }
     }
 }
@@ -455,11 +479,11 @@ class StoryText extends Component {
 
 class StoryImage extends Component {
     render() {
-        const { url, memo } = this.props;
+        const { url, memo, handleInput, index } = this.props;
         return (
             <div className="story-imageGroup">
-                <span>{memo}</span>
                 <div className="story-image-box"><img className="story-image" src={`${url}?imageView2/2/w/960/`} alt="story" /></div>
+                <Input placeholder="请输入图片描述" value={memo} onChange={handleInput.bind(this, 'richContent', index)} />
             </div>
         );
     }

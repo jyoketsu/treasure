@@ -1,5 +1,5 @@
-// const APIURL = 'https://home.qingtime.cn/home';
-const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
+const APIURL = 'https://baokudata.qingtime.cn/sgbh/';
+// const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
 
 let token = null;
 
@@ -224,14 +224,16 @@ const station = {
      * @param {String} cover 
      * @param {Object} size 
      */
-    createStation(name, type, memo, isMainStar, cover, size) {
+    createStation(name, type, memo, open, isMainStar, cover, logo, size) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
             name: name,
             type: type,
             memo: memo,
+            open: open,
             isMainStar: isMainStar,
             cover: cover,
+            logo: logo,
             size: size,
         });
     },
@@ -243,15 +245,17 @@ const station = {
         });
     },
 
-    editStation(key, name, type, memo, isMainStar, cover, size) {
+    editStation(key, name, type, memo, open, isMainStar, cover, logo, size) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
             name: name,
             type: type,
             memo: memo,
+            open: open,
             isMainStar: isMainStar,
             cover: cover,
+            logo: logo,
             size: size,
         });
     },

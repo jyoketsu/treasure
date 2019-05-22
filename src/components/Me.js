@@ -11,18 +11,22 @@ const mapStateToProps = state => ({
 class Me extends Component {
     render() {
         const { user } = this.props;
+        const avatar = user && user.profile && user.profile.avatar ?
+            `${user.profile.avatar}?imageView2/1/w/80/h/80` :
+            '/image/icon/avatar.svg';
         return (
-            <div className="main-content account">
+            <div className="account">
                 <div className="user-info-card">
-                    <div className="user-avatar"></div>
-                    <div className="user-info">
-                        <span>手机号：{user ? user.mobile : ''}</span>
-                    </div>
+                    <div className="user-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+                    <div>手机号：{user ? user.mobile : ''}</div>
                 </div>
-                <div className="my-content">
-                    <Link to="/myStation">我的文章</Link>
-                    <Link to="/myStation">我的微站</Link>
-                    <Link to="/myStation">我的收藏</Link>
+                <div className="main-content">
+                    <div className="my-content">
+                        {/* <Link to="/myStation">我的文章</Link> */}
+                        <Link to="/myStation">我的微站</Link>
+                        {/* <Link to="/myStation">我的收藏</Link> */}
+                        <div>功能开发中，敬请期待！</div>
+                    </div>
                 </div>
             </div>
         );

@@ -8,11 +8,21 @@
     justify-content: center;
     align-items: center;
     background: #fff;
+    background-image: url(/image/background/login-bk.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .login-box {
     padding: 50px;
     width: 420px;
+    background: #FFFFFF;
+    box-shadow: 0 0 4px 0 rgba(71, 110, 87, 0.32);
+}
+
+.login-box>.checkbox {
+    margin: 15px 0;
 }
 
 .tree-icon {
@@ -76,7 +86,8 @@
     .login-box {
         width: unset;
         height: unset;
-        background: unset;
+        /* background: unset; */
+        margin: 0 25px;
     }
 
     .thirdLogin-container {

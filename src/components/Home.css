@@ -7,25 +7,25 @@
     height: 46px;
     font-size: 16px;
     letter-spacing: 2px;
-    font-size: 16px;
     color: #333;
     line-height: 46px;
     padding: 0 80px;
     border-bottom: 1px solid #ddd;
-    background: radial-gradient(at center top, #7B8492, #292D42);
-    color: white;
+    background: #F5F5F5;
+    font-size: 18px;
+    color: #4A4A4A;
     overflow: auto;
     box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .station-item {
-    margin-left: 14px;
-    max-width: 100px;
-    overflow: hidden;
+    padding: 0 14px;
     white-space: nowrap;
-    text-overflow: ellipsis;
     color: #7B8492;
-    display: inline;
+    height: 100%;
     /* 火狐 隐藏滚动条 */
     overflow: -moz-scrollbars-none;
 }
@@ -36,7 +36,8 @@
 }
 
 .station-item.selected {
-    color: #fff;
+    background: #EDEDED;
+    font-weight: bolder;
 }
 
 .station-item:hover {
@@ -57,15 +58,17 @@
 }
 
 .station-name {
+    text-align: center;
     display: block;
-    height: 60px;
-    line-height: 60px;
-    font-size: 32px;
-    margin-bottom: 25px;
-    border-bottom: 1px solid #ddd;
+    height: 80px;
+    line-height: 80px;
+    font-size: 34px;
+    margin: 25px;
+    /* border-bottom: 1px solid #ddd; */
 }
 
 .station-memo-title {
+    text-align: center;
     display: block;
     font-size: 24px;
     margin-bottom: 10px;
@@ -74,8 +77,10 @@
 .operation-panel {
     position: fixed;
     bottom: 50px;
-    right: 20px;
-    width: 70px;
+    right: 17px;
+    width: 90px;
+    background: #FFFFFF;
+    border: 1px solid #DFDFDF;
 }
 
 .operation-panel>div:hover {
@@ -91,6 +96,7 @@
 }
 
 .station-memo>pre {
+    text-align: center !important;
     white-space: pre-wrap;
     word-wrap: break-word;
     border: 0;
@@ -98,16 +104,16 @@
     word-break: break-all;
     text-align: left;
     font-size: 14px;
-    line-height: 1.42857143;
+    line-height: 2;
     color: #333;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #ddd;
 }
 
 .operation-panel>div {
-    width: 70px;
-    height: 70px;
-    border-radius: 35px;
-    /* background-color: rgba(85, 66, 54, 0.8); */
+    width: 90px;
+    height: 90px;
     color: #fff;
     margin: 15px 0;
     text-align: center;
@@ -115,18 +121,19 @@
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center;
+    border-bottom: 1px solid #DFDFDF;
 }
 
-.operation-panel>div:hover {
-    background-color: rgba(85, 66, 54, 0.8);
+.operation-panel>div:last-child {
+    border-bottom: unset;
 }
 
 .sort-story {
-    background-image: url(/image/icon/sortStory.svg);
+    background-image: url(/image/icon/sortStory.png);
 }
 
 .add-story {
-    background-image: url(/image/icon/addStory.svg);
+    background-image: url(/image/icon/addStory.png);
 }
 
 .series-container {
@@ -140,6 +147,9 @@
     line-height: 46px;
     flex: 1;
     overflow: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     /* 火狐 隐藏滚动条 */
     overflow: -moz-scrollbars-none;
 }
@@ -152,8 +162,11 @@
 .series-options {
     width: 46px;
     height: 46px;
-    background-color: #ddd;
     text-align: center;
+    background-image: url(/image/icon/Group@1x.svg);
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .series-options:hover {
@@ -161,9 +174,8 @@
 }
 
 .channel-item {
-    border-right: 1px solid #ddd;
     padding: 0 15px;
-    overflow: hidden;
+    /* overflow: hidden; */
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #7B8492;
@@ -174,16 +186,8 @@
     cursor: pointer;
 }
 
-.channel-item:last-child {
-    border-right: unset;
-}
-
-.channel-item:first-child {
-    padding-left: 0;
-}
-
 .channel-item.selected {
-    color: #3a94cc;
+    border-bottom: 3px solid #E60012;
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */
@@ -192,8 +196,16 @@
         padding: 0 20px;
     }
 
-    .station-item {
-        width: 100px;
-        max-width: unset;
+    .series-tabs {
+        height: 55px;
+    }
+
+    .operation-panel {
+        width: 50px;
+    }
+
+    .operation-panel>div {
+        width: 50px;
+        height: 50px;
     }
 }

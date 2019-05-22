@@ -94,3 +94,8 @@
     background-color: rgba(0, 0, 0, 0.5);
     font-family: arial;
 }
+
+.image-memo {
+    text-align: center;
+    font-size: 16px;
+}

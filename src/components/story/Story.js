@@ -7,7 +7,8 @@ import { getStoryDetail, clearStoryDetail, updateExif, } from '../../actions/app
 
 const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
-    story: state.story.story
+    story: state.story.story,
+    nowStationKey: state.station.nowStationKey,
 });
 
 class Story extends Component {
@@ -27,8 +28,9 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId } = this.props;
-        const { userKey, cover, title, creator = {}, richContent = [] } = story;
+        const { story, userId, nowStationKey } = this.props;
+        const { userKey, cover, title, creator = {}, richContent = [], address } = story;
+        let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/60/h/60` : '/image/icon/avatar.svg';
         return (
             <div className="story-container"
             >
@@ -38,15 +40,16 @@ class Story extends Component {
                         backgroundImage: `url(${cover}?imageView2/2/w/960/)`
                     }}>
                     {
-                        userId === userKey ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
+                        userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
                 </div>
                 <div className="main-content">
                     <div className="story-avatar">
-                        <i style={{ backgroundImage: `url(${creator.avatar}?imageView2/1/w/60/h/60)` }}></i>
+                        <i style={{ backgroundImage: `url(${avatar})` }}></i>
                         <span>{creator.name || `手机号${creator.mobile}的用户`}</span>
                     </div>
                     <div className="story-title">{title}</div>
+                    <div className="edit-group">赛区：{address}</div>
                     {
                         richContent.map((content, index) => {
                             const { url, memo } = content;
@@ -62,7 +65,7 @@ class Story extends Component {
                                 case 'image':
                                     result =
                                         <div className="story-imageGroup">
-                                            <span>{memo}</span>
+                                            <div className="image-memo">{memo}</div>
                                             <div className="story-image-box">
                                                 <img
                                                     className="story-image"

@@ -14,10 +14,10 @@
 }
 
 .menu-logo {
-    width: 50px !important;
+    width: 260px !important;
     height: 100%;
     /* background-image: url(/image/icon/logo.svg); */
-    background-size: 50%;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -72,7 +72,8 @@
         border-top: 1px solid #ddd;
     }
 
-    .menu-logo,.menu-space {
+    .menu-logo,
+    .menu-space {
         display: none;
     }
 }

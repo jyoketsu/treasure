@@ -5,4 +5,6 @@
     bottom: 0;
     left: 0;
     background: #fff;
+    line-height: 40px;
+    overflow: auto;
 }

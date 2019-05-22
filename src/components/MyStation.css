@@ -12,9 +12,12 @@
     line-height: 46px;
     padding: 0 80px;
     border-bottom: 1px solid #ddd;
-    background: radial-gradient(at center top, #7B8492, #292D42);
+    background: #F5F5F5;
     color: white;
-    font-size: 16px;
+    font-size: 18px;
+    color: #4A4A4A;
+    letter-spacing: 0.56px;
+    margin-bottom: 15px;
 }
 
 .tabel-actions>span:hover {

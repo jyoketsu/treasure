@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './EditStation.css';
 import util from '../services/Util';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Checkbox, } from 'antd';
 import UploadStationCover from './common/UploadCover';
 
 import { connect } from 'react-redux';
 
-import { editStation } from '../actions/app';
+import { editStation, createStation } from '../actions/app';
 
 const { TextArea } = Input;
 
@@ -30,6 +30,10 @@ const CustomizedForm = Form.create({
                 ...props.memo,
                 value: props.memo.value,
             }),
+            open: Form.createFormField({
+                ...props.open,
+                value: props.open.value,
+            }),
         };
     },
 
@@ -52,6 +56,12 @@ const CustomizedForm = Form.create({
                 })(<TextArea rows={6} />)}
             </Form.Item>
             <Form.Item>
+                {getFieldDecorator('open', {
+                    valuePropName: 'checked',
+                    initialValue: false,
+                })(<Checkbox>公开微站</Checkbox>)}
+            </Form.Item>
+            <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     保存
                 </Button>
@@ -64,7 +74,7 @@ class EditStation extends Component {
     constructor(props) {
         super(props);
         const { location, stationList } = props;
-        let stationKey = util.common.getSearchParamValue(location.search, 'key');
+        let stationKey = location ? util.common.getSearchParamValue(location.search, 'key') : null;
         let stationInfo = null;
         for (let i = 0; i < stationList.length; i++) {
             if (stationList[i].starKey === stationKey) {
@@ -76,6 +86,7 @@ class EditStation extends Component {
         this.state = {
             starKey: stationInfo ? stationInfo.starKey : '',
             cover: stationInfo ? stationInfo.cover : '',
+            logo: stationInfo ? stationInfo.logo : '',
             size: stationInfo ? stationInfo.size : '',
             type: stationInfo ? stationInfo.type : '',
             isMainStar: stationInfo ? stationInfo.isMainStar : '',
@@ -86,14 +97,17 @@ class EditStation extends Component {
                 memo: {
                     value: stationInfo ? stationInfo.memo : '',
                 },
+                open: {
+                    value: stationInfo ? stationInfo.open : 0,
+                },
             },
         }
         this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
     }
 
-    uploadAvatarCallback(imageUrl) {
+    uploadAvatarCallback(imageUrl, columnName) {
         this.setState({
-            cover: imageUrl[0]
+            [columnName]: imageUrl[0]
         });
     }
 
@@ -105,25 +119,37 @@ class EditStation extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { editStation } = this.props;
-        const { fields, starKey, type, isMainStar, cover } = this.state;
+        const { editStation, createStation, } = this.props;
+        const { fields, starKey, type, isMainStar, cover, logo, } = this.state;
         if (!cover) {
             message.error('请上传封面！');
             return;
         }
         let size = await util.common.getImageInfo(cover);
-        editStation(starKey, fields.name.value, type, fields.memo.value, isMainStar, cover, size);
+        if (starKey) {
+            editStation(starKey, fields.name.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
+        } else {
+            createStation(fields.name.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
+        }
     }
 
     render() {
-        const { cover, fields } = this.state;
+        const { cover, logo, fields, starKey, } = this.state;
 
         return (
             <div className="edit-station">
-                <div className="my-station-head">编辑微站</div>
+                <div className="my-station-head">{starKey ? '编辑' : '创建'}微站</div>
                 <div className="main-content">
+                    <label className='ant-form-item-required'>微站logo：</label>
                     <UploadStationCover
                         uploadAvatarCallback={this.uploadAvatarCallback}
+                        extParam={'logo'}
+                        coverUrl={logo}
+                    />
+                    <label className='ant-form-item-required'>微站封面图：</label>
+                    <UploadStationCover
+                        uploadAvatarCallback={this.uploadAvatarCallback}
+                        extParam={'cover'}
                         coverUrl={cover}
                     />
                     <CustomizedForm
@@ -147,5 +173,5 @@ class EditStation extends Component {
 
 export default connect(
     mapStateToProps,
-    { editStation },
+    { editStation, createStation },
 )(Form.create({ name: 'create-station' })(EditStation));

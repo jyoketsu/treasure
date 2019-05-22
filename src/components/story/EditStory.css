@@ -155,6 +155,22 @@
     position: absolute;
     right: 15px;
     top: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+}
+
+.edit-group {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.story-imageGroup>input {
+    border: unset;
+}
+
+.story-imageGroup>input:focus {
+    border-radius: 0;
 }
 
 @media screen and (max-width:768px) {

@@ -2,6 +2,7 @@
     position: relative;
     width: 100%;
     text-align: center;
+    margin-bottom: 15px;
 }
 
 .text-input {
@@ -13,27 +14,23 @@
 }
 
 .my-button {
-    border-radius: 0;
-    background-color: #5dac06;
-    color: #FFFFFF;
+    background: #4A90E2;
+    box-shadow: inset 0 -2px 0 0 #2973CB;
     border-radius: 3px;
-    font-size: 16px;
-    padding: unset !important;
-    box-shadow: inset rgba(0, 0, 0, 0.2) 0 -2px;
-    letter-spacing: 0.5px;
-    border: unset;
+    color: #FFFFFF;
 }
 
 .my-button:hover {
-    background-color: #66BF06;
+    background-color: #2973CB;
     color: #FFFFFF;
 }
-.my-button[disabled]{
+
+.my-button[disabled] {
     opacity: .65;
 }
 
 .my-button[disabled]:hover {
-    background-color: #66BF06;
+    background-color: #2973CB;
     color: #FFFFFF;
     cursor: not-allowed;
 }
@@ -79,8 +76,8 @@
     position: relative;
     height: 40px;
     line-height: 37px;
-    border-bottom: 1px solid #DDDDDD;
-    margin: 5px 0;
+    /* border-bottom: 1px solid #DDDDDD; */
+    /* margin: 5px 0; */
 }
 
 .my-text-input>label {
@@ -130,7 +127,7 @@
 
 .my-select {
     position: relative;
-    border-bottom: 1px solid #DDDDDD;
+    /* border-bottom: 1px solid #DDDDDD; */
     z-index: 2;
 }
 
@@ -178,7 +175,7 @@
 .select-options {
     position: absolute;
     background: #FFFFFF;
-    border: 1px solid #5dac06;
+    border: 1px solid #DDDDDD;
     z-index: 2;
     width: 100%;
     max-height: 376px;
