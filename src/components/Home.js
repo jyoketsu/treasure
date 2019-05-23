@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Home.css';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
+import util from '../services/Util';
 import { Modal, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
@@ -90,7 +91,9 @@ class Home extends Component {
     }
 
     render() {
-        const { changeStation,
+        const {
+            location,
+            changeStation,
             getStoryList,
             stationList,
             nowStationKey,
@@ -100,28 +103,35 @@ class Home extends Component {
             sortOrder,
             nowChannelKey } = this.props;
         const { showSort } = this.state;
+        let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
+
         return (
-            <div className="homepage" ref={node => this.homepage = node} onWheel={this.handleMouseWheel}>
-                <div className="station-list">
-                    <div
-                        className={`station-item ${nowStationKey === 'all' ? 'selected' : ''}`}
-                        onClick={changeStation.bind(this, 'all')}
-                    >
-                        全部
-                    </div>
-                    {
-                        stationList.map((station, index) => (
+            <div className="app-content homepage" ref={node => this.homepage = node} onWheel={this.handleMouseWheel}>
+                {
+                    // 微站列表
+                    !targetStationKey ?
+                        <div className="station-list">
                             <div
-                                key={index}
-                                className={`station-item ${nowStationKey === station.starKey ? 'selected' : ''}`}
-                                onClick={changeStation.bind(this, station.starKey)}
+                                className={`station-item ${nowStationKey === 'all' ? 'selected' : ''}`}
+                                onClick={changeStation.bind(this, 'all')}
                             >
-                                {station.starName}
-                            </div>
-                        ))
-                    }
-                    {/* <div className={`station-item`}>查看所有</div> */}
-                </div>
+                                全部
+                        </div>
+                            {
+                                stationList.map((station, index) => (
+                                    <div
+                                        key={index}
+                                        className={`station-item ${nowStationKey === station.starKey ? 'selected' : ''}`}
+                                        onClick={changeStation.bind(this, station.starKey)}
+                                    >
+                                        {station.starName}
+                                    </div>
+                                ))
+                            }
+                            {/* <div className={`station-item`}>查看所有</div> */}
+                        </div> : null
+                }
+
                 {
                     nowStationKey !== 'all' ?
                         <Station
@@ -150,7 +160,9 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        const { getStationList, stationList, nowStationKey, getStoryList } = this.props;
+        const { getStationList, stationList, nowStationKey, getStoryList, location, changeStation, } = this.props;
+        let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
+
         if (stationList.length === 0) {
             getStationList();
         }
@@ -158,9 +170,13 @@ class Home extends Component {
             let scrollTop = sessionStorage.getItem('home-scroll');
             this.homepage.scrollTop = scrollTop;
         }
-        if (nowStationKey === 'all') {
+        if (!targetStationKey && nowStationKey === 'all') {
             // 订阅的所有微站的频道故事
             getStoryList(4, null, null, 1, 1, 1, this.perPage);
+        }
+
+        if (targetStationKey) {
+            changeStation(targetStationKey);
         }
     }
 
@@ -257,7 +273,7 @@ class Station extends React.Component {
                     <Tooltip title="排序" placement="left">
                         <div className="sort-story" onClick={switchSortModal}></div>
                     </Tooltip>
-                    <Tooltip title="添加故事" placement="left">
+                    <Tooltip title="投稿" placement="left">
                         <div className="add-story" onClick={this.handleClickAdd.bind(this)}></div>
                     </Tooltip>
                 </div>

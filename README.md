@@ -22,3 +22,11 @@ npm run build
 ```
 sh commit.sh "提交说明"
 ```
+### npm install 出错
+尝试执行以下命令
+删除package-lock.json
+```
+sudo chown -R $USER:$GROUP ~/.npm
+sudo chown -R $USER:$GROUP ~/.config
+npm cache clean --force
+```

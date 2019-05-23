@@ -160,7 +160,7 @@ class Login extends Component {
     render() {
         const selectOptions = [{
             value: '+86',
-            text: '中国大陆'
+            text: '中国'
         },
             // {
             //     value: '+81',
@@ -309,7 +309,10 @@ class Login extends Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.user) {
-            nextProps.history.push('/');
+            nextProps.history.push({
+                pathname: '/',
+                search: nextProps.location.search
+            });
             return null;
         }
         return null;

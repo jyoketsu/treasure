@@ -33,6 +33,8 @@ const promiseMiddleware = store => next => action => {
                     action.payload = res;
                     if (res.statusCode !== "701") {
                         message.error(res.msg);
+                    } else {
+                        window.location.href = `/login${window.location.search}`;
                     }
                     store.dispatch({ type: ASYNC_END });
                     store.dispatch(action);

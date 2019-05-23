@@ -15,9 +15,10 @@ class Header extends Component {
     render() {
         const { location, nowStationKey, stationMap } = this.props;
         let pathname = location.pathname;
+        let search = location.search;
         const starInfo = stationMap[nowStationKey] ? stationMap[nowStationKey].starInfo : null;
         return (
-            <ul className="app-menu">
+            <ul className="app-menu" ref={elem => this.nv = elem}>
                 <li className={`menu-logo`} style={{
                     backgroundImage: `url(${starInfo && starInfo.logo !== null ? starInfo.logo : '/image/background/logo.png'})`
                 }}>
@@ -25,26 +26,32 @@ class Header extends Component {
                 </li>
                 <li className="menu-space"></li>
                 <li className={pathname === '/' ? 'active' : ''}>
-                    <Link to="/">订阅</Link>
+                    <Link to={`/${search}`}>订阅</Link>
                 </li>
                 <li className={pathname === '/explore' ? 'active' : ''}>
-                    <Link to="/explore">探索</Link>
+                    <Link to={`/explore${search}`}>探索</Link>
                 </li>
-                <li className={pathname === '/editStation' ? 'active' : ''}>
-                    <Link to="/editStation">+</Link>
-                </li>
+                {!search ?
+                    <li className={pathname === '/editStation' ? 'active' : ''}>
+                        <Link to="/editStation">+</Link>
+                    </li> : null
+                }
                 <li className={pathname === '/message' ? 'active' : ''}>
-                    <Link to="/message">消息</Link>
+                    <Link to={`/message${search}`}>消息</Link>
                 </li>
                 <li className={pathname === '/me' ? 'active' : ''}>
-                    <Link to="/me">我</Link>
+                    <Link to={`/me${search}`}>我</Link>
                 </li>
             </ul>
         );
     };
 
     componentDidMount() {
-        const { history, getUserInfo } = this.props;
+        this.nv.addEventListener('touchmove', function (e) {
+            e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+        }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
+
+        const { history, getUserInfo, location } = this.props;
         const SEARCH_STR = window.location.search;
         let token = null;
         let query_token = null;
@@ -56,7 +63,7 @@ class Header extends Component {
         if (token) {
             getUserInfo(token, history);
         } else {
-            history.push('/login');
+            history.push(`/login${location.search}`);
         }
     }
 

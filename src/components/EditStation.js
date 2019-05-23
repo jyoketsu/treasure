@@ -140,13 +140,13 @@ class EditStation extends Component {
             <div className="edit-station">
                 <div className="my-station-head">{starKey ? '编辑' : '创建'}微站</div>
                 <div className="main-content">
-                    <label className='ant-form-item-required'>微站logo：</label>
+                    <label className='ant-form-item-required'>微站logo：（推荐分辨率：260*70）</label>
                     <UploadStationCover
                         uploadAvatarCallback={this.uploadAvatarCallback}
                         extParam={'logo'}
                         coverUrl={logo}
                     />
-                    <label className='ant-form-item-required'>微站封面图：</label>
+                    <label className='ant-form-item-required'>微站封面图：（推荐分辨率：1920*380）</label>
                     <UploadStationCover
                         uploadAvatarCallback={this.uploadAvatarCallback}
                         extParam={'cover'}

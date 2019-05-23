@@ -15,7 +15,7 @@ class Me extends Component {
             `${user.profile.avatar}?imageView2/1/w/80/h/80` :
             '/image/icon/avatar.svg';
         return (
-            <div className="account">
+            <div className="app-content account">
                 <div className="user-info-card">
                     <div className="user-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
                     <div>手机号：{user ? user.mobile : ''}</div>

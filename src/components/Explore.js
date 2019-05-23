@@ -4,7 +4,7 @@ import './Explore.css';
 class Explore extends Component {
     render() {
         return (
-            <div className="explore">功能开发中，敬请期待！</div>
+            <div className="app-content explore">功能开发中，敬请期待！</div>
         );
     };
 }
