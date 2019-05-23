@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './MyStation.css';
 import { Table, Divider, Tag, Modal, message } from 'antd';
-
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
-import { getStationList, deleteStation } from '../actions/app';
+import { getStationList, deleteStation } from '../../actions/app';
 
 const { Column } = Table;
 const confirm = Modal.confirm;
@@ -51,35 +51,32 @@ class MyStation extends Component {
         }
         return (
             <div className="my-station">
-                <div className="my-station-head">我的微站</div>
-                <div className="main-content">
-                    <Table dataSource={data} rowKey="starKey" pagination={false}>
-                        <Column title="微站" dataIndex="starName" />
-                        <Column
-                            title="频道"
-                            dataIndex="seriesInfo"
-                            render={series => (
-                                <span>
-                                    {series.map(serie => (
-                                        <Tag color="blue" key={serie._key}>
-                                            {serie.name}
-                                        </Tag>
-                                    ))}
-                                </span>
-                            )}
-                        />
-                        <Column
-                            title="操作"
-                            render={(text, record) => (
-                                <span className="tabel-actions">
-                                    <span onClick={this.toEditStation.bind(this, record.starKey)}>编辑</span>
-                                    <Divider type="vertical" />
-                                    <span onClick={this.showDeleteConfirm.bind(this, record.starKey, record.starName)}>删除</span>
-                                </span>
-                            )}
-                        />
-                    </Table>
-                </div>
+                <Table dataSource={data} rowKey="starKey" pagination={false}>
+                    <Column title="微站" dataIndex="starName" />
+                    <Column
+                        title="频道"
+                        dataIndex="seriesInfo"
+                        render={series => (
+                            <span>
+                                {series.map(serie => (
+                                    <Tag color="blue" key={serie._key}>
+                                        {serie.name}
+                                    </Tag>
+                                ))}
+                            </span>
+                        )}
+                    />
+                    <Column
+                        title="操作"
+                        render={(text, record) => (
+                            <span className="tabel-actions">
+                                <span onClick={this.toEditStation.bind(this, record.starKey)}>编辑</span>
+                                <Divider type="vertical" />
+                                <span onClick={this.showDeleteConfirm.bind(this, record.starKey, record.starName)}>删除</span>
+                            </span>
+                        )}
+                    />
+                </Table>
             </div>
         );
     };
@@ -100,7 +97,7 @@ class MyStation extends Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     { getStationList, deleteStation },
-)(MyStation);
+)(MyStation));

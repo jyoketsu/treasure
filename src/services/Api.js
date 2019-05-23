@@ -204,6 +204,13 @@ const auth = {
     getUserFullInfo(token) {
         return requests.get(APIURL + '/account/userinfo', { 'token': token });
     },
+
+    editAccount(profile) {
+        return requests.patch(APIURL + '/account', {
+            token: token,
+            profile: profile,
+        });
+    }
 }
 
 const station = {

@@ -64,7 +64,6 @@
 .main-content {
     position: relative;
     width: 830px;
-    margin: auto;
 }
 
 @keyframes App-logo-spin {

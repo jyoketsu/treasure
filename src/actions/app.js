@@ -10,6 +10,7 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const BIND_MOBILE = 'BIND_MOBILE';
+export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
 
 export function logout(history) {
     history.push('/home');
@@ -20,6 +21,11 @@ export function getUserInfo(token, history) {
     api.setToken(token);
     let request = api.auth.getUserFullInfo(token);
     return { type: GET_USER_INFO, history: history, payload: request }
+}
+
+export function editAccount(profile) {
+    let request = api.auth.editAccount(profile);
+    return { type: EDIT_ACCOUNT, payload: request }
 }
 
 // station

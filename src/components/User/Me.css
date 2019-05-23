@@ -7,7 +7,6 @@
 .user-info-card {
     width: 100%;
     height: 250px;
-    border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,6 +41,19 @@
 
 .user-info-card>div {
     margin: 5px 0;
+}
+
+.account .ant-tabs-tabpane {
+    background-color: #ffffff;
+}
+
+.account .ant-tabs-left-bar {
+    border-right: unset !important;
+    background-color: #ffffff;
+}
+
+.account .ant-table-thead>tr {
+    background: #ffffff;
 }
 
 @media screen and (max-width:768px) {}

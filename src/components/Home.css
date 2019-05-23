@@ -48,6 +48,12 @@
 }
 
 /* --------------------------------Station-home--------------------------------------------- */
+.station-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .station-cover {
     width: 100%;
     height: 380px;

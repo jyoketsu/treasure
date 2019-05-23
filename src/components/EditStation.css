@@ -7,4 +7,20 @@
     background: #fff;
     line-height: 40px;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.my-station-head {
+    width: 100%;
+    line-height: 46px;
+    padding: 0 80px;
+    border-bottom: 1px solid #ddd;
+    background: #F5F5F5;
+    color: white;
+    font-size: 18px;
+    color: #4A4A4A;
+    letter-spacing: 0.56px;
+    margin-bottom: 15px;
 }
