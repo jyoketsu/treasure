@@ -51,6 +51,7 @@ class MyStation extends Component {
         }
         return (
             <div className="my-station">
+                <StationCard />
                 <Table dataSource={data} rowKey="starKey" pagination={false}>
                     <Column title="微站" dataIndex="starName" />
                     <Column
@@ -94,6 +95,20 @@ class MyStation extends Component {
             message.success('删除成功！');
         }
 
+    }
+}
+
+class StationCard extends Component {
+    render() {
+        return (
+            <div className="station-card">
+                <div className="station-card-cover" style={{ backgroundImage: ` url("http://cdn-icare.qingtime.cn/003C4DA9.jpg?imageView2/2/w/375/")` }}></div>
+                <div class="station-card-title">【模板】</div>
+                <div class="station-card-info">
+                    信息
+                </div>
+            </div>
+        );
     }
 }
 

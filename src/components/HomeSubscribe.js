@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './HomeSubscribe.css';
 import StoryList from './story/StoryList';
+import util from '../services/Util';
 
 class HomeSubscribe extends Component {
     render() {
@@ -13,8 +14,13 @@ class HomeSubscribe extends Component {
         );
     };
 
-    componentDidMount() {
-        document.title = '时光宝库';
+    componentWillMount() {
+        let tarStationName = util.common.getSearchParamValue(window.location.search, 'station');
+        if (tarStationName) {
+            document.title = tarStationName;
+        } else {
+            document.title = '时光宝库';
+        }
     }
 }
 

@@ -86,6 +86,9 @@
     width: 90px;
     background: #FFFFFF;
     border: 1px solid #DFDFDF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .operation-panel>div:hover {
@@ -115,29 +118,36 @@
     padding-bottom: 40px;
 }
 
-.operation-panel>div {
+.story-tool {
     width: 90px;
     height: 90px;
-    color: #fff;
-    margin: 15px 0;
-    text-align: center;
-    line-height: 70px;
-    background-size: 50%;
+    border-bottom: 1px solid #DFDFDF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #4A90E2;
+}
+
+.story-tool>i {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border-bottom: 1px solid #DFDFDF;
+    margin-bottom: 5px;
 }
 
 .operation-panel>div:last-child {
     border-bottom: unset;
 }
 
-.sort-story {
-    background-image: url(/image/icon/sortStory.png);
+.sort-story>i {
+    background-image: url(/image/icon/sortStory.svg);
 }
 
-.add-story {
-    background-image: url(/image/icon/addStory.png);
+.add-story>i {
+    background-image: url(/image/icon/addStory.svg);
 }
 
 .series-container {

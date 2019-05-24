@@ -56,6 +56,10 @@ class EditStory extends Component {
             message.error('请至少上传一张图片！');
             return;
         }
+        if (story.pictureCount > 6) {
+            message.error('不能超过6张图片！');
+            return;
+        }
         // 编辑
         if (story._key) {
             story.key = story._key;

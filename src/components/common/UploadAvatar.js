@@ -4,13 +4,14 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import api from '../../services/Api';
 import util from '../../services/Util';
-import { message, Button, } from 'antd';
+import { message, Button, Spin, } from 'antd';
 import * as qiniu from 'qiniu-js';
 
 class UploadAvatar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showMask: false,
             imgUrl: props.imgUrl,
             uptoken: null,
         }
@@ -62,10 +63,16 @@ class UploadAvatar extends Component {
             next(res) {
             },
             error(err) {
+                that.setState({
+                    showMask: false
+                });
                 message.error('上传失败！');
             },
             complete(res) {
-                message.success('上传成功');
+                that.setState({
+                    showMask: false
+                });
+                // message.success('上传成功');
                 let url = domain + encodeURIComponent(res.key);
                 that.setState({
                     imgUrl: url
@@ -75,6 +82,9 @@ class UploadAvatar extends Component {
         }
         // 上传
         let observable = qiniu.upload(blob, `${util.common.guid(8, 16)}.${blob.type.split('/')[1]}`, uptoken, putExtra, config);
+        this.setState({
+            showMask: true
+        });
         // 上传开始
         observable.subscribe(observer);
     }
@@ -89,7 +99,7 @@ class UploadAvatar extends Component {
         let file = files[0];
 
         if (file.size > maxSize) {
-            message.error('文件太大！');
+            message.error(`请选择小于${maxSize / 1000000}MB的图片`);
             return;
         }
 
@@ -108,22 +118,29 @@ class UploadAvatar extends Component {
     }
 
     render() {
-        const { imgUrl } = this.state;
+        const { imgUrl, showMask, } = this.state;
         return (
             <div className="upload-avatar">
-                <Cropper
-                    ref='cropper'
-                    src={imgUrl}
-                    style={{ height: 300, width: '100%' }}
-                    aspectRatio={1 / 1}
-                    guides={false}
-                />
-
                 <i className={`file-upload-button`}>
                     <input type="file" accept=".jpg, .jpeg, .png" onChange={this.handleFileChange} />
                     请选择头像
                 </i>
-                <Button type="primary" onClick={this.cropUpload}>裁剪并上传</Button>
+                {
+                    imgUrl ?
+                        <Cropper
+                            ref='cropper'
+                            src={imgUrl}
+                            style={{ height: 300, width: '100%' }}
+                            aspectRatio={1 / 1}
+                            guides={false}
+                        /> : null
+                }
+                <Button onClick={this.cropUpload}>裁剪并上传</Button>
+                {showMask ?
+                    <div className="loading-mask">
+                        <Spin size="large" />
+                    </div> : null}
+
             </div>
         );
     };

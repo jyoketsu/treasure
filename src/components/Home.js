@@ -271,10 +271,16 @@ class Station extends React.Component {
                 <div className="operation-panel">
                     {/* <div className="share-station">分享</div> */}
                     <Tooltip title="排序" placement="left">
-                        <div className="sort-story" onClick={switchSortModal}></div>
+                        <div className="story-tool sort-story" onClick={switchSortModal}>
+                            <i></i>
+                            <span>作品排序</span>
+                        </div>
                     </Tooltip>
                     <Tooltip title="投稿" placement="left">
-                        <div className="add-story" onClick={this.handleClickAdd.bind(this)}></div>
+                        <div className="story-tool add-story" onClick={this.handleClickAdd.bind(this)}>
+                            <i></i>
+                            <span>上传作品</span>
+                        </div>
                     </Tooltip>
                 </div>
                 <Modal
@@ -326,7 +332,11 @@ class Station extends React.Component {
 
         // 切换微站
         if (starInfo._key !== prevStarInfo._key) {
-            document.title = starInfo.name ? starInfo.name : '时光宝库';
+            let tarStationName = util.common.getSearchParamValue(window.location.search, 'station');
+            if (!tarStationName) {
+                document.title = starInfo.name ? starInfo.name : '时光宝库'
+            }
+
             // 获取微站全部故事
             if (seriesInfo[0]) {
                 getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);

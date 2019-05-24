@@ -24,6 +24,7 @@ class Me extends Component {
                 <div className="user-info-card">
                     <div className="user-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
                     <div>{user ? (user.profile ? user.profile.nickName : user.mobile) : ''}</div>
+                    <div>{user ? (user.profile ? user.profile.address : '') : ''}</div>
                 </div>
                 <div className="main-content account-content">
                     <Tabs defaultActiveKey="profile" tabPosition={tabPosition}>

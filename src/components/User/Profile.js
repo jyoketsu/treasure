@@ -77,7 +77,7 @@ class Profile extends Component {
         e.preventDefault();
         const { fields, avatar } = this.state;
         const { user, editAccount } = this.props;
-        editAccount(Object.assign(user.profile && JSON.parse(JSON.stringify(user.profile)) || {}, {
+        editAccount(Object.assign((user.profile && JSON.parse(JSON.stringify(user.profile))) || {}, {
             avatar: avatar,
             nickName: fields.nickName.value,
             address: fields.address.value
@@ -113,7 +113,7 @@ class Profile extends Component {
         const { user, } = this.props;
         if (prevUser === null && user) {
             this.setState({
-                avatar: user ? user.profile.avatar : '',
+                avatar: (user && user.profile) ? user.profile.avatar : '',
                 fields: {
                     nickName: {
                         value: user && user.profile ? user.profile.nickName : '',

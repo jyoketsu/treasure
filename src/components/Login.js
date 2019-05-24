@@ -278,8 +278,10 @@ class Login extends Component {
     }
 
     async componentDidMount() {
-        const { history } = this.props;
+        const { history, location, } = this.props;
         let that = this;
+        let tarStationName = util.common.getSearchParamValue(location.search, 'station');
+        document.title = tarStationName ? tarStationName : '时光宝库';
 
         // QQ登录
         setTimeout(() => {
@@ -307,7 +309,7 @@ class Login extends Component {
         }, 1000);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps) {
         if (nextProps.user) {
             nextProps.history.push({
                 pathname: '/',

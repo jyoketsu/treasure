@@ -18,7 +18,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    top: -30px;
+    top: -40px;
 }
 
 .story-avatar>span {
@@ -28,12 +28,12 @@
 }
 
 .story-avatar>i {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    border-radius: 30px;
+    border-radius: 40px;
     border: 1px solid white;
     background-color: bisque;
 }

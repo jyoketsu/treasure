@@ -44,7 +44,7 @@ class Card extends Component {
                 </span>
                 {/* 故事信息 */}
                 <div className="story-card-info">
-                    <i className="story-card-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
+                    <i className="story-card-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')` }}></i>
                     <span className="story-card-name">{name}</span>
                     <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
                     {/* 评论数 */}

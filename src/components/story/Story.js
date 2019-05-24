@@ -30,7 +30,7 @@ class Story extends Component {
     render() {
         const { story, userId, nowStationKey } = this.props;
         const { userKey, cover, title, creator = {}, richContent = [], address } = story;
-        let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/60/h/60` : '/image/icon/avatar.svg';
+        let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         return (
             <div className="story-container"
             >
