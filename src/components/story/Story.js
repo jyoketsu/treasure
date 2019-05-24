@@ -43,7 +43,7 @@ class Story extends Component {
                         userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
                 </div>
-                <div className="main-content">
+                <div className="main-content story-content">
                     <div className="story-avatar">
                         <i style={{ backgroundImage: `url(${avatar})` }}></i>
                         <span>{creator.name || `手机号${creator.mobile}的用户`}</span>

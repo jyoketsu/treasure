@@ -1,7 +1,5 @@
-.account {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.account-content {
+    margin: auto;
 }
 
 .user-info-card {
@@ -54,6 +52,10 @@
 
 .account .ant-table-thead>tr {
     background: #ffffff;
+}
+
+.account .ant-tabs .ant-tabs-left-content {
+    border-left: unset;
 }
 
 @media screen and (max-width:768px) {}

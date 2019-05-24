@@ -1,0 +1,11 @@
+.file-upload-button {
+    width: 80px;
+    height: 30px;
+    background: #5dac06;
+    border-radius: 26px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    font-style: normal;
+}

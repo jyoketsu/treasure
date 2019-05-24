@@ -8,6 +8,10 @@
     overflow: auto;
 }
 
+.story-content {
+    margin: auto;
+}
+
 .story-avatar {
     position: relative;
     display: flex;
@@ -98,4 +102,8 @@
 .image-memo {
     text-align: center;
     font-size: 16px;
+}
+
+.story-image-box {
+    position: relative;
 }

@@ -260,7 +260,7 @@ class EditStory extends Component {
                         </Select>
                     </div>
                 </div>
-                <div className="main-content ">
+                <div className="main-content story-content">
                     <div className="edit-group">
                         <label>请选择赛区：</label>
                         <Select defaultValue={address} style={{ width: 120 }} onChange={this.selectAddress}>

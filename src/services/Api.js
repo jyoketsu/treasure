@@ -188,7 +188,7 @@ const auth = {
     },
 
     // 获取七牛云uptoken
-    getUptoken(token) {
+    getUptoken() {
         return requests.get(APIURL + '/upTokenQiniu/getQiNiuUpToken', {
             token: token,
             type: 2

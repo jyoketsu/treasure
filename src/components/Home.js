@@ -300,7 +300,7 @@ class Station extends React.Component {
                         className={`sortType ${sortType === 2 && sortOrder === 1 ? 'active' : ''}`}
                         onClick={handleSort.bind(this, 2, 1)}
                     >
-                        点赞数
+                        点赞（投票）数
                     </p>
                     {/* <p className={sortType === 3 && sortOrder === 1 ? 'active' : ''}>阅读数</p> */}
                 </Modal>

@@ -25,7 +25,7 @@ export function getUserInfo(token, history) {
 
 export function editAccount(profile) {
     let request = api.auth.editAccount(profile);
-    return { type: EDIT_ACCOUNT, payload: request }
+    return { type: EDIT_ACCOUNT, profile: profile, payload: request }
 }
 
 // station

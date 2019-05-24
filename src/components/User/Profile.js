@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './Profile.css';
-import { Form, Input, Button, message, Checkbox, } from 'antd';
+import { Form, Input, Button, } from 'antd';
 import { connect } from 'react-redux';
+import { editAccount } from '../../actions/app';
+import UploadAvatar from '../common/UploadAvatar';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -24,11 +26,6 @@ const CustomizedForm = Form.create({
             }),
         };
     },
-
-    onValuesChange(_, values) {
-        console.log(values);
-    },
-
 })(props => {
     const { getFieldDecorator } = props.form;
     return (
@@ -67,6 +64,7 @@ class Profile extends Component {
                 },
             },
         }
+        this.handleUpload = this.handleUpload.bind(this);
     }
 
     handleFormChange = changedFields => {
@@ -77,14 +75,30 @@ class Profile extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { fields } = this.state;
-        console.log('fields', fields);
+        const { fields, avatar } = this.state;
+        const { user, editAccount } = this.props;
+        editAccount(Object.assign(user.profile && JSON.parse(JSON.stringify(user.profile)) || {}, {
+            avatar: avatar,
+            nickName: fields.nickName.value,
+            address: fields.address.value
+        }));
+    }
+
+    handleUpload(avatarUrl) {
+        this.setState({
+            avatar: avatarUrl
+        });
     }
 
     render() {
-        const { fields, } = this.state;
+        const { fields, avatar, } = this.state;
         return (
             <div className="user-profile">
+                <UploadAvatar
+                    imgUrl={avatar}
+                    maxSize={1000000}
+                    callback={this.handleUpload}
+                />
                 <CustomizedForm
                     {...fields}
                     onChange={this.handleFormChange}
@@ -93,9 +107,27 @@ class Profile extends Component {
             </div>
         );
     };
+
+    componentDidUpdate(prevProps) {
+        const { user: prevUser } = prevProps;
+        const { user, } = this.props;
+        if (prevUser === null && user) {
+            this.setState({
+                avatar: user ? user.profile.avatar : '',
+                fields: {
+                    nickName: {
+                        value: user && user.profile ? user.profile.nickName : '',
+                    },
+                    address: {
+                        value: user && user.profile ? user.profile.address : '',
+                    },
+                },
+            });
+        }
+    }
 }
 
 export default connect(
     mapStateToProps,
-    {},
+    { editAccount },
 )(Form.create({ name: 'profile' })(Profile));
