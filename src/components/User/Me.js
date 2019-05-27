@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import './Me.css';
-import { Tabs } from 'antd';
+import { Tabs, Modal, Button, } from 'antd';
 import util from '../../services/Util';
 import MyStation from './MyStation';
 import Profile from './Profile';
 import { connect } from 'react-redux';
+import { logout } from '../../actions/app';
 
 const TabPane = Tabs.TabPane;
+const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
     user: state.auth.user,
 });
 
 class Me extends Component {
+    constructor(props) {
+        super(props);
+        this.showConfirm = this.showConfirm.bind(this);
+    }
+
+    showConfirm() {
+        const { logout, history } = this.props;
+        confirm({
+            title: '退出',
+            content: '确定要退出吗？',
+            onOk() {
+                logout(history);
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
     render() {
         const { user } = this.props;
         const avatar = user && user.profile && user.profile.avatar ?
@@ -25,6 +45,7 @@ class Me extends Component {
                     <div className="user-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
                     <div>{user ? (user.profile ? user.profile.nickName : user.mobile) : ''}</div>
                     <div>{user ? (user.profile ? user.profile.address : '') : ''}</div>
+                    <span className="log-out" onClick={this.showConfirm}>退出</span>
                 </div>
                 <div className="main-content account-content">
                     <Tabs defaultActiveKey="profile" tabPosition={tabPosition}>
@@ -49,5 +70,5 @@ class Me extends Component {
 
 export default connect(
     mapStateToProps,
-    {},
+    { logout },
 )(Me);

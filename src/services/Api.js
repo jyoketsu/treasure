@@ -1,5 +1,5 @@
-const APIURL = 'https://baokudata.qingtime.cn/sgbh/';
-// const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
+// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
 
 let token = null;
 

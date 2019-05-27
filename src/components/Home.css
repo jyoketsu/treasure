@@ -132,7 +132,7 @@
 .story-tool>i {
     width: 40px;
     height: 40px;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     margin-bottom: 5px;
@@ -215,12 +215,12 @@
     }
 
     .operation-panel {
-        width: 50px;
+        /* width: 50px; */
     }
 
     .operation-panel>div {
-        width: 50px;
-        height: 50px;
+        /* width: 50px;
+        height: 50px; */
     }
 
     .station-name {

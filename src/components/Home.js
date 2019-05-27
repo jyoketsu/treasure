@@ -3,11 +3,12 @@ import './Home.css';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
 import util from '../services/Util';
-import { Modal, Tooltip } from 'antd';
+import { Modal, Tooltip, message } from 'antd';
 import { connect } from 'react-redux';
 import { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
 
 const mapStateToProps = state => ({
+    user: state.auth.user,
     waiting: state.common.waiting,
     stationList: state.station.stationList,
     nowStationKey: state.station.nowStationKey,
@@ -92,6 +93,7 @@ class Home extends Component {
 
     render() {
         const {
+            user,
             location,
             changeStation,
             getStoryList,
@@ -135,6 +137,7 @@ class Home extends Component {
                 {
                     nowStationKey !== 'all' ?
                         <Station
+                            user={user}
                             nowStationKey={nowStationKey}
                             nowChannelKey={nowChannelKey}
                             content={stationMap[nowStationKey]}
@@ -203,9 +206,13 @@ class Home extends Component {
 
 class Station extends React.Component {
     handleClickAdd() {
-        const { history } = this.props;
+        const { history, user, } = this.props;
+        if (!user.profile) {
+            message.error('请先完善个人信息！');
+            return;
+        }
         history.push({
-            pathname: '/editStory',
+            pathname: '/contribute',
             search: '?type=new',
         });
     }

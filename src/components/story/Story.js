@@ -24,12 +24,12 @@ class Story extends Component {
 
     handleToEdit() {
         const { history } = this.props;
-        history.push('/editStory');
+        history.push('/contribute');
     }
 
     render() {
         const { story, userId, nowStationKey } = this.props;
-        const { userKey, cover, title, creator = {}, richContent = [], address } = story;
+        const { userKey, cover, title, creator = {}, richContent = [], address, memo, } = story;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         return (
             <div className="story-container"
@@ -50,6 +50,7 @@ class Story extends Component {
                     </div>
                     <div className="story-title">{title}</div>
                     <div className="edit-group">赛区：{address}</div>
+                    {memo ? <pre>{memo}</pre> : null}
                     {
                         richContent.map((content, index) => {
                             const { url, memo } = content;

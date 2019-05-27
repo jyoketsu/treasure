@@ -107,3 +107,18 @@
 .story-image-box {
     position: relative;
 }
+
+.story-content>pre {
+    text-align: center !important;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 0;
+    background-color: #fff;
+    word-break: break-all;
+    text-align: left;
+    font-size: 14px;
+    line-height: 2;
+    color: #333;
+    font-family: "Microsoft Yahei", STHeiti, Menlo, Monaco, Consolas, "Courier New", monospace;
+    margin: 15px 0;
+}

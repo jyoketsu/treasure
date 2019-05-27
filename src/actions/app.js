@@ -13,7 +13,7 @@ export const BIND_MOBILE = 'BIND_MOBILE';
 export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
 
 export function logout(history) {
-    history.push('/home');
+    history.push(`/login${window.location.search}`)
     return { type: LOGOUT }
 }
 

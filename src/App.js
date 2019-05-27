@@ -15,6 +15,10 @@ import Story from './components/story/Story';
 import EditStory from './components/story/EditStory';
 import Channel from './components/Channel';
 import EditChannel from './components/EditChannel';
+import Contribute from './components/story/Contribute';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 const mapStateToProps = state => ({
   loading: state.common.loading,
@@ -37,6 +41,7 @@ class App extends Component {
             <Route path="/editStation" component={EditStation} />
             <Route path="/story" component={Story} />
             <Route path="/editStory" component={EditStory}></Route>
+            <Route path="/contribute" component={Contribute}></Route>
             <Route path="/channel" component={Channel}></Route>
             <Route path="/editChannel" component={EditChannel}></Route>
           </div>

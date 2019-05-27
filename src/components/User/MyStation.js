@@ -51,7 +51,7 @@ class MyStation extends Component {
         }
         return (
             <div className="my-station">
-                <StationCard />
+                {/* <StationCard /> */}
                 <Table dataSource={data} rowKey="starKey" pagination={false}>
                     <Column title="微站" dataIndex="starName" />
                     <Column
