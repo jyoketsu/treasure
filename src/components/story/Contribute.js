@@ -203,7 +203,7 @@ class Contribute extends Component {
                         address: fields.address.value,
                         isGroup: fields.isGroup.value,
                     });
-                    addStory.log(story);
+                    addStory(story);
                 }
 
             }
