@@ -122,7 +122,7 @@ class UploadAvatar extends Component {
         return (
             <div className="upload-avatar">
                 <i className={`file-upload-button`}>
-                    <input type="file" accept=".jpg, .jpeg, .png" onChange={this.handleFileChange} />
+                    <input type="file" accept='image/*' onChange={this.handleFileChange} />
                     请选择头像
                 </i>
                 {

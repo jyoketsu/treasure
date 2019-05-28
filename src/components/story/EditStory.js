@@ -309,7 +309,7 @@ class EditStory extends Component {
     componentDidMount() {
         const { seriesInfo, history } = this.props;
         if (seriesInfo.length === 0) {
-            history.push('/');
+            history.push(`/${window.location.search}`);
         }
     }
 
@@ -327,7 +327,7 @@ class EditStory extends Component {
                 history.goBack();
             } else {
                 message.success('创建成功！');
-                // history.push('/');
+                // history.push(`/${window.location.search}`);
                 history.goBack();
             }
 

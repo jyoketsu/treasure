@@ -86,7 +86,7 @@ class Create extends Component {
         const { stationList, history } = this.props;
         if (stationList.length !== prevProps.stationList.length) {
             message.success('创建成功！');
-            history.push('/');
+            history.push(`/${window.location.search}`);
         }
 
     }

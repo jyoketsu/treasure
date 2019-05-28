@@ -9,13 +9,14 @@ import Explore from './components/Explore';
 import Message from './components/Message';
 import Me from './components/User/Me';
 import Create from './components/Create';
-import EditStation from './components/EditStation';
+import EditStation from './components/User/EditStation';
 import Login from './components/Login';
 import Story from './components/story/Story';
 import EditStory from './components/story/EditStory';
 import Channel from './components/Channel';
 import EditChannel from './components/EditChannel';
 import Contribute from './components/story/Contribute';
+import Audit from './components/User/Audit';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -44,6 +45,7 @@ class App extends Component {
             <Route path="/contribute" component={Contribute}></Route>
             <Route path="/channel" component={Channel}></Route>
             <Route path="/editChannel" component={EditChannel}></Route>
+            <Route path="/audit" component={Audit}></Route>
           </div>
           {loading ? (
             <div className="loading-mask">

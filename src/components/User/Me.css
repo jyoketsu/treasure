@@ -6,7 +6,7 @@
     position: absolute;
     top: 25px;
     right: 25px;
-    color: #40a9ff;
+    line-height: 30px;
 }
 
 .log-out:hover {

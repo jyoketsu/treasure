@@ -375,7 +375,7 @@ class FileUpload extends Component {
 
         for (let i = 0; i < files.length; i++) {
             if (files[i].size > maxSize) {
-                message.error('文件太大！');
+                message.error(`请选择小于${maxSize / 1000000}MB的图片，请压缩并保留元数据。`);
                 return;
             }
         }
@@ -434,9 +434,9 @@ class FileUpload extends Component {
     render() {
         let fileInput = null;
         if (this.props.multiple) {
-            fileInput = <input type="file" accept={this.accept} onChange={this.handleFileChange} multiple />
+            fileInput = <input type="file" accept='image/*' onChange={this.handleFileChange} multiple />
         } else {
-            fileInput = <input type="file" accept={this.accept} onChange={this.handleFileChange} />
+            fileInput = <input type="file" accept='image/*' onChange={this.handleFileChange} />
         }
         return (
             <i className={`file-upload-button ${this.props.className}`} style={this.props.style}>

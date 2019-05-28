@@ -75,7 +75,7 @@ class Channel extends Component {
     componentDidMount() {
         const { stationMap, nowStationKey, history } = this.props;
         if (!stationMap[nowStationKey]) {
-            history.push('/');
+            history.push(`/${window.location.search}`);
         }
     }
 }

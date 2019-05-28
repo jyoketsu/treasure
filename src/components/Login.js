@@ -175,16 +175,6 @@ class Login extends Component {
 
         let item = null;
         switch (this.state.type) {
-            case 'login':
-                item = [
-                    <CheckBox key="remember"
-                        text="记住密码" name="remember" onChange={this.handleInputChange} />,
-                    <Button key="login"
-                        text="登录"
-                        style={{ width: '100%', height: '46px' }}
-                        onClick={this.login} />
-                ];
-                break;
             case 'register':
                 item = [
                     <FormGroup key="password" style={style}>
@@ -218,7 +208,16 @@ class Login extends Component {
                     <Button text="绑定手机号"
                         style={{ width: '100%', height: '46px' }} onClick={this.bindMobile} />);
                 break;
-            default: break;
+            default:
+                item = [
+                    <CheckBox key="remember"
+                        text="记住密码" name="remember" onChange={this.handleInputChange} />,
+                    <Button key="login"
+                        text="登录"
+                        style={{ width: '100%', height: '46px' }}
+                        onClick={this.login} />
+                ];
+                break;;
         }
         return (
             <div className="login">

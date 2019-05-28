@@ -12,9 +12,10 @@ class Card extends Component {
 
     handleClick(key) {
         const { history } = this.props;
+        const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         history.push({
             pathname: '/story',
-            search: `?key=${key}`,
+            search: stationKey ? `?stationKey=${stationKey}&key=${key}` : `?key=${key}`,
         });
     }
 

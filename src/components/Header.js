@@ -68,9 +68,9 @@ class Header extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { overdue, history } = this.props;
+        const { overdue, history, location } = this.props;
         if (!prevProps.overdue && overdue) {
-            history.push('/login');
+            history.push(`/login${location.search}`);
         }
     }
 }

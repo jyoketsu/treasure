@@ -6,7 +6,6 @@ import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory } from '../../actions/app';
-import EditStory from './EditStory';
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.stationMap[state.station.nowStationKey] ?
@@ -156,7 +155,7 @@ class Contribute extends Component {
                     return;
                 }
             } else {
-                if (story.pictureCount < 4 || story.pictureCount > 4) {
+                if (story.pictureCount < 4 || story.pictureCount > 8) {
                     message.error('组图，请上传4～8张图片');
                     return;
                 }
@@ -350,7 +349,7 @@ class Contribute extends Component {
     componentDidMount() {
         const { seriesInfo, history } = this.props;
         if (seriesInfo.length === 0) {
-            history.push('/');
+            history.push(`/${window.location.search}`);
         }
     }
 
@@ -368,7 +367,7 @@ class Contribute extends Component {
                 history.goBack();
             } else {
                 message.success('创建成功！');
-                // history.push('/');
+                // history.push(`/${window.location.search}`);
                 history.goBack();
             }
         }
@@ -403,33 +402,27 @@ class StoryContentEditBox extends Component {
 
 class StoryEditButtonGroup extends Component {
     render() {
-        let icon = null;
+        const { index, } = this.props;
         return (
             <div className="story-edit-button-container">
                 <Tooltip title="点击上传图片">
-                    <div className="story-edit-button">
+                    <div className="story-edit-button contribute-button">
                         <FileUpload
-                            className="story-image-icon"
+                            className="story-image-icon ant-btn ant-btn-primary"
                             style={{
-                                backgroundImage: 'url(/image/icon/story-image.png)',
                                 display: 'block',
-                                width: '24px',
-                                height: '24px',
+                                width: '84px',
+                                height: '32px',
+                                fontStyle: 'normal',
+                                lineHeight: '32px',
                             }}
+                            maxSize={2000000}
                             multiple="multiple"
-                            extParam={{ index: this.props.index }}
+                            text="添加图片"
+                            extParam={{ index: index }}
                             callback={this.props.uploadImageCallback} />
-                        <span>上传</span>
                     </div>
                 </Tooltip>
-                <Tooltip title="点击添加图片或者文字">
-                    <button
-                        style={{
-                            backgroundImage: `url('/image/icon/${icon}.svg')`,
-                            backgroundPosition: 'top'
-                        }}
-                        onClick={this.collapseButton} />
-                </Tooltip>,
             </div>
         );
     }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import './EditStation.css';
-import util from '../services/Util';
+import './StationBasicInfo.css';
+import util from '../../services/Util';
 import { Form, Input, Button, message, Checkbox, } from 'antd';
-import UploadStationCover from './common/UploadCover';
+import UploadStationCover from '../common/UploadCover';
+import { withRouter } from "react-router-dom";
 
 import { connect } from 'react-redux';
 
-import { editStation, createStation } from '../actions/app';
+import { editStation, createStation } from '../../actions/app';
 
 const { TextArea } = Input;
 
@@ -70,18 +71,10 @@ const CustomizedForm = Form.create({
     );
 });
 
-class EditStation extends Component {
+class StationBasicInfo extends Component {
     constructor(props) {
         super(props);
-        const { location, stationList } = props;
-        let stationKey = location ? util.common.getSearchParamValue(location.search, 'key') : null;
-        let stationInfo = null;
-        for (let i = 0; i < stationList.length; i++) {
-            if (stationList[i].starKey === stationKey) {
-                stationInfo = stationList[i];
-                break;
-            }
-        }
+        const { stationInfo } = props;
 
         this.state = {
             starKey: stationInfo ? stationInfo.starKey : '',
@@ -117,47 +110,50 @@ class EditStation extends Component {
         }));
     };
 
-    handleSubmit = async (e) => {
+    handleSubmit = (e) => {
         e.preventDefault();
         const { editStation, createStation, } = this.props;
         const { fields, starKey, type, isMainStar, cover, logo, } = this.state;
-        if (!cover) {
-            message.error('请上传封面！');
-            return;
-        }
-        let size = await util.common.getImageInfo(cover);
-        if (starKey) {
-            editStation(starKey, fields.name.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
-        } else {
-            createStation(fields.name.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
-        }
+
+        this.form.validateFields(async (err, values) => {
+            if (!err) {
+                if (!cover) {
+                    message.error('请上传封面！');
+                    return;
+                }
+                let size = await util.common.getImageInfo(cover);
+                if (starKey) {
+                    editStation(starKey, fields.name.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
+                } else {
+                    createStation(fields.name.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
+                }
+            }
+        });
     }
 
     render() {
-        const { cover, logo, fields, starKey, } = this.state;
+        const { cover, logo, fields, } = this.state;
 
         return (
-            <div className="edit-station">
-                <div className="my-station-head">{starKey ? '编辑' : '创建'}微站</div>
-                <div className="main-content">
-                    <label className='ant-form-item-required'>微站logo：（推荐分辨率：260*70）</label>
-                    <UploadStationCover
-                        uploadAvatarCallback={this.uploadAvatarCallback}
-                        extParam={'logo'}
-                        coverUrl={logo}
-                    />
-                    <label className='ant-form-item-required'>微站封面图：（推荐分辨率：1920*380）</label>
-                    <UploadStationCover
-                        uploadAvatarCallback={this.uploadAvatarCallback}
-                        extParam={'cover'}
-                        coverUrl={cover}
-                    />
-                    <CustomizedForm
-                        {...fields}
-                        onChange={this.handleFormChange}
-                        onSubmit={this.handleSubmit}
-                    />
-                </div>
+            <div>
+                <label className='ant-form-item-required'>微站logo：（推荐分辨率：260*70）</label>
+                <UploadStationCover
+                    uploadAvatarCallback={this.uploadAvatarCallback}
+                    extParam={'logo'}
+                    coverUrl={logo}
+                />
+                <label className='ant-form-item-required'>微站封面图：（推荐分辨率：1920*380）</label>
+                <UploadStationCover
+                    uploadAvatarCallback={this.uploadAvatarCallback}
+                    extParam={'cover'}
+                    coverUrl={cover}
+                />
+                <CustomizedForm
+                    ref={node => this.form = node}
+                    {...fields}
+                    onChange={this.handleFormChange}
+                    onSubmit={this.handleSubmit}
+                />
             </div>
         );
     };
@@ -171,7 +167,7 @@ class EditStation extends Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     { editStation, createStation },
-)(Form.create({ name: 'create-station' })(EditStation));
+)(Form.create({ name: 'create-station' })(StationBasicInfo)));

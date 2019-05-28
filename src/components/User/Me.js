@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Me.css';
-import { Tabs, Modal, Button, } from 'antd';
+import { Tabs, Modal, } from 'antd';
 import util from '../../services/Util';
 import MyStation from './MyStation';
 import Profile from './Profile';
@@ -39,25 +39,26 @@ class Me extends Component {
             `${user.profile.avatar}?imageView2/1/w/80/h/80` :
             '/image/icon/avatar.svg';
         const tabPosition = util.common.isMobile() ? 'top' : 'left';
+        const nowTab = sessionStorage.getItem('me-tab') ? sessionStorage.getItem('me-tab') : 'profile';
         return (
             <div className="app-content account">
                 <div className="user-info-card">
                     <div className="user-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
                     <div>{user ? (user.profile ? user.profile.nickName : user.mobile) : ''}</div>
                     <div>{user ? (user.profile ? user.profile.address : '') : ''}</div>
-                    <span className="log-out" onClick={this.showConfirm}>退出</span>
+                    <span className="log-out ant-btn ant-btn-primary" onClick={this.showConfirm}>退出</span>
                 </div>
                 <div className="main-content account-content">
-                    <Tabs defaultActiveKey="profile" tabPosition={tabPosition}>
+                    <Tabs defaultActiveKey={nowTab} tabPosition={tabPosition}>
                         <TabPane tab="我的名片" key="profile">
                             <Profile />
                         </TabPane>
+                        <TabPane tab="我的投稿" key="myStory">
+                            功能开发中，敬请期待！
+                         </TabPane>
                         <TabPane tab="我的微站" key="myStation">
                             <MyStation />
                         </TabPane>
-                        <TabPane tab="我的故事" key="myStory">
-                            功能开发中，敬请期待！
-                         </TabPane>
                         <TabPane tab="我的收藏" key="favorite">
                             功能开发中，敬请期待！
                         </TabPane>

@@ -1,3 +1,15 @@
 .story-content-edit-content.edit.contribute {
     min-height: unset;
 }
+
+.contribute-button {
+    position: relative;
+    width: 84px;
+    height: 32px;
+}
+
+.contribute-button>i {
+    position: absolute;
+    left: 0;
+    margin: auto
+}

@@ -211,9 +211,10 @@ class Station extends React.Component {
             message.error('请先完善个人信息！');
             return;
         }
+        const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         history.push({
             pathname: '/contribute',
-            search: '?type=new',
+            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
         });
     }
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './MyStation.css';
-import { Table, Divider, Tag, Modal, message } from 'antd';
+import { Modal, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
-
+import util from '../../services/Util';
+import ClickOutside from '../common/ClickOutside';
 import { getStationList, deleteStation } from '../../actions/app';
 
-const { Column } = Table;
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -32,11 +32,13 @@ class MyStation extends Component {
         });
     }
 
-    toEditStation(key) {
+    toEditStation(key, route) {
         const { history } = this.props;
+        const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
+        sessionStorage.setItem('me-tab', 'myStation');
         history.push({
-            pathname: '/editStation',
-            search: `?key=${key}`,
+            pathname: `/${route}`,
+            search: stationKey ? `?stationKey=${stationKey}&key=${key}` : `?key=${key}`,
         });
     }
 
@@ -51,33 +53,18 @@ class MyStation extends Component {
         }
         return (
             <div className="my-station">
-                {/* <StationCard /> */}
-                <Table dataSource={data} rowKey="starKey" pagination={false}>
-                    <Column title="微站" dataIndex="starName" />
-                    <Column
-                        title="频道"
-                        dataIndex="seriesInfo"
-                        render={series => (
-                            <span>
-                                {series.map(serie => (
-                                    <Tag color="blue" key={serie._key}>
-                                        {serie.name}
-                                    </Tag>
-                                ))}
-                            </span>
-                        )}
-                    />
-                    <Column
-                        title="操作"
-                        render={(text, record) => (
-                            <span className="tabel-actions">
-                                <span onClick={this.toEditStation.bind(this, record.starKey)}>编辑</span>
-                                <Divider type="vertical" />
-                                <span onClick={this.showDeleteConfirm.bind(this, record.starKey, record.starName)}>删除</span>
-                            </span>
-                        )}
-                    />
-                </Table>
+                {
+                    data.map((station, index) => (
+                        <StationCard
+                            key={index}
+                            cover={station.cover}
+                            starName={station.starName}
+                            memo={station.memo}
+                            editStation={this.toEditStation.bind(this, station.starKey, 'editStation')}
+                            audit={this.toEditStation.bind(this, station.starKey, 'audit')}
+                            deleteStation={this.showDeleteConfirm.bind(this, station.starKey, station.starName)}
+                        />))
+                }
             </div>
         );
     };
@@ -99,13 +86,43 @@ class MyStation extends Component {
 }
 
 class StationCard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showDrop: false,
+        }
+        this.switchDrop = this.switchDrop.bind(this);
+    }
+
+    switchDrop() {
+        this.setState((prevState) => ({
+            showDrop: !prevState.showDrop
+        }));
+    }
+
     render() {
+        const { cover, starName, memo, deleteStation, editStation, audit } = this.props;
+        const { showDrop } = this.state;
         return (
             <div className="station-card">
-                <div className="station-card-cover" style={{ backgroundImage: ` url("http://cdn-icare.qingtime.cn/003C4DA9.jpg?imageView2/2/w/375/")` }}></div>
-                <div class="station-card-title">【模板】</div>
+                <div className="station-card-cover" style={{ backgroundImage: ` url("${cover}?imageView2/2/h/230/")` }}>
+                    <div className="station-option" onClick={this.switchDrop}></div>
+                    {
+                        showDrop ?
+                            <ClickOutside onClickOutside={this.switchDrop}>
+                                <div className="station-option-dorpdown">
+                                    <div onClick={editStation}>编辑</div>
+                                    <div onClick={audit}>审核</div>
+                                    <div onClick={deleteStation}>删除</div>
+                                </div>
+                            </ClickOutside>
+                            : null
+                    }
+
+                </div>
+                <div class="station-card-title">{starName}</div>
                 <div class="station-card-info">
-                    信息
+                    {memo}
                 </div>
             </div>
         );

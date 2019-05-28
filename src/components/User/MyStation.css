@@ -1,3 +1,9 @@
+.my-station {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
 .tabel-actions>span:hover {
     cursor: pointer;
 }
@@ -42,4 +48,47 @@
     height: 50px;
     line-height: 50px;
     padding: 0 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.station-option {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: block;
+    width: 40px;
+    height: 20px;
+    background-color: #FFFFFF;
+    border-radius: 3px;
+    background-image: url(/image/icon/Group@1x.svg);
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.station-option:hover {
+    cursor: pointer;
+}
+
+.station-option-dorpdown {
+    position: absolute;
+    top: 40px;
+    right: 15px;
+    width: 96px;
+    background: #FFFFFF;
+    border-radius: 3px;
+    color: #4A4A4A;
+    text-align: center;
+}
+
+.station-option-dorpdown>div {
+    height: 30px;
+    line-height: 30px;
+}
+
+.station-option-dorpdown>div:hover {
+    cursor: pointer;
+    color: #1890ff;
 }

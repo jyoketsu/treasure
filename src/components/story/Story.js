@@ -23,8 +23,8 @@ class Story extends Component {
     }
 
     handleToEdit() {
-        const { history } = this.props;
-        history.push('/contribute');
+        const { history, location } = this.props;
+        history.push(`/contribute${location.search}`);
     }
 
     render() {
