@@ -32,13 +32,13 @@ class MyStation extends Component {
         });
     }
 
-    toEditStation(key, route) {
+    toEditStation(key, groupKey, route) {
         const { history } = this.props;
         const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         sessionStorage.setItem('me-tab', 'myStation');
         history.push({
             pathname: `/${route}`,
-            search: stationKey ? `?stationKey=${stationKey}&key=${key}` : `?key=${key}`,
+            search: stationKey ? `?stationKey=${stationKey}&key=${key}&groupKey=${groupKey}` : `?key=${key}&groupKey=${groupKey}`,
         });
     }
 
@@ -60,8 +60,8 @@ class MyStation extends Component {
                             cover={station.cover}
                             starName={station.starName}
                             memo={station.memo}
-                            editStation={this.toEditStation.bind(this, station.starKey, 'editStation')}
-                            audit={this.toEditStation.bind(this, station.starKey, 'audit')}
+                            editStation={this.toEditStation.bind(this, station.starKey, station.intimateGroupKey, 'editStation')}
+                            audit={this.toEditStation.bind(this, station.starKey, station.intimateGroupKey, 'audit')}
                             deleteStation={this.showDeleteConfirm.bind(this, station.starKey, station.starName)}
                         />))
                 }
@@ -120,8 +120,8 @@ class StationCard extends Component {
                     }
 
                 </div>
-                <div class="station-card-title">{starName}</div>
-                <div class="station-card-info">
+                <div className="station-card-title">{starName}</div>
+                <div className="station-card-info">
                     {memo}
                 </div>
             </div>

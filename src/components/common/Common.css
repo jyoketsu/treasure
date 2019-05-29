@@ -1,19 +1,38 @@
 .member-card {
-    width: 295px;
+    width: 265px;
     height: 97px;
     background: #F2F2F2;
     display: flex;
-
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .member-avatar {
+    display: block;
     width: 60px;
     height: 60px;
     background-size: cover;
     background-position: center;
+    border-radius: 30px;
+    margin: auto;
 }
 
 .member-info {
     display: flex;
     flex-direction: column;
+
+    padding: 0 25px;
+}
+
+.member-name {
+    margin-bottom: 5px;
+}
+
+.member-button {
+    color: #1890ff;
+}
+
+.member-button:hover {
+    cursor: pointer;
 }

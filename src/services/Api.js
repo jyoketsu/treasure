@@ -1,5 +1,5 @@
-// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
+const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+// const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
 
 let token = null;
 
@@ -210,6 +210,13 @@ const auth = {
             token: token,
             profile: profile,
         });
+    },
+
+    searchUser(keyword) {
+        return requests.get(APIURL + '/account/userSearchStar', {
+            token: token,
+            searchCondition: keyword,
+        });
     }
 }
 
@@ -271,7 +278,7 @@ const station = {
             token: token,
             starKey: key,
         });
-    }
+    },
 }
 
 const story = {
@@ -337,6 +344,21 @@ const story = {
         return requests.delete(APIURL + '/series', {
             token: token,
             key: channelKey,
+        });
+    },
+
+    /**
+     * 相册审核
+     * @param {*} storyKey 
+     * @param {*} groupKey 
+     * @param {Number} passOrNot 2:通过,3:不通过
+     */
+    audit(storyKey, groupKey, passOrNot) {
+        return requests.patch(APIURL + '/album/checkPassOrNot', {
+            token: token,
+            key: storyKey,
+            groupKey: groupKey,
+            passOrNot: passOrNot,
         });
     }
 }

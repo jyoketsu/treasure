@@ -2,26 +2,34 @@ import React, { Component } from 'react';
 import './StoryList.css';
 import { StoryLoading, StoryCard } from './StoryCard';
 import { connect } from 'react-redux';
-import { like } from '../../actions/app';
+import { like, clearStoryList, deleteStory, auditStory, } from '../../actions/app';
 
 const mapStateToProps = state => ({
     waiting: state.common.waiting,
     storyList: state.story.storyList,
     storyNumber: state.story.storyNumber,
+    flag: state.common.flag,
 });
 
 class StoryList extends Component {
     render() {
-        const { storyList, waiting, storyNumber, like } = this.props;
+        const { storyList, waiting, storyNumber, like, audit, deleteStory, auditStory, flag } = this.props;
         return (
             <div className="story-list">
                 {
                     storyList.map((story, index) => (
-                        <StoryCard key={index} story={story} like={like} />
+                        <StoryCard
+                            key={index}
+                            story={story}
+                            like={like}
+                            deleteStory={deleteStory}
+                            audit={audit}
+                            auditStory={auditStory}
+                        />
                     ))
                 }
                 {
-                    waiting ? <StoryLoading /> : null
+                    waiting && flag !== 'auditStory' ? <StoryLoading /> : null
                 }
                 {
                     storyList.length !== 0 && storyList.length >= storyNumber ?
@@ -36,9 +44,13 @@ class StoryList extends Component {
             </div>
         );
     };
+
+    componentWillUnmount() {
+        this.props.clearStoryList();
+    }
 }
 
 export default connect(
     mapStateToProps,
-    { like },
+    { like, clearStoryList, deleteStory, auditStory, },
 )(StoryList);

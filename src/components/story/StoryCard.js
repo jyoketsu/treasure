@@ -3,11 +3,19 @@ import './StoryCard.css';
 import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
 import { Spin } from 'antd';
+import ClickOutside from '../common/ClickOutside';
+import { Modal } from 'antd';
+const confirm = Modal.confirm;
 
 class Card extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showDrop: false,
+        }
+        this.switchDrop = this.switchDrop.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
     }
 
     handleClick(key) {
@@ -19,12 +27,50 @@ class Card extends Component {
         });
     }
 
+    switchDrop() {
+        this.setState((prevState) => ({
+            showDrop: !prevState.showDrop
+        }));
+    }
+
+    showDeleteConfirm() {
+        const { deleteStory, story } = this.props;
+        confirm({
+            title: '删除',
+            content: `确定要删除吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteStory(story._key);
+            },
+        });
+    }
+
     render() {
-        const { story, like } = this.props;
+        const { story, like, audit, auditStory, } = this.props;
+        const { showDrop } = this.state;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
         let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/375/')` };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
+        let groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey');
+        let option = (
+            <div>
+                <div className="station-option" onClick={this.switchDrop}></div>
+                {
+                    showDrop ?
+                        <ClickOutside onClickOutside={this.switchDrop}>
+                            <div className="station-option-dorpdown">
+                                <div onClick={this.handleClick.bind(this, story._key)}>查看</div>
+                                <div onClick={auditStory.bind(this, story._key,groupKey,2)}>通过</div>
+                                <div onClick={auditStory.bind(this, story._key, groupKey, 3)}>不通过</div>
+                                <div onClick={this.showDeleteConfirm}>删除</div>
+                            </div>
+                        </ClickOutside>
+                        : null
+                }
+            </div>);
         return (
             <div className={`story-card type-${storyType}`}>
                 {/* 故事封面 */}
@@ -32,8 +78,9 @@ class Card extends Component {
                     <div
                         className="story-card-cover"
                         style={coverStyle}
-                        onClick={this.handleClick.bind(this, story._key)}
+                        onClick={audit ? null : this.handleClick.bind(this, story._key)}
                     >
+                        {audit ? option : null}
                     </div> :
                     null}
                 {/* 故事标题 */}

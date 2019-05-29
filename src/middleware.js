@@ -12,7 +12,7 @@ import {
 
 const promiseMiddleware = store => next => action => {
     if (isPromise(action.payload)) {
-        store.dispatch({ type: ASYNC_START, noLoading: action.noLoading, subtype: action.type });
+        store.dispatch({ type: ASYNC_START, flag: action.flag, noLoading: action.noLoading, subtype: action.type });
 
         const currentView = store.getState().viewChangeCounter;
         const skipTracking = action.skipTracking;

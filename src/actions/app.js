@@ -11,6 +11,7 @@ export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const BIND_MOBILE = 'BIND_MOBILE';
 export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
+export const SEARCH_USER = 'SEARCH_USER';
 
 export function logout(history) {
     history.push(`/login${window.location.search}`)
@@ -28,6 +29,11 @@ export function editAccount(profile) {
     return { type: EDIT_ACCOUNT, profile: profile, payload: request }
 }
 
+export function searchUser(keyword) {
+    let request = api.auth.searchUser(keyword);
+    return { type: SEARCH_USER, payload: request }
+}
+
 // station
 export const GET_STATION_LIST = 'GET_STATION_LIST';
 export const CREATE_STATION = 'CREATE_STATION';
@@ -43,7 +49,7 @@ export function getStationList() {
 
 export function createStation(name, type, memo, open, isMainStar, cover, logo, size) {
     let request = api.station.createStation(name, type, memo, open, isMainStar, cover, logo, size);
-    return { type: CREATE_STATION, payload: request }
+    return { type: CREATE_STATION, flag: 'createStation', payload: request }
 }
 
 export function deleteStation(key) {
@@ -53,7 +59,7 @@ export function deleteStation(key) {
 
 export function editStation(key, name, type, memo, open, isMainStar, cover, logo, size) {
     let request = api.station.editStation(key, name, type, memo, open, isMainStar, cover, logo, size);
-    return { type: EDIT_STATION, stationKey: key, payload: request }
+    return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 
 export function changeStation(key) {
@@ -75,6 +81,7 @@ export const GET_STORY_DETAIL = 'GET_STORY_DETAIL';
 export const CLEAR_STORY_DETAIL = 'CLEAR_STORY_DETAIL';
 export const LIKE_STORY = 'LIKE_STORY';
 export const UPDATE_EXIF = 'UPDATE_EXIF';
+export const AUDIT = 'AUDIT';
 
 export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage) {
     let request = api.story.getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage);
@@ -124,6 +131,11 @@ export function like(storyKey) {
 
 export function updateExif(story) {
     return { type: UPDATE_EXIF, story: story }
+}
+
+export function auditStory(storyKey, groupKey, passOrNot) {
+    let request = api.story.audit(storyKey, groupKey, passOrNot);
+    return { type: AUDIT, flag: 'auditStory', payload: request }
 }
 
 // 频道

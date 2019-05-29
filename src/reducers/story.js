@@ -8,6 +8,7 @@ import {
     CLEAR_STORY_DETAIL,
     LIKE_STORY,
     UPDATE_EXIF,
+    AUDIT,
 } from '../actions/app';
 
 const defaultState = {
@@ -128,6 +129,14 @@ const story = (state = defaultState, action) => {
                 return {
                     ...state,
                     storyList: storyList,
+                };
+            } else {
+                return state;
+            }
+        case AUDIT:
+            if (!action.error) {
+                return {
+                    ...state,
                 };
             } else {
                 return state;

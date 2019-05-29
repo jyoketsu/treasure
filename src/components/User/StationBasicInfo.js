@@ -14,6 +14,7 @@ const { TextArea } = Input;
 const mapStateToProps = state => ({
     stationList: state.station.stationList,
     loading: state.common.loading,
+    flag: state.common.flag,
 });
 
 const CustomizedForm = Form.create({
@@ -159,10 +160,15 @@ class StationBasicInfo extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        const { loading, history } = this.props;
+        const { loading, history, flag, } = this.props;
         if (!loading && prevProps.loading) {
-            message.success('编辑成功！');
-            history.goBack();
+            if (flag === 'createStation') {
+                message.success('创建成功！');
+                history.goBack();
+            } else if (flag === 'editStation') {
+                message.success('编辑成功！');
+                history.goBack();
+            }
         }
     }
 }

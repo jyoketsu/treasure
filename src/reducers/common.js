@@ -15,7 +15,7 @@ const common = (state = defaultState, action) => {
                 ...state,
                 loading: action.noLoading ? false : true,
                 waiting: true,
-                flag: '',
+                flag: action.flag,
             };
         case ASYNC_END:
             return {

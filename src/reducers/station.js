@@ -7,12 +7,14 @@ import {
     ADD_CHANNEL,
     EDIT_CHANNEL,
     DELETE_CHANNEL,
+    SEARCH_USER,
 } from '../actions/app';
 const defaultState = {
     competitionInfo: {},
     stationList: [],
     nowStationKey: 'all',
     stationMap: {},
+    userList: [],
 };
 
 const station = (state = defaultState, action) => {
@@ -130,6 +132,15 @@ const station = (state = defaultState, action) => {
                 return {
                     ...state,
                     stationMap: stationMap,
+                };
+            } else {
+                return state;
+            }
+        case SEARCH_USER:
+            if (!action.error) {
+                return {
+                    ...state,
+                    userList: action.payload.result,
                 };
             } else {
                 return state;

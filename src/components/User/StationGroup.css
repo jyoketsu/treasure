@@ -1,0 +1,6 @@
+.member-search-result {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
