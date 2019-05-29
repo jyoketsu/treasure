@@ -70,6 +70,7 @@ export const GET_STORY_LIST = 'GET_STORY_LIST';
 export const CLEAR_STORY_LIST = 'CLEAR_STORY_LIST';
 export const ADD_STORY = 'ADD_STORY';
 export const MODIFY_STORY = 'MODIFY_STORY';
+export const DELETE_STORY = 'DELETE_STORY';
 export const GET_STORY_DETAIL = 'GET_STORY_DETAIL';
 export const CLEAR_STORY_DETAIL = 'CLEAR_STORY_DETAIL';
 export const LIKE_STORY = 'LIKE_STORY';
@@ -109,6 +110,11 @@ export function clearStoryDetail() {
 export function modifyStory(story) {
     let request = api.story.editStory(story);
     return { type: MODIFY_STORY, payload: request }
+}
+
+export function deleteStory(storyKey) {
+    let request = api.story.deleteStory(storyKey);
+    return { type: DELETE_STORY, storyKey: storyKey, flag: 'deleteStory', payload: request }
 }
 
 export function like(storyKey) {

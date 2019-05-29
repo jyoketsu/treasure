@@ -25,7 +25,7 @@ const promiseMiddleware = store => next => action => {
                 }
                 if (parseInt(res.statusCode, 10) === 200) {
                     action.payload = res;
-                    store.dispatch({ type: ASYNC_END, promise: action.payload });
+                    store.dispatch({ type: ASYNC_END, flag: action.flag, promise: action.payload });
                     store.dispatch(action);
                 }
                 else {

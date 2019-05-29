@@ -294,6 +294,12 @@ const story = {
     editStory(story) {
         return requests.patch(APIURL + '/album', Object.assign(story, { token: token }));
     },
+    deleteStory(storyKey) {
+        return requests.delete(APIURL + '/album', {
+            token: token,
+            key: storyKey,
+        });
+    },
 
     getStoryDetail(storyKey) {
         return requests.get(APIURL + '/album/detailNew', {

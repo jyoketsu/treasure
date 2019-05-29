@@ -33,15 +33,15 @@ class Login extends Component {
             type: loginType || 'login',
             isAgree: false,
             count: 0,
-        }
-        this.params = {
             mobileArea: '+86',
-        };
+        }
+        this.params = {};
         this.login = this.login.bind(this);
         this.register = this.register.bind(this);
         this.getCode = this.getCode.bind(this);
         this.forgetPassword = this.forgetPassword.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleAreaChange = this.handleAreaChange.bind(this);
         this.switchType = this.switchType.bind(this);
         this.switchAgree = this.switchAgree.bind(this);
         this.bindMobile = this.bindMobile.bind(this);
@@ -59,8 +59,8 @@ class Login extends Component {
     // 登陆
     async login() {
         const { login } = this.props;
-        if (this.params.mobileArea && this.params.mobile && this.params.password) {
-            login(this.params);
+        if (this.state.mobileArea && this.params.mobile && this.params.password) {
+            login(Object.assign(this.params, { mobileArea: this.state.mobileArea }));
         } else {
             message.error('请输入完整！');
         }
@@ -69,11 +69,11 @@ class Login extends Component {
     // 注册
     async register() {
         const { register } = this.props;
-        if (this.params.mobileArea && this.params.mobile && this.params.password && this.params.passwordRepeat) {
+        if (this.state.mobileArea && this.params.mobile && this.params.password && this.params.passwordRepeat) {
             if (this.params.password !== this.params.passwordRepeat) {
                 message.error('请输入密码！');
             } else {
-                register(this.params);
+                register(Object.assign(this.params, { mobileArea: this.state.mobileArea }));
             }
         } else {
             message.error('请输入完整！');
@@ -82,12 +82,12 @@ class Login extends Component {
 
     // 忘记密码
     async forgetPassword() {
-        if (this.params.mobileArea && this.params.mobile && this.params.password && this.params.passwordRepeat) {
+        if (this.state.mobileArea && this.params.mobile && this.params.password && this.params.passwordRepeat) {
             if (this.params.password !== this.params.passwordRepeat) {
                 message.error('两次密码不相同！');
             } else {
                 Loading.open('请稍候...');
-                let res = await api.auth.resetPassword(this.params);
+                let res = await api.auth.resetPassword(Object.assign(this.params, { mobileArea: this.state.mobileArea }));
                 Loading.close();
                 if (res.msg === "OK") {
                     message.success('重置密码成功！');
@@ -104,8 +104,8 @@ class Login extends Component {
     // 第三方账号绑定手机号
     async bindMobile() {
         const { bindMobile } = this.props;
-        if (this.params.mobileArea && this.params.mobile && this.params.code) {
-            bindMobile(this.params.mobileArea, this.params.mobile, this.openId, this.params.code, this.type, this.fsInfo);
+        if (this.state.mobileArea && this.params.mobile && this.params.code) {
+            bindMobile(this.state.mobileArea, this.params.mobile, this.openId, this.params.code, this.type, this.fsInfo);
         } else {
             message.error('请输入完整！');
         }
@@ -121,9 +121,15 @@ class Login extends Component {
         } else if (type === 'bind') {
             source = 2;
         }
+        const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
+        let codeType = 1;
+        if (stationKey === "93088" || stationKey === "14137732091240538") {
+            codeType = 2;
+        }
         if (!this.state.count) {
             Loading.open('请稍后...');
-            let res = await api.auth.getVerifyCode(Object.assign({ source: source }, this.params));
+            let res = await api.auth.getVerifyCode(
+                Object.assign({ source: source, mobileArea: this.state.mobileArea, type: codeType }, this.params));
             Loading.close();
             if (res.msg === 'OK') {
                 let interval = setInterval(() => {
@@ -149,6 +155,12 @@ class Login extends Component {
         this.params[name] = value;
     }
 
+    handleAreaChange(e) {
+        this.setState({
+            mobileArea: e.target.value,
+        });
+    }
+
     showQQPopup() {
         window.QC.Login.showPopup({
             appId: "101523287",
@@ -158,19 +170,6 @@ class Login extends Component {
     }
 
     render() {
-        const selectOptions = [{
-            value: '+86',
-            text: '中国'
-        },
-            // {
-            //     value: '+81',
-            //     text: '日本'
-            // }, {
-            //     value: '+1',
-            //     text: '美国'
-            // }
-        ];
-
         let style = { borderBottom: '1px solid #DDDDDD' }
 
         let item = null;
@@ -223,15 +222,11 @@ class Login extends Component {
             <div className="login">
                 <div className="login-box">
                     <FormGroup style={style}>
-                        <Select
-                            defaultValue={this.params.mobileArea}
-                            name="mobileArea" placeholder="区号"
-                            options={selectOptions}
-                            onChange={this.handleInputChange}
-                            style={{ display: 'inline-block', width: '30%' }} />
-                        {/* <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleInputChange}>
-                            <Option value="+86">中国大陆</Option>
-                        </Select> */}
+                        <FormTextInput
+                            name="mobileArea" showType='edit' placeholder="区号"
+                            value={this.state.mobileArea}
+                            style={{ marginTop: '15px', display: 'inline-block', width: '30%' }}
+                            onChange={this.handleAreaChange} />
                         <FormTextInput
                             name="mobile" showType='edit' placeholder="请输入手机号"
                             style={{ marginTop: '15px', display: 'inline-block', width: '70%' }}

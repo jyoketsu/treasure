@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './EditStory.css';
 import { withRouter } from "react-router-dom";
-import { Button, Tooltip, message, Select, Input } from 'antd';
+import { Button, Tooltip, message, Select, Input, Modal } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory } from '../../actions/app';
+const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.stationMap[state.station.nowStationKey] ?
@@ -15,6 +16,7 @@ const mapStateToProps = state => ({
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
     loading: state.common.loading,
+    flag: state.common.flag,
 });
 
 const Option = Select.Option;
@@ -35,6 +37,7 @@ class EditStory extends Component {
         this.selectAddress = this.selectAddress.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleCommit = this.handleCommit.bind(this);
+        this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
     }
 
     handleCancel() {
@@ -206,6 +209,20 @@ class EditStory extends Component {
         this.setState({ story: changedStory });
     }
 
+    showDeleteConfirm(key) {
+        const { deleteStory } = this.props;
+        confirm({
+            title: '删除',
+            content: `确定要删除吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteStory(key);
+            },
+        });
+    }
+
     render() {
         const { story = {} } = this.state;
         const { cover, title = '', series = {}, richContent = [], address } = story;
@@ -299,6 +316,7 @@ class EditStory extends Component {
                     {centent}
                     <div className="story-footer">
                         <Button onClick={this.handleCancel}>取消</Button>
+                        {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
                         <Button type="primary" onClick={this.handleCommit}>保存</Button>
                     </div>
                 </div>
@@ -319,18 +337,22 @@ class EditStory extends Component {
             this.scrollDown = false;
             this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
         }
-        const { history, loading } = this.props;
+        const { history, loading, flag, } = this.props;
         const { story } = this.state;
         if (!loading && prevProps.loading) {
             if (story._key) {
-                message.success('编辑成功！');
-                history.goBack();
+                if (flag === 'deleteStory') {
+                    message.success('删除成功！');
+                    history.push(`/${window.location.search}`);
+                } else {
+                    message.success('编辑成功！');
+                    history.goBack();
+                }
             } else {
                 message.success('创建成功！');
                 // history.push(`/${window.location.search}`);
                 history.goBack();
             }
-
         }
     }
 }

@@ -144,8 +144,7 @@ const CustomizedForm = Form.create({
             </Form.Item>
             <Form.Item label="邮编">
                 {getFieldDecorator('zipcode', {
-                    rules: [{ max: 10, message: '不得超过10个字符！' },
-                    { required: true, message: '请输入邮编！' }],
+                    rules: [{ max: 10, message: '不得超过10个字符！' }],
                 })(<Input />)}
             </Form.Item>
             <Form.Item label="相机品牌">
@@ -176,7 +175,7 @@ const CustomizedForm = Form.create({
                         <Option value="利图">利图</Option>
                     </Select>)}
             </Form.Item>
-            <Form.Item label="相机型号">
+            <Form.Item label="相机（手机）型号">
                 {getFieldDecorator('cameraModel', {
                     rules: [{ max: 20, message: '不得超过20个字符！' }],
                 })(<Input />)}

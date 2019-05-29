@@ -28,9 +28,11 @@ class Header extends Component {
                 <li className={pathname === '/' ? 'active' : ''}>
                     <Link to={`/${search}`}>订阅</Link>
                 </li>
-                <li className={pathname === '/explore' ? 'active' : ''}>
-                    <Link to={`/explore${search}`}>探索</Link>
-                </li>
+                {!search ?
+                    <li className={pathname === '/explore' ? 'active' : ''}>
+                        <Link to={`/explore${search}`}>探索</Link>
+                    </li> : null
+                }
                 {!search ?
                     <li className={pathname === '/editStation' ? 'active' : ''}>
                         <Link to="/editStation">+</Link>

@@ -6,7 +6,11 @@ class StationGroup extends Component {
     render() {
         return (
             <div className="station-group">
-                <MemberCard />
+                <MemberCard
+                    avatar="http://cdn-icare.qingtime.cn/47F8CB6C.png"
+                    name="测试"
+                    role={0}
+                />
             </div>
         );
     };

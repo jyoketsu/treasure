@@ -3,11 +3,13 @@ import {
     CLEAR_STORY_LIST,
     ADD_STORY,
     MODIFY_STORY,
+    DELETE_STORY,
     GET_STORY_DETAIL,
     CLEAR_STORY_DETAIL,
     LIKE_STORY,
     UPDATE_EXIF,
 } from '../actions/app';
+
 const defaultState = {
     storyList: [],
     storyNumber: 0,
@@ -62,6 +64,22 @@ const story = (state = defaultState, action) => {
                 for (let i = 0; i < storyList.length; i++) {
                     if (storyList[i]._key === action.payload.result._key) {
                         storyList[i] = action.payload.result;
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    storyList: storyList,
+                };
+            } else {
+                return state;
+            }
+        case DELETE_STORY:
+            if (!action.error) {
+                let storyList = Object.assign([], state.storyList);
+                for (let i = 0; i < storyList.length; i++) {
+                    if (storyList[i]._key === action.storyKey) {
+                        storyList.splice(i, 1);
                         break;
                     }
                 }
