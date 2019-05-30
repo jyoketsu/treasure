@@ -3,15 +3,19 @@ import './StationGroup.css';
 import { Input } from 'antd';
 import { MemberCard, SearchMemberCard, } from '../common/Common';
 import { connect } from 'react-redux';
-import { searchUser } from '../../actions/app';
+import { searchUser, groupMember, addGroupMember, setMemberRole } from '../../actions/app';
+import util from '../../services/Util';
+
 const Search = Input.Search;
 const mapStateToProps = state => ({
+    searchUserList: state.station.searchUserList,
     userList: state.station.userList,
 });
 
 class StationGroup extends Component {
     render() {
-        const { searchUser, userList, } = this.props;
+        const { searchUser, userList, searchUserList, addGroupMember, setMemberRole } = this.props;
+        const groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey')
         return (
             <div className="station-group">
                 <h2>添加成员</h2>
@@ -22,12 +26,16 @@ class StationGroup extends Component {
                 />
                 <div className="member-search-result">
                     {
-                        userList.map((user, index) => (
+                        searchUserList.map((user, index) => (
                             <SearchMemberCard
                                 key={index}
+                                groupKey={groupKey}
+                                userKey={user._key}
+                                gender={user.gender}
                                 avatar={user.profile ? user.profile.avatar : ''}
                                 mobile={`${user.mobileArea} ${user.mobile}`}
                                 name={user.profile ? user.profile.nickName : ''}
+                                addGroupMember={addGroupMember}
                             />
                         ))
                     }
@@ -38,9 +46,13 @@ class StationGroup extends Component {
                         userList.map((user, index) => (
                             <MemberCard
                                 key={index}
-                                avatar={user.profile ? user.profile.avatar : ''}
+                                groupKey={groupKey}
+                                userKey={user.userId}
+                                avatar={user.avatar ? user.avatar : ''}
                                 mobile={`${user.mobileArea} ${user.mobile}`}
-                                name={user.profile ? user.profile.nickName : ''}
+                                name={user.nickName ? user.nickName : ''}
+                                role={user.role}
+                                setMemberRole={setMemberRole}
                             />
                         ))
                     }
@@ -48,9 +60,14 @@ class StationGroup extends Component {
             </div>
         );
     };
+
+    componentDidMount() {
+        const { groupMember } = this.props;
+        groupMember(util.common.getSearchParamValue(window.location.search, 'groupKey'));
+    }
 }
 
 export default connect(
     mapStateToProps,
-    { searchUser },
+    { searchUser, groupMember, addGroupMember, setMemberRole, },
 )(StationGroup);

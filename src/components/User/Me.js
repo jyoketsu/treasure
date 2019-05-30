@@ -56,7 +56,7 @@ class Me extends Component {
                         <TabPane tab="我的投稿" key="myStory">
                             功能开发中，敬请期待！
                          </TabPane>
-                        <TabPane tab="我的微站" key="myStation">
+                        <TabPane tab="站点管理" key="myStation">
                             <MyStation />
                         </TabPane>
                         <TabPane tab="我的收藏" key="favorite">

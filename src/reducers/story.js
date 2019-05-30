@@ -45,6 +45,7 @@ const story = (state = defaultState, action) => {
         case CLEAR_STORY_LIST:
             return {
                 ...state,
+                storyNumber: 0,
                 storyList: [],
             }
 
@@ -135,6 +136,14 @@ const story = (state = defaultState, action) => {
             }
         case AUDIT:
             if (!action.error) {
+                let storyList = Object.assign([], state.storyList);
+                for (let i = 0; i < storyList.length; i++) {
+                    let story = storyList[i];
+                    if (story._key === action.storyKey) {
+                        story.pass = action.passOrNot;
+                        break;
+                    }
+                }
                 return {
                     ...state,
                 };

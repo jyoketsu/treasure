@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { like, clearStoryList, deleteStory, auditStory, } from '../../actions/app';
 
 const mapStateToProps = state => ({
+    userKey: state.auth.user ? state.auth.user._key : '',
     waiting: state.common.waiting,
     storyList: state.story.storyList,
     storyNumber: state.story.storyNumber,
@@ -13,13 +14,14 @@ const mapStateToProps = state => ({
 
 class StoryList extends Component {
     render() {
-        const { storyList, waiting, storyNumber, like, audit, deleteStory, auditStory, flag } = this.props;
+        const { storyList, waiting, storyNumber, like, audit, deleteStory, auditStory, flag, userKey } = this.props;
         return (
             <div className="story-list">
                 {
                     storyList.map((story, index) => (
                         <StoryCard
                             key={index}
+                            userKey={userKey}
                             story={story}
                             like={like}
                             deleteStory={deleteStory}
@@ -44,10 +46,6 @@ class StoryList extends Component {
             </div>
         );
     };
-
-    componentWillUnmount() {
-        this.props.clearStoryList();
-    }
 }
 
 export default connect(

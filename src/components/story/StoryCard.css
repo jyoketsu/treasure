@@ -34,6 +34,7 @@
 }
 
 .story-card-title {
+    position: relative;
     width: 100%;
     height: 30px;
     font-size: 14px;
@@ -42,6 +43,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    justify-content: space-between;
 }
 
 .story-card-info {

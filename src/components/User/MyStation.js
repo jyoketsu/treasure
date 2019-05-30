@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import util from '../../services/Util';
 import ClickOutside from '../common/ClickOutside';
-import { getStationList, deleteStation } from '../../actions/app';
+import { getStationList, deleteStation, clearStoryList, } from '../../actions/app';
 
 const confirm = Modal.confirm;
 
@@ -33,7 +33,8 @@ class MyStation extends Component {
     }
 
     toEditStation(key, groupKey, route) {
-        const { history } = this.props;
+        const { history, clearStoryList, } = this.props;
+        clearStoryList();
         const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         sessionStorage.setItem('me-tab', 'myStation');
         history.push({
@@ -131,5 +132,5 @@ class StationCard extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    { getStationList, deleteStation },
+    { getStationList, deleteStation, clearStoryList, },
 )(MyStation));

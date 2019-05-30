@@ -1,5 +1,5 @@
-const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-// const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
+// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
 
 let token = null;
 
@@ -217,7 +217,28 @@ const auth = {
             token: token,
             searchCondition: keyword,
         });
-    }
+    },
+    groupMember(groupId) {
+        return requests.get(APIURL + '/groupmember', {
+            token: token,
+            groupId: groupId,
+        });
+    },
+    addGroupMember(groupId, targetUidList) {
+        return requests.post(APIURL + '/groupmember', {
+            token: token,
+            groupKey: groupId,
+            targetUidList: targetUidList
+        });
+    },
+    setMemberRole(groupId, targetUKey, role, ) {
+        return requests.patch(APIURL + '/groupmember/setRole', {
+            token: token,
+            groupKey: groupId,
+            targetUKey: targetUKey,
+            role: role,
+        });
+    },
 }
 
 const station = {

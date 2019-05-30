@@ -8,6 +8,10 @@
     overflow: auto;
 }
 
+.channel-option>.main-content {
+    margin: auto;
+}
+
 .channel-head {
     position: relative;
     height: 46px;

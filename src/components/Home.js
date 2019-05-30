@@ -18,6 +18,7 @@ const mapStateToProps = state => ({
     sortType: state.story.sortType,
     sortOrder: state.story.sortOrder,
     nowChannelKey: state.story.nowChannelKey,
+    storyListLength: state.story.storyList.length,
 });
 
 class Home extends Component {
@@ -97,6 +98,7 @@ class Home extends Component {
             location,
             changeStation,
             getStoryList,
+            storyListLength,
             stationList,
             nowStationKey,
             stationMap,
@@ -143,6 +145,7 @@ class Home extends Component {
                             content={stationMap[nowStationKey]}
                             sortType={sortType}
                             sortOrder={sortOrder}
+                            storyListLength={storyListLength}
                             getStoryList={getStoryList}
                             handleSort={this.handleSort}
                             changeChannel={this.changeChannel}
@@ -163,9 +166,9 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        const { getStationList, stationList, nowStationKey, getStoryList, location, changeStation, } = this.props;
+        const { getStationList, stationList, nowStationKey, getStoryList,
+            location, changeStation, clearStoryList, sortType, sortOrder, storyListLength, } = this.props;
         let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
-
         if (stationList.length === 0) {
             getStationList();
         }
@@ -173,28 +176,35 @@ class Home extends Component {
             let scrollTop = sessionStorage.getItem('home-scroll');
             this.homepage.scrollTop = scrollTop;
         }
-        if (!targetStationKey && nowStationKey === 'all') {
-            // 订阅的所有微站的频道故事
-            getStoryList(4, null, null, 1, 1, 1, this.perPage);
-        }
 
-        if (targetStationKey) {
+        if (targetStationKey && targetStationKey !== nowStationKey) {
             changeStation(targetStationKey);
+        } else {
+            if (!targetStationKey && nowStationKey === 'all') {
+                // 订阅的所有微站的频道故事
+                getStoryList(4, null, null, 1, 1, 1, this.perPage);
+            } else if (storyListLength === 0) {
+                // 获取微站全部故事
+                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            }
         }
     }
 
     componentDidUpdate(prevProps) {
-        const { nowStationKey, stationMap, getStationDetail, getStoryList } = this.props;
+        const { nowStationKey, stationMap, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, } = this.props;
         // 切换微站时
         if (nowStationKey !== prevProps.nowStationKey) {
+            clearStoryList();
             this.curPage = 1;
-            if (!stationMap[nowStationKey]) {
-                if (nowStationKey !== 'all') {
+            if (nowStationKey !== 'all') {
+                if (!stationMap[nowStationKey]) {
                     getStationDetail(nowStationKey);
-                } else {
-                    // 订阅的所有微站的频道故事
-                    getStoryList(4, null, null, 1, 1, 1, this.perPage);
                 }
+                // 获取微站全部故事
+                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            } else {
+                // 订阅的所有微站的频道故事
+                getStoryList(4, null, null, 1, 1, 1, this.perPage);
             }
         }
     }
@@ -322,18 +332,9 @@ class Station extends React.Component {
         );
     }
 
-    componentDidMount() {
-        const { content = {}, getStoryList, sortType, sortOrder, perPage, nowStationKey } = this.props;
-        const { starInfo = {}, seriesInfo = [] } = content;
-        if (starInfo._key && seriesInfo.length !== 0) {
-            // 获取第一个专辑的故事
-            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);
-        }
-    }
-
     componentDidUpdate(prevProps) {
-        const { content = {}, getStoryList, sortType, sortOrder, perPage, nowStationKey, } = this.props;
-        const { starInfo = {}, seriesInfo = [] } = content;
+        const { content = {}, } = this.props;
+        const { starInfo = {}, } = content;
 
         const { content: prevContent = {}, nowStationKey: prevStationKey } = prevProps;
         const { starInfo: prevStarInfo = {} } = prevContent;
@@ -343,11 +344,6 @@ class Station extends React.Component {
             let tarStationName = util.common.getSearchParamValue(window.location.search, 'station');
             if (!tarStationName) {
                 document.title = starInfo.name ? starInfo.name : '时光宝库'
-            }
-
-            // 获取微站全部故事
-            if (seriesInfo[0]) {
-                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, perPage);
             }
         }
         // 从订阅切换到微站

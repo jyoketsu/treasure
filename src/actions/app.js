@@ -12,6 +12,9 @@ export const REGISTER = 'REGISTER';
 export const BIND_MOBILE = 'BIND_MOBILE';
 export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
 export const SEARCH_USER = 'SEARCH_USER';
+export const GET_GROUP_MEMBER = 'GET_GROUP_MEMBER';
+export const ADD_GROUP_MEMBER = 'ADD_GROUP_MEMBER';
+export const SET_MEMBER_ROLE = 'SET_MEMBER_ROLE';
 
 export function logout(history) {
     history.push(`/login${window.location.search}`)
@@ -32,6 +35,21 @@ export function editAccount(profile) {
 export function searchUser(keyword) {
     let request = api.auth.searchUser(keyword);
     return { type: SEARCH_USER, payload: request }
+}
+
+export function groupMember(groupId) {
+    let request = api.auth.groupMember(groupId);
+    return { type: GET_GROUP_MEMBER, payload: request }
+}
+
+export function addGroupMember(groupId, targetUidList) {
+    let request = api.auth.addGroupMember(groupId, targetUidList);
+    return { type: ADD_GROUP_MEMBER, payload: request }
+}
+
+export function setMemberRole(groupId, targetUKey, role) {
+    let request = api.auth.setMemberRole(groupId, targetUKey, role);
+    return { type: SET_MEMBER_ROLE, targetUKey, role, payload: request }
 }
 
 // station
@@ -135,7 +153,7 @@ export function updateExif(story) {
 
 export function auditStory(storyKey, groupKey, passOrNot) {
     let request = api.story.audit(storyKey, groupKey, passOrNot);
-    return { type: AUDIT, flag: 'auditStory', payload: request }
+    return { type: AUDIT, flag: 'auditStory', storyKey: storyKey, passOrNot: passOrNot, payload: request }
 }
 
 // 频道

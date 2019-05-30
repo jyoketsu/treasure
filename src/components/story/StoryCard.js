@@ -48,13 +48,24 @@ class Card extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, } = this.props;
+        const { story, like, audit, auditStory, userKey, } = this.props;
         const { showDrop } = this.state;
+        const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
         let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/375/')` };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey');
+        let status = '';
+        let statusStyle = {};
+        if (isMyStory || audit) {
+            switch (story.pass) {
+                case 1: status = '待审核'; statusStyle = { color: '#9F353A' }; break;
+                case 2: status = '审核通过'; statusStyle = { color: '#7BA23F' }; break;
+                case 3: status = '审核不通过'; statusStyle = { color: '#CB1B45' }; break;
+                default: break;
+            }
+        }
         let option = (
             <div>
                 <div className="station-option" onClick={this.switchDrop}></div>
@@ -63,7 +74,7 @@ class Card extends Component {
                         <ClickOutside onClickOutside={this.switchDrop}>
                             <div className="station-option-dorpdown">
                                 <div onClick={this.handleClick.bind(this, story._key)}>查看</div>
-                                <div onClick={auditStory.bind(this, story._key,groupKey,2)}>通过</div>
+                                <div onClick={auditStory.bind(this, story._key, groupKey, 2)}>通过</div>
                                 <div onClick={auditStory.bind(this, story._key, groupKey, 3)}>不通过</div>
                                 <div onClick={this.showDeleteConfirm}>删除</div>
                             </div>
@@ -84,7 +95,10 @@ class Card extends Component {
                     </div> :
                     null}
                 {/* 故事标题 */}
-                <div className="story-card-title">{story.title}</div>
+                <div className="story-card-title">
+                    {story.title}
+                    <span style={statusStyle}>{status}</span>
+                </div>
                 {/* 图片数量 */}
                 <span className="picture-count">
                     <i className="picture-count-icon"></i>

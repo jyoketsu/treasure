@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
     nowStationKey: state.station.nowStationKey,
     sortType: state.story.sortType,
     sortOrder: state.story.sortOrder,
+    storyListLength: state.story.storyList.length,
 });
 
 class Audit extends Component {
@@ -30,9 +31,15 @@ class Audit extends Component {
     };
 
     componentDidMount() {
-        const { getStoryList, sortType, sortOrder, location } = this.props;
+        const { getStoryList, sortType, sortOrder, location, storyListLength, } = this.props;
         let stationKey = util.common.getSearchParamValue(location.search, 'key');
-        getStoryList(7, stationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+        if (storyListLength === 0) {
+            getStoryList(7, stationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.clearStoryList();
     }
 }
 

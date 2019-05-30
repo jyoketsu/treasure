@@ -8,12 +8,16 @@ import {
     EDIT_CHANNEL,
     DELETE_CHANNEL,
     SEARCH_USER,
+    GET_GROUP_MEMBER,
+    ADD_GROUP_MEMBER,
+    SET_MEMBER_ROLE,
 } from '../actions/app';
 const defaultState = {
     competitionInfo: {},
     stationList: [],
     nowStationKey: 'all',
     stationMap: {},
+    searchUserList: [],
     userList: [],
 };
 
@@ -140,7 +144,45 @@ const station = (state = defaultState, action) => {
             if (!action.error) {
                 return {
                     ...state,
+                    searchUserList: action.payload.result,
+                };
+            } else {
+                return state;
+            }
+        case GET_GROUP_MEMBER:
+            if (!action.error) {
+                return {
+                    ...state,
                     userList: action.payload.result,
+                };
+            } else {
+                return state;
+            }
+        case ADD_GROUP_MEMBER:
+            if (!action.error) {
+                let userList = JSON.parse(JSON.stringify(state.userList));
+                let result = action.payload.result;
+                if (result.length !== 0) {
+                    userList.push(result[0]);
+                }
+                return {
+                    ...state,
+                    userList: userList,
+                };
+            } else {
+                return state;
+            }
+        case SET_MEMBER_ROLE:
+            if (!action.error) {
+                let userList = JSON.parse(JSON.stringify(state.userList));
+                for (let i = 0; i < userList.length; i++) {
+                    if (userList[i]._key === action.targetUKey) {
+                        userList[i].role = action.role
+                    }
+                }
+                return {
+                    ...state,
+                    userList: userList,
                 };
             } else {
                 return state;
