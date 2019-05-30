@@ -22,6 +22,9 @@ class UploadAvatar extends Component {
 
     cropUpload() {
         // image in dataUrl
+        if (!this.refs.cropper) {
+            return;
+        }
         let cutAvater = this.refs.cropper.getCroppedCanvas().toDataURL();
         // 将dataurl转换为Blob对象
         let arr = cutAvater.split(',')

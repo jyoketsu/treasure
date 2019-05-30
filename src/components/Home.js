@@ -167,7 +167,7 @@ class Home extends Component {
 
     componentDidMount() {
         const { getStationList, stationList, nowStationKey, getStoryList,
-            location, changeStation, clearStoryList, sortType, sortOrder, storyListLength, } = this.props;
+            location, changeStation, sortType, sortOrder, storyListLength, } = this.props;
         let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
         if (stationList.length === 0) {
             getStationList();

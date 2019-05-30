@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { FormGroup, Button, CheckBox, Link, Select, FormTextInput } from './common/Form.js';
-// import { Select } from 'antd';
+import { FormGroup, Button, CheckBox, Link, FormTextInput } from './common/Form.js';
 import api from '../services/Api';
 import { message } from 'antd';
 import Loading from './common/Loading';
@@ -9,8 +8,6 @@ import util from '../services/Util';
 
 import { connect } from 'react-redux';
 import { LOGIN, REGISTER, BIND_MOBILE } from '../actions/app';
-
-// const Option = Select.Option;
 
 const mapStateToProps = state => ({
     user: state.auth.user,

@@ -45,11 +45,19 @@ class MyStation extends Component {
 
     render() {
         const { stationList } = this.props;
+        const targetStationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         let data = [];
         for (let i = 0; i < stationList.length; i++) {
             let station = stationList[i];
-            if (station.isMyStar) {
-                data.push(station);
+            if (targetStationKey) {
+                if ((targetStationKey === station.starKey) && (station.role <= 2)) {
+                    data.push(station);
+                    break;
+                }
+            } else {
+                if (station.isMyStar || station.role <= 2) {
+                    data.push(station);
+                }
             }
         }
         return (
@@ -66,12 +74,16 @@ class MyStation extends Component {
                             deleteStation={this.showDeleteConfirm.bind(this, station.starKey, station.starName)}
                         />))
                 }
+                {
+                    data.length === 0 ? <div>暂无站点</div> : null
+                }
             </div>
         );
     };
 
     componentDidMount() {
-        const { getStationList, stationList } = this.props;
+        const { getStationList, stationList, clearStoryList } = this.props;
+        clearStoryList();
         if (stationList.length === 0) {
             getStationList();
         }

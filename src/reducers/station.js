@@ -1,4 +1,6 @@
 import {
+    LOGIN,
+    GET_USER_INFO,
     GET_STATION_LIST,
     CREATE_STATION,
     CHANGE_STATION,
@@ -23,6 +25,12 @@ const defaultState = {
 
 const station = (state = defaultState, action) => {
     switch (action.type) {
+        case LOGIN:
+        case GET_USER_INFO:
+            return {
+                ...state,
+                stationList: [],
+            }
         case GET_STATION_LIST:
             if (!action.error) {
                 return {
