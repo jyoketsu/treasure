@@ -53,7 +53,7 @@ class Card extends Component {
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
-        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/375/')` };
+        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/300/')` };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey');
         let status = '';

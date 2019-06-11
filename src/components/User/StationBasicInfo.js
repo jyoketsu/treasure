@@ -78,7 +78,7 @@ class StationBasicInfo extends Component {
         const { stationInfo } = props;
 
         this.state = {
-            starKey: stationInfo ? stationInfo.starKey : '',
+            starKey: stationInfo ? stationInfo._key : '',
             cover: stationInfo ? stationInfo.cover : '',
             logo: stationInfo ? stationInfo.logo : '',
             size: stationInfo ? stationInfo.size : '',
@@ -86,7 +86,7 @@ class StationBasicInfo extends Component {
             isMainStar: stationInfo ? stationInfo.isMainStar : '',
             fields: {
                 name: {
-                    value: stationInfo ? stationInfo.starName : '',
+                    value: stationInfo ? stationInfo.name : '',
                 },
                 memo: {
                     value: stationInfo ? stationInfo.memo : '',
@@ -120,6 +120,7 @@ class StationBasicInfo extends Component {
             if (!err) {
                 if (!cover) {
                     message.error('请上传封面！');
+                    console.log('请上传封面！');
                     return;
                 }
                 let size = await util.common.getImageInfo(cover);

@@ -23,7 +23,7 @@ class EditStation extends Component {
         let stationKey = location ? util.common.getSearchParamValue(location.search, 'key') : null;
         this.stationInfo = null;
         for (let i = 0; i < stationList.length; i++) {
-            if (stationList[i].starKey === stationKey) {
+            if (stationList[i]._key === stationKey) {
                 this.stationInfo = stationList[i];
                 break;
             }

@@ -49,7 +49,7 @@ class Home extends Component {
         if (
             nowStoryNumber < storyNumber &&
             !waiting &&
-            (this.homepage.scrollTop + this.homepage.clientHeight === this.homepage.scrollHeight)
+            (document.scrollingElement.scrollTop + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
             if (nowStationKey === 'all') {
@@ -110,7 +110,7 @@ class Home extends Component {
         let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
 
         return (
-            <div className="app-content homepage" ref={node => this.homepage = node} onWheel={this.handleMouseWheel}>
+            <div className="app-content homepage" ref={node => this.homepage = node}>
                 {
                     // 微站列表
                     !targetStationKey ?
@@ -125,10 +125,10 @@ class Home extends Component {
                                 stationList.map((station, index) => (
                                     <div
                                         key={index}
-                                        className={`station-item ${nowStationKey === station.starKey ? 'selected' : ''}`}
-                                        onClick={changeStation.bind(this, station.starKey)}
+                                        className={`station-item ${nowStationKey === station._key ? 'selected' : ''}`}
+                                        onClick={changeStation.bind(this, station._key)}
                                     >
-                                        {station.starName}
+                                        {station.name}
                                     </div>
                                 ))
                             }
@@ -168,6 +168,10 @@ class Home extends Component {
     componentDidMount() {
         const { getStationList, stationList, nowStationKey, getStoryList,
             location, changeStation, sortType, sortOrder, storyListLength, } = this.props;
+
+        // 监听滚动，查看更多
+        document.body.addEventListener('wheel', this.handleMouseWheel, true);
+
         let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
         if (stationList.length === 0) {
             getStationList();
@@ -210,11 +214,22 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
+        // 保存scrollTop的值
         sessionStorage.setItem('home-scroll', this.homepage.scrollTop);
+        // 移除滚动事件
+        document.body.removeEventListener('wheel', this.handleMouseWheel);
     }
 }
 
 class Station extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    scrolltop() {
+        document.scrollingElement.scrollTop = 0;
+    }
+
     handleClickAdd() {
         const { history, user, } = this.props;
         if (!user.profile) {
@@ -246,18 +261,18 @@ class Station extends React.Component {
             nowChannelKey,
             changeChannel
         } = this.props;
-        const { starInfo = {}, seriesInfo = [] } = content;
+        const { seriesInfo = [] } = content;
         return (
             <div className="station-home">
                 <div
                     className="station-cover"
-                    style={{ backgroundImage: `url(${starInfo.cover})` }}
+                    style={{ backgroundImage: `url(${content.cover})` }}
                 ></div>
                 <div className="main-content">
-                    <span className="station-name">{starInfo.name}</span>
+                    <span className="station-name">{content.name}</span>
                     <div className="station-memo">
                         {/* <span className="station-memo-title">概述</span> */}
-                        <pre>{starInfo.memo}</pre>
+                        <pre>{content.memo}</pre>
                     </div>
                     <div className="series-container">
                         <div className="series-tabs">
@@ -286,18 +301,23 @@ class Station extends React.Component {
                     </div>
                     <StoryList />
                 </div>
+                <HomeFooter stationName={content.name} />
                 <div className="operation-panel">
-                    {/* <div className="share-station">分享</div> */}
+                    <Tooltip title="回到顶部" placement="left">
+                        <div className="story-tool scrolltop" onClick={this.scrolltop}>
+                            <i></i>
+                        </div>
+                    </Tooltip>
                     <Tooltip title="排序" placement="left">
                         <div className="story-tool sort-story" onClick={switchSortModal}>
                             <i></i>
-                            <span>作品排序</span>
+                            {/* <span>作品排序</span> */}
                         </div>
                     </Tooltip>
                     <Tooltip title="投稿" placement="left">
                         <div className="story-tool add-story" onClick={this.handleClickAdd.bind(this)}>
                             <i></i>
-                            <span>上传作品</span>
+                            {/* <span>上传作品</span> */}
                         </div>
                     </Tooltip>
                 </div>
@@ -334,22 +354,45 @@ class Station extends React.Component {
 
     componentDidUpdate(prevProps) {
         const { content = {}, } = this.props;
-        const { starInfo = {}, } = content;
-
         const { content: prevContent = {}, nowStationKey: prevStationKey } = prevProps;
-        const { starInfo: prevStarInfo = {} } = prevContent;
 
         // 切换微站
-        if (starInfo._key !== prevStarInfo._key) {
+        if (content._key !== prevContent._key) {
             let tarStationName = util.common.getSearchParamValue(window.location.search, 'station');
             if (!tarStationName) {
-                document.title = starInfo.name ? starInfo.name : '时光宝库'
+                document.title = content.name ? content.name : '时光宝库'
             }
         }
         // 从订阅切换到微站
         if (prevStationKey === 'all') {
             alert('从订阅切换到微站');
         }
+    }
+}
+
+class HomeFooter extends React.Component {
+    render() {
+        const { stationName } = this.props;
+        const isMobile = util.common.isMobile();
+        return (
+            <div className="home-footer">
+                {
+                    !isMobile ? (
+                        <span>
+                            <span>版权所有</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>2019-2029</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>{stationName}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>All Rights Reserved</span>
+                        </span>
+                    ) : [
+                            <span key="1">版权所有 2019-2029</span>,
+                            <span key="2">{`${stationName} All Rights Reserved`}</span>
+                        ]
+                }
+
+                <span>{`Powered by 时光宝库`}</span>
+            </div>
+        );
     }
 }
 

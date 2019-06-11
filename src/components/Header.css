@@ -1,8 +1,14 @@
+.app-menu-container {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+}
+
 .app-menu {
     list-style: none;
-    padding: unset;
+    padding: 0 14px;
     margin: unset;
-    height: 64px;
+    height: 70px;
     background: rgba(255, 255, 255, 1);
     font-size: 18px;
     font-weight: 400;
@@ -11,15 +17,26 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0px 3px 40px 3px rgba(103, 103, 103, 0.4);
+    background-color: #333645;
 }
 
 .menu-logo {
-    width: 260px !important;
-    height: 100%;
+    width: 104px !important;
+    height: 49px !important;
+    border-radius: 8px;
     /* background-image: url(/image/icon/logo.svg); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.head-station-name {
+    width: unset !important;
+    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
+    font-size: 24px;
+    letter-spacing: 1.36px;
+    margin-left: 14px;
+    color: #ffffff;
 }
 
 .menu-space {
@@ -31,7 +48,7 @@
     height: 100%;
     text-align: center;
     font-size: 18px;
-    line-height: 64px;
+    line-height: 70px;
     box-sizing: border-box;
 }
 
@@ -62,18 +79,33 @@
     color: #E60012 !important;
 }
 
-@media screen and (max-width:768px) {
-    .app-menu {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        box-shadow: unset;
-        border-top: 1px solid #ddd;
-    }
-
-    .menu-logo,
-    .menu-space {
-        display: none;
-    }
+.head-icon {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 24px !important;
+    height: 24px !important;
+    margin-right: 24px;
 }
+
+.head-icon:hover {
+    cursor: pointer;
+}
+
+.me {
+    background-image: url(/image/icon/me.svg);
+}
+
+.message {
+    background-image: url(/image/icon/message.svg);
+}
+
+.search {
+    background-image: url(/image/icon/search.svg);
+}
+
+.subscribe {
+    background-image: url(/image/icon/subscribe.svg);
+}
+
+@media screen and (max-width:768px) {}

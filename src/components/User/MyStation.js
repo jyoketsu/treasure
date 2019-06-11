@@ -50,7 +50,7 @@ class MyStation extends Component {
         for (let i = 0; i < stationList.length; i++) {
             let station = stationList[i];
             if (targetStationKey) {
-                if ((targetStationKey === station.starKey) && (station.role <= 2)) {
+                if ((targetStationKey === station._key) && (station.role <= 2)) {
                     data.push(station);
                     break;
                 }
@@ -67,11 +67,11 @@ class MyStation extends Component {
                         <StationCard
                             key={index}
                             cover={station.cover}
-                            starName={station.starName}
+                            starName={station.name}
                             memo={station.memo}
-                            editStation={this.toEditStation.bind(this, station.starKey, station.intimateGroupKey, 'editStation')}
-                            audit={this.toEditStation.bind(this, station.starKey, station.intimateGroupKey, 'audit')}
-                            deleteStation={this.showDeleteConfirm.bind(this, station.starKey, station.starName)}
+                            editStation={this.toEditStation.bind(this, station._key, station.intimateGroupKey, 'editStation')}
+                            audit={this.toEditStation.bind(this, station._key, station.intimateGroupKey, 'audit')}
+                            deleteStation={this.showDeleteConfirm.bind(this, station._key, station.name)}
                         />))
                 }
                 {

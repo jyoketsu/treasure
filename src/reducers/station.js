@@ -1,6 +1,5 @@
 import {
     LOGIN,
-    GET_USER_INFO,
     GET_STATION_LIST,
     CREATE_STATION,
     CHANGE_STATION,
@@ -26,7 +25,6 @@ const defaultState = {
 const station = (state = defaultState, action) => {
     switch (action.type) {
         case LOGIN:
-        case GET_USER_INFO:
             return {
                 ...state,
                 stationList: [],
@@ -56,7 +54,7 @@ const station = (state = defaultState, action) => {
             if (!action.error) {
                 let stationList = Object.assign([], state.stationList);
                 for (let i = 0; i < stationList.length; i++) {
-                    if (stationList[i].starKey === action.stationKey) {
+                    if (stationList[i]._key === action.stationKey) {
                         stationList.splice(i, 1);
                         break;
                     }
@@ -73,7 +71,7 @@ const station = (state = defaultState, action) => {
             if (!action.error) {
                 let stationList = Object.assign([], state.stationList);
                 for (let i = 0; i < stationList.length; i++) {
-                    if (stationList[i].starKey === action.stationKey) {
+                    if (stationList[i]._key === action.stationKey) {
                         stationList[i] = action.payload.result
                         break;
                     }

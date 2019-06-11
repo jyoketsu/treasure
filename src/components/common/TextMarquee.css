@@ -1,0 +1,18 @@
+.text-marquee-box>.content>.text {
+    margin: unset;
+}
+
+.text-marquee-box {
+    color: #FFF;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 300px;
+}
+
+.text-marquee-box>.content p {
+    display: inline-block;
+}
+
+.text-marquee-box>.content p.padding {
+    padding: 0 300px;
+}

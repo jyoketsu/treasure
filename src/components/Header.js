@@ -3,6 +3,8 @@ import './Header.css';
 import { Link, withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { getUserInfo } from '../actions/app';
+import TextMarquee from './common/TextMarquee';
+import util from '../services/Util';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -16,35 +18,64 @@ class Header extends Component {
         const { location, nowStationKey, stationMap } = this.props;
         let pathname = location.pathname;
         let search = location.search;
-        const starInfo = stationMap[nowStationKey] ? stationMap[nowStationKey].starInfo : null;
+        const starInfo = stationMap[nowStationKey] ? stationMap[nowStationKey] : null;
+        const isMobile = util.common.isMobile();
         return (
-            <ul className="app-menu" ref={elem => this.nv = elem}>
-                <li className={`menu-logo`} style={{
-                    backgroundImage: `url(${starInfo && starInfo.logo !== null ? starInfo.logo : '/image/background/logo.png'})`
-                }}>
-                    {/* <Link to="/"></Link> */}
-                </li>
-                <li className="menu-space"></li>
-                <li className={pathname === '/' ? 'active' : ''}>
+            <div className="app-menu-container">
+                <ul className="app-menu" ref={elem => this.nv = elem}>
+                    <li className={`menu-logo`} style={{
+                        backgroundImage: `url(${starInfo && starInfo.logo !== null ? starInfo.logo : '/image/background/logo.png'})`
+                    }}>
+                        <Link to={`/${search}`}></Link>
+                    </li>
+                    {
+                        !isMobile ? <li className="head-station-name">{starInfo ? starInfo.name : ''}</li> : null
+                    }
+                    <li className="menu-space"></li>
+                    {/* <li className={pathname === '/' ? 'active' : ''}>
                     <Link to={`/${search}`}>订阅</Link>
-                </li>
-                {!search ?
+                </li> */}
+                    {/* {!search ?
                     <li className={pathname === '/explore' ? 'active' : ''}>
                         <Link to={`/explore${search}`}>探索</Link>
                     </li> : null
-                }
-                {!search ?
+                } */}
+                    {/* {!search ?
                     <li className={pathname === '/editStation' ? 'active' : ''}>
                         <Link to="/editStation">+</Link>
                     </li> : null
+                } */}
+                    {
+                        !isMobile ?
+                            <TextMarquee
+                                width={189}
+                                text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
+                                style={{ marginRight: '24px' }}
+                            /> : null
+                    }
+                    <li className={`head-icon subscribe`}>
+
+                    </li>
+                    <li className={`head-icon search`}>
+
+                    </li>
+                    <li className={`head-icon message ${pathname === '/message' ? 'active' : ''}`}>
+                        <Link to={`/message${search}`}></Link>
+                    </li>
+                    <li className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}
+                    >
+                        <Link to={`/me${search}`}></Link>
+                    </li>
+                </ul>
+                {
+                    isMobile ?
+                        <TextMarquee
+                            width={document.body.offsetWidth}
+                            text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
+                            style={{ fontSize: '24px' }}
+                        /> : null
                 }
-                <li className={pathname === '/message' ? 'active' : ''}>
-                    <Link to={`/message${search}`}>消息</Link>
-                </li>
-                <li className={pathname === '/me' ? 'active' : ''}>
-                    <Link to={`/me${search}`}>我</Link>
-                </li>
-            </ul>
+            </div>
         );
     };
 

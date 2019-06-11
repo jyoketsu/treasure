@@ -40,12 +40,6 @@
 }
 
 .app-content {
-    position: absolute;
-    top: 64px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: auto;
     background-color: #F9F9F9;
 }
 
@@ -63,7 +57,7 @@
 
 .main-content {
     position: relative;
-    width: 830px;
+    width: 960px;
 }
 
 @keyframes App-logo-spin {
@@ -77,15 +71,6 @@
 }
 
 @media screen and (max-width:768px) {
-    .app-content {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 64px;
-        left: 0;
-        overflow: auto;
-    }
-
     .main-content {
         width: 100%;
         padding: 0 15px;
