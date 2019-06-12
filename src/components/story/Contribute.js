@@ -9,8 +9,8 @@ import { addStory, modifyStory, deleteStory, } from '../../actions/app';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
-    seriesInfo: state.station.stationMap[state.station.nowStationKey] ?
-        state.station.stationMap[state.station.nowStationKey].seriesInfo : [],
+    seriesInfo: state.station.nowStation ?
+        state.station.nowStation.seriesInfo : [],
     user: state.auth.user,
     story: state.story.story,
     nowStationKey: state.station.nowStationKey,

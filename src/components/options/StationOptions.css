@@ -1,0 +1,17 @@
+.station-options {
+    margin: auto;
+    background-color: #ffffff;
+    display: flex;
+}
+
+.options-menu {
+    width: 150px;
+    font-size: 24px;
+}
+.options-menu>div:hover{
+    cursor: pointer;
+}
+
+.options-content {
+    flex: 1;
+}

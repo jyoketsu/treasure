@@ -8,7 +8,7 @@ const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
     nowStationKey: state.station.nowStationKey,
-    stationMap: state.station.stationMap,
+    nowStation: state.station.nowStation,
 });
 
 class Channel extends Component {
@@ -45,8 +45,8 @@ class Channel extends Component {
     }
 
     render() {
-        const { nowStationKey, stationMap } = this.props;
-        let seriesInfo = stationMap[nowStationKey] ? stationMap[nowStationKey].seriesInfo : [];
+        const { nowStation } = this.props;
+        let seriesInfo = nowStation ? nowStation.seriesInfo : [];
         return (
             <div className="channel-option">
                 <div className="channel-head">
@@ -73,8 +73,8 @@ class Channel extends Component {
     };
 
     componentDidMount() {
-        const { stationMap, nowStationKey, history } = this.props;
-        if (!stationMap[nowStationKey]) {
+        const { nowStation, history } = this.props;
+        if (!nowStation) {
             history.push(`/${window.location.search}`);
         }
     }

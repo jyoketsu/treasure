@@ -4,18 +4,17 @@ import { Input } from 'antd';
 import { MemberCard, SearchMemberCard, } from '../common/Common';
 import { connect } from 'react-redux';
 import { searchUser, groupMember, addGroupMember, setMemberRole } from '../../actions/app';
-import util from '../../services/Util';
 
 const Search = Input.Search;
 const mapStateToProps = state => ({
     searchUserList: state.station.searchUserList,
     userList: state.station.userList,
+    groupKey: state.station.nowStation.intimateGroupKey,
 });
 
 class StationGroup extends Component {
     render() {
-        const { searchUser, userList, searchUserList, addGroupMember, setMemberRole } = this.props;
-        const groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey')
+        const { searchUser, userList, searchUserList, addGroupMember, setMemberRole, groupKey, } = this.props;
         return (
             <div className="station-group">
                 <h2>添加成员</h2>
@@ -62,8 +61,8 @@ class StationGroup extends Component {
     };
 
     componentDidMount() {
-        const { groupMember } = this.props;
-        groupMember(util.common.getSearchParamValue(window.location.search, 'groupKey'));
+        const { groupMember, groupKey } = this.props;
+        groupMember(groupKey);
     }
 }
 

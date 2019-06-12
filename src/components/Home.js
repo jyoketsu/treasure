@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
     waiting: state.common.waiting,
     stationList: state.station.stationList,
     nowStationKey: state.station.nowStationKey,
-    stationMap: state.station.stationMap,
+    nowStation: state.station.nowStation,
     storyNumber: state.story.storyNumber,
     nowStoryNumber: state.story.storyList.length,
     sortType: state.story.sortType,
@@ -46,10 +46,11 @@ class Home extends Component {
             sortType,
             sortOrder,
             nowChannelKey, } = this.props;
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
         if (
             nowStoryNumber < storyNumber &&
             !waiting &&
-            (document.scrollingElement.scrollTop + document.body.clientHeight === document.body.scrollHeight)
+            (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
             if (nowStationKey === 'all') {
@@ -95,54 +96,25 @@ class Home extends Component {
     render() {
         const {
             user,
-            location,
-            changeStation,
             getStoryList,
             storyListLength,
-            stationList,
             nowStationKey,
-            stationMap,
+            nowStation,
             history,
             sortType,
             sortOrder,
             nowChannelKey } = this.props;
         const { showSort } = this.state;
-        let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
 
         return (
             <div className="app-content homepage" ref={node => this.homepage = node}>
-                {
-                    // 微站列表
-                    !targetStationKey ?
-                        <div className="station-list">
-                            <div
-                                className={`station-item ${nowStationKey === 'all' ? 'selected' : ''}`}
-                                onClick={changeStation.bind(this, 'all')}
-                            >
-                                全部
-                        </div>
-                            {
-                                stationList.map((station, index) => (
-                                    <div
-                                        key={index}
-                                        className={`station-item ${nowStationKey === station._key ? 'selected' : ''}`}
-                                        onClick={changeStation.bind(this, station._key)}
-                                    >
-                                        {station.name}
-                                    </div>
-                                ))
-                            }
-                            {/* <div className={`station-item`}>查看所有</div> */}
-                        </div> : null
-                }
-
                 {
                     nowStationKey !== 'all' ?
                         <Station
                             user={user}
                             nowStationKey={nowStationKey}
                             nowChannelKey={nowChannelKey}
-                            content={stationMap[nowStationKey]}
+                            content={nowStation || {}}
                             sortType={sortType}
                             sortOrder={sortOrder}
                             storyListLength={storyListLength}
@@ -166,44 +138,29 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        const { getStationList, stationList, nowStationKey, getStoryList,
-            location, changeStation, sortType, sortOrder, storyListLength, } = this.props;
-
         // 监听滚动，查看更多
-        document.body.addEventListener('wheel', this.handleMouseWheel, true);
-
-        let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
-        if (stationList.length === 0) {
-            getStationList();
-        }
+        document.body.addEventListener('wheel', this.handleMouseWheel);
         if (this.homepage) {
             let scrollTop = sessionStorage.getItem('home-scroll');
             this.homepage.scrollTop = scrollTop;
         }
 
-        if (targetStationKey && targetStationKey !== nowStationKey) {
-            changeStation(targetStationKey);
-        } else {
-            if (!targetStationKey && nowStationKey === 'all') {
-                // 订阅的所有微站的频道故事
-                getStoryList(4, null, null, 1, 1, 1, this.perPage);
-            } else if (storyListLength === 0) {
-                // 获取微站全部故事
-                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
-            }
+        const { nowStationKey, sortType, sortOrder, getStoryList, getStationDetail, } = this.props;
+        if (nowStationKey) {
+            getStationDetail(nowStationKey);
+            // 获取微站全部故事
+            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
         }
     }
 
     componentDidUpdate(prevProps) {
-        const { nowStationKey, stationMap, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, } = this.props;
-        // 切换微站时
+        const { nowStationKey, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, } = this.props;
+        // 切换微站时重新获取故事
         if (nowStationKey !== prevProps.nowStationKey) {
             clearStoryList();
             this.curPage = 1;
             if (nowStationKey !== 'all') {
-                if (!stationMap[nowStationKey]) {
-                    getStationDetail(nowStationKey);
-                }
+                getStationDetail(nowStationKey);
                 // 获取微站全部故事
                 getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
             } else {
@@ -222,12 +179,23 @@ class Home extends Component {
 }
 
 class Station extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    /**
+     * 回到顶部，动画效果
+     * 由快到慢动画效果，体验较好
+     */
     scrolltop() {
-        document.scrollingElement.scrollTop = 0;
+        let scrollToptimer = setInterval(() => {
+            let top = document.body.scrollTop || document.documentElement.scrollTop;
+            let speed = top / 4;
+            if (document.body.scrollTop !== 0) {
+                document.body.scrollTop -= speed;
+            } else {
+                document.documentElement.scrollTop -= speed;
+            }
+            if (top === 0) {
+                clearInterval(scrollToptimer);
+            }
+        }, 30);
     }
 
     handleClickAdd() {

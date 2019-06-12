@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
     stationList: state.station.stationList,
     loading: state.common.loading,
     nowStationKey: state.station.nowStationKey,
-    stationMap: state.station.stationMap,
+    nowStation: state.station.nowStation,
 });
 
 const CustomizedForm = Form.create({
@@ -53,8 +53,8 @@ const CustomizedForm = Form.create({
 class EditChannel extends Component {
     constructor(props) {
         super(props);
-        const { nowStationKey, stationMap, location, } = this.props;
-        let seriesInfo = stationMap[nowStationKey] ? stationMap[nowStationKey].seriesInfo : [];
+        const { nowStation, location, } = this.props;
+        let seriesInfo = nowStation ? nowStation.seriesInfo : [];
         let channelKey = util.common.getSearchParamValue(location.search, 'key');
         let channelInfo = null;
         for (let i = 0; i < seriesInfo.length; i++) {

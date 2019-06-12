@@ -10,9 +10,15 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-top: 20px;
     background-color: #fff;
     padding: 15px;
+}
+
+@media screen and (max-width:768px) {
+    .story-list {
+        padding: unset;
+    }
 }

@@ -17,6 +17,7 @@ import Channel from './components/Channel';
 import EditChannel from './components/EditChannel';
 import Contribute from './components/story/Contribute';
 import Audit from './components/User/Audit';
+import StationOptions from './components/options/StationOptions';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -46,6 +47,7 @@ class App extends Component {
             <Route path="/channel" component={Channel}></Route>
             <Route path="/editChannel" component={EditChannel}></Route>
             <Route path="/audit" component={Audit}></Route>
+            <Route path="/stationOptions" component={StationOptions}></Route>
           </div>
           {loading ? (
             <div className="loading-mask">

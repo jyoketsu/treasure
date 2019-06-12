@@ -1,11 +1,11 @@
 .story-card {
     position: relative;
-    width: 300px;
+    width: 290px;
     height: 310px;
     border: 1px solid gainsboro;
     background: #FFFFFF;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin: 10px;
 }
 
 .story-card.type-article {
@@ -125,5 +125,6 @@
 @media screen and (max-width:768px) {
     .story-card {
         width: 100%;
+        margin: 10px 0;
     }
 }

@@ -7,13 +7,20 @@ class TextMarquee extends Component {
         let textWidth = this.text.offsetWidth;
         let boxWidth = this.box.offsetWidth;
         let that = this;
-        // setInterval(() => {
-        //     if (that.box.scrollLeft < textWidth - boxWidth) {
-        //         that.box.scrollLeft++;
-        //     } else {
-        //         that.box.scrollLeft = 0;
-        //     }
-        // }, 18);
+        if (!this.box) {
+            return;
+        }
+        let interval = setInterval(() => {
+            if (that.box.scrollLeft < textWidth - boxWidth) {
+                if (that.count === 2 && that.box.scrollLeft === boxWidth) {
+                    clearInterval(interval);
+                }
+                that.box.scrollLeft++;
+            } else {
+                that.count++;
+                that.box.scrollLeft = 0;
+            }
+        }, 18);
     }
 
     render() {
@@ -38,6 +45,7 @@ class TextMarquee extends Component {
     };
 
     componentDidMount() {
+        this.count = 1;
         this.toScrollLeft();
     }
 

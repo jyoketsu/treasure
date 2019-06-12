@@ -2,17 +2,6 @@
     margin: auto;
 }
 
-.log-out {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    line-height: 30px;
-}
-
-.log-out:hover {
-    cursor: pointer;
-}
-
 .user-info-card {
     width: 100%;
     height: 250px;

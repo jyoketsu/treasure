@@ -16,8 +16,8 @@ import {
 const defaultState = {
     competitionInfo: {},
     stationList: [],
-    nowStationKey: 'all',
-    stationMap: {},
+    nowStationKey: null,
+    nowStation: null,
     searchUserList: [],
     userList: [],
 };
@@ -27,6 +27,7 @@ const station = (state = defaultState, action) => {
         case LOGIN:
             return {
                 ...state,
+                nowStationKey: null,
                 stationList: [],
             }
         case GET_STATION_LIST:
@@ -90,32 +91,29 @@ const station = (state = defaultState, action) => {
             }
         case GET_STATION_DETAIL:
             if (!action.error) {
-                let res = action.payload.result;
-                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
-                stationMap[action.stationKey] = res;
                 return {
                     ...state,
-                    stationMap: stationMap,
+                    nowStation: action.payload.result,
                 };
             } else {
                 return state;
             }
         case ADD_CHANNEL:
             if (!action.error) {
-                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
-                let channels = stationMap[action.stationKey].seriesInfo;
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let channels = nowStation.seriesInfo;
                 channels.unshift(action.payload.result);
                 return {
                     ...state,
-                    stationMap: stationMap,
+                    nowStation: nowStation,
                 };
             } else {
                 return state;
             }
         case EDIT_CHANNEL:
             if (!action.error) {
-                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
-                let channels = stationMap[state.nowStationKey].seriesInfo;
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let channels = nowStation.seriesInfo;
                 for (let i = 0; i < channels.length; i++) {
                     if (channels[i]._key === action.channelKey) {
                         channels[i] = action.payload.result;
@@ -124,15 +122,15 @@ const station = (state = defaultState, action) => {
                 }
                 return {
                     ...state,
-                    stationMap: stationMap,
+                    nowStation: nowStation,
                 };
             } else {
                 return state;
             }
         case DELETE_CHANNEL:
             if (!action.error) {
-                let stationMap = JSON.parse(JSON.stringify(state.stationMap));
-                let channels = stationMap[state.nowStationKey].seriesInfo;
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let channels = nowStation.seriesInfo;
                 for (let i = 0; i < channels.length; i++) {
                     if (channels[i]._key === action.channelKey) {
                         channels.splice(i, 1);
@@ -141,7 +139,7 @@ const station = (state = defaultState, action) => {
                 }
                 return {
                     ...state,
-                    stationMap: stationMap,
+                    nowStation: nowStation,
                 };
             } else {
                 return state;
