@@ -13,8 +13,6 @@ import EditStation from './components/User/EditStation';
 import Login from './components/Login';
 import Story from './components/story/Story';
 import EditStory from './components/story/EditStory';
-import Channel from './components/Channel';
-import EditChannel from './components/EditChannel';
 import Contribute from './components/story/Contribute';
 import Audit from './components/User/Audit';
 import StationOptions from './components/options/StationOptions';
@@ -33,7 +31,7 @@ class App extends Component {
       <Router>
         <div className="app">
           <Header />
-          <div className="">
+          <div className="route-container">
             <Route exact path="/" component={Home} />
             <Route path="/explore" component={Explore} />
             <Route path="/message" component={Message} />
@@ -44,8 +42,6 @@ class App extends Component {
             <Route path="/story" component={Story} />
             <Route path="/editStory" component={EditStory}></Route>
             <Route path="/contribute" component={Contribute}></Route>
-            <Route path="/channel" component={Channel}></Route>
-            <Route path="/editChannel" component={EditChannel}></Route>
             <Route path="/audit" component={Audit}></Route>
             <Route path="/stationOptions" component={StationOptions}></Route>
           </div>

@@ -48,14 +48,13 @@ class Card extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, userKey, } = this.props;
+        const { story, like, audit, auditStory, userKey, groupKey, } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
         let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/300/')` };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
-        let groupKey = util.common.getSearchParamValue(window.location.search, 'groupKey');
         let status = '';
         let statusStyle = {};
         if (isMyStory || audit) {

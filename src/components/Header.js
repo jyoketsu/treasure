@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Header.css';
 import { Link, withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
-import { getUserInfo, logout, changeStation, getStationList, } from '../actions/app';
+import { getUserInfo, logout, changeStation, getStationList, clearStoryList, } from '../actions/app';
 import TextMarquee from './common/TextMarquee';
 import util from '../services/Util';
 import { Menu, Dropdown, Modal } from 'antd';
@@ -39,11 +39,14 @@ class Header extends Component {
     }
 
     handleMenuClick({ key }) {
-        const { history, location, } = this.props;
+        const { history, location, clearStoryList, } = this.props;
         switch (key) {
             case "account": history.push(`/me${location.search}`); break;
             case "logout": this.showConfirm(); break;
-            case "stationOptions": history.push(`/stationOptions${location.search}`); break;
+            case "stationOptions":
+                clearStoryList();
+                history.push(`/stationOptions${location.search}`);
+                break;
             default:
                 // 切换站点
                 this.props.changeStation(key);
@@ -60,7 +63,10 @@ class Header extends Component {
 
         const menu = (
             <Menu onClick={this.handleMenuClick}>
-                <Menu.Item key="stationOptions">本站管理</Menu.Item>
+                {
+                    nowStation && nowStation.editRight ?
+                        <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
+                }
                 <SubMenu title="我的站点">
                     {
                         stationList.map((station) => (
@@ -207,5 +213,5 @@ class Header extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    { getUserInfo, logout, changeStation, getStationList, }
+    { getUserInfo, logout, changeStation, getStationList, clearStoryList, }
 )(Header));

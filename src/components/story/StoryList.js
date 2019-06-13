@@ -10,11 +10,23 @@ const mapStateToProps = state => ({
     storyList: state.story.storyList,
     storyNumber: state.story.storyNumber,
     flag: state.common.flag,
+    groupKey: state.station.nowStation ? state.station.nowStation.intimateGroupKey : null,
 });
 
 class StoryList extends Component {
     render() {
-        const { storyList, waiting, storyNumber, like, audit, deleteStory, auditStory, flag, userKey } = this.props;
+        const {
+            groupKey,
+            storyList,
+            waiting,
+            storyNumber,
+            like,
+            audit,
+            deleteStory,
+            auditStory,
+            flag,
+            userKey
+        } = this.props;
         return (
             <div className="story-list">
                 {
@@ -27,6 +39,7 @@ class StoryList extends Component {
                             deleteStory={deleteStory}
                             audit={audit}
                             auditStory={auditStory}
+                            groupKey={groupKey}
                         />
                     ))
                 }

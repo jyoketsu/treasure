@@ -1,0 +1,8 @@
+.form-label {
+    margin-top: 15px;
+    display: block;
+}
+
+.form-label:first-child {
+    margin-top: unset;
+}

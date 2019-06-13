@@ -1,0 +1,9 @@
+.content-manage {
+    background: #fff;
+    line-height: 40px;
+    overflow: auto;
+}
+
+.content-manage .story-card-cover:hover {
+    cursor: auto;
+}

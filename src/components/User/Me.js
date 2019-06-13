@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Me.css';
 import { Tabs, } from 'antd';
 import util from '../../services/Util';
-import MyStation from './MyStation';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 
@@ -35,9 +34,6 @@ class Me extends Component {
                         <TabPane tab="我的投稿" key="myStory">
                             功能开发中，敬请期待！
                          </TabPane>
-                        <TabPane tab="站点管理" key="myStation">
-                            <MyStation />
-                        </TabPane>
                         <TabPane tab="我的收藏" key="favorite">
                             功能开发中，敬请期待！
                         </TabPane>

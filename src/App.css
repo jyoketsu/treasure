@@ -12,6 +12,14 @@
     outline: none;
 }
 
+#root,
+.app,
+.route-container,
+.app-content,
+.main-content {
+    height: 100%;
+}
+
 .App {
     text-align: center;
     box-sizing: border-box;

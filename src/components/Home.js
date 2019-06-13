@@ -107,7 +107,7 @@ class Home extends Component {
         const { showSort } = this.state;
 
         return (
-            <div className="app-content homepage" ref={node => this.homepage = node}>
+            <div className="app-content homepage">
                 {
                     nowStationKey !== 'all' ?
                         <Station
@@ -140,13 +140,15 @@ class Home extends Component {
     componentDidMount() {
         // 监听滚动，查看更多
         document.body.addEventListener('wheel', this.handleMouseWheel);
-        if (this.homepage) {
-            let scrollTop = sessionStorage.getItem('home-scroll');
-            this.homepage.scrollTop = scrollTop;
+        let scrollTop = sessionStorage.getItem('home-scroll');
+        if (document.body.scrollTop !== 0) {
+            document.body.scrollTop = scrollTop;
+        } else {
+            document.documentElement.scrollTop = scrollTop;
         }
 
-        const { nowStationKey, sortType, sortOrder, getStoryList, getStationDetail, } = this.props;
-        if (nowStationKey) {
+        const { nowStationKey, sortType, sortOrder, getStoryList, getStationDetail, storyListLength, } = this.props;
+        if (nowStationKey && storyListLength === 0) {
             getStationDetail(nowStationKey);
             // 获取微站全部故事
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
@@ -171,8 +173,14 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
+        if (document.body.scrollTop !== 0) {
+            document.body.scrollTop = 0;
+        } else {
+            document.documentElement.scrollTop = 0;
+        }
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
         // 保存scrollTop的值
-        sessionStorage.setItem('home-scroll', this.homepage.scrollTop);
+        sessionStorage.setItem('home-scroll', top);
         // 移除滚动事件
         document.body.removeEventListener('wheel', this.handleMouseWheel);
     }
@@ -208,13 +216,6 @@ class Station extends React.Component {
         history.push({
             pathname: '/contribute',
             search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
-        });
-    }
-
-    toChannelOption() {
-        const { history } = this.props;
-        history.push({
-            pathname: '/channel',
         });
     }
 
@@ -260,12 +261,6 @@ class Station extends React.Component {
                                 </div>
                             ))}
                         </div>
-                        {
-                            content.editRight ?
-                                <div className="series-options" onClick={this.toChannelOption.bind(this)}></div> :
-                                null
-                        }
-
                     </div>
                     <StoryList />
                 </div>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './Audit.css';
+import './Content.css';
 import { withRouter } from "react-router-dom";
 import StoryList from '../story/StoryList';
 import { connect } from 'react-redux';
-import { getStoryList, clearStoryList } from '../../actions/app';
+import { getStoryList } from '../../actions/app';
 
 const mapStateToProps = state => ({
     waiting: state.common.waiting,
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
     nowStoryNumber: state.story.storyList.length,
 });
 
-class Audit extends Component {
+class Content extends Component {
     constructor(props) {
         super(props);
         this.curPage = 1;
@@ -34,10 +34,12 @@ class Audit extends Component {
             sortType,
             sortOrder,
         } = this.props;
+
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
         if (
             nowStoryNumber < storyNumber &&
             !waiting &&
-            (this.auditRef.scrollTop + this.auditRef.clientHeight === this.auditRef.scrollHeight)
+            (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
@@ -46,19 +48,24 @@ class Audit extends Component {
 
     render() {
         return (
-            <div className="audit" ref={node => this.auditRef = node} onWheel={this.handleMouseWheel}>
-                <div className="my-station-head">作品审核</div>
-                <div className="main-content">
-                    <StoryList audit={true} />
-                </div>
+            <div className="content-manage" ref={node => this.auditRef = node}>
+                <h2>内容管理</h2>
+                <StoryList audit={true} />
             </div>
         );
     };
 
     componentDidMount() {
         const { getStoryList, sortType, sortOrder, nowStationKey, storyListLength, } = this.props;
-        if (storyListLength === 0) {
+        if (nowStationKey && storyListLength === 0) {
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+        }
+
+        // 监听滚动，查看更多
+        document.body.addEventListener('wheel', this.handleMouseWheel);
+        if (this.homepage) {
+            let scrollTop = sessionStorage.getItem('home-scroll');
+            this.homepage.scrollTop = scrollTop;
         }
 
         // 自动滚动
@@ -69,11 +76,13 @@ class Audit extends Component {
     }
 
     componentWillUnmount() {
+        // 移除滚动事件
+        document.body.removeEventListener('wheel', this.handleMouseWheel);
         sessionStorage.setItem('audit-scroll', this.auditRef.scrollTop);
     }
 }
 
 export default withRouter(connect(
     mapStateToProps,
-    { getStoryList, clearStoryList },
-)(Audit));
+    { getStoryList },
+)(Content));

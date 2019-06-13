@@ -1,9 +1,4 @@
 .channel-option {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     background: #fff;
     overflow: auto;
 }
@@ -18,21 +13,15 @@
     font-size: 16px;
     letter-spacing: 2px;
     font-size: 16px;
-    color: #333;
+    color: #333333;
     line-height: 46px;
-    padding: 0 80px;
     border-bottom: 1px solid #ddd;
-    background: radial-gradient(at center top, #7B8492, #292D42);
-    color: white;
     box-sizing: content-box;
+    display: flex;
+    justify-content: space-between;
 }
 
-.add-channel {
-    position: absolute;
-    right: 80px;
-}
-
-.add-channel:hover {
+.tabel-actions>span:hover {
     cursor: pointer;
 }
 

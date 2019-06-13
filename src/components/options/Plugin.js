@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Channel.css';
 import { connect } from 'react-redux';
-import { Table, Divider, Modal } from 'antd';
-import { deleteChannel } from '../actions/app';
+import { Table, Divider, Modal, Button, } from 'antd';
+import { deleteChannel } from '../../actions/app';
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
 });
 
-class Channel extends Component {
+class Plugin extends Component {
     showDeleteConfirm(key, name) {
         const { deleteChannel } = this.props;
         confirm({
@@ -32,15 +32,15 @@ class Channel extends Component {
     handleEdit(key) {
         const { history } = this.props;
         history.push({
-            pathname: '/editChannel',
+            pathname: '/stationOptions/pluginOptions',
             search: `?key=${key}`,
         });
     }
 
     handleClickAdd() {
-        const { history } = this.props;
+        const { history, } = this.props;
         history.push({
-            pathname: '/editChannel',
+            pathname: '/stationOptions/addPlugin',
         });
     }
 
@@ -50,24 +50,26 @@ class Channel extends Component {
         return (
             <div className="channel-option">
                 <div className="channel-head">
-                    <span>频道</span>
-                    <span className="add-channel" onClick={this.handleClickAdd.bind(this)}>添加</span>
+                    <span>插件管理</span>
+                    <Button
+                        type="primary"
+                        className="login-form-button"
+                        onClick={this.handleClickAdd.bind(this)}
+                    >新增插件</Button>
                 </div>
-                <div className="main-content">
-                    <Table dataSource={seriesInfo} rowKey="_key" pagination={false}>
-                        <Column title="频道名" dataIndex="name" />
-                        <Column
-                            title="操作"
-                            render={(text, record) => (
-                                <span className="tabel-actions">
-                                    <span onClick={this.handleEdit.bind(this, record._key)}>编辑</span>
-                                    <Divider type="vertical" />
-                                    <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>删除</span>
-                                </span>
-                            )}
-                        />
-                    </Table>
-                </div>
+                <Table dataSource={seriesInfo} rowKey="_key" pagination={false}>
+                    <Column title="插件名" dataIndex="name" />
+                    <Column
+                        title="操作"
+                        render={(text, record) => (
+                            <span className="tabel-actions">
+                                <span onClick={this.handleEdit.bind(this, record._key)}>设置</span>
+                                <Divider type="vertical" />
+                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>删除</span>
+                            </span>
+                        )}
+                    />
+                </Table>
             </div>
         );
     };
@@ -83,4 +85,4 @@ class Channel extends Component {
 export default connect(
     mapStateToProps,
     { deleteChannel },
-)(Channel);
+)(Plugin);
