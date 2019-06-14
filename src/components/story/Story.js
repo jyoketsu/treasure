@@ -9,6 +9,8 @@ const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
     nowStationKey: state.station.nowStationKey,
+    nowChannelKey: state.story.nowChannelKey,
+    channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
 
 class Story extends Component {
@@ -23,8 +25,19 @@ class Story extends Component {
     }
 
     handleToEdit() {
-        const { history, location } = this.props;
-        history.push(`/contribute${location.search}`);
+        const { history, location, nowChannelKey, channelInfo } = this.props;
+        let nowChannel;
+        for (let i = 0; i < channelInfo.length; i++) {
+            if (nowChannelKey === channelInfo[i]._key) {
+                nowChannel = channelInfo[i];
+                break;
+            }
+        }
+        if (nowChannel.albumType === 'normal') {
+            history.push(`/editStory${location.search}`);
+        } else {
+            history.push(`/contribute${location.search}`);
+        }
     }
 
     render() {

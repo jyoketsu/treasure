@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
         state.station.nowStation.seriesInfo : [],
     user: state.auth.user,
     story: state.story.story,
+    nowChannelKey: state.story.nowChannelKey,
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
     loading: state.common.loading,
@@ -26,7 +27,7 @@ class EditStory extends Component {
         super(props);
         let type = util.common.getSearchParamValue(props.location.search, 'type');
         this.state = {
-            story: type === 'new' ? {} : props.story,
+            story: type === 'new' ? { series: props.nowChannelKey } : props.story,
         }
         this.addContent = this.addContent.bind(this);
         this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -266,7 +267,7 @@ class EditStory extends Component {
                 <div className="story-head" style={{
                     backgroundImage: `url(${cover}?imageView2/2/w/960/)`
                 }}>
-                    <div className="channel-select">
+                    {/* <div className="channel-select">
                         <span>选择频道：</span>
                         <Select
                             defaultValue={series._key}
@@ -279,7 +280,7 @@ class EditStory extends Component {
                                 ))
                             }
                         </Select>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="main-content story-content">
                     <div className="edit-group">

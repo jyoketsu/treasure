@@ -161,13 +161,13 @@ export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const EDIT_CHANNEL = 'EDIT_CHANNEL';
 export const DELETE_CHANNEL = 'DELETE_CHANNEL';
 
-export function addChannel(stationKey, name, type) {
-    let request = api.story.addChannel(stationKey, name, type);
+export function addChannel(stationKey, name, type, extParams, ) {
+    let request = api.story.addChannel(stationKey, name, type, extParams);
     return { type: ADD_CHANNEL, stationKey: stationKey, payload: request }
 }
 
-export function editChannel(channelKey, name, type) {
-    let request = api.story.editChannel(channelKey, name, type);
+export function editChannel(channelKey, name, type, extParams, ) {
+    let request = api.story.editChannel(channelKey, name, type, extParams);
     return { type: EDIT_CHANNEL, channelKey: channelKey, payload: request }
 }
 

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './Home.css';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
 import util from '../services/Util';
 import { Modal, Tooltip, message } from 'antd';
 import { connect } from 'react-redux';
+import ClickOutside from './common/ClickOutside';
 import { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
 
 const mapStateToProps = state => ({
@@ -114,6 +116,7 @@ class Home extends Component {
                             user={user}
                             nowStationKey={nowStationKey}
                             nowChannelKey={nowChannelKey}
+                            channelInfo={nowStation ? nowStation.seriesInfo : []}
                             content={nowStation || {}}
                             sortType={sortType}
                             sortOrder={sortOrder}
@@ -187,6 +190,14 @@ class Home extends Component {
 }
 
 class Station extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showExtButton: false,
+        }
+        this.handleClickAdd = this.handleClickAdd.bind(this);
+        this.switchExtButton = this.switchExtButton.bind(this);
+    }
     /**
      * 回到顶部，动画效果
      * 由快到慢动画效果，体验较好
@@ -206,17 +217,57 @@ class Station extends React.Component {
         }, 30);
     }
 
-    handleClickAdd() {
-        const { history, user, } = this.props;
+    handleClickAdd(channel, type) {
+        const { history, user, nowChannelKey, } = this.props;
         if (!user.profile) {
             message.error('请先完善个人信息！');
             return;
         }
+        if (nowChannelKey === 'allSeries') {
+            message.error('请先选择要发布的频道！');
+            return;
+        }
         const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
-        history.push({
-            pathname: '/contribute',
-            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
-        });
+
+        switch (type) {
+            case 'album':
+                let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
+                history.push({
+                    pathname: `/${path}`,
+                    search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                });
+                break;
+            case 'article':
+                history.push({
+                    pathname: '/editArticle',
+                    search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                });
+                break;
+            default:
+                switch (channel.contributeType[0]) {
+                    case 1:
+                        let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
+                        history.push({
+                            pathname: `/${path}`,
+                            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                        });
+                        break;
+                    case 2:
+                        history.push({
+                            pathname: '/editArticle',
+                            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                        });
+                        break;
+                    default: break;
+                }
+                break;
+        }
+    }
+
+    switchExtButton() {
+        this.setState((prevState) => ({
+            showExtButton: !prevState.showExtButton
+        }));
     }
 
     render() {
@@ -228,9 +279,17 @@ class Station extends React.Component {
             showSort,
             switchSortModal,
             nowChannelKey,
-            changeChannel
+            changeChannel,
+            channelInfo,
         } = this.props;
         const { seriesInfo = [] } = content;
+        let nowChannel;
+        for (let i = 0; i < channelInfo.length; i++) {
+            if (nowChannelKey === channelInfo[i]._key) {
+                nowChannel = channelInfo[i];
+                break;
+            }
+        }
         return (
             <div className="station-home">
                 <div
@@ -274,15 +333,50 @@ class Station extends React.Component {
                     <Tooltip title="排序" placement="left">
                         <div className="story-tool sort-story" onClick={switchSortModal}>
                             <i></i>
-                            {/* <span>作品排序</span> */}
                         </div>
                     </Tooltip>
-                    <Tooltip title="投稿" placement="left">
-                        <div className="story-tool add-story" onClick={this.handleClickAdd.bind(this)}>
-                            <i></i>
-                            {/* <span>上传作品</span> */}
-                        </div>
-                    </Tooltip>
+                    {
+                        (nowChannelKey === 'allSeries') || (nowChannel && nowChannel.contributeType && nowChannel.contributeType.length === 1) ?
+                            <Tooltip title="投稿" placement="left">
+                                <div className="story-tool add-story" onClick={this.handleClickAdd.bind(this, nowChannel, '')}>
+                                    <i></i>
+                                </div>
+                            </Tooltip> : null
+                    }
+                    {
+                        nowChannel && nowChannel.contributeType && nowChannel.contributeType.length > 1 ?
+                            <div className="multi-button">
+                                <Tooltip title="投稿" placement="bottom">
+                                    <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
+                                        <i></i>
+                                    </div>
+                                </Tooltip>
+                                <ReactCSSTransitionGroup transitionName="myFade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+                                    {this.state.showExtButton ? (
+                                        <ClickOutside onClickOutside={this.switchExtButton}>
+                                            <div className="ext-buttons">
+                                                <Tooltip title="创建相册" placement="top">
+                                                    <div
+                                                        className="story-tool add-album"
+                                                        onClick={this.handleClickAdd.bind(this, nowChannel, 'album')}
+                                                    >
+                                                        <i></i>
+                                                    </div>
+                                                </Tooltip>
+                                                <Tooltip title="创建文章" placement="top">
+                                                    <div
+                                                        className="story-tool add-article"
+                                                        onClick={this.handleClickAdd.bind(this, nowChannel, 'article')}
+                                                    >
+                                                        <i></i>
+                                                    </div>
+                                                </Tooltip>
+                                            </div>
+                                        </ClickOutside>
+                                    ) : null}
+                                </ReactCSSTransitionGroup>
+                            </div> : null
+                    }
                 </div>
                 <Modal
                     title="排序"

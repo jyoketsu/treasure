@@ -38,7 +38,9 @@ class StationOptions extends Component {
         const isMobile = util.common.isMobile();
         return (
             <div className="app-content">
-                <div className="main-content station-options">
+                <div className="main-content station-options" style={{
+                    minHeight: `${window.innerHeight}px`
+                }}>
                     <ReactCSSTransitionGroup transitionName="sideMenu" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
                         {
                             !isMobile || this.state.showMenu ?

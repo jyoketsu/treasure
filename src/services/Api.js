@@ -343,22 +343,24 @@ const story = {
         });
     },
 
-    addChannel(stationKey, name, type) {
+    addChannel(stationKey, name, type,extParams) {
         return requests.post(APIURL + '/series', {
             token: token,
             starKey: stationKey,
             name: name,
             type: type,
             groupArray: [],
+            ...extParams,
         });
     },
-    editChannel(channelKey, name, type) {
+    editChannel(channelKey, name, type,extParams) {
         return requests.patch(APIURL + '/series', {
             token: token,
             key: channelKey,
             name: name,
             type: type,
             groupArray: [],
+            ...extParams,
         });
     },
     deleteChannel(channelKey) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './EditChannel.css';
 import util from '../../services/Util';
-import { Form, Input, Button, message, Select, Radio, Switch, Divider, } from 'antd';
+import { Form, Input, Button, message, Select, Radio, Switch, Divider, Checkbox, } from 'antd';
 import { connect } from 'react-redux';
 import { addChannel, editChannel, } from '../../actions/app';
 const Option = Select.Option;
@@ -36,21 +36,33 @@ const CustomizedForm = Form.create({
                 ...props.answer,
                 value: props.answer.value,
             }),
-            displayStyle: Form.createFormField({
-                ...props.displayStyle,
-                value: props.displayStyle.value,
+            showStyle: Form.createFormField({
+                ...props.showStyle,
+                value: props.showStyle.value,
             }),
             allowPublicUpload: Form.createFormField({
                 ...props.allowPublicUpload,
                 value: props.allowPublicUpload.value,
             }),
-            allowVideo: Form.createFormField({
-                ...props.allowVideo,
-                value: props.allowVideo.value,
+            allowUploadVideo: Form.createFormField({
+                ...props.allowUploadVideo,
+                value: props.allowUploadVideo.value,
             }),
             showExif: Form.createFormField({
                 ...props.showExif,
                 value: props.showExif.value,
+            }),
+            contributeType: Form.createFormField({
+                ...props.contributeType,
+                value: props.contributeType.value,
+            }),
+            albumType: Form.createFormField({
+                ...props.albumType,
+                value: props.albumType.value,
+            }),
+            showSetting: Form.createFormField({
+                ...props.showSetting,
+                value: props.showSetting.value,
             }),
         };
     },
@@ -92,39 +104,80 @@ const CustomizedForm = Form.create({
             </Form.Item>
 
             <Form.Item label="问题">
-                {getFieldDecorator('question', {
-                    rules: [{ required: true, message: '请输入问题！' }],
-                })(<Input />)}
+                {getFieldDecorator('question')(<Input />)}
             </Form.Item>
 
             <Form.Item label="答案">
-                {getFieldDecorator('answer', {
-                    rules: [{ required: true, message: '请输入答案！' }],
-                })(<Input />)}
+                {getFieldDecorator('answer')(<Input />)}
             </Form.Item>
 
+            <Divider />
+
             <Form.Item label="显示风格">
-                {getFieldDecorator('displayStyle')(
+                {getFieldDecorator('showStyle', {
+                    rules: [{ required: true, message: '请选择显示风格！' }],
+                })(
                     <Radio.Group>
-                        <Radio value="1">单列宽幅</Radio>
-                        <Radio value="2">多列瀑布流</Radio>
+                        <Radio value={1}>单列宽幅</Radio>
+                        <Radio value={2}>多列瀑布流</Radio>
                     </Radio.Group>,
                 )}
             </Form.Item>
 
-            <Divider />
+            <Form.Item label="显示设置">
+                {getFieldDecorator('showSetting', {
+                })(
+                    <Checkbox.Group style={{ width: '100%' }}>
+                        <Checkbox value="author">显示作者</Checkbox>
+                        <Checkbox value="title">显示标题</Checkbox>
+                        <Checkbox value="like">显示点赞数</Checkbox>
+                        <Checkbox value="clickNumber">显示阅读数</Checkbox>
+                    </Checkbox.Group>,
+                )}
+            </Form.Item>
 
             <Form.Item label="允许公众上传">
                 {getFieldDecorator('allowPublicUpload', { valuePropName: 'checked' })(<Switch />)}
             </Form.Item>
 
             <Form.Item label="允许上传视频">
-                {getFieldDecorator('allowVideo', { valuePropName: 'checked' })(<Switch />)}
+                {getFieldDecorator('allowUploadVideo', { valuePropName: 'checked' })(<Switch />)}
             </Form.Item>
 
             <Form.Item label="显示图片参数">
                 {getFieldDecorator('showExif', { valuePropName: 'checked' })(<Switch />)}
             </Form.Item>
+
+            <Divider />
+
+            <Form.Item label="可投稿类型">
+                {getFieldDecorator('contributeType', {
+                    // initialValue: [1, 2],
+                    rules: [
+                        { required: true, message: '请至少设定1个投稿类型！' },
+                    ],
+                })(
+                    <Checkbox.Group style={{ width: '100%' }}>
+                        <Checkbox value={1}>相册</Checkbox>
+                        <Checkbox value={2}>文章</Checkbox>
+                    </Checkbox.Group>,
+                )}
+            </Form.Item>
+
+            <Form.Item label="相册类型">
+                {getFieldDecorator('albumType', {
+                    initialValue: 0,
+                    rules: [
+                        { required: true, message: '请设定相册类型！' },
+                    ],
+                })(
+                    <Select>
+                        <Option value="normal">普通</Option>
+                        <Option value="contest">大赛类型</Option>
+                    </Select>)}
+            </Form.Item>
+
+            <Divider />
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
@@ -166,17 +219,31 @@ class EditChannel extends Component {
                 answer: {
                     value: channelInfo ? channelInfo.answer : '',
                 },
-                displayStyle: {
-                    value: channelInfo ? channelInfo.displayStyle : '2',
+                showStyle: {
+                    value: channelInfo ? channelInfo.showStyle : 2,
                 },
                 allowPublicUpload: {
                     value: channelInfo ? channelInfo.allowPublicUpload : true,
                 },
-                allowVideo: {
-                    value: channelInfo ? channelInfo.allowVideo : true,
+                allowUploadVideo: {
+                    value: channelInfo ? channelInfo.allowUploadVideo : true,
                 },
                 showExif: {
                     value: channelInfo ? channelInfo.showExif : true,
+                },
+                contributeType: {
+                    value: channelInfo ?
+                        (channelInfo.contributeType instanceof Array ? channelInfo.contributeType : [1, 2]) :
+                        [1, 2],
+                },
+                showSetting: {
+                    value: channelInfo ?
+                        (channelInfo.showSetting instanceof Array ?
+                            channelInfo.showSetting : ["author", "title", "like", "clickNumber"]) :
+                        ["author", "title", "like", "clickNumber"],
+                },
+                albumType: {
+                    value: channelInfo ? channelInfo.albumType : 'normal',
                 },
             },
         }
@@ -192,12 +259,33 @@ class EditChannel extends Component {
         e.preventDefault();
         const { addChannel, nowStationKey, editChannel } = this.props;
         const { fields, } = this.state;
-        if (fields.key.value) {
-            console.log('编辑频道字段：', fields);
-            // editChannel(fields.key.value, fields.name.value, 1);
-        } else {
-            addChannel(nowStationKey, fields.name.value, 1);
+
+        if (fields.publish.value === 3) {
+            if (!fields.question.value) {
+                message.error('请输入问题！');
+                return;
+            }
+            if (!fields.answer.value) {
+                message.error('请输入答案！');
+                return;
+            }
         }
+
+        this.form.validateFields((err, values) => {
+            if (!err) {
+                // 验证通过
+                let extParams = {};
+                for (let key in fields) {
+                    extParams[key] = fields[key].value;
+                }
+                if (fields.key.value) {
+                    console.log('编辑频道字段：', extParams);
+                    editChannel(fields.key.value, fields.name.value, 1, extParams);
+                } else {
+                    addChannel(nowStationKey, fields.name.value, 1, extParams);
+                }
+            }
+        });
     }
 
     render() {
@@ -208,6 +296,7 @@ class EditChannel extends Component {
                 <h2>{fields.key.value ? '频道设置' : '创建频道'}</h2>
                 <Divider />
                 <CustomizedForm
+                    ref={node => this.form = node}
                     {...fields}
                     onChange={this.handleFormChange}
                     onSubmit={this.handleSubmit}

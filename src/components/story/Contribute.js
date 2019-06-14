@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
         state.station.nowStation.seriesInfo : [],
     user: state.auth.user,
     story: state.story.story,
+    nowChannelKey: state.story.nowChannelKey,
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
     loading: state.common.loading,
@@ -81,7 +82,7 @@ const CustomizedForm = Form.create({
                     rules: [{ max: 200, message: '不能超过200个字符！' },],
                 })(<TextArea rows={3} />)}
             </Form.Item>
-            <Form.Item label="作品类别">
+            {/* <Form.Item label="作品类别">
                 {getFieldDecorator('series', {
                     rules: [{ required: true, message: '请选择作品类别！' },],
                 })(
@@ -92,7 +93,7 @@ const CustomizedForm = Form.create({
                             ))
                         }
                     </Select>)}
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item label="作品赛区">
                 {getFieldDecorator('address', {
                     rules: [{ required: true, message: '请选择作品赛区！' },],
@@ -124,7 +125,7 @@ class Contribute extends Component {
                     value: story.memo,
                 },
                 series: {
-                    value: story.series ? story.series._key : '',
+                    value: story.series ? story.series._key : props.nowChannelKey,
                 },
                 address: {
                     value: story.address,

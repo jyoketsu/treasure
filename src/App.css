@@ -14,13 +14,13 @@
     outline: none;
 }
 
-#root,
+/* #root,
 .app,
 .route-container,
 .app-content,
 .main-content {
     height: 100%;
-}
+} */
 
 .App {
     text-align: center;
@@ -68,6 +68,26 @@
 .main-content {
     position: relative;
     width: 960px;
+}
+
+/* 淡入淡出动画--------------------------------------------------------- */
+
+.myFade-enter {
+    opacity: 0.01;
+}
+
+.myFade-enter.myFade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms;
+}
+
+.myFade-leave {
+    opacity: 1;
+}
+
+.myFade-leave.myFade-leave-active {
+    opacity: 0.01;
+    transition: opacity 500ms;
 }
 
 @keyframes App-logo-spin {

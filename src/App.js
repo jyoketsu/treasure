@@ -16,6 +16,7 @@ import EditStory from './components/story/EditStory';
 import Contribute from './components/story/Contribute';
 import Audit from './components/User/Audit';
 import StationOptions from './components/options/StationOptions';
+import EditArticle from './components/story/EditArticle';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -41,6 +42,7 @@ class App extends Component {
             <Route path="/editStation" component={EditStation} />
             <Route path="/story" component={Story} />
             <Route path="/editStory" component={EditStory}></Route>
+            <Route path="/editArticle" component={EditArticle} />
             <Route path="/contribute" component={Contribute}></Route>
             <Route path="/audit" component={Audit}></Route>
             <Route path="/stationOptions" component={StationOptions}></Route>
