@@ -150,7 +150,6 @@ class Story extends Component {
 
             Promise.all(promises).then(function (posts) {
                 let postsIndex = 0;
-                console.log('posts[postsIndex];', posts);
                 for (let i = 0; i < richContent.length; i++) {
                     if (richContent[i].metaType === 'image') {
                         if (!posts[postsIndex].error) {

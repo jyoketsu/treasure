@@ -25,7 +25,7 @@ class MyCKEditor extends Component {
 
     render() {
         const { onInit, data, onChange, disabled, locale } = this.props;
-        let toolbar = ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo'];
+        let toolbar = ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'blockQuote', 'insertTable', 'undo', 'redo'];
         if (document.querySelector('body').offsetWidth < 768) {
             toolbar = ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'];
         }
@@ -40,7 +40,7 @@ class MyCKEditor extends Component {
             <div className={`my-ckeditor ${disabled ? 'disabled' : ''}`}>
                 <CKEditor
                     editor={ClassicEditor}
-                    data="<p>Hello from CKEditor 5!</p>"
+                    data={data || ''}
                     config={{
                         toolbar: toolbar,
                         extraPlugins: [this.myCustomUploadAdapterPlugin],
@@ -120,6 +120,10 @@ class MyUploadAdapter {
             }
             // 上传
             let file = loader.file;
+            if (file.size > 2000000) {
+                reject(`请选择小于${2000000 / 1000000}MB的图片`);
+                return;
+            }
             Loading.open({ text: '上传中...' });
             let observable = qiniu.upload(file, util.common.guid(8, 16), uptoken, putExtra, config);
             // 上传开始

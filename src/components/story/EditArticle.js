@@ -7,6 +7,7 @@ import MyCKEditor from '../common/MyCKEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
+import api from '../../services/Api';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -57,6 +58,7 @@ class EditArticle extends Component {
         const story = type === 'new' ? {} : props.story;
         this.state = {
             story: story,
+            uptoken: null,
             fields: {
                 title: {
                     value: story.title,
@@ -90,6 +92,16 @@ class EditArticle extends Component {
         this.form.validateFields((err, values) => {
             if (!err) {
                 // 验证通过
+                let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
+                let srcReg = /src=['"]?([^'"]*)['"]?/i // 匹配图片中的src
+                let str = story.content;
+                let arr = str.match(imgReg)  //筛选出所有的img
+                if (arr) {
+                    let src = arr[0].match(srcReg);
+                    story.cover = src[1];
+                    // 封面大小
+                    story.size = util.common.getImageInfo(story.cover);
+                }
                 // 编辑
                 if (story._key) {
                     story.key = story._key;
@@ -136,8 +148,7 @@ class EditArticle extends Component {
     }
 
     render() {
-        const { story = {}, fields } = this.state;
-        const uptoken = '123joiasjfiejfao';
+        const { story = {}, fields, uptoken, } = this.state;
         return (
             <div className="edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
                 <div className="my-station-head">文章</div>
@@ -148,15 +159,16 @@ class EditArticle extends Component {
                         onChange={this.handleFormChange}
                         onSubmit={this.handleSubmit}
                     />
-                    <MyCKEditor
-                        domain='http://cdn-icare.qingtime.cn/'
-                        uptoken={uptoken}
-                        onInit={this.getEditor}
-                        onChange={this.handleAticleChange}
-                        data={story.content}
-                        locale="zh"
-                        disabled={false}
-                    />
+                    {uptoken ?
+                        <MyCKEditor
+                            domain='http://cdn-icare.qingtime.cn/'
+                            uptoken={uptoken}
+                            onInit={this.getEditor}
+                            onChange={this.handleAticleChange}
+                            data={story.content}
+                            locale="zh"
+                            disabled={false}
+                        /> : null}
                     <div className="story-footer">
                         <Button onClick={this.handleCancel}>取消</Button>
                         {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
@@ -167,10 +179,17 @@ class EditArticle extends Component {
         );
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { seriesInfo, history } = this.props;
         if (seriesInfo.length === 0) {
             history.push(`/${window.location.search}`);
+        }
+        // 获取七牛token
+        let res = await api.auth.getUptoken(localStorage.getItem('TOKEN'));
+        if (res.msg === 'OK') {
+            this.setState({ uptoken: res.result });
+        } else {
+            message.error({ text: res.msg });
         }
     }
 

@@ -84,15 +84,13 @@ class Card extends Component {
         return (
             <div className={`story-card type-${storyType}`}>
                 {/* 故事封面 */}
-                {storyType === 'story' ?
-                    <div
-                        className="story-card-cover"
-                        style={coverStyle}
-                        onClick={audit ? null : this.handleClick.bind(this, story._key)}
-                    >
-                        {audit ? option : null}
-                    </div> :
-                    null}
+                <div
+                    className="story-card-cover"
+                    style={coverStyle}
+                    onClick={audit ? null : this.handleClick.bind(this, story._key)}
+                >
+                    {audit ? option : null}
+                </div>
                 {/* 故事标题 */}
                 <div className="story-card-title">
                     {story.title}
