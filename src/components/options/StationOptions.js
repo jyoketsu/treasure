@@ -11,6 +11,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ClickOutside from '../common/ClickOutside';
 import EditChannel from './EditChannel';
 import AddPlugin from './AddPlugin';
+import CreatePlugin from './CreatePlugin';
 import PluginOptions from './PluginOptions';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
@@ -72,6 +73,7 @@ class StationOptions extends Component {
                         <Route path={`${match.path}/editChannel`} component={EditChannel}></Route>
                         <Route path={`${match.path}/addPlugin`} component={AddPlugin}></Route>
                         <Route path={`${match.path}/pluginOptions`} component={PluginOptions}></Route>
+                        <Route path={`${match.path}/createPlugin`} component={CreatePlugin}></Route>
                     </div>
                 </div>
             </div>

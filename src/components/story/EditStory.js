@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Button, Tooltip, message, Select, Input, Modal } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
+import api from '../../services/Api';
 import { connect } from 'react-redux';
 import { addStory, modifyStory } from '../../actions/app';
 const confirm = Modal.confirm;
@@ -226,8 +227,7 @@ class EditStory extends Component {
 
     render() {
         const { story = {} } = this.state;
-        const { cover, title = '', series = {}, richContent = [], address } = story;
-        const { seriesInfo } = this.props;
+        const { cover, title = '', richContent = [], address } = story;
         const addressList = ["北京赛区", "天津赛区", "河北赛区", "山西赛区", "内蒙古赛区", "辽宁赛区", "吉林赛区", "黑龙江赛区", "上海赛区", "江苏赛区", "浙江赛区", "安徽赛区", "福建赛区", "江西赛区", "山东赛区", "河南赛区", "湖北赛区", "湖南赛区", "广东赛区", "广西赛区", "四川赛区", "重庆赛区", "贵州赛区", "云南赛区", "陕西赛区", "甘肃赛区", "新疆赛区", "海南赛区", "宁夏赛区", "海外赛区"];
         let centent = richContent.map((content, index) => {
             let result = null;
@@ -263,7 +263,7 @@ class EditStory extends Component {
         });
 
         return (
-            <div className="edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
+            <div className="app-content edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
                 <div className="story-head" style={{
                     backgroundImage: `url(${cover}?imageView2/2/w/960/)`
                 }}>
@@ -326,10 +326,17 @@ class EditStory extends Component {
     }
 
     componentDidMount() {
-        const { seriesInfo, history } = this.props;
+        const { seriesInfo, history, story } = this.props;
         if (seriesInfo.length === 0) {
             history.push(`/${window.location.search}`);
         }
+
+        api.story.applyEdit(story._key, story.updateTime);
+    }
+
+    componentWillUnmount() {
+        const { story } = this.props;
+        api.story.exitEdit(story._key);
     }
 
     async componentDidUpdate(prevProps) {
@@ -343,14 +350,11 @@ class EditStory extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    message.success('删除成功！');
                     history.push(`/${window.location.search}`);
                 } else {
-                    message.success('编辑成功！');
                     history.goBack();
                 }
             } else {
-                message.success('创建成功！');
                 // history.push(`/${window.location.search}`);
                 history.goBack();
             }

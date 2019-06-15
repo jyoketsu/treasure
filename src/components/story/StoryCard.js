@@ -18,11 +18,12 @@ class Card extends Component {
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
     }
 
-    handleClick(key) {
+    handleClick(key, type) {
         const { history } = this.props;
         const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
+        const path = type === 9 ? 'article' : 'story';
         history.push({
-            pathname: '/story',
+            pathname: `/${path}`,
             search: stationKey ? `?stationKey=${stationKey}&key=${key}` : `?key=${key}`,
         });
     }
@@ -72,7 +73,7 @@ class Card extends Component {
                     showDrop ?
                         <ClickOutside onClickOutside={this.switchDrop}>
                             <div className="station-option-dorpdown">
-                                <div onClick={this.handleClick.bind(this, story._key)}>查看</div>
+                                <div onClick={this.handleClick.bind(this, story._key, story.type)}>查看</div>
                                 <div onClick={auditStory.bind(this, story._key, groupKey, 2)}>通过</div>
                                 <div onClick={auditStory.bind(this, story._key, groupKey, 3)}>不通过</div>
                                 <div onClick={this.showDeleteConfirm}>删除</div>
@@ -87,13 +88,15 @@ class Card extends Component {
                 <div
                     className="story-card-cover"
                     style={coverStyle}
-                    onClick={audit ? null : this.handleClick.bind(this, story._key)}
+                    onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
                 >
                     {audit ? option : null}
                 </div>
                 {/* 故事标题 */}
                 <div className="story-card-title">
-                    {story.title}
+                    <span className="story-card-title-span">
+                        {story.title}
+                    </span>
                     <span style={statusStyle}>{status}</span>
                 </div>
                 {/* 图片数量 */}

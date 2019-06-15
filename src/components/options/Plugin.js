@@ -44,6 +44,13 @@ class Plugin extends Component {
         });
     }
 
+    handleClickCreate() {
+        const { history, } = this.props;
+        history.push({
+            pathname: '/stationOptions/createPlugin',
+        });
+    }
+
     render() {
         const { nowStation } = this.props;
         let seriesInfo = nowStation ? nowStation.seriesInfo : [];
@@ -51,11 +58,19 @@ class Plugin extends Component {
             <div className="channel-option">
                 <div className="channel-head">
                     <span>插件管理</span>
-                    <Button
-                        type="primary"
-                        className="login-form-button"
-                        onClick={this.handleClickAdd.bind(this)}
-                    >新增插件</Button>
+                    <div>
+                        <Button
+                            type="primary"
+                            className="login-form-button"
+                            onClick={this.handleClickCreate.bind(this)}
+                        >创建插件</Button>
+                        <Divider type="vertical" />
+                        <Button
+                            type="primary"
+                            className="login-form-button"
+                            onClick={this.handleClickAdd.bind(this)}
+                        >添加插件</Button>
+                    </div>
                 </div>
                 <Table dataSource={seriesInfo} rowKey="_key" pagination={false}>
                     <Column title="插件名" dataIndex="name" />
@@ -63,6 +78,8 @@ class Plugin extends Component {
                         title="操作"
                         render={(text, record) => (
                             <span className="tabel-actions">
+                                <span>编辑</span>
+                                <Divider type="vertical" />
                                 <span onClick={this.handleEdit.bind(this, record._key)}>设置</span>
                                 <Divider type="vertical" />
                                 <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>删除</span>

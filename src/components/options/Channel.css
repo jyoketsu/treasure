@@ -19,6 +19,7 @@
     box-sizing: content-box;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .tabel-actions>span:hover {

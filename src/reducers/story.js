@@ -10,6 +10,7 @@ import {
     UPDATE_EXIF,
     AUDIT,
 } from '../actions/app';
+import { message, } from 'antd';
 
 const defaultState = {
     storyList: [],
@@ -51,6 +52,7 @@ const story = (state = defaultState, action) => {
 
         case ADD_STORY:
             if (!action.error) {
+                message.success('创建成功！');
                 let storyList = Object.assign([], state.storyList);
                 storyList.unshift(action.payload.result);
                 return {
@@ -62,6 +64,7 @@ const story = (state = defaultState, action) => {
             }
         case MODIFY_STORY:
             if (!action.error) {
+                message.success('编辑成功！');
                 let storyList = Object.assign([], state.storyList);
                 for (let i = 0; i < storyList.length; i++) {
                     if (storyList[i]._key === action.payload.result._key) {
@@ -78,6 +81,7 @@ const story = (state = defaultState, action) => {
             }
         case DELETE_STORY:
             if (!action.error) {
+                message.success('删除成功！');
                 let storyList = Object.assign([], state.storyList);
                 for (let i = 0; i < storyList.length; i++) {
                     if (storyList[i]._key === action.storyKey) {

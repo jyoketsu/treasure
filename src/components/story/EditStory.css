@@ -1,16 +1,10 @@
-.edit-story {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: #fff;
-    overflow: auto;
+.edit-story>.story-content {
+    padding: 15px;
 }
 
 .story-head {
     position: relative;
-    width: 960px;
+    width: 810px;
     height: 500px;
     background-repeat: no-repeat;
     background-size: cover;

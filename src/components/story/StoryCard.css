@@ -36,11 +36,15 @@
     font-size: 14px;
     line-height: 40px;
     padding: 0 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
     justify-content: space-between;
+}
+
+.story-card-title>.story-card-title-span {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .story-card-info {

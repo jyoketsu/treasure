@@ -17,6 +17,7 @@ import Contribute from './components/story/Contribute';
 import Audit from './components/User/Audit';
 import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
+import Article from './components/story/Article';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -30,7 +31,9 @@ class App extends Component {
     const { loading } = this.props;
     return (
       <Router>
-        <div className="app">
+        <div className="app" style={{
+          minHeight: `${window.innerHeight}px`
+        }}>
           <Header />
           <div className="route-container">
             <Route exact path="/" component={Home} />
@@ -42,10 +45,11 @@ class App extends Component {
             <Route path="/editStation" component={EditStation} />
             <Route path="/story" component={Story} />
             <Route path="/editStory" component={EditStory}></Route>
-            <Route path="/editArticle" component={EditArticle} />
             <Route path="/contribute" component={Contribute}></Route>
             <Route path="/audit" component={Audit}></Route>
             <Route path="/stationOptions" component={StationOptions}></Route>
+            <Route path="/article" component={Article}></Route>
+            <Route path="/editArticle" component={EditArticle} />
           </div>
           {loading ? (
             <div className="loading-mask">

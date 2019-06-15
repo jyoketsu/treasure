@@ -9,7 +9,6 @@ const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
     nowStationKey: state.station.nowStationKey,
-    nowChannelKey: state.story.nowChannelKey,
     channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
 
@@ -25,10 +24,10 @@ class Story extends Component {
     }
 
     handleToEdit() {
-        const { history, location, nowChannelKey, channelInfo } = this.props;
+        const { history, location, story, channelInfo } = this.props;
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
-            if (nowChannelKey === channelInfo[i]._key) {
+            if (story.series._key === channelInfo[i]._key) {
                 nowChannel = channelInfo[i];
                 break;
             }
@@ -45,7 +44,7 @@ class Story extends Component {
         const { userKey, cover, title, creator = {}, richContent = [], address, memo, } = story;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         return (
-            <div className="story-container"
+            <div className="app-content story-container"
             >
                 <div
                     className="story-head"

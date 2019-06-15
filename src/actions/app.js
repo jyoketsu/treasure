@@ -175,3 +175,10 @@ export function deleteChannel(channelKey) {
     let request = api.story.deleteChannel(channelKey);
     return { type: DELETE_CHANNEL, channelKey: channelKey, payload: request }
 }
+
+// 插件
+export const CREATE_PLUGIN = 'CREATE_PLUGIN';
+export function createPlugin(stationKey, name, icon, url) {
+    let request = api.plugin.createPlugin(stationKey, name, icon, url);
+    return { type: CREATE_PLUGIN, payload: request }
+}

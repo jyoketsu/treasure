@@ -213,7 +213,7 @@ class Login extends Component {
                         style={{ width: '100%', height: '46px' }}
                         onClick={this.login} />
                 ];
-                break;;
+                break;
         }
         return (
             <div className="login">

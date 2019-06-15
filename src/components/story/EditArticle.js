@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import './Contribute.css';
+import './EditArticle.css';
+import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
-import { Form, Button, Tooltip, message, Select, Input, Modal } from 'antd';
-import { FileUpload } from '../common/Form';
+import { Form, Button, message, Input, Modal } from 'antd';
 import MyCKEditor from '../common/MyCKEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
-import api from '../../services/Api';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -43,7 +42,7 @@ const CustomizedForm = Form.create({
             <Form.Item label="请输入标题">
                 {getFieldDecorator('title', {
                     rules: [
-                        { max: 20, message: '不能超过20个字符！' },
+                        { max: 30, message: '不能超过30个字符！' },
                         { required: true, message: '请输入作品标题！' }],
                 })(<Input />)}
             </Form.Item>
@@ -105,6 +104,9 @@ class EditArticle extends Component {
                 // 编辑
                 if (story._key) {
                     story.key = story._key;
+                    if (typeof story.series === 'object') {
+                        story.series = story.series._key;
+                    }
                     Object.assign(story, {
                         title: fields.title.value,
                     });
@@ -150,9 +152,16 @@ class EditArticle extends Component {
     render() {
         const { story = {}, fields, uptoken, } = this.state;
         return (
-            <div className="edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
-                <div className="my-station-head">文章</div>
-                <div className="main-content story-content">
+            <div
+                className="app-content edit-story"
+                ref={eidtStory => this.eidtStoryRef = eidtStory}
+            >
+                <div
+                    className="main-content story-content edit-article"
+                    style={{
+                        minHeight: `${window.innerHeight}px`
+                    }}
+                >
                     <CustomizedForm
                         {...fields}
                         ref={node => this.form = node}
@@ -180,7 +189,7 @@ class EditArticle extends Component {
     }
 
     async componentDidMount() {
-        const { seriesInfo, history } = this.props;
+        const { seriesInfo, history, story } = this.props;
         if (seriesInfo.length === 0) {
             history.push(`/${window.location.search}`);
         }
@@ -191,6 +200,13 @@ class EditArticle extends Component {
         } else {
             message.error({ text: res.msg });
         }
+
+        api.story.applyEdit(story._key, story.updateTime);
+    }
+
+    componentWillUnmount() {
+        const { story } = this.props;
+        api.story.exitEdit(story._key);
     }
 
     async componentDidUpdate(prevProps) {
@@ -204,14 +220,11 @@ class EditArticle extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    message.success('删除成功！');
                     history.push(`/${window.location.search}`);
                 } else {
-                    message.success('编辑成功！');
                     history.goBack();
                 }
             } else {
-                message.success('创建成功！');
                 // history.push(`/${window.location.search}`);
                 history.goBack();
             }

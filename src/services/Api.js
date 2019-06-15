@@ -316,6 +316,23 @@ const story = {
         });
     },
 
+    // 编辑上锁
+    applyEdit(key, time) {
+        return requests.post(APIURL + '/album/applyEdit', {
+            token: token,
+            albumKey: key,
+            mobileTime: time
+        });
+    },
+
+    // 编辑解锁
+    exitEdit(key) {
+        return requests.post(APIURL + '/album/exitEdit', {
+            token: token,
+            albumKey: key,
+        });
+    },
+
     addStory(story) {
         return requests.post(APIURL + '/album', Object.assign(story, { token: token }));
     },
@@ -343,7 +360,7 @@ const story = {
         });
     },
 
-    addChannel(stationKey, name, type,extParams) {
+    addChannel(stationKey, name, type, extParams) {
         return requests.post(APIURL + '/series', {
             token: token,
             starKey: stationKey,
@@ -353,7 +370,7 @@ const story = {
             ...extParams,
         });
     },
-    editChannel(channelKey, name, type,extParams) {
+    editChannel(channelKey, name, type, extParams) {
         return requests.patch(APIURL + '/series', {
             token: token,
             key: channelKey,
@@ -386,11 +403,24 @@ const story = {
     }
 }
 
+const plugin = {
+    createPlugin(stationKey, name, icon, url) {
+        return requests.post(APIURL + '/plugin', {
+            token: token,
+            publishStarKey: stationKey,
+            pluginName: name,
+            icon: icon,
+            url: url
+        });
+    },
+}
+
 export default {
     requests,
     auth,
     station,
     story,
+    plugin,
     setToken: _token => {
         window.localStorage.setItem('TOKEN', _token);
         token = _token;

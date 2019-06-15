@@ -73,7 +73,7 @@ const CustomizedForm = Form.create({
             <Form.Item label="作品标题">
                 {getFieldDecorator('title', {
                     rules: [
-                        { max: 20, message: '不能超过20个字符！' },
+                        { max: 30, message: '不能超过30个字符！' },
                         { required: true, message: '请输入作品标题！' }],
                 })(<Input />)}
             </Form.Item>
@@ -327,8 +327,7 @@ class Contribute extends Component {
         });
 
         return (
-            <div className="edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
-                <div className="my-station-head">作品投稿</div>
+            <div className="app-content edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
                 <div className="main-content story-content">
                     <CustomizedForm
                         {...fields}
