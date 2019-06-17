@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Common.css';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 const { Option } = Select;
 
 class MemberCard extends Component {
@@ -11,6 +11,10 @@ class MemberCard extends Component {
 
     handleChange(value) {
         const { userKey, groupKey, setMemberRole, } = this.props;
+        if (value === 1) {
+            message.error('不能设置超管！');
+            return;
+        }
         setMemberRole(groupKey, userKey, value);
     }
     render() {
@@ -42,7 +46,7 @@ class MemberCard extends Component {
 
 class SearchMemberCard extends Component {
     render() {
-        const { groupKey, userKey, gender, avatar, name, mobile, addGroupMember } = this.props;
+        const { groupKey, userKey, avatar, name, mobile, addGroupMember } = this.props;
         return (
             <div className="member-card">
                 <div className="member-avatar-container">
@@ -57,9 +61,6 @@ class SearchMemberCard extends Component {
                     <span className="member-name">{mobile || ''}</span>
                     <span className="member-button" onClick={addGroupMember.bind(this, groupKey, [{
                         userKey: userKey,
-                        nickName: name,
-                        avatar: avatar,
-                        gender: gender,
                         role: 5
                     }])}>添加</span>
                 </div>

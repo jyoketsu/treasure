@@ -178,7 +178,30 @@ export function deleteChannel(channelKey) {
 
 // 插件
 export const CREATE_PLUGIN = 'CREATE_PLUGIN';
+export const GET_PLUGIN_LIST = 'GET_PLUGIN_LIST';
+export const SUBSCRIBE_PLUGIN = 'SUBSCRIBE_PLUGIN';
+export const CLEAR_PLUGIN_LIST = 'CLEAR_PLUGIN_LIST';
+export const CANCEL_PLUGIN = 'CANCEL_PLUGIN';
 export function createPlugin(stationKey, name, icon, url) {
     let request = api.plugin.createPlugin(stationKey, name, icon, url);
     return { type: CREATE_PLUGIN, payload: request }
+}
+
+export function getPluginList(stationKey, curPage, perPage) {
+    let request = api.plugin.getPluginList(stationKey, curPage, perPage);
+    return { type: GET_PLUGIN_LIST, payload: request }
+}
+
+export function subscribePlugin(stationKey, pluginKeys) {
+    let request = api.plugin.subscribePlugin(stationKey, pluginKeys);
+    return { type: SUBSCRIBE_PLUGIN, payload: request }
+}
+
+export function clearPluginList() {
+    return { type: CLEAR_PLUGIN_LIST }
+}
+
+export function cancelPlugin(pluginKey) {
+    let request = api.plugin.cancelPlugin(pluginKey);
+    return { type: CANCEL_PLUGIN, pluginKey: pluginKey, payload: request }
 }

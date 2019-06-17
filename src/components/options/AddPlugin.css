@@ -1,0 +1,57 @@
+.add-plugin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.plugin-item {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    margin: 14px 0;
+}
+
+.plugin-logo {
+    width: 90px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #CBCBCB;
+    border-radius: 28px;
+}
+
+.plugin-name {
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+}
+
+.plugin-info {
+    height: 100%;
+    margin: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.plugin-check-button {
+    width: 90px;
+    height: 90px;
+    background-image: url(/image/icon/plugin-unchecked.svg);
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: center;
+}
+
+.plugin-check-button:hover {
+    cursor: pointer;
+}
+
+.plugin-check-button.active {
+    background-image: url(/image/icon/plugin-checked.svg);
+}

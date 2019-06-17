@@ -91,13 +91,13 @@ class Story extends Component {
                                                         <div className="img-exif">
                                                             {
                                                                 `${
-                                                                content.exif.Model ? content.exif.Model.val : '未知设备'
+                                                                content.exif.Model ? content.exif.Model.val : ''
                                                                 }，  ${
-                                                                content.exif.ShutterSpeedValue ? content.exif.ShutterSpeedValue.val.match(regex1) : '未知快门'
+                                                                content.exif.ShutterSpeedValue ? content.exif.ShutterSpeedValue.val.match(regex1) : ''
                                                                 }，  ${
-                                                                content.exif.ApertureValue ? content.exif.ApertureValue.val.match(regex1) : '未知光圈'
+                                                                content.exif.ApertureValue ? content.exif.ApertureValue.val.match(regex1) : ''
                                                                 }，  ${
-                                                                content.exif.ISOSpeedRatings ? content.exif.ISOSpeedRatings.val : '未知ISO'
+                                                                content.exif.ISOSpeedRatings ? content.exif.ISOSpeedRatings.val : ''
                                                                 }`
                                                             }
                                                         </div> :

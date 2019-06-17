@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Channel.css';
 import { connect } from 'react-redux';
 import { Table, Divider, Modal, Button, } from 'antd';
-import { deleteChannel } from '../../actions/app';
+import { cancelPlugin } from '../../actions/app';
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -13,15 +13,15 @@ const mapStateToProps = state => ({
 
 class Plugin extends Component {
     showDeleteConfirm(key, name) {
-        const { deleteChannel } = this.props;
+        const { cancelPlugin } = this.props;
         confirm({
-            title: '删除频道',
-            content: `确定要删除【${name}】吗？`,
+            title: '取消订阅插件',
+            content: `确定要取消【${name}】吗？`,
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                deleteChannel(key);
+                cancelPlugin(key);
             },
             onCancel() {
                 console.log('Cancel');
@@ -53,7 +53,7 @@ class Plugin extends Component {
 
     render() {
         const { nowStation } = this.props;
-        let seriesInfo = nowStation ? nowStation.seriesInfo : [];
+        let pluginInfo = nowStation ? nowStation.pluginInfo : [];
         return (
             <div className="channel-option">
                 <div className="channel-head">
@@ -72,7 +72,7 @@ class Plugin extends Component {
                         >添加插件</Button>
                     </div>
                 </div>
-                <Table dataSource={seriesInfo} rowKey="_key" pagination={false}>
+                <Table dataSource={pluginInfo} rowKey="_key" pagination={false}>
                     <Column title="插件名" dataIndex="name" />
                     <Column
                         title="操作"
@@ -82,7 +82,7 @@ class Plugin extends Component {
                                 <Divider type="vertical" />
                                 <span onClick={this.handleEdit.bind(this, record._key)}>设置</span>
                                 <Divider type="vertical" />
-                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>删除</span>
+                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>取消订阅</span>
                             </span>
                         )}
                     />
@@ -101,5 +101,5 @@ class Plugin extends Component {
 
 export default connect(
     mapStateToProps,
-    { deleteChannel },
+    { cancelPlugin },
 )(Plugin);

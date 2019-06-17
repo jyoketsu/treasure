@@ -12,7 +12,11 @@ import {
     GET_GROUP_MEMBER,
     ADD_GROUP_MEMBER,
     SET_MEMBER_ROLE,
+    SUBSCRIBE_PLUGIN,
+    CANCEL_PLUGIN,
 } from '../actions/app';
+import { message, } from 'antd';
+
 const defaultState = {
     competitionInfo: {},
     stationList: [],
@@ -187,6 +191,31 @@ const station = (state = defaultState, action) => {
                 return {
                     ...state,
                     userList: userList,
+                };
+            } else {
+                return state;
+            }
+        case SUBSCRIBE_PLUGIN:
+            if (!action.error) {
+                message.success('保存成功！');
+                const res = action.payload.result;
+                let nowStation = Object.assign([], state.nowStation);
+                nowStation.pluginInfo = res;
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case CANCEL_PLUGIN:
+            if (!action.error) {
+                message.success('取消成功！');
+                let nowStation = Object.assign([], state.nowStation);
+                nowStation.pluginInfo.splice(nowStation.pluginInfo.indexOf(action.pluginKey), 1);
+                return {
+                    ...state,
+                    nowStation: nowStation,
                 };
             } else {
                 return state;

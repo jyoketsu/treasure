@@ -282,7 +282,7 @@ class Station extends React.Component {
             changeChannel,
             channelInfo,
         } = this.props;
-        const { seriesInfo = [] } = content;
+        const { seriesInfo = [], pluginInfo = [], } = content;
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
             if (nowChannelKey === channelInfo[i]._key) {
@@ -297,6 +297,16 @@ class Station extends React.Component {
                     style={{ backgroundImage: `url(${content.cover})` }}
                 ></div>
                 <div className="main-content">
+                    <div className="station-plugin-container">
+                        {
+                            pluginInfo.map((plugin, index) => (
+                                <div key={index} className="station-plugin" onClick={() => { window.open(plugin.url, '_blank') }}>
+                                    <i style={{ backgroundImage: `url(${plugin.icon}?imageView2/2/w/180/)` }}></i>
+                                    <span>{plugin.name}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
                     <span className="station-name">{content.name}</span>
                     <div className="station-memo">
                         {/* <span className="station-memo-title">概述</span> */}

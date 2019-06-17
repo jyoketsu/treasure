@@ -1,5 +1,5 @@
 // const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-const APIURL = 'http://192.168.1.139:8529/_db/TimeBox/my/sgbh';
+const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 
 let token = null;
 
@@ -411,6 +411,30 @@ const plugin = {
             pluginName: name,
             icon: icon,
             url: url
+        });
+    },
+
+    getPluginList(stationKey, curPage, perPage) {
+        return requests.get(APIURL + '/plugin', {
+            token: token,
+            starKey: stationKey,
+            curPage: curPage,
+            perPage: perPage,
+        });
+    },
+
+    subscribePlugin(stationKey, pluginKeys) {
+        return requests.post(APIURL + '/plugin/quote', {
+            token: token,
+            starKey: stationKey,
+            pluginAppKeyList: pluginKeys
+        });
+    },
+
+    cancelPlugin(pluginKey) {
+        return requests.delete(APIURL + '/plugin/quote', {
+            token: token,
+            key: pluginKey,
         });
     },
 }

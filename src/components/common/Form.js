@@ -353,9 +353,9 @@ class FileUpload extends Component {
         }
 
         switch (this.props.metaType) {
-            case 'image': this.mimeType = ["image/png", "image/jpeg"]; this.accept = ".jpg, .jpeg, .png"; break;
+            case 'image': this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = ".jpg, .jpeg, .png, .svg"; break;
             case 'video': this.mimeType = ["video/mp4", "video/ogg"]; this.accept = ".mp4, .ogg"; break;
-            default: this.mimeType = ["image/png", "image/jpeg"]; this.accept = ".jpg, .jpeg, .png"; break;
+            default: this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = ".jpg, .jpeg, .png, .svg"; break;
         }
     }
 
