@@ -44,10 +44,10 @@ class Plugin extends Component {
         });
     }
 
-    handleClickCreate() {
+    toPluginSystem() {
         const { history, } = this.props;
         history.push({
-            pathname: '/stationOptions/createPlugin',
+            pathname: '/stationOptions/pluginSystem',
         });
     }
 
@@ -61,9 +61,9 @@ class Plugin extends Component {
                     <div>
                         <Button
                             type="primary"
-                            className="login-form-button"
-                            onClick={this.handleClickCreate.bind(this)}
-                        >创建插件</Button>
+                            className="plugin-system-button"
+                            onClick={this.toPluginSystem.bind(this)}
+                        >系统插件管理</Button>
                         <Divider type="vertical" />
                         <Button
                             type="primary"
@@ -78,8 +78,6 @@ class Plugin extends Component {
                         title="操作"
                         render={(text, record) => (
                             <span className="tabel-actions">
-                                <span>编辑</span>
-                                <Divider type="vertical" />
                                 <span onClick={this.handleEdit.bind(this, record._key)}>设置</span>
                                 <Divider type="vertical" />
                                 <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>取消订阅</span>

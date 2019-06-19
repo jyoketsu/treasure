@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 // import './CreatePlugin.css';
 import { Form, Input, Button, message, } from 'antd';
 import UploadStationCover from '../common/UploadCover';
+import util from '../../services/Util';
 import { connect } from 'react-redux';
-import { createPlugin } from '../../actions/app';
+import { createPlugin, editPlugin, } from '../../actions/app';
 
 const mapStateToProps = state => ({
+    loading: state.common.loading,
     nowStationKey: state.station.nowStationKey,
+    plugList: state.plugin.pluginList,
 });
 
 const CustomizedForm = Form.create({
@@ -25,10 +28,6 @@ const CustomizedForm = Form.create({
                 value: props.url.value,
             }),
         };
-    },
-
-    onValuesChange(_, values) {
-        console.log(values);
     },
 
 })(props => {
@@ -57,13 +56,22 @@ const CustomizedForm = Form.create({
 class CreatePlugin extends Component {
     constructor(props) {
         super(props);
-        const { plugin } = props;
+        const { plugList } = props;
+        let pluginKey = util.common.getSearchParamValue(window.location.search, 'key');
+        let plugin = null;
+        for (let i = 0; i < plugList.length; i++) {
+            if (plugList[i]._key === pluginKey) {
+                plugin = plugList[i];
+                break;
+            }
+        }
+
         this.state = {
             key: plugin ? plugin._key : '',
-            logo: plugin ? plugin.logo : '',
+            logo: plugin ? plugin.icon : '',
             fields: {
                 name: {
-                    value: plugin ? plugin.name : '',
+                    value: plugin ? plugin.pluginName : '',
                 },
                 url: {
                     value: plugin ? plugin.url : '',
@@ -87,7 +95,7 @@ class CreatePlugin extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { createPlugin, nowStationKey, } = this.props;
+        const { createPlugin, nowStationKey, editPlugin } = this.props;
         const { fields, key, logo, } = this.state;
 
         this.form.validateFields(async (err, values) => {
@@ -98,7 +106,7 @@ class CreatePlugin extends Component {
                     return;
                 }
                 if (key) {
-                    // editStation(starKey, fields.name.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
+                    editPlugin(key, nowStationKey, fields.name.value, logo, fields.url.value);
                 } else {
                     createPlugin(nowStationKey, fields.name.value, logo, fields.url.value);
                 }
@@ -109,7 +117,7 @@ class CreatePlugin extends Component {
     render() {
         const { logo, fields, } = this.state;
         return (
-            <div className="app-content">
+            <div className="create-plugin">
                 <h2>插件</h2>
                 <label className='ant-form-item-required form-label'>插件logo</label>
                 <UploadStationCover
@@ -126,9 +134,16 @@ class CreatePlugin extends Component {
             </div>
         );
     };
+
+    componentDidUpdate(prevProps) {
+        const { loading, history } = this.props;
+        if (!loading && prevProps.loading) {
+            history.goBack();
+        }
+    }
 }
 
 export default connect(
     mapStateToProps,
-    { createPlugin },
+    { createPlugin, editPlugin, },
 )(Form.create({ name: 'create-plugin' })(CreatePlugin));

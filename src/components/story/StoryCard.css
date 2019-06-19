@@ -6,10 +6,12 @@
     background: #FFFFFF;
     border-radius: 8px;
     margin: 10px;
+    transition: all .2s ease-in;
 }
 
 .story-card:hover {
     box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+    transform: translate(0, -5px);
 }
 
 .story-card-cover {

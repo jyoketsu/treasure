@@ -1,5 +1,7 @@
 import {
     CREATE_PLUGIN,
+    EDIT_PLUGIN,
+    DELETE_PLUGIN,
     GET_PLUGIN_LIST,
     CLEAR_PLUGIN_LIST
 } from '../actions/app';
@@ -17,6 +19,38 @@ const plugin = (state = defaultState, action) => {
                 return {
                     ...state,
                 }
+            } else {
+                return state;
+            }
+        case EDIT_PLUGIN:
+            if (!action.error) {
+                let pluginList = JSON.parse(JSON.stringify(state.pluginList));
+                for (let i = 0; i < pluginList.length; i++) {
+                    if (pluginList[i]._key === action.pluginKey) {
+                        pluginList[i] = action.payload.result;
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    pluginList: pluginList,
+                };
+            } else {
+                return state;
+            }
+        case DELETE_PLUGIN:
+            if (!action.error) {
+                let pluginList = JSON.parse(JSON.stringify(state.pluginList));
+                for (let i = 0; i < pluginList.length; i++) {
+                    if (pluginList[i]._key === action.pluginKey) {
+                        pluginList.splice(i, 1);
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    pluginList: pluginList,
+                };
             } else {
                 return state;
             }

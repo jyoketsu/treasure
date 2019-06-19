@@ -195,6 +195,10 @@ const auth = {
         });
     },
 
+    getToken() {
+        return token;
+    },
+
     // 获取临时token
     getTempToken() {
         return requests.get(APIURL + '/account/loginAnonymousUser');
@@ -411,6 +415,22 @@ const plugin = {
             pluginName: name,
             icon: icon,
             url: url
+        });
+    },
+    editPlugin(pluginKey, stationKey, name, icon, url) {
+        return requests.patch(APIURL + '/plugin', {
+            token: token,
+            key: pluginKey,
+            publishStarKey: stationKey,
+            pluginName: name,
+            icon: icon,
+            url: url
+        });
+    },
+    deletePlugin(pluginKey) {
+        return requests.delete(APIURL + '/plugin', {
+            token: token,
+            key: pluginKey,
         });
     },
 

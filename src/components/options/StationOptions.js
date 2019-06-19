@@ -13,6 +13,8 @@ import EditChannel from './EditChannel';
 import AddPlugin from './AddPlugin';
 import CreatePlugin from './CreatePlugin';
 import PluginOptions from './PluginOptions';
+import PluginSystem from './PluginSystem';
+import { clearPluginList } from './../../actions/app';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
 });
@@ -74,6 +76,7 @@ class StationOptions extends Component {
                         <Route path={`${match.path}/addPlugin`} component={AddPlugin}></Route>
                         <Route path={`${match.path}/pluginOptions`} component={PluginOptions}></Route>
                         <Route path={`${match.path}/createPlugin`} component={CreatePlugin}></Route>
+                        <Route path={`${match.path}/pluginSystem`} component={PluginSystem}></Route>
                     </div>
                 </div>
             </div>
@@ -86,9 +89,13 @@ class StationOptions extends Component {
             history.push(`/${location.search}`)
         }
     }
+
+    componentWillUnmount() {
+        this.props.clearPluginList();
+    }
 }
 
 export default connect(
     mapStateToProps,
-    {},
+    { clearPluginList },
 )(StationOptions);

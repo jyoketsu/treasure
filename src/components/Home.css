@@ -229,6 +229,7 @@
 .station-plugin {
     display: flex;
     flex-direction: column;
+    margin: 15px;
 }
 
 .station-plugin>i {
@@ -238,17 +239,32 @@
     border-radius: 28px;
     background-size: cover;
     background-position: center;
+    transition: all .2s ease-in;
 }
 
 .station-plugin>span {
     font-size: 14px;
     color: #999999;
     letter-spacing: 0;
-    text-align: justify;
+    text-align: center;
+    margin: 5px;
 }
 
 .station-plugin:hover {
     cursor: pointer;
+}
+
+.station-plugin:hover>i {
+    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+    transform: scale(1.1, 1.1);
+}
+
+.station-plugin-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */

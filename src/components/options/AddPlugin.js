@@ -54,7 +54,7 @@ class AddPlugin extends Component {
                         <div className="plugin-item" key={index}>
                             <div className="plugin-logo" style={{
                                 backgroundImage: plugin.icon ?
-                                    `url(${plugin.icon}?imageView2/2/w/180/)`
+                                    `url(${plugin.icon})`
                                     : 'url(/image/icon/plugin-logo.svg)'
                             }}></div>
                             <div className="plugin-info">

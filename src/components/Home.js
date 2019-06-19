@@ -283,6 +283,7 @@ class Station extends React.Component {
             channelInfo,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
+        const token = localStorage.getItem('TOKEN');
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
             if (nowChannelKey === channelInfo[i]._key) {
@@ -300,8 +301,16 @@ class Station extends React.Component {
                     <div className="station-plugin-container">
                         {
                             pluginInfo.map((plugin, index) => (
-                                <div key={index} className="station-plugin" onClick={() => { window.open(plugin.url, '_blank') }}>
-                                    <i style={{ backgroundImage: `url(${plugin.icon}?imageView2/2/w/180/)` }}></i>
+                                <div
+                                    key={index}
+                                    className="station-plugin"
+                                    onClick={
+                                        () => {
+                                            window.open(`${plugin.url}?token=${token}&stationKey=${plugin.siteKey}&pluginKey=${plugin._key}`, '_blank')
+                                        }
+                                    }
+                                >
+                                    <i style={{ backgroundImage: `url(${plugin.icon})` }}></i>
                                     <span>{plugin.name}</span>
                                 </div>
                             ))
