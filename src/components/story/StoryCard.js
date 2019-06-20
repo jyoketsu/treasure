@@ -19,11 +19,11 @@ class Card extends Component {
     }
 
     handleClick(key, type) {
-        const { history } = this.props;
+        const { history, match } = this.props;
         const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
         const path = type === 9 ? 'article' : 'story';
         history.push({
-            pathname: `/${path}`,
+            pathname: `/${match.params.id}/${path}`,
             search: stationKey ? `?stationKey=${stationKey}&key=${key}` : `?key=${key}`,
         });
     }

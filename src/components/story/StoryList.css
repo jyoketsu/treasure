@@ -15,6 +15,7 @@
     margin-top: 20px;
     background-color: #fff;
     padding: 15px;
+    min-height: 410px;
 }
 
 @media screen and (max-width:768px) {

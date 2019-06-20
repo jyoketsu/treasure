@@ -30,24 +30,24 @@ class Plugin extends Component {
     }
 
     handleEdit(key) {
-        const { history } = this.props;
+        const { history, match, } = this.props;
         history.push({
-            pathname: '/stationOptions/pluginOptions',
+            pathname: `/${match.params.id}/stationOptions/pluginOptions`,
             search: `?key=${key}`,
         });
     }
 
     handleClickAdd() {
-        const { history, } = this.props;
+        const { history, match } = this.props;
         history.push({
-            pathname: '/stationOptions/addPlugin',
+            pathname: `/${match.params.id}/stationOptions/addPlugin`,
         });
     }
 
     toPluginSystem() {
-        const { history, } = this.props;
+        const { history, match } = this.props;
         history.push({
-            pathname: '/stationOptions/pluginSystem',
+            pathname: `/${match.params.id}/stationOptions/pluginSystem`,
         });
     }
 

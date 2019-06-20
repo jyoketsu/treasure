@@ -70,10 +70,6 @@
     color: #E60012 !important;
 }
 
-.app-menu>.active {
-    /* border-bottom: 6px solid #E60012; */
-}
-
 .app-menu>.active:hover>a {
     color: #E60012 !important;
 }
@@ -109,6 +105,16 @@
 
 .head-icon .ant-dropdown-link {
     opacity: 0;
+}
+
+.ant-dropdown-menu-item {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ant-dropdown-menu>.ant-divider-horizontal {
+    margin: 5px 0;
 }
 
 @media screen and (max-width:768px) {}

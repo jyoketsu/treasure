@@ -28,6 +28,10 @@ const CustomizedForm = Form.create({
                 ...props.name,
                 value: props.name.value,
             }),
+            domain: Form.createFormField({
+                ...props.domain,
+                value: props.domain.value,
+            }),
             memo: Form.createFormField({
                 ...props.memo,
                 value: props.memo.value,
@@ -38,23 +42,33 @@ const CustomizedForm = Form.create({
             }),
         };
     },
-
-    onValuesChange(_, values) {
-        console.log(values);
-    },
-
 })(props => {
     const { getFieldDecorator } = props.form;
     return (
         <Form onSubmit={props.onSubmit}>
             <Form.Item label="微站名">
                 {getFieldDecorator('name', {
-                    rules: [{ required: true, message: '请输入微站名！' }],
+                    rules: [
+                        { required: true, message: '请输入微站名！' },
+                        { max: 20, message: '不能超过20个字符！' }
+                    ],
+                })(<Input />)}
+            </Form.Item>
+            <Form.Item label="微站域名">
+                {getFieldDecorator('domain', {
+                    rules: [
+                        { required: true, message: '请输入微站域名！' },
+                        { pattern: /^[A-Za-z0-9]+$/, message: '请输入英文数字！' },
+                        { max: 20, message: '不能超过20个字符！' }
+                    ],
                 })(<Input />)}
             </Form.Item>
             <Form.Item label="微站概述">
                 {getFieldDecorator('memo', {
-                    rules: [{ required: true, message: '请输入微站概述！' }],
+                    rules: [
+                        { required: true, message: '请输入微站概述！' },
+                        { max: 1000, message: '不能超过1000个字符！' }
+                    ],
                 })(<TextArea rows={6} />)}
             </Form.Item>
             <Form.Item>
@@ -87,6 +101,9 @@ class StationBasicInfo extends Component {
             fields: {
                 name: {
                     value: stationInfo ? stationInfo.name : '',
+                },
+                domain: {
+                    value: stationInfo ? stationInfo.domain : '',
                 },
                 memo: {
                     value: stationInfo ? stationInfo.memo : '',
@@ -125,9 +142,9 @@ class StationBasicInfo extends Component {
                 }
                 let size = await util.common.getImageInfo(cover);
                 if (starKey) {
-                    editStation(starKey, fields.name.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
+                    editStation(starKey, fields.name.value, fields.domain.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
                 } else {
-                    createStation(fields.name.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
+                    createStation(fields.name.value, fields.domain.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
                 }
             }
         });

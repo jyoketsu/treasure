@@ -11,6 +11,10 @@ class TextMarquee extends Component {
             return;
         }
         let interval = setInterval(() => {
+            if (!that.box) {
+                clearInterval(interval);
+                return;
+            }
             if (that.box.scrollLeft < textWidth - boxWidth) {
                 if (that.count === 2 && that.box.scrollLeft === boxWidth) {
                     clearInterval(interval);

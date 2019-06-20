@@ -7,7 +7,7 @@ import util from '../services/Util';
 import { Modal, Tooltip, message } from 'antd';
 import { connect } from 'react-redux';
 import ClickOutside from './common/ClickOutside';
-import { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
+import { changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -27,7 +27,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.curPage = 1;
-        this.perPage = 30;
+        this.perPage = 32;
         this.state = {
             showSort: false,
         }
@@ -103,6 +103,7 @@ class Home extends Component {
             nowStationKey,
             nowStation,
             history,
+            match,
             sortType,
             sortOrder,
             nowChannelKey } = this.props;
@@ -126,6 +127,7 @@ class Home extends Component {
                             changeChannel={this.changeChannel}
                             switchSortModal={this.switchSortModal}
                             history={history}
+                            match={match}
                             showSort={showSort}
                             curPage={this.curPage}
                             perPage={this.perPage}
@@ -159,18 +161,17 @@ class Home extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { nowStationKey, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, } = this.props;
+        const { nowStationKey, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, history } = this.props;
         // 切换微站时重新获取故事
         if (nowStationKey !== prevProps.nowStationKey) {
             clearStoryList();
             this.curPage = 1;
-            if (nowStationKey !== 'all') {
+            if (nowStationKey !== 'notFound') {
                 getStationDetail(nowStationKey);
                 // 获取微站全部故事
                 getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
             } else {
-                // 订阅的所有微站的频道故事
-                getStoryList(4, null, null, 1, 1, 1, this.perPage);
+                history.push('/station/notFound');
             }
         }
     }
@@ -218,7 +219,8 @@ class Station extends React.Component {
     }
 
     handleClickAdd(channel, type) {
-        const { history, user, nowChannelKey, } = this.props;
+        const { history, user, nowChannelKey, match } = this.props;
+        const stationDomain = match.params.id;
         if (!user.profile) {
             message.error('请先完善个人信息！');
             return;
@@ -227,20 +229,19 @@ class Station extends React.Component {
             message.error('请先选择要发布的频道！');
             return;
         }
-        const stationKey = util.common.getSearchParamValue(window.location.search, 'stationKey');
 
         switch (type) {
             case 'album':
                 let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
                 history.push({
-                    pathname: `/${path}`,
-                    search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                    pathname: `/${stationDomain}/${path}`,
+                    search: '?type=new',
                 });
                 break;
             case 'article':
                 history.push({
-                    pathname: '/editArticle',
-                    search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                    pathname: `/${stationDomain}/editArticle`,
+                    search: '?type=new',
                 });
                 break;
             default:
@@ -248,14 +249,14 @@ class Station extends React.Component {
                     case 1:
                         let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
                         history.push({
-                            pathname: `/${path}`,
-                            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                            pathname: `/${stationDomain}/${path}`,
+                            search: '?type=new',
                         });
                         break;
                     case 2:
                         history.push({
-                            pathname: '/editArticle',
-                            search: stationKey ? `?stationKey=${stationKey}&type=new` : `?type=new`,
+                            pathname: `/${stationDomain}/editArticle`,
+                            search: '?type=new',
                         });
                         break;
                     default: break;
@@ -297,7 +298,7 @@ class Station extends React.Component {
                     className="station-cover"
                     style={{ backgroundImage: `url(${content.cover})` }}
                 ></div>
-                <div className="main-content">
+                <div className="main-content station-home-page">
                     <div className="station-plugin-container">
                         {
                             pluginInfo.map((plugin, index) => (
@@ -306,7 +307,7 @@ class Station extends React.Component {
                                     className="station-plugin"
                                     onClick={
                                         () => {
-                                            window.open(`${plugin.url}?token=${token}&stationKey=${plugin.siteKey}&pluginKey=${plugin._key}`, '_blank')
+                                            window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank')
                                         }
                                     }
                                 >
@@ -474,5 +475,5 @@ class HomeFooter extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { getStationList, changeStation, getStationDetail, getStoryList, clearStoryList },
+    { changeStation, getStationDetail, getStoryList, clearStoryList },
 )(Home);

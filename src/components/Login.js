@@ -303,12 +303,10 @@ class Login extends Component {
     static getDerivedStateFromProps(nextProps) {
         if (nextProps.user) {
             const search = nextProps.location.search;
+            const stationDomain = nextProps.match.params.id;
             const redirect = util.common.getSearchParamValue(search, 'redirect');
             if (!redirect) {
-                nextProps.history.push({
-                    pathname: '/',
-                    search: nextProps.location.search
-                });
+                nextProps.history.push(`/${stationDomain}`);
             } else {
                 const token = localStorage.getItem('TOKEN');
                 window.location.href = `${redirect}?token=${token}`;

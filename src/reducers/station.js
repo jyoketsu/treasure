@@ -5,6 +5,7 @@ import {
     CHANGE_STATION,
     DELETE_STATION, EDIT_STATION,
     GET_STATION_DETAIL,
+    GET_STATION_DETAIL_DOMAIN,
     ADD_CHANNEL,
     EDIT_CHANNEL,
     DELETE_CHANNEL,
@@ -89,11 +90,26 @@ const station = (state = defaultState, action) => {
                 return state;
             }
         case CHANGE_STATION:
-            return {
-                ...state,
-                nowStationKey: action.stationKey,
+            if (!action.error) {
+                if (action.stationKey) {
+                    return {
+                        ...state,
+                        nowStationKey: action.stationKey,
+                    };
+                } else {
+                    return {
+                        ...state,
+                        nowStationKey: action.payload.result,
+                    };
+                }
+            } else {
+                return {
+                    ...state,
+                    nowStationKey: 'notFound',
+                };
             }
         case GET_STATION_DETAIL:
+        case GET_STATION_DETAIL_DOMAIN:
             if (!action.error) {
                 return {
                     ...state,

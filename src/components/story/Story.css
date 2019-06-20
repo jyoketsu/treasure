@@ -1,6 +1,6 @@
 .story-content {
     background-color: white;
-    box-shadow: 0 0 3px rgba(0,0,0,.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, .1);
     position: relative;
     width: 810px;
     margin: auto;
@@ -115,4 +115,10 @@
     color: #333;
     font-family: "Microsoft Yahei", STHeiti, Menlo, Monaco, Consolas, "Courier New", monospace;
     margin: 15px 0;
+}
+
+@media screen and (max-width:768px) {
+    .story-content {
+        width: 100%;
+    }
 }

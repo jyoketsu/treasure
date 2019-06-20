@@ -47,37 +47,46 @@ class Create extends Component {
         const { getFieldDecorator } = this.props.form;
         const { coverUrl } = this.state;
         return (
-            <div className="main-content create-station">
-                <h2>创建微站</h2>
-                <UploadStationCover
-                    uploadAvatarCallback={this.uploadAvatarCallback}
-                    coverUrl={coverUrl}
-                />
-                <Form onSubmit={this.handleSubmit} className="login-form">
-                    {/* 微站名 */}
-                    <Form.Item>
-                        {getFieldDecorator('name', {
-                            rules: [{ required: true, message: '请输入微站名!' }],
-                        })(
-                            <Input
-                                placeholder="请输入微站名"
-                            />,
-                        )}
-                    </Form.Item>
-                    {/* 微站概述 */}
-                    <Form.Item>
-                        {getFieldDecorator('memo', {
-                            rules: [{ required: true, message: '请输入微站概述!' }],
-                        })(
-                            <TextArea rows={6} placeholder="请输入微站概述" />,
-                        )}
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button">
-                            保存
+            <div className="app-content">
+                <div
+                    className="main-content create-station"
+                    style={{
+                        minHeight: `${window.innerHeight - 70}px`
+                    }}
+                >
+                    <div className="channel-head">
+                        <span>创建站点</span>
+                    </div>
+                    <UploadStationCover
+                        uploadAvatarCallback={this.uploadAvatarCallback}
+                        coverUrl={coverUrl}
+                    />
+                    <Form onSubmit={this.handleSubmit} className="login-form">
+                        {/* 微站名 */}
+                        <Form.Item>
+                            {getFieldDecorator('name', {
+                                rules: [{ required: true, message: '请输入微站名!' }],
+                            })(
+                                <Input
+                                    placeholder="请输入微站名"
+                                />,
+                            )}
+                        </Form.Item>
+                        {/* 微站概述 */}
+                        <Form.Item>
+                            {getFieldDecorator('memo', {
+                                rules: [{ required: true, message: '请输入微站概述!' }],
+                            })(
+                                <TextArea rows={6} placeholder="请输入微站概述" />,
+                            )}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="login-form-button">
+                                保存
                     </Button>
-                    </Form.Item>
-                </Form>
+                        </Form.Item>
+                    </Form>
+                </div>
             </div>
         );
     };

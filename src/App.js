@@ -18,6 +18,8 @@ import Audit from './components/User/Audit';
 import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
 import Article from './components/story/Article';
+import SubscribeStation from './components/subscribe/SubscribeStation';
+import NotFound from './components/NotFound';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -36,20 +38,22 @@ class App extends Component {
         }}>
           <Header />
           <div className="route-container">
-            <Route exact path="/" component={Home} />
-            <Route path="/explore" component={Explore} />
-            <Route path="/message" component={Message} />
-            <Route path="/me" component={Me} />
-            <Route path="/create" component={Create} />
-            <Route path="/login" component={Login} />
-            <Route path="/editStation" component={EditStation} />
-            <Route path="/story" component={Story} />
-            <Route path="/editStory" component={EditStory}></Route>
-            <Route path="/contribute" component={Contribute}></Route>
-            <Route path="/audit" component={Audit}></Route>
-            <Route path="/stationOptions" component={StationOptions}></Route>
-            <Route path="/article" component={Article}></Route>
-            <Route path="/editArticle" component={EditArticle} />
+            <Route exact path="/:id" component={Home} />
+            <Route path="/:id/explore" component={Explore} />
+            <Route path="/:id/message" component={Message} />
+            <Route path="/:id/me" component={Me} />
+            <Route path="/:id/create" component={Create} />
+            <Route path="/:id/login" component={Login} />
+            <Route path="/:id/editStation" component={EditStation} />
+            <Route path="/:id/story" component={Story} />
+            <Route path="/:id/editStory" component={EditStory}></Route>
+            <Route path="/:id/contribute" component={Contribute}></Route>
+            <Route path="/:id/audit" component={Audit}></Route>
+            <Route path="/:id/stationOptions" component={StationOptions}></Route>
+            <Route path="/:id/article" component={Article}></Route>
+            <Route path="/:id/editArticle" component={EditArticle} />
+            <Route path="/:id/subscribeStation" component={SubscribeStation} />
+            <Route path="/station/notFound" component={NotFound} />
           </div>
           {loading ? (
             <div className="loading-mask">

@@ -32,7 +32,7 @@ class Channel extends Component {
     handleEdit(key) {
         const { history } = this.props;
         history.push({
-            pathname: '/stationOptions/editChannel',
+            pathname: 'editChannel',
             search: `?key=${key}`,
         });
     }
@@ -40,7 +40,7 @@ class Channel extends Component {
     handleClickAdd() {
         const { history, } = this.props;
         history.push({
-            pathname: '/stationOptions/editChannel',
+            pathname: 'editChannel',
         });
     }
 

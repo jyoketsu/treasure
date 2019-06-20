@@ -37,7 +37,7 @@ class StationOptions extends Component {
     render() {
         const { match, location, } = this.props;
         const search = location.search;
-        const pathname = location.pathname.split('/')[2];
+        const pathname = location.pathname.split('/')[3];
         const isMobile = util.common.isMobile();
         return (
             <div className="app-content">
@@ -84,9 +84,9 @@ class StationOptions extends Component {
     };
 
     componentDidMount() {
-        const { nowStation, location, history } = this.props;
+        const { nowStation, history, match } = this.props;
         if (!nowStation) {
-            history.push(`/${location.search}`)
+            history.push(`/${match.params.id}`);
         }
     }
 

@@ -36,16 +36,16 @@ class PluginSystem extends Component {
     }
 
     handleClickCreate() {
-        const { history, } = this.props;
+        const { history, match } = this.props;
         history.push({
-            pathname: '/stationOptions/createPlugin',
+            pathname: `/${match.params.id}/stationOptions/createPlugin`,
         });
     }
 
     handleEdit(key) {
-        const { history } = this.props;
+        const { history, match } = this.props;
         history.push({
-            pathname: '/stationOptions/createPlugin',
+            pathname: `/${match.params.id}/stationOptions/createPlugin`,
             search: `?key=${key}`,
         });
     }

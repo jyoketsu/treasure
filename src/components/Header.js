@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { getUserInfo, logout, changeStation, getStationList, clearStoryList, } from '../actions/app';
 import TextMarquee from './common/TextMarquee';
 import util from '../services/Util';
-import { Menu, Dropdown, Modal } from 'antd';
-const { SubMenu } = Menu;
+import { Menu, Dropdown, Modal, Divider, } from 'antd';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -38,27 +37,42 @@ class Header extends Component {
         });
     }
 
-    handleMenuClick({ key }) {
-        const { history, location, clearStoryList, } = this.props;
+    handleMenuClick({ key, item }) {
+        const { history, clearStoryList, location, } = this.props;
+        const pathname = location.pathname;
+        const level = pathname.split('/').length - 1;
+        const domain = item.props.domain;
         switch (key) {
-            case "account": history.push(`/me${location.search}`); break;
+            case "account":
+                history.push({
+                    pathname: level === 1 ? `${pathname}/me` : 'me',
+                });
+                break;
+            case "myStation": break;
             case "logout": this.showConfirm(); break;
             case "stationOptions":
                 clearStoryList();
-                history.push(`/stationOptions${location.search}`);
+                history.push({
+                    pathname: level === 1 ? `${pathname}/stationOptions` : 'stationOptions',
+                });
+                break;
+            case "subscribeStation":
+                history.push({
+                    pathname: level === 1 ? `${pathname}/subscribeStation` : 'subscribeStation',
+                });
                 break;
             default:
                 // 切换站点
                 this.props.changeStation(key);
-                history.push('/');
+                history.push(`/${domain}`);
                 break;
         }
     }
 
     render() {
         const { location, nowStation, stationList, } = this.props;
-        let pathname = location.pathname;
-        let search = location.search;
+        const pathname = location.pathname;
+        const stationDomain = pathname.split('/')[1];
         const isMobile = util.common.isMobile();
 
         const menu = (
@@ -67,17 +81,15 @@ class Header extends Component {
                     nowStation && nowStation.editRight ?
                         <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
                 }
-                <SubMenu title="我的站点">
-                    {
-                        stationList.map((station) => (
-                            <Menu.Item key={station._key}>{station.name}</Menu.Item>
-                        ))
-                    }
-                </SubMenu>
-                {/* <Menu.Item>消息通知</Menu.Item>
-                <Menu.Item>订阅站点</Menu.Item>
-                <Menu.Item>文章中心</Menu.Item>
-                <Menu.Item>探索发现</Menu.Item> */}
+                <Divider />
+                <Menu.Item key="myStation">我的站点</Menu.Item>
+                {
+                    stationList.map((station) => (
+                        <Menu.Item key={station._key} domain={station.domain || station._key}>{`　・${station.name}`}</Menu.Item>
+                    ))
+                }
+                <Divider />
+                <Menu.Item key="subscribeStation">订阅站点</Menu.Item>
                 <Menu.Item key="account">账户</Menu.Item>
                 <Menu.Item key="logout">退出</Menu.Item>
             </Menu>
@@ -89,25 +101,12 @@ class Header extends Component {
                     <li className={`menu-logo`} style={{
                         backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.png'})`
                     }}>
-                        <Link to={`/${search}`}></Link>
+                        <Link to={`/${stationDomain}`}></Link>
                     </li>
                     {
                         !isMobile ? <li className="head-station-name">{nowStation ? nowStation.name : ''}</li> : null
                     }
                     <li className="menu-space"></li>
-                    {/* <li className={pathname === '/' ? 'active' : ''}>
-                    <Link to={`/${search}`}>订阅</Link>
-                </li> */}
-                    {/* {!search ?
-                    <li className={pathname === '/explore' ? 'active' : ''}>
-                        <Link to={`/explore${search}`}>探索</Link>
-                    </li> : null
-                } */}
-                    {/* {!search ?
-                    <li className={pathname === '/editStation' ? 'active' : ''}>
-                        <Link to="/editStation">+</Link>
-                    </li> : null
-                } */}
                     {
                         !isMobile ?
                             <TextMarquee
@@ -123,12 +122,10 @@ class Header extends Component {
 
                     </li>
                     <li className={`head-icon message ${pathname === '/message' ? 'active' : ''}`}>
-                        <Link to={`/message${search}`}></Link>
+                        <Link to={`/message`}></Link>
                     </li>
                     <li className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}>
-
-                        {/* <Link to={`/me${search}`}></Link> */}
-                        <Dropdown overlay={menu}>
+                        <Dropdown overlay={menu} overlayStyle={{ width: '200px' }}>
                             <a className="ant-dropdown-link" href="####">me</a>
                         </Dropdown>
                     </li>
@@ -152,7 +149,7 @@ class Header extends Component {
         }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
 
         const { history, getUserInfo, location, getStationList, } = this.props;
-        const SEARCH_STR = window.location.search;
+        const SEARCH_STR = location.search;
         let token = null;
         let query_token = null;
         if (SEARCH_STR) {
@@ -166,7 +163,9 @@ class Header extends Component {
             getStationList();
         } else {
             // 没有登录，跳转到登录页
-            history.push(`/login${location.search}`);
+            const pathname = location.pathname;
+            const stationDomain = pathname.split('/')[1];
+            history.push(`/${stationDomain}/login${window.location.search}`);
         }
     }
 
@@ -181,31 +180,33 @@ class Header extends Component {
             getStationList,
             changeStation,
         } = this.props;
+        const pathname = location.pathname;
+        const stationDomain = pathname.split('/')[1];
         if (!prevProps.overdue && overdue) {
-            history.push(`/login${location.search}`);
+            history.push(`/${stationDomain}/login${window.location.search}`);
         }
 
-        let targetStationKey = util.common.getSearchParamValue(location.search, 'stationKey');
-
         // 显示初始微站
-        if (!nowStationKey) {
+        if (user && !nowStationKey && !this.changed) {
             // 指定了要显示的微站
-            if (targetStationKey) {
-                changeStation(targetStationKey);
+            if (stationDomain) {
+                this.changed = true;
+                changeStation(null, stationDomain);
             } else if (stationList.length !== 0) {
                 // 主站key
                 let mainStar = null;
                 for (let i = 0; i < stationList.length; i++) {
                     if (stationList[i].isMainStar) {
-                        mainStar = stationList[i]._key;
+                        mainStar = stationList[i];
                         break;
                     }
                 }
-                changeStation(mainStar ? mainStar : stationList[0]._key);
+                history.push(`/${mainStar.domain}`);
             }
         }
 
-        if (!prevProps.user && user && stationList.length === 0) {
+        if (!prevProps.user && user && stationList.length === 0 && !this.gettedList) {
+            this.gettedList = true;
             getStationList();
         }
     }

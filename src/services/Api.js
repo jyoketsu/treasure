@@ -263,10 +263,11 @@ const station = {
      * @param {String} cover 
      * @param {Object} size 
      */
-    createStation(name, type, memo, open, isMainStar, cover, logo, size) {
+    createStation(name, domain, type, memo, open, isMainStar, cover, logo, size) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
             name: name,
+            domain: domain,
             type: type,
             memo: memo,
             open: open,
@@ -284,11 +285,12 @@ const station = {
         });
     },
 
-    editStation(key, name, type, memo, open, isMainStar, cover, logo, size) {
+    editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
             name: name,
+            domain: domain,
             type: type,
             memo: memo,
             open: open,
@@ -302,6 +304,18 @@ const station = {
         return requests.get(APIURL + '/star/starDetail', {
             token: token,
             starKey: key,
+        });
+    },
+    getStationDetailByDomain(domain) {
+        return requests.get(APIURL + '/star/starDetailByDomain', {
+            token: token,
+            domain: domain,
+        });
+    },
+    getStationKey(domain) {
+        return requests.get(APIURL + '/star/getStarKeyByDomain', {
+            token: token,
+            domain: domain,
         });
     },
 }

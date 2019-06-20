@@ -1,3 +1,7 @@
+.station-home-page {
+    width: 1270px;
+}
+
 .station-list {
     height: 46px;
     font-size: 16px;
@@ -78,7 +82,7 @@
 .operation-panel {
     position: fixed;
     bottom: 65px;
-    right: 17px;
+    right: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -149,6 +153,11 @@
 
 .add-article>i {
     background-image: url(/image/icon/article.svg);
+}
+
+.add-article,
+.add-album {
+    background-color: #4A90E2;
 }
 
 .multi-button,
@@ -268,7 +277,18 @@
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */
+@media screen and (max-width:1270px) {
+    .station-home-page {
+        width: 960px;
+    }
+}
+
 @media screen and (max-width:768px) {
+    .station-home-page {
+        width: 100%;
+        padding: 0 15px;
+    }
+
     .station-list {
         padding: 0 20px;
     }

@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 class Article extends Component {
     handleToEdit() {
         const { history, location } = this.props;
-        history.push(`/editArticle${location.search}`);
+        history.push(`editArticle${location.search}`);
     }
 
     render() {

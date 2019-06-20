@@ -17,7 +17,9 @@ export const ADD_GROUP_MEMBER = 'ADD_GROUP_MEMBER';
 export const SET_MEMBER_ROLE = 'SET_MEMBER_ROLE';
 
 export function logout(history) {
-    history.push(`/login${window.location.search}`)
+    const pathname = window.location.pathname;
+    const stationDomain = pathname.split('/')[1];
+    history.push(`/${stationDomain}/login${window.location.search}`)
     return { type: LOGOUT }
 }
 
@@ -59,14 +61,15 @@ export const DELETE_STATION = 'DELETE_STATION';
 export const EDIT_STATION = 'EDIT_STATION';
 export const CHANGE_STATION = 'CHANGE_STATION';
 export const GET_STATION_DETAIL = 'GET_STATION_DETAIL';
+export const GET_STATION_DETAIL_DOMAIN = 'GET_STATION_DETAIL_DOMAIN';
 
 export function getStationList() {
     let request = api.station.getStationList();
     return { type: GET_STATION_LIST, payload: request }
 }
 
-export function createStation(name, type, memo, open, isMainStar, cover, logo, size) {
-    let request = api.station.createStation(name, type, memo, open, isMainStar, cover, logo, size);
+export function createStation(name, domain, type, memo, open, isMainStar, cover, logo, size) {
+    let request = api.station.createStation(name, domain, type, memo, open, isMainStar, cover, logo, size);
     return { type: CREATE_STATION, flag: 'createStation', payload: request }
 }
 
@@ -75,18 +78,28 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, type, memo, open, isMainStar, cover, logo, size) {
-    let request = api.station.editStation(key, name, type, memo, open, isMainStar, cover, logo, size);
+export function editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size) {
+    let request = api.station.editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size);
     return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 
-export function changeStation(key) {
-    return { type: CHANGE_STATION, stationKey: key }
+export function changeStation(key, domain) {
+    if (domain) {
+        let request = api.station.getStationKey(domain);
+        return { type: CHANGE_STATION, payload: request }
+    } else {
+        return { type: CHANGE_STATION, stationKey: key }
+    }
 }
 
 export function getStationDetail(key) {
     let request = api.station.getStationDetail(key);
     return { type: GET_STATION_DETAIL, stationKey: key, payload: request }
+}
+
+export function getStationDetailByDomain(domain) {
+    let request = api.station.getStationDetailByDomain(domain);
+    return { type: GET_STATION_DETAIL_DOMAIN, domain: domain, payload: request }
 }
 
 // story

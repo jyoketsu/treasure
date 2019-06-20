@@ -24,7 +24,7 @@ class Story extends Component {
     }
 
     handleToEdit() {
-        const { history, location, story, channelInfo } = this.props;
+        const { history, location, story, channelInfo, } = this.props;
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
             if (story.series._key === channelInfo[i]._key) {
@@ -32,10 +32,13 @@ class Story extends Component {
                 break;
             }
         }
+        if (!nowChannel) {
+            return;
+        }
         if (nowChannel.albumType === 'normal') {
-            history.push(`/editStory${location.search}`);
+            history.push(`editStory${location.search}`);
         } else {
-            history.push(`/contribute${location.search}`);
+            history.push(`contribute${location.search}`);
         }
     }
 
