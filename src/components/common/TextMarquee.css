@@ -9,6 +9,10 @@
     width: 300px;
 }
 
+.text-marquee-box:hover {
+    cursor: pointer;
+}
+
 .text-marquee-box>.content p {
     display: inline-block;
 }

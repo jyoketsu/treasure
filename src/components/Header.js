@@ -5,7 +5,12 @@ import { connect } from 'react-redux';
 import { getUserInfo, logout, changeStation, getStationList, clearStoryList, } from '../actions/app';
 import TextMarquee from './common/TextMarquee';
 import util from '../services/Util';
-import { Menu, Dropdown, Modal, Divider, } from 'antd';
+import {
+    Menu,
+    Dropdown,
+    Modal,
+    // Divider,
+} from 'antd';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -40,26 +45,20 @@ class Header extends Component {
     handleMenuClick({ key, item }) {
         const { history, clearStoryList, location, } = this.props;
         const pathname = location.pathname;
-        const level = pathname.split('/').length - 1;
+        const stationDomain = pathname.split('/')[1];
         const domain = item.props.domain;
         switch (key) {
             case "account":
-                history.push({
-                    pathname: level === 1 ? `${pathname}/me` : 'me',
-                });
+                history.push(`/${stationDomain}/me`);
                 break;
             case "myStation": break;
             case "logout": this.showConfirm(); break;
             case "stationOptions":
                 clearStoryList();
-                history.push({
-                    pathname: level === 1 ? `${pathname}/stationOptions` : 'stationOptions',
-                });
+                history.push(`/${stationDomain}/stationOptions`);
                 break;
             case "subscribeStation":
-                history.push({
-                    pathname: level === 1 ? `${pathname}/subscribeStation` : 'subscribeStation',
-                });
+                history.push(`/${stationDomain}/subscribeStation`);
                 break;
             default:
                 // 切换站点
@@ -81,14 +80,14 @@ class Header extends Component {
                     nowStation && nowStation.editRight ?
                         <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
                 }
-                <Divider />
+                {/* <Divider /> */}
                 <Menu.Item key="myStation">我的站点</Menu.Item>
                 {
                     stationList.map((station) => (
                         <Menu.Item key={station._key} domain={station.domain || station._key}>{`　・${station.name}`}</Menu.Item>
                     ))
                 }
-                <Divider />
+                {/* <Divider /> */}
                 <Menu.Item key="subscribeStation">订阅站点</Menu.Item>
                 <Menu.Item key="account">账户</Menu.Item>
                 <Menu.Item key="logout">退出</Menu.Item>
@@ -163,9 +162,7 @@ class Header extends Component {
             getStationList();
         } else {
             // 没有登录，跳转到登录页
-            const pathname = location.pathname;
-            const stationDomain = pathname.split('/')[1];
-            history.push(`/${stationDomain}/login${window.location.search}`);
+            history.push(`/account/login${window.location.search}`);
         }
     }
 
@@ -183,13 +180,13 @@ class Header extends Component {
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
         if (!prevProps.overdue && overdue) {
-            history.push(`/${stationDomain}/login${window.location.search}`);
+            history.push(`/account/login${window.location.search}`);
         }
 
         // 显示初始微站
-        if (user && !nowStationKey && !this.changed) {
+        if (user && !nowStationKey && stationList.length !== 0 && !this.changed) {
             // 指定了要显示的微站
-            if (stationDomain) {
+            if (stationDomain && stationDomain !== 'account') {
                 this.changed = true;
                 changeStation(null, stationDomain);
             } else if (stationList.length !== 0) {

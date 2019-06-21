@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="11px" viewBox="0 0 32 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>拖动手柄@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="时光宝库web版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-303.000000, -954.000000)" fill="#A9A9A9">
+            <path d="M303,954 L335,954 L335,955.571429 L303,955.571429 L303,954 Z M303,958.714286 L335,958.714286 L335,960.285714 L303,960.285714 L303,958.714286 Z M303,963.428571 L335,963.428571 L335,965 L303,965 L303,963.428571 Z" id="拖动手柄"></path>
+        </g>
+    </g>
+</svg>

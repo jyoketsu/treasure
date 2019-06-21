@@ -5,12 +5,26 @@ class UploadStationCover extends Component {
     render() {
         const { uploadAvatarCallback, coverUrl, extParam, } = this.props;
         let style = {
-            backgroundImage: `url(${coverUrl})`
+            backgroundImage: `url(${coverUrl})`,
+            width: '112px',
+            height: '112px',
+            backgroundColor: '#e7e7e7',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: '50%',
+            backgroundSize: 'cover',
         };
         return (
             <div className="station-cover-upload" style={style}>
                 <FileUpload
-                    style={{ backgroundImage: 'url(/image/icon/add.png)' }}
+                    style={{
+                        backgroundImage: 'url(/image/icon/add.png)',
+                        display: 'block',
+                        width: '50px',
+                        height: '50px',
+                    }}
                     extParam={extParam}
                     callback={uploadAvatarCallback} />
             </div>

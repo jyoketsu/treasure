@@ -34,9 +34,7 @@ const promiseMiddleware = store => next => action => {
                     if (res.statusCode !== "701") {
                         message.error(res.msg);
                     } else {
-                        const pathname = window.location.pathname;
-                        const stationDomain = pathname.split('/')[1];
-                        window.location.href = `/${stationDomain}/login${window.location.search}`;
+                        window.location.href = `/account/login${window.location.search}`;
                     }
                     store.dispatch({ type: ASYNC_END });
                     store.dispatch(action);

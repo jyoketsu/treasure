@@ -263,7 +263,7 @@ const station = {
      * @param {String} cover 
      * @param {Object} size 
      */
-    createStation(name, domain, type, memo, open, isMainStar, cover, logo, size) {
+    createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
             name: name,
@@ -275,6 +275,7 @@ const station = {
             cover: cover,
             logo: logo,
             size: size,
+            inheritedMode: inheritedMode,
         });
     },
 
@@ -285,7 +286,7 @@ const station = {
         });
     },
 
-    editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size) {
+    editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
@@ -298,6 +299,7 @@ const station = {
             cover: cover,
             logo: logo,
             size: size,
+            inheritedMode: inheritedMode,
         });
     },
     getStationDetail(key) {
@@ -318,6 +320,16 @@ const station = {
             domain: domain,
         });
     },
+
+    searchStation(keyword, curPage, perPage) {
+        return requests.get(APIURL + '/star/searchStar', {
+            token: token,
+            searchCondition: keyword,
+            curPage: curPage,
+            perPage: perPage,
+        });
+    },
+
 }
 
 const story = {

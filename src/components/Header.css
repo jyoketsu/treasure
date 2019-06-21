@@ -31,11 +31,11 @@
 
 .head-station-name {
     width: unset !important;
-    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
     font-size: 24px;
     letter-spacing: 1.36px;
     margin-left: 14px;
     color: #ffffff;
+    font-weight: 800;
 }
 
 .menu-space {

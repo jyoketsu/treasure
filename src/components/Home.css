@@ -70,6 +70,7 @@
     padding: 25px 0;
     background-color: #fff;
     margin-top: 15px;
+    font-weight: 800;
 }
 
 .station-memo-title {
@@ -101,19 +102,26 @@
     cursor: pointer;
 }
 
+.station-memo {
+    background-color: #fff;
+}
+
 .station-memo>pre {
-    text-align: center !important;
     white-space: pre-wrap;
     word-wrap: break-word;
     border: 0;
-    background-color: #fff;
     word-break: break-all;
-    text-align: left;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 2;
     color: #333;
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     padding-bottom: 40px;
+    font-family: inherit;
+    color: inherit;
+    line-height: 1.8;
+    word-break: break-all;
+    padding: 0 15px 25px 15px;
+    max-width: 670px;
+    margin: auto;
 }
 
 .story-tool {
@@ -277,7 +285,7 @@
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */
-@media screen and (max-width:1270px) {
+@media screen and (max-width:1290px) {
     .station-home-page {
         width: 960px;
     }

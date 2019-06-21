@@ -1,5 +1,6 @@
 import {
     LOGIN,
+    REGISTER,
     GET_STATION_LIST,
     CREATE_STATION,
     CHANGE_STATION,
@@ -15,6 +16,7 @@ import {
     SET_MEMBER_ROLE,
     SUBSCRIBE_PLUGIN,
     CANCEL_PLUGIN,
+    SEARCH_STATION,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -25,14 +27,17 @@ const defaultState = {
     nowStation: null,
     searchUserList: [],
     userList: [],
+    matchedStationList: [],
 };
 
 const station = (state = defaultState, action) => {
     switch (action.type) {
         case LOGIN:
+        case REGISTER:
             return {
                 ...state,
                 nowStationKey: null,
+                nowStation: null,
                 stationList: [],
             }
         case GET_STATION_LIST:
@@ -232,6 +237,15 @@ const station = (state = defaultState, action) => {
                 return {
                     ...state,
                     nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case SEARCH_STATION:
+            if (!action.error) {
+                return {
+                    ...state,
+                    matchedStationList: action.payload.result,
                 };
             } else {
                 return state;

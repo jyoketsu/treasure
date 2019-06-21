@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import './EditStation.css';
 import util from '../../services/Util';
 import StationBasicInfo from './StationBasicInfo';
-import StationGroup from './StationGroup';
-import { Tabs, } from 'antd';
-
 import { connect } from 'react-redux';
-
-import { editStation, createStation } from '../../actions/app';
-
-const TabPane = Tabs.TabPane;
 
 const mapStateToProps = state => ({
     stationList: state.station.stationList,
-    loading: state.common.loading,
 });
 
 class EditStation extends Component {
@@ -32,21 +24,12 @@ class EditStation extends Component {
 
     render() {
         return (
-            <div className="edit-station">
-                <div className="my-station-head">{this.stationInfo ? '编辑' : '创建'}微站</div>
-                <div className="main-content">
-                    {
-                        this.stationInfo ? (
-                            <Tabs defaultActiveKey="basicInfo">
-                                <TabPane tab="基本信息" key="basicInfo">
-                                    <StationBasicInfo stationInfo={this.stationInfo} />
-                                </TabPane>
-                                <TabPane tab="成员" key="group">
-                                    <StationGroup />
-                                </TabPane>
-                            </Tabs>
-                        ) : <StationBasicInfo stationInfo={this.stationInfo} />
-                    }
+            <div className="app-content">
+                <div className="main-content edit-station">
+                    <div className="channel-head">
+                        <span>创建站点</span>
+                    </div>
+                    <StationBasicInfo stationInfo={this.stationInfo} />
                 </div>
             </div>
         );
@@ -55,5 +38,5 @@ class EditStation extends Component {
 
 export default connect(
     mapStateToProps,
-    { editStation, createStation },
+    {},
 )(EditStation);

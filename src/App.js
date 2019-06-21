@@ -8,7 +8,6 @@ import Home from './components/Home';
 import Explore from './components/Explore';
 import Message from './components/Message';
 import Me from './components/User/Me';
-import Create from './components/Create';
 import EditStation from './components/User/EditStation';
 import Login from './components/Login';
 import Story from './components/story/Story';
@@ -42,8 +41,7 @@ class App extends Component {
             <Route path="/:id/explore" component={Explore} />
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
-            <Route path="/:id/create" component={Create} />
-            <Route path="/:id/login" component={Login} />
+            <Route path="/account/login" component={Login} />
             <Route path="/:id/editStation" component={EditStation} />
             <Route path="/:id/story" component={Story} />
             <Route path="/:id/editStory" component={EditStory}></Route>

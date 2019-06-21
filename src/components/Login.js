@@ -303,10 +303,14 @@ class Login extends Component {
     static getDerivedStateFromProps(nextProps) {
         if (nextProps.user) {
             const search = nextProps.location.search;
-            const stationDomain = nextProps.match.params.id;
             const redirect = util.common.getSearchParamValue(search, 'redirect');
+            const targetDomain = util.common.getSearchParamValue(search, 'targetDomain');
             if (!redirect) {
-                nextProps.history.push(`/${stationDomain}`);
+                if (targetDomain) {
+                    nextProps.history.push(`/${targetDomain}`);
+                } else {
+                    nextProps.history.push('/');
+                }
             } else {
                 const token = localStorage.getItem('TOKEN');
                 window.location.href = `${redirect}?token=${token}`;

@@ -17,9 +17,7 @@ export const ADD_GROUP_MEMBER = 'ADD_GROUP_MEMBER';
 export const SET_MEMBER_ROLE = 'SET_MEMBER_ROLE';
 
 export function logout(history) {
-    const pathname = window.location.pathname;
-    const stationDomain = pathname.split('/')[1];
-    history.push(`/${stationDomain}/login${window.location.search}`)
+    history.push(`/account/login${window.location.search}`)
     return { type: LOGOUT }
 }
 
@@ -62,14 +60,15 @@ export const EDIT_STATION = 'EDIT_STATION';
 export const CHANGE_STATION = 'CHANGE_STATION';
 export const GET_STATION_DETAIL = 'GET_STATION_DETAIL';
 export const GET_STATION_DETAIL_DOMAIN = 'GET_STATION_DETAIL_DOMAIN';
+export const SEARCH_STATION = 'SEARCH_STATION';
 
 export function getStationList() {
     let request = api.station.getStationList();
     return { type: GET_STATION_LIST, payload: request }
 }
 
-export function createStation(name, domain, type, memo, open, isMainStar, cover, logo, size) {
-    let request = api.station.createStation(name, domain, type, memo, open, isMainStar, cover, logo, size);
+export function createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
+    let request = api.station.createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode);
     return { type: CREATE_STATION, flag: 'createStation', payload: request }
 }
 
@@ -78,8 +77,8 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size) {
-    let request = api.station.editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size);
+export function editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
+    let request = api.station.editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode);
     return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 
@@ -100,6 +99,11 @@ export function getStationDetail(key) {
 export function getStationDetailByDomain(domain) {
     let request = api.station.getStationDetailByDomain(domain);
     return { type: GET_STATION_DETAIL_DOMAIN, domain: domain, payload: request }
+}
+
+export function searchStation(keyword, curPage, perPage) {
+    let request = api.station.searchStation(keyword, curPage, perPage);
+    return { type: SEARCH_STATION, payload: request }
 }
 
 // story

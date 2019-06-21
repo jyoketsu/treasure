@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './StationBasicInfo.css';
 import util from '../../services/Util';
-import { Form, Input, Button, message, Checkbox, } from 'antd';
+import { Form, Input, Button, message, Checkbox, Radio, } from 'antd';
 import UploadStationCover from '../common/UploadCover';
 import { withRouter } from "react-router-dom";
 
@@ -36,6 +36,10 @@ const CustomizedForm = Form.create({
                 ...props.memo,
                 value: props.memo.value,
             }),
+            inheritedMode: Form.createFormField({
+                ...props.inheritedMode,
+                value: props.inheritedMode.value,
+            }),
             open: Form.createFormField({
                 ...props.open,
                 value: props.open.value,
@@ -46,7 +50,7 @@ const CustomizedForm = Form.create({
     const { getFieldDecorator } = props.form;
     return (
         <Form onSubmit={props.onSubmit}>
-            <Form.Item label="微站名">
+            <Form.Item label="站名">
                 {getFieldDecorator('name', {
                     rules: [
                         { required: true, message: '请输入微站名！' },
@@ -54,7 +58,7 @@ const CustomizedForm = Form.create({
                     ],
                 })(<Input />)}
             </Form.Item>
-            <Form.Item label="微站域名">
+            <Form.Item label="域名">
                 {getFieldDecorator('domain', {
                     rules: [
                         { required: true, message: '请输入微站域名！' },
@@ -63,13 +67,23 @@ const CustomizedForm = Form.create({
                     ],
                 })(<Input />)}
             </Form.Item>
-            <Form.Item label="微站概述">
+            <Form.Item label="概述">
                 {getFieldDecorator('memo', {
                     rules: [
                         { required: true, message: '请输入微站概述！' },
                         { max: 1000, message: '不能超过1000个字符！' }
                     ],
                 })(<TextArea rows={6} />)}
+            </Form.Item>
+            <Form.Item label="管理模式">
+                {getFieldDecorator('inheritedMode', {
+                    rules: [{ required: true, message: '请选择管理模式！' }],
+                })(
+                    <Radio.Group>
+                        <Radio value={1}>全站统一</Radio>
+                        <Radio value={2}>频道插件独立管理</Radio>
+                    </Radio.Group>,
+                )}
             </Form.Item>
             <Form.Item>
                 {getFieldDecorator('open', {
@@ -108,6 +122,9 @@ class StationBasicInfo extends Component {
                 memo: {
                     value: stationInfo ? stationInfo.memo : '',
                 },
+                inheritedMode: {
+                    value: stationInfo ? stationInfo.inheritedMode : '',
+                },
                 open: {
                     value: stationInfo ? stationInfo.open : 0,
                 },
@@ -142,9 +159,31 @@ class StationBasicInfo extends Component {
                 }
                 let size = await util.common.getImageInfo(cover);
                 if (starKey) {
-                    editStation(starKey, fields.name.value, fields.domain.value, type, fields.memo.value, fields.open.value, isMainStar, cover, logo, size);
+                    editStation(
+                        starKey,
+                        fields.name.value,
+                        fields.domain.value,
+                        type,
+                        fields.memo.value,
+                        fields.open.value,
+                        isMainStar,
+                        cover,
+                        logo,
+                        size,
+                        fields.inheritedMode.value
+                    );
                 } else {
-                    createStation(fields.name.value, fields.domain.value, 1, fields.memo.value, fields.open.value, false, cover, logo, size);
+                    createStation(
+                        fields.name.value,
+                        fields.domain.value,
+                        1,
+                        fields.memo.value,
+                        fields.open.value,
+                        false,
+                        cover,
+                        logo,
+                        size,
+                        fields.inheritedMode.value);
                 }
             }
         });
@@ -155,13 +194,13 @@ class StationBasicInfo extends Component {
 
         return (
             <div>
-                <label className='ant-form-item-required form-label'>微站logo：（推荐分辨率：260*70）</label>
+                <label className='ant-form-item-required form-label'>logo：（推荐分辨率：260*70）</label>
                 <UploadStationCover
                     uploadAvatarCallback={this.uploadAvatarCallback}
                     extParam={'logo'}
                     coverUrl={logo}
                 />
-                <label className='ant-form-item-required form-label'>微站封面图：（推荐分辨率：1920*380）</label>
+                <label className='ant-form-item-required form-label'>Banner图：（推荐分辨率：1920*380）</label>
                 <UploadStationCover
                     uploadAvatarCallback={this.uploadAvatarCallback}
                     extParam={'cover'}
