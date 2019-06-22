@@ -59,12 +59,18 @@ class Plugin extends Component {
                 <div className="channel-head">
                     <span>插件管理</span>
                     <div>
-                        <Button
-                            type="primary"
-                            className="plugin-system-button"
-                            onClick={this.toPluginSystem.bind(this)}
-                        >系统插件管理</Button>
-                        <Divider type="vertical" />
+                        {
+                            nowStation && nowStation._key === '593122852' ? [
+                                <Button
+                                    type="primary"
+                                    className="plugin-system-button"
+                                    onClick={this.toPluginSystem.bind(this)}
+                                >
+                                    系统插件管理
+                            </Button>,
+                                <Divider type="vertical" />
+                            ] : null
+                        }
                         <Button
                             type="primary"
                             className="login-form-button"

@@ -4,6 +4,7 @@
     position: relative;
     width: 810px;
     margin: auto;
+    padding: 0 15px;
 }
 
 .story-avatar {
@@ -48,7 +49,8 @@
     text-align: left;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #333;
+    font-family: inherit;
+    color: inherit;
 }
 
 .story-container .story-content-edit-box {
@@ -109,10 +111,11 @@
     background-color: #fff;
     word-break: break-all;
     text-align: left;
-    font-size: 14px;
-    line-height: 2;
-    color: #333;
     margin: 15px 0;
+    font-size: 16px;
+    line-height: inherit;
+    font-family: inherit;
+    color: inherit;
 }
 
 @media screen and (max-width:768px) {

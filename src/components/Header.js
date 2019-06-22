@@ -107,22 +107,23 @@ class Header extends Component {
                     }
                     <li className="menu-space"></li>
                     {
-                        !isMobile ?
-                            <TextMarquee
-                                width={189}
-                                text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
-                                style={{ marginRight: '24px' }}
-                            /> : null
+                        // !isMobile ?
+                        //     <TextMarquee
+                        //         width={189}
+                        //         text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
+                        //         style={{ marginRight: '24px' }}
+                        //     /> : null
                     }
-                    <li className={`head-icon subscribe`}>
-
+                    {/* <li className={`head-icon subscribe`}>
                     </li>
+
                     <li className={`head-icon search`}>
-
                     </li>
+
                     <li className={`head-icon message ${pathname === '/message' ? 'active' : ''}`}>
                         <Link to={`/message`}></Link>
-                    </li>
+                    </li> */}
+
                     <li className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}>
                         <Dropdown overlay={menu} overlayStyle={{ width: '200px' }}>
                             <a className="ant-dropdown-link" href="####">me</a>
@@ -130,12 +131,12 @@ class Header extends Component {
                     </li>
                 </ul>
                 {
-                    isMobile ?
-                        <TextMarquee
-                            width={document.body.offsetWidth}
-                            text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
-                            style={{ fontSize: '24px' }}
-                        /> : null
+                    // isMobile ?
+                    //     <TextMarquee
+                    //         width={document.body.offsetWidth}
+                    //         text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
+                    //         style={{ fontSize: '24px' }}
+                    //     /> : null
                 }
             </div>
         );
@@ -164,6 +165,15 @@ class Header extends Component {
             // 没有登录，跳转到登录页
             history.push(`/account/login${window.location.search}`);
         }
+
+        // 监听路由变化
+        const that = this;
+        this.props.history.listen((route) => {
+            if (route.pathname === '/account/login') {
+                that.gettedList = false;
+                that.changed = false;
+            }
+        })
     }
 
     componentDidUpdate(prevProps) {

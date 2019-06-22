@@ -73,9 +73,9 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js && rm build/static/js/*.map && rm build/static/css/*.map && scp -r build/image build/static build/js build/storyTheme build/favicon.ico build/index.html root@qingtime.cn:/home/work/websites/familytree.qingtime.cn",
     "test": "node scripts/test.js --env=jsdom",
-    "distribute": "rm build/static/js/*.map && rm build/static/css/*.map && scp -r build/image build/static build/js build/storyTheme build/favicon.ico build/index.html root@qingtime.cn:/home/work/websites/familytree.qingtime.cn"
+    "build": "node scripts/build.js && scp -r build/* root@139.155.124.76:/home/work/websites/baoku.qingtime.cn",
+    "scp": "scp -r build/* root@139.155.124.76:/home/work/websites/baoku.qingtime.cn"
   },
   "jest": {
     "collectCoverageFrom": [

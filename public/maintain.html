@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <!-- 禁止用户缩放 -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no,initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="theme-color" content="#000000" />
+    <title>时光宝库</title>
+</head>
+<script type="text/javascript">
+    var url = window.location.href;
+    // 自动切换为https
+    if (url.indexOf("localhost") === -1 && url.indexOf("192.168") === -1 && url.indexOf("https") < 0) {
+        url = url.replace("http:", "https:");
+        window.location.replace(url);
+    }
+</script>
+<style>
+    body {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        font-family: 'Open Sans', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+        /* color: #686868; */
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #4F726C;
+    }
+</style>
+
+<body style="overflow: auto">
+    <h1>本站正在维护中...</h1>
+    <h3>我们将尽快恢复正常访问</h3>
+    <h2>敬请期待</h2>
+</body>
+
+</html>

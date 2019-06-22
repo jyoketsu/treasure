@@ -28,6 +28,7 @@ const defaultState = {
     searchUserList: [],
     userList: [],
     matchedStationList: [],
+    matchedNumber: 0,
 };
 
 const station = (state = defaultState, action) => {
@@ -246,6 +247,7 @@ const station = (state = defaultState, action) => {
                 return {
                     ...state,
                     matchedStationList: action.payload.result,
+                    matchedNumber: action.payload.totalNumber,
                 };
             } else {
                 return state;

@@ -6,7 +6,7 @@
 
 .app-menu {
     list-style: none;
-    padding: 0 14px;
+    padding: 0 25px;
     margin: unset;
     height: 70px;
     background: rgba(255, 255, 255, 1);
@@ -20,8 +20,8 @@
 }
 
 .menu-logo {
-    width: 104px !important;
-    height: 49px !important;
+    width: 55px !important;
+    height: 55px !important;
     border-radius: 8px;
     /* background-image: url(/image/icon/logo.svg); */
     background-size: cover;

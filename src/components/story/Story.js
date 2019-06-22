@@ -65,9 +65,9 @@ class Story extends Component {
                     </div>
                     <div className="story-title">{title}</div>
                     <div className="edit-group">赛区：{address}</div>
-                    {memo ? <pre>{memo}</pre> : null}
+                    {memo ? <pre className="story-memo">{memo}</pre> : null}
                     {
-                        richContent.map((content, index) => {
+                        richContent ? richContent.map((content, index) => {
                             const { url, memo } = content;
                             let result = null;
                             let regex1 = /[^()]+(?=\))/g;
@@ -78,7 +78,16 @@ class Story extends Component {
                                 case 'header':
                                     result = <span className="story-text-title-show">{memo}</span>;
                                     break;
-                                case 'image':
+                                case 'image': {
+                                    let exifStr = '';
+                                    if (content.exif) {
+                                        const model = content.exif.Model ? `${content.exif.Model.val}，  ` : '';
+                                        const shutterSpeedValue = content.exif.ShutterSpeedValue ? `${content.exif.ShutterSpeedValue.val.match(regex1)}，  ` : '';
+                                        const apertureValue = content.exif.ApertureValue ? `${content.exif.ApertureValue.val.match(regex1)}，  ` : '';
+                                        const iSOSpeedRatings = content.exif.ISOSpeedRatings ? `${content.exif.ISOSpeedRatings.val}` : '';
+                                        exifStr = model + shutterSpeedValue + apertureValue + iSOSpeedRatings;
+                                    }
+
                                     result =
                                         <div className="story-imageGroup">
                                             <div className="image-memo">{memo}</div>
@@ -89,26 +98,11 @@ class Story extends Component {
                                                     alt="story"
                                                     onClick={this.handleClickImage.bind(this, url)}
                                                 />
-                                                {
-                                                    content.exif ?
-                                                        <div className="img-exif">
-                                                            {
-                                                                `${
-                                                                content.exif.Model ? content.exif.Model.val : ''
-                                                                }，  ${
-                                                                content.exif.ShutterSpeedValue ? content.exif.ShutterSpeedValue.val.match(regex1) : ''
-                                                                }，  ${
-                                                                content.exif.ApertureValue ? content.exif.ApertureValue.val.match(regex1) : ''
-                                                                }，  ${
-                                                                content.exif.ISOSpeedRatings ? content.exif.ISOSpeedRatings.val : ''
-                                                                }`
-                                                            }
-                                                        </div> :
-                                                        null
-                                                }
+                                                {exifStr ? <div className="img-exif">{exifStr}</div> : null}
                                             </div>
-                                        </div>
+                                        </div>;
                                     break;
+                                }
                                 case 'video':
                                     result =
                                         <video className="story-video" src={url} controls="controls">
@@ -121,7 +115,7 @@ class Story extends Component {
                                     {result}
                                 </div>
                             );
-                        })
+                        }) : null
                     }
                 </div>
             </div>

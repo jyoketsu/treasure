@@ -310,7 +310,7 @@ class Contribute extends Component {
         const { story = {}, fields } = this.state;
         const { richContent = [] } = story;
         const { seriesInfo } = this.props;
-        let centent = richContent.map((content, index) => {
+        let centent = richContent ? richContent.map((content, index) => {
             let result = <StoryImage index={index} url={content.url} memo={content.memo} handleInput={this.handleInput} />
 
             let storyContent =
@@ -324,7 +324,7 @@ class Contribute extends Component {
                     {result}
                 </StoryContentEditBox>
             return content.metaType === 'image' ? storyContent : null;
-        });
+        }) : null;
 
         return (
             <div className="app-content edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
