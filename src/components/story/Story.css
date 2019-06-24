@@ -66,7 +66,6 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    background-color: cornsilk;
     display: block;
     width: 50px;
     height: 30px;
@@ -116,6 +115,40 @@
     line-height: inherit;
     font-family: inherit;
     color: inherit;
+}
+
+.story-head-title {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid gainsboro;
+}
+
+.story-head-info {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.story-head-info>div {
+    margin-right: 15px;
+}
+
+.story-head-info>div:last-child {
+    margin-right: unset;
+}
+
+.story-head-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 6px;
+    background-color: bisque;
 }
 
 @media screen and (max-width:768px) {

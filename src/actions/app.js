@@ -123,8 +123,9 @@ export const CLEAR_STORY_DETAIL = 'CLEAR_STORY_DETAIL';
 export const LIKE_STORY = 'LIKE_STORY';
 export const UPDATE_EXIF = 'UPDATE_EXIF';
 export const AUDIT = 'AUDIT';
+export const READYTOREFRESH = 'READYTOREFRESH';
 
-export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage) {
+export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage, isRefresh) {
     let request = api.story.getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage);
     return {
         type: GET_STORY_LIST,
@@ -133,8 +134,13 @@ export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curP
         sortOrder: sortOrder,
         noLoading: true,
         channelKey: seriesKey,
-        payload: request
+        payload: request,
+        isRefresh:isRefresh,
     }
+}
+
+export function readyToRefresh() {
+    return { type: READYTOREFRESH }
 }
 
 export function clearStoryList() {

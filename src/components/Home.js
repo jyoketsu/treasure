@@ -21,6 +21,7 @@ const mapStateToProps = state => ({
     sortOrder: state.story.sortOrder,
     nowChannelKey: state.story.nowChannelKey,
     storyListLength: state.story.storyList.length,
+    refresh: state.story.refresh,
 });
 
 class Home extends Component {
@@ -152,11 +153,22 @@ class Home extends Component {
             document.documentElement.scrollTop = scrollTop;
         }
 
-        const { nowStationKey, sortType, sortOrder, getStoryList, getStationDetail, storyListLength, } = this.props;
+        const {
+            nowStationKey,
+            sortType,
+            sortOrder,
+            getStoryList,
+            getStationDetail,
+            storyListLength,
+            refresh,
+        } = this.props;
         if (nowStationKey && storyListLength === 0) {
             getStationDetail(nowStationKey);
             // 获取微站全部故事
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+        }
+        if (refresh) {
+            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
         }
     }
 
@@ -341,7 +353,7 @@ class Station extends React.Component {
                             ))}
                         </div>
                     </div>
-                    <StoryList />
+                    <StoryList showStyle={nowChannel ? nowChannel.showStyle : 2} />
                 </div>
                 <HomeFooter stationName={content.name} />
                 <div className="operation-panel">

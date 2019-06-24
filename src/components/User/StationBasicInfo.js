@@ -200,7 +200,7 @@ class StationBasicInfo extends Component {
                     extParam={'logo'}
                     coverUrl={logo}
                 />
-                <label className='ant-form-item-required form-label'>Banner图：（推荐分辨率：1920*380）</label>
+                <label className='ant-form-item-required form-label'>Banner图：（推荐分辨率：1920*523）</label>
                 <UploadStationCover
                     uploadAvatarCallback={this.uploadAvatarCallback}
                     extParam={'cover'}

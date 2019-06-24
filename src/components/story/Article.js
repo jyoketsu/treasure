@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
     nowStationKey: state.station.nowStationKey,
+    channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
 
 class Article extends Component {
@@ -19,8 +20,18 @@ class Article extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey } = this.props;
-        const { userKey } = story;
+        const { story, userId, nowStationKey, channelInfo, } = this.props;
+        const { userKey, title, creator = {}, } = story;
+        let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
+        // 频道信息
+        let nowChannel;
+        for (let i = 0; i < channelInfo.length; i++) {
+            if (story.series && story.series._key === channelInfo[i]._key) {
+                nowChannel = channelInfo[i];
+                break;
+            }
+        }
+
         return (
             <div
                 className="app-content story-container article-display"
@@ -28,10 +39,18 @@ class Article extends Component {
             >
                 <div className="main-content story-content"
                     style={{
-                        minHeight: `${window.innerHeight}px`
+                        minHeight: `${window.innerHeight - 70}px`
                     }}
                 >
-                    <h1>{story ? story.title : ''}</h1>
+                    <div className="story-head-title">
+                        <div className="story-title">{title}</div>
+                        <div className="story-head-info">
+                            <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
+                            <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
+                            <div className="story-card-name">{creator.name}</div>
+                            <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                        </div>
+                    </div>
                     {
                         userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }

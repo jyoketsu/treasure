@@ -29,6 +29,7 @@
 
 .app {
     position: relative;
+    background: radial-gradient(at center top,#7B8492,#292D42);
 }
 
 
@@ -55,6 +56,9 @@
 
 .app-content {
     background-color: #f5f5f5;
+    position: absolute;
+    width: 100%;
+    top: 70px;
 }
 
 .loading-mask {
@@ -73,6 +77,13 @@
 .main-content {
     position: relative;
     width: 960px;
+}
+
+.route-container {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 100%;
 }
 
 /* 淡入淡出动画--------------------------------------------------------- */

@@ -14,7 +14,7 @@ class UploadStationCover extends Component {
             justifyContent: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: '50%',
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
         };
         return (
             <div className="station-cover-upload" style={style}>

@@ -13,7 +13,6 @@ import Login from './components/Login';
 import Story from './components/story/Story';
 import EditStory from './components/story/EditStory';
 import Contribute from './components/story/Contribute';
-import Audit from './components/User/Audit';
 import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
 import Article from './components/story/Article';
@@ -33,7 +32,7 @@ class App extends Component {
     return (
       <Router>
         <div className="app" style={{
-          minHeight: `${window.innerHeight}px`
+          minHeight: `${window.innerHeight - 70}px`
         }}>
           <Header />
           <div className="route-container">
@@ -46,7 +45,6 @@ class App extends Component {
             <Route path="/:id/story" component={Story} />
             <Route path="/:id/editStory" component={EditStory}></Route>
             <Route path="/:id/contribute" component={Contribute}></Route>
-            <Route path="/:id/audit" component={Audit}></Route>
             <Route path="/:id/stationOptions" component={StationOptions}></Route>
             <Route path="/:id/article" component={Article}></Route>
             <Route path="/:id/editArticle" component={EditArticle} />

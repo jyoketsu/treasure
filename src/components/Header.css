@@ -1,7 +1,6 @@
 .app-menu-container {
     display: flex;
     flex-direction: column;
-    background-color: black;
 }
 
 .app-menu {
@@ -16,7 +15,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #333645;
+    /* background-color: #333645; */
+    background-color: rgba(0, 0, 0, 0.16);
+    z-index: 2;
 }
 
 .menu-logo {
@@ -36,6 +37,9 @@
     margin-left: 14px;
     color: #ffffff;
     font-weight: 800;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .menu-space {
@@ -87,6 +91,10 @@
     cursor: pointer;
 }
 
+.head-icon:last-child {
+    margin-right: unset;
+}
+
 .me {
     background-image: url(/image/icon/me.svg);
 }
@@ -117,4 +125,13 @@
     margin: 5px 0;
 }
 
-@media screen and (max-width:768px) {}
+@media screen and (max-width:768px) {
+    .app-menu {
+        padding: 0 15px;
+    }
+
+    .head-icon {
+        width: 35px !important;
+        height: 35px !important;
+    }
+}

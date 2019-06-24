@@ -43,28 +43,51 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey } = this.props;
-        const { userKey, cover, title, creator = {}, richContent = [], address, memo, } = story;
+        const { story, userId, nowStationKey, channelInfo, } = this.props;
+        const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
+        // 频道信息
+        let nowChannel;
+        for (let i = 0; i < channelInfo.length; i++) {
+            if (story.series && story.series._key === channelInfo[i]._key) {
+                nowChannel = channelInfo[i];
+                break;
+            }
+        }
+
         return (
             <div className="app-content story-container"
             >
-                <div
+                {/* <div
                     className="story-head"
                     style={{
                         backgroundImage: `url(${cover}?imageView2/2/w/960/)`
                     }}>
-                    {
-                        userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
-                    }
-                </div>
-                <div className="main-content story-content">
-                    <div className="story-avatar">
+                </div> */}
+                <div className="main-content story-content"
+                    style={{
+                        minHeight: `${window.innerHeight - 70}px`
+                    }}
+                >
+                    {/* <div className="story-avatar">
                         <i style={{ backgroundImage: `url(${avatar})` }}></i>
                         <span>{creator.name || `手机号${creator.mobile}的用户`}</span>
                     </div>
                     <div className="story-title">{title}</div>
-                    <div className="edit-group">赛区：{address}</div>
+                    <div className="edit-group">赛区：{address}</div> */}
+                    <div className="story-head-title">
+                        <div className="story-title">{title}</div>
+                        <div className="story-head-info">
+                            <div>{address}</div>
+                            <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
+                            <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
+                            <div className="story-card-name">{creator.name}</div>
+                            <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                        </div>
+                    </div>
+                    {
+                        userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
+                    }
                     {memo ? <pre className="story-memo">{memo}</pre> : null}
                     {
                         richContent ? richContent.map((content, index) => {

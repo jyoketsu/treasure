@@ -9,6 +9,7 @@ import {
     LIKE_STORY,
     UPDATE_EXIF,
     AUDIT,
+    READYTOREFRESH,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -19,6 +20,7 @@ const defaultState = {
     sortType: 1,
     sortOrder: 1,
     nowChannelKey: 'allSeries',
+    refresh: false,
 };
 
 const story = (state = defaultState, action) => {
@@ -32,16 +34,34 @@ const story = (state = defaultState, action) => {
                     storyList = JSON.parse(JSON.stringify(state.storyList));
                     storyList = storyList.concat(action.payload.result)
                 }
-                return {
-                    ...state,
-                    storyList: storyList,
-                    storyNumber: action.payload.totalNumber,
-                    sortType: action.sortType,
-                    sortOrder: action.sortOrder,
-                    nowChannelKey: action.channelKey,
-                };
+                if (action.isRefresh) {
+                    return {
+                        ...state,
+                        storyList: storyList,
+                        storyNumber: action.payload.totalNumber,
+                        sortType: action.sortType,
+                        sortOrder: action.sortOrder,
+                        nowChannelKey: action.channelKey,
+                        refresh: false,
+                    };
+                } else {
+                    return {
+                        ...state,
+                        storyList: storyList,
+                        storyNumber: action.payload.totalNumber,
+                        sortType: action.sortType,
+                        sortOrder: action.sortOrder,
+                        nowChannelKey: action.channelKey,
+                    };
+                }
+
             } else {
                 return state;
+            }
+        case READYTOREFRESH:
+            return {
+                ...state,
+                refresh: true,
             }
         case CLEAR_STORY_LIST:
             return {

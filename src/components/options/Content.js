@@ -3,7 +3,7 @@ import './Content.css';
 import { withRouter } from "react-router-dom";
 import StoryList from '../story/StoryList';
 import { connect } from 'react-redux';
-import { getStoryList } from '../../actions/app';
+import { getStoryList, readyToRefresh, } from '../../actions/app';
 
 const mapStateToProps = state => ({
     waiting: state.common.waiting,
@@ -56,7 +56,8 @@ class Content extends Component {
     };
 
     componentDidMount() {
-        const { getStoryList, sortType, sortOrder, nowStationKey, storyListLength, } = this.props;
+        const { getStoryList, sortType, sortOrder, nowStationKey, storyListLength, readyToRefresh, } = this.props;
+        readyToRefresh();
         if (nowStationKey && storyListLength === 0) {
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
@@ -84,5 +85,5 @@ class Content extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    { getStoryList },
+    { getStoryList, readyToRefresh, },
 )(Content));

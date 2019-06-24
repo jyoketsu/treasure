@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import './StoryCard.css';
+import './StoryEntry.css';
 import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
-import { Spin } from 'antd';
 import ClickOutside from '../common/ClickOutside';
 import { Modal } from 'antd';
 const confirm = Modal.confirm;
 
-class Card extends Component {
+class StoryEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,7 +52,7 @@ class Card extends Component {
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
-        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/576/')` };
+        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/200/')` };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};
@@ -82,47 +81,48 @@ class Card extends Component {
                 }
             </div>);
         return (
-            <div className={`story-card type-${storyType}`}>
+            <div
+                className={`story-entry type-${storyType}`}
+                onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}>
                 <div
-                    className="story-card-cover"
+                    className="story-entry-cover"
                     style={coverStyle}
-                    onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
                 >
                     {audit ? option : null}
                 </div>
-                <div className="story-card-title">
-                    <span className="story-card-title-span">
-                        {story.title}
-                    </span>
-                    <div>
-                        <span style={statusStyle}>{status}</span>
-                        {/* <span className="story-card-record">
-                            <i className="story-card-icon" style={{ backgroundImage: 'url(/image/icon/readNum.svg)' }}></i>
-                            <span>{story.clickNumber}</span>
-                        </span> */}
-                    </div>
-                </div>
-                {/* 图片数量 */}
-                <span className="picture-count">
-                    <i className="picture-count-icon"></i>
-                    <span>{story.pictureCount}</span>
-                </span>
-                <div className="story-card-info">
-                    <div>
-                        <i className="story-card-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')` }}></i>
-                        <span className="story-card-name">{name}</span>
-                    </div>
-                    <div>
-                        <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
-                        <span className="story-card-record">
-                            <i
-                                className="story-card-icon"
-                                onClick={like.bind(this, story._key)}
-                                style={{ backgroundImage: `url(/image/icon/${story.islike ? 'like' : 'like2'}.svg)` }}
-                            >
-                            </i>
-                            <span>{story.likeNumber}</span>
+                <div className="story-entry-info">
+                    <div className="story-entry-title">
+                        <span className="story-entry-title-span">
+                            {story.title}
                         </span>
+                        <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
+                    </div>
+
+                    <div className="story-entry-memo">
+                        {story.memo}
+                    </div>
+
+                    <div className="story-entry-stat">
+                        <div>
+                            <i className="story-card-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')` }}></i>
+                            <span className="story-card-name">{name}</span>
+                        </div>
+                        <div>
+                            <span style={statusStyle}>{status}</span>
+                            <span className="story-card-record">
+                                <i className="story-card-icon" style={{ backgroundImage: 'url(/image/icon/readNum.svg)' }}></i>
+                                <span>{story.clickNumber}</span>
+                            </span>
+                            <span className="story-card-record">
+                                <i
+                                    className="story-card-icon"
+                                    onClick={like.bind(this, story._key)}
+                                    style={{ backgroundImage: `url(/image/icon/${story.islike ? 'like' : 'like2'}.svg)` }}
+                                >
+                                </i>
+                                <span>{story.likeNumber}</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,13 +130,4 @@ class Card extends Component {
     }
 }
 
-class StoryLoading extends Component {
-    render() {
-        return <div className="story-loading">
-            <Spin size="large" />
-        </div>
-    };
-}
-const StoryCard = withRouter(Card);
-
-export { StoryCard, StoryLoading };
+export default withRouter(StoryEntry);

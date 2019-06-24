@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './StoryList.css';
 import { StoryLoading, StoryCard } from './StoryCard';
+import StoryEntry from './StoryEntry';
 import { connect } from 'react-redux';
-import { like, clearStoryList, deleteStory, auditStory, } from '../../actions/app';
+import { like, deleteStory, auditStory, } from '../../actions/app';
 
 const mapStateToProps = state => ({
     userKey: state.auth.user ? state.auth.user._key : '',
@@ -25,22 +26,34 @@ class StoryList extends Component {
             deleteStory,
             auditStory,
             flag,
-            userKey
+            userKey,
+            showStyle,
         } = this.props;
         return (
             <div className="story-list">
                 {
                     storyList.map((story, index) => (
-                        <StoryCard
-                            key={index}
-                            userKey={userKey}
-                            story={story}
-                            like={like}
-                            deleteStory={deleteStory}
-                            audit={audit}
-                            auditStory={auditStory}
-                            groupKey={groupKey}
-                        />
+                        showStyle === 2 ?
+                            <StoryCard
+                                key={index}
+                                userKey={userKey}
+                                story={story}
+                                like={like}
+                                deleteStory={deleteStory}
+                                audit={audit}
+                                auditStory={auditStory}
+                                groupKey={groupKey}
+                            /> :
+                            <StoryEntry
+                                key={index}
+                                userKey={userKey}
+                                story={story}
+                                like={like}
+                                deleteStory={deleteStory}
+                                audit={audit}
+                                auditStory={auditStory}
+                                groupKey={groupKey}
+                            />
                     ))
                 }
                 {
@@ -63,5 +76,5 @@ class StoryList extends Component {
 
 export default connect(
     mapStateToProps,
-    { like, clearStoryList, deleteStory, auditStory, },
+    { like, deleteStory, auditStory, },
 )(StoryList);

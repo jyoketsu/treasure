@@ -1,0 +1,71 @@
+.story-entry {
+    width: 100%;
+    height: 109px;
+    display: flex;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, .04), 0 1px 6px 0 rgba(0, 0, 0, .03);
+    transition: all .2s ease-in;
+}
+
+.story-entry:hover {
+    cursor: pointer;
+    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+    transform: translate(0, -1px);
+}
+
+.story-entry-cover {
+    width: 139px;
+    height: 109px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px 0 0 8px;
+}
+
+.story-entry-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-radius: 8px;
+    margin-left: 15px;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.story-entry-memo {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.story-entry-title {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.story-entry-title-span {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.story-entry-stat {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.story-entry-stat>div {
+    display: flex;
+    align-items: center;
+}

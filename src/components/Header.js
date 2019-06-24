@@ -53,6 +53,11 @@ class Header extends Component {
                 break;
             case "myStation": break;
             case "logout": this.showConfirm(); break;
+            case "login":
+                if (location.pathname !== '/account/login') {
+                    history.push('/account/login');
+                }
+                break;
             case "stationOptions":
                 clearStoryList();
                 history.push(`/${stationDomain}/stationOptions`);
@@ -69,29 +74,35 @@ class Header extends Component {
     }
 
     render() {
-        const { location, nowStation, stationList, } = this.props;
+        const { location, nowStation, stationList, user, } = this.props;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
         const isMobile = util.common.isMobile();
 
         const menu = (
-            <Menu onClick={this.handleMenuClick}>
-                {
-                    nowStation && nowStation.editRight ?
-                        <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
-                }
-                {/* <Divider /> */}
-                <Menu.Item key="myStation">我的站点</Menu.Item>
-                {
-                    stationList.map((station) => (
-                        <Menu.Item key={station._key} domain={station.domain || station._key}>{`　・${station.name}`}</Menu.Item>
-                    ))
-                }
-                {/* <Divider /> */}
-                <Menu.Item key="subscribeStation">订阅站点</Menu.Item>
-                <Menu.Item key="account">账户</Menu.Item>
-                <Menu.Item key="logout">退出</Menu.Item>
-            </Menu>
+            user ? (
+                <Menu onClick={this.handleMenuClick}>
+                    {
+                        nowStation && nowStation.editRight ?
+                            <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
+                    }
+                    {/* <Divider /> */}
+                    <Menu.Item key="myStation">我的站点</Menu.Item>
+                    {
+                        stationList.map((station) => (
+                            <Menu.Item key={station._key} domain={station.domain || station._key}>{`　-　${station.name}`}</Menu.Item>
+                        ))
+                    }
+                    {/* <Divider /> */}
+                    <Menu.Item key="subscribeStation">订阅站点</Menu.Item>
+                    <Menu.Item key="account">账户</Menu.Item>
+                    <Menu.Item key="logout">退出</Menu.Item>
+                </Menu>
+            ) : (
+                    <Menu onClick={this.handleMenuClick}>
+                        <Menu.Item key="login">登录</Menu.Item>
+                    </Menu>
+                )
         );
 
         return (
@@ -125,7 +136,7 @@ class Header extends Component {
                     </li> */}
 
                     <li className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}>
-                        <Dropdown overlay={menu} overlayStyle={{ width: '200px' }}>
+                        <Dropdown overlay={menu} overlayStyle={{ width: '200px' }} trigger={['click']}>
                             <a className="ant-dropdown-link" href="####">me</a>
                         </Dropdown>
                     </li>

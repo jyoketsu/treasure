@@ -101,6 +101,10 @@ class EditArticle extends Component {
                     // 封面大小
                     story.size = util.common.getImageInfo(story.cover);
                 }
+                // memo
+                // 去除标签
+                let sectionStr = str.replace(/<\/?.+?>/g, '');
+                story.memo = sectionStr.substr(0, 100);
                 // 编辑
                 if (story._key) {
                     story.key = story._key;

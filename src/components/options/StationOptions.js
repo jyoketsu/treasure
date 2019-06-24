@@ -14,7 +14,7 @@ import AddPlugin from './AddPlugin';
 import CreatePlugin from './CreatePlugin';
 import PluginOptions from './PluginOptions';
 import PluginSystem from './PluginSystem';
-import { clearPluginList } from './../../actions/app';
+import { clearPluginList, clearStoryList, } from './../../actions/app';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
 });
@@ -91,11 +91,12 @@ class StationOptions extends Component {
     }
 
     componentWillUnmount() {
+        // this.props.clearStoryList();
         this.props.clearPluginList();
     }
 }
 
 export default connect(
     mapStateToProps,
-    { clearPluginList },
+    { clearPluginList, clearStoryList, },
 )(StationOptions);
