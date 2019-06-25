@@ -1,4 +1,5 @@
 .story-entry {
+    position: relative;
     width: 100%;
     height: 109px;
     display: flex;
@@ -15,6 +16,12 @@
     transform: translate(0, -1px);
 }
 
+.story-entry .station-option {
+    position: relative;
+    top: unset;
+    right: unset;
+}
+
 .story-entry-cover {
     width: 139px;
     height: 109px;
@@ -29,18 +36,15 @@
     flex-direction: column;
     flex: 1;
     border-radius: 8px;
-    margin-left: 15px;
-    padding: 10px;
+    padding: 10px 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    justify-content: space-between;
 }
 
 .story-entry-memo {
     width: 100%;
-    flex: 1;
-    display: flex;
-    align-items: center;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -56,6 +60,9 @@
 .story-entry-title-span {
     font-size: 18px;
     font-weight: 800;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .story-entry-stat {

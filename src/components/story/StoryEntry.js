@@ -65,7 +65,7 @@ class StoryEntry extends Component {
             }
         }
         let option = (
-            <div>
+            <div className="station-option-container">
                 <div className="station-option" onClick={this.switchDrop}></div>
                 {
                     showDrop ?
@@ -88,14 +88,16 @@ class StoryEntry extends Component {
                     className="story-entry-cover"
                     style={coverStyle}
                 >
-                    {audit ? option : null}
                 </div>
                 <div className="story-entry-info">
                     <div className="story-entry-title">
                         <span className="story-entry-title-span">
                             {story.title}
                         </span>
-                        <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
+                            {audit ? option : null}
+                        </div>
                     </div>
 
                     <div className="story-entry-memo">

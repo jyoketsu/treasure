@@ -353,7 +353,10 @@ class Station extends React.Component {
                             ))}
                         </div>
                     </div>
-                    <StoryList showStyle={nowChannel ? nowChannel.showStyle : 2} />
+                    <StoryList
+                        showStyle={nowChannel ? nowChannel.showStyle : 2}
+                        showSetting={nowChannel ? nowChannel.showSetting : null}
+                    />
                 </div>
                 <HomeFooter stationName={content.name} />
                 <div className="operation-panel">

@@ -57,11 +57,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
 }
 
 .story-card-info>div {
     display: flex;
     align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.story-card-info>div:first-child{
+    flex: 1;
 }
 
 .story-card-avatar {
@@ -81,6 +87,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    flex: 1;
 }
 
 .story-card-record {

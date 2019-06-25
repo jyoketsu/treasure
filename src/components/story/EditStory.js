@@ -6,7 +6,7 @@ import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import api from '../../services/Api';
 import { connect } from 'react-redux';
-import { addStory, modifyStory } from '../../actions/app';
+import { addStory, modifyStory, deleteStory, } from '../../actions/app';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -262,6 +262,14 @@ class EditStory extends Component {
             return storyContent;
         });
 
+        // util.common.getLocation((data) => {
+        //     console.log('定位信息：', data);
+        //     const address = data.formattedAddress ? data.formattedAddress : '地址错误';
+        //     console.log('address-----------', address);
+        // }, () => {
+        //     console.log('address-----------', 'addressError');
+        // });
+
         return (
             <div className="app-content edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
                 <div className="story-head" style={{
@@ -350,12 +358,13 @@ class EditStory extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    history.push(`/${window.location.search}`);
+                    const pathname = window.location.pathname;
+                    const stationDomain = pathname.split('/')[1];
+                    history.push(`/${stationDomain}`);
                 } else {
                     history.goBack();
                 }
             } else {
-                // history.push(`/${window.location.search}`);
                 history.goBack();
             }
         }
@@ -532,5 +541,5 @@ class StoryVideo extends Component {
 export default withRouter(
     connect(
         mapStateToProps,
-        { addStory, modifyStory },
+        { addStory, modifyStory, deleteStory, },
     )(EditStory));

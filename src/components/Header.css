@@ -134,4 +134,17 @@
         width: 35px !important;
         height: 35px !important;
     }
+
+    .header-dorpdown {
+        top: 0 !important;
+    }
+
+    .header-dorpdown>.ant-dropdown-menu {
+        border-radius: 0;
+    }
+
+    .header-dorpdown>.ant-dropdown-menu>.ant-dropdown-menu-item {
+        font-size: 16px;
+        line-height: 30px;
+    }
 }

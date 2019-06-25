@@ -78,6 +78,12 @@ class Header extends Component {
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
         const isMobile = util.common.isMobile();
+        const overlayStyle = isMobile ? {
+            width: '100%',
+            left: '0',
+        } : {
+                width: '200px'
+            }
 
         const menu = (
             user ? (
@@ -86,6 +92,7 @@ class Header extends Component {
                         nowStation && nowStation.editRight ?
                             <Menu.Item key="stationOptions">本站管理</Menu.Item> : null
                     }
+                    <Menu.Item key="account">帐号</Menu.Item>
                     {/* <Divider /> */}
                     <Menu.Item key="myStation">我的站点</Menu.Item>
                     {
@@ -95,7 +102,6 @@ class Header extends Component {
                     }
                     {/* <Divider /> */}
                     <Menu.Item key="subscribeStation">订阅站点</Menu.Item>
-                    <Menu.Item key="account">账户</Menu.Item>
                     <Menu.Item key="logout">退出</Menu.Item>
                 </Menu>
             ) : (
@@ -136,7 +142,12 @@ class Header extends Component {
                     </li> */}
 
                     <li className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}>
-                        <Dropdown overlay={menu} overlayStyle={{ width: '200px' }} trigger={['click']}>
+                        <Dropdown
+                            overlay={menu}
+                            overlayClassName="header-dorpdown"
+                            overlayStyle={overlayStyle}
+                            trigger={['click']}
+                        >
                             <a className="ant-dropdown-link" href="####">me</a>
                         </Dropdown>
                     </li>

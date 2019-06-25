@@ -28,6 +28,7 @@ class StoryList extends Component {
             flag,
             userKey,
             showStyle,
+            showSetting,
         } = this.props;
         return (
             <div className="story-list">
@@ -43,6 +44,7 @@ class StoryList extends Component {
                                 audit={audit}
                                 auditStory={auditStory}
                                 groupKey={groupKey}
+                                showSetting={showSetting}
                             /> :
                             <StoryEntry
                                 key={index}
@@ -53,6 +55,7 @@ class StoryList extends Component {
                                 audit={audit}
                                 auditStory={auditStory}
                                 groupKey={groupKey}
+                                showSetting={showSetting}
                             />
                     ))
                 }

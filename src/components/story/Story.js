@@ -117,7 +117,7 @@ class Story extends Component {
                                             <div className="story-image-box">
                                                 <img
                                                     className="story-image"
-                                                    src={`${url}?imageView2/2/w/960/`}
+                                                    src={`${url}?imageView2/2/w/1280/`}
                                                     alt="story"
                                                     onClick={this.handleClickImage.bind(this, url)}
                                                 />
