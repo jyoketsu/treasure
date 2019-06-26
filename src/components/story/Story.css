@@ -124,21 +124,31 @@
 }
 
 .story-head-info {
-    height: 60px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .story-head-info>div {
+    padding: 10px;
+}
+
+.story-head-other {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-head-other>div {
     margin-right: 15px;
 }
 
-.story-head-info>div:last-child {
+.story-head-other>div:last-child {
     margin-right: unset;
 }
+
 
 .story-head-avatar {
     width: 30px;

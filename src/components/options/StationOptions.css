@@ -16,9 +16,8 @@
 .options-menu {
     position: relative;
     width: 200px;
-    background: #F0F0F0;
+    background: #5F5F5F;
     font-size: 18px;
-    color: #222222;
     height: 100%;
 }
 
@@ -29,15 +28,16 @@
 
 .options-menu>div:hover {
     cursor: pointer;
-    background: #FFFFFF;
+    background: rgba(137, 137, 137, 0.6);
 }
 
 .options-menu>div.active {
-    background: #FFFFFF;
+    background: #898989;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .options-menu>div>a {
-    color: #222222;
+    color: #FFFFFF;
     width: 100%;
     height: 100%;
     display: block;
@@ -47,6 +47,7 @@
 .options-content {
     flex: 1;
     padding: 15px 25px;
+    width: 720px;
 }
 
 .menu-trigger {
@@ -54,8 +55,8 @@
     width: 50px;
     height: 50px;
     position: fixed;
-    left: 0;
-    top: 100px;
+    right: 0;
+    top: 150px;
     background-image: url(/image/icon/menu.svg);
     background-color: #FFFFFF;
     background-size: 70%;
@@ -94,7 +95,7 @@
     border-radius: 3px;
     color: #4A4A4A;
     text-align: center;
-    z-index: 2;
+    z-index: 3;
     box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
 }
 
@@ -141,5 +142,10 @@
 
     .menu-trigger {
         display: block;
+    }
+
+    .options-content {
+        width: 100%;
+        padding: 15px 0;
     }
 }

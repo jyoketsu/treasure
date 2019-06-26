@@ -16,6 +16,10 @@
     transform: translate(0, -1px);
 }
 
+.content-manage .story-entry:hover {
+    transform: unset;
+}
+
 .story-entry .station-option {
     position: relative;
     top: unset;

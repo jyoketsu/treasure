@@ -154,9 +154,14 @@
     background-image: url(/image/icon/sortStory.svg);
 }
 
+.add-story,
+.add-story-multi {
+    background-color: #4A90E2;
+}
+
 .add-story>i,
 .add-story-multi>i {
-    background-image: url(/image/icon/add-story.svg);
+    background-image: url(/image/icon/add-story-active.svg);
 }
 
 .add-album>i {

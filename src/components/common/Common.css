@@ -38,6 +38,34 @@
     cursor: pointer;
 }
 
+/* IconWithText */
+.icon-with-text {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.icon-with-text:hover {
+    cursor: pointer;
+}
+
+.icon-with-text>i {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.icon-with-text>span {
+    color: #666666;
+    font-size: 16px;
+}
+
 @media screen and (max-width:768px) {
     .member-card {
         width: 100%;

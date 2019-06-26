@@ -21,7 +21,6 @@
 }
 
 .menu-logo {
-    width: 55px !important;
     height: 55px !important;
     border-radius: 8px;
     /* background-image: url(/image/icon/logo.svg); */
@@ -47,8 +46,6 @@
 }
 
 .app-menu>li {
-    width: 95px;
-    height: 100%;
     text-align: center;
     font-size: 18px;
     line-height: 70px;
@@ -82,8 +79,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 24px !important;
-    height: 24px !important;
+    width: 32px;
+    height: 32px;
     margin-right: 24px;
 }
 
@@ -125,6 +122,52 @@
     margin: 5px 0;
 }
 
+/* HeadMenu--------------- */
+.head-menu {
+    position: absolute;
+    top: 70px;
+    right: 15px;
+    z-index: 2;
+    width: 288px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.50);
+    padding: 10px 15px;
+}
+
+.head-menu-button {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-template-rows: repeat(2, 50%);
+    justify-items: center;
+    align-items: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.head-menu-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: unset;
+}
+
+.menu-station-list {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+}
+
+.menu-station-list>span {
+    font-size: 14px;
+    line-height: 34px;
+    color: #4A4A4A;
+}
+
+.menu-station-list>span:hover {
+    cursor: pointer;
+    color: #4A90E2;
+}
+
 @media screen and (max-width:768px) {
     .app-menu {
         padding: 0 15px;
@@ -146,5 +189,13 @@
     .header-dorpdown>.ant-dropdown-menu>.ant-dropdown-menu-item {
         font-size: 16px;
         line-height: 30px;
+    }
+
+    .head-menu {
+        width: 100%;
+        top: 0;
+        right: 0;
+        left: 0;
+        border: unset;
     }
 }

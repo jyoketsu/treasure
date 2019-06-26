@@ -69,8 +69,21 @@ class SearchMemberCard extends Component {
     };
 }
 
+class IconWithText extends Component {
+    render() {
+        const {iconUrl, title, handleClick, } = this.props;
+        return (
+            <div className="icon-with-text" onClick={handleClick}>
+                <i style={{ backgroundImage: `url(${iconUrl})` }}></i>
+                <span>{title}</span>
+            </div>
+        );
+    }
+}
+
 
 export {
     MemberCard,
-    SearchMemberCard
+    SearchMemberCard,
+    IconWithText,
 };

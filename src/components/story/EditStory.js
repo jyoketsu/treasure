@@ -262,14 +262,6 @@ class EditStory extends Component {
             return storyContent;
         });
 
-        // util.common.getLocation((data) => {
-        //     console.log('定位信息：', data);
-        //     const address = data.formattedAddress ? data.formattedAddress : '地址错误';
-        //     console.log('address-----------', address);
-        // }, () => {
-        //     console.log('address-----------', 'addressError');
-        // });
-
         return (
             <div className="app-content edit-story" ref={eidtStory => this.eidtStoryRef = eidtStory}>
                 <div className="story-head" style={{
@@ -292,14 +284,7 @@ class EditStory extends Component {
                 </div>
                 <div className="main-content story-content">
                     <div className="edit-group">
-                        <label>请选择赛区：</label>
-                        <Select defaultValue={address} style={{ width: 120 }} onChange={this.selectAddress}>
-                            {
-                                addressList.map((address, index) => (
-                                    <Option key={index} index={index} value={address}>{address}</Option>
-                                ))
-                            }
-                        </Select>
+                        <span>{address}</span>
                     </div>
                     <StoryContentEditBox
                         className="story-title-box"
@@ -338,8 +323,16 @@ class EditStory extends Component {
         if (seriesInfo.length === 0) {
             history.push(`/${window.location.search}`);
         }
-
+        // 申请编辑
         api.story.applyEdit(story._key, story.updateTime);
+        // 位置定位
+        util.common.getLocation((data) => {
+            console.log('定位信息：', data);
+            const address = data && data.addressComponent ? `${data.addressComponent.province}${data.addressComponent.city}${data.addressComponent.district}${data.addressComponent.township}${data.addressComponent.street}` : '地址错误';
+            this.selectAddress(address);
+        }, () => {
+            this.selectAddress('获取位置失败');
+        });
     }
 
     componentWillUnmount() {

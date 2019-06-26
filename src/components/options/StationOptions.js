@@ -50,16 +50,28 @@ class StationOptions extends Component {
                                 <ClickOutside onClickOutside={this.handleTriggerClick}>
                                     <div className="options-menu">
                                         <div className={!pathname ? 'active' : ''}>
-                                            <Link to={`${match.url}${search}`}>站点定义</Link>
+                                            <Link
+                                                to={`${match.url}${search}`}
+                                                onClick={this.handleTriggerClick}
+                                            >站点定义</Link>
                                         </div>
                                         <div className={pathname === 'channel' ? 'active' : ''}>
-                                            <Link to={`${match.url}/channel${search}`}>频道管理</Link>
+                                            <Link
+                                                to={`${match.url}/channel${search}`}
+                                                onClick={this.handleTriggerClick}
+                                            >频道管理</Link>
                                         </div>
                                         <div className={pathname === 'plugin' ? 'active' : ''}>
-                                            <Link to={`${match.url}/plugin${search}`}>插件管理</Link>
+                                            <Link
+                                                to={`${match.url}/plugin${search}`}
+                                                onClick={this.handleTriggerClick}
+                                            >插件管理</Link>
                                         </div>
                                         <div className={pathname === 'content' ? 'active' : ''}>
-                                            <Link to={`${match.url}/content${search}`}>内容管理</Link>
+                                            <Link
+                                                to={`${match.url}/content${search}`}
+                                                onClick={this.handleTriggerClick}
+                                            >内容管理</Link>
                                         </div>
                                     </div>
                                 </ClickOutside> :
