@@ -337,8 +337,15 @@ const station = {
             seriesKeyArray: channelKeys,
             starKey: stationKey,
         });
-    }
+    },
 
+    subscribeStation(stationKey, checked) {
+        return requests.patch(APIURL + '/star/dealCareStarAllSeries', {
+            token: token,
+            starKey: stationKey,
+            status: checked,
+        });
+    }
 }
 
 const story = {

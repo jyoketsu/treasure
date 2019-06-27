@@ -64,6 +64,7 @@ export const GET_STATION_DETAIL = 'GET_STATION_DETAIL';
 export const GET_STATION_DETAIL_DOMAIN = 'GET_STATION_DETAIL_DOMAIN';
 export const SEARCH_STATION = 'SEARCH_STATION';
 export const SUBSCRIBE = 'SUBSCRIBE';
+export const SUBSCRIBE_STATION = 'SUBSCRIBE_STATION';
 
 export function getStationList() {
     let request = api.station.getStationList();
@@ -109,9 +110,14 @@ export function searchStation(keyword, curPage, perPage) {
     return { type: SEARCH_STATION, payload: request }
 }
 
-export function subscribe(channelKeys, stationKey) {
+export function subscribe(channelKeys, stationKey, keys) {
     let request = api.station.subscribe(channelKeys, stationKey);
-    return { type: SUBSCRIBE, payload: request }
+    return { type: SUBSCRIBE, channelKeys: keys, stationKey: stationKey, payload: request }
+}
+
+export function subscribeStation(stationKey, checked) {
+    let request = api.station.subscribeStation(stationKey, checked ? 1 : 2);
+    return { type: SUBSCRIBE_STATION, stationKey: stationKey, checked: checked, payload: request }
 }
 
 // story

@@ -173,7 +173,7 @@
 .subscribe-menu {
     position: absolute;
     top: 70px;
-    right: 15px;
+    right: 180px;
     z-index: 2;
     width: 288px;
     background: #FFFFFF;
@@ -193,6 +193,30 @@
 
 .menu-title>span {
     font-weight: 800;
+}
+
+.subscribe-menu-item {
+    background: #FFFFFF;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.subscribe-menu-item>span {
+    font-size: 16px;
+    color: #555555;
+}
+
+.select-all {
+    font-size: 12px;
+    color: #666666;
+    font-weight: normal;
+}
+
+.select-all:hover {
+    cursor: pointer;
 }
 
 @media screen and (max-width:768px) {
@@ -218,11 +242,13 @@
         line-height: 30px;
     }
 
-    .head-menu {
+    .head-menu,
+    .subscribe-menu {
         width: 100%;
         top: 0;
         right: 0;
         left: 0;
         border: unset;
+        box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
     }
 }

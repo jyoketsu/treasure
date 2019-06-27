@@ -97,7 +97,7 @@ const CustomizedForm = Form.create({
                 })(
                     <Select>
                         <Option value={1}>公开</Option>
-                        <Option value={2}>隐私，仅root 可见</Option>
+                        <Option value={2}>隐私，仅管理员以上可见</Option>
                         <Option value={3}>需要回答问题</Option>
                         <Option value={4}>需要同意</Option>
                     </Select>)}

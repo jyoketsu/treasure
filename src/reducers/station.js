@@ -17,6 +17,8 @@ import {
     SUBSCRIBE_PLUGIN,
     CANCEL_PLUGIN,
     SEARCH_STATION,
+    SUBSCRIBE,
+    SUBSCRIBE_STATION,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -248,6 +250,77 @@ const station = (state = defaultState, action) => {
                     ...state,
                     matchedStationList: action.payload.result,
                     matchedNumber: action.payload.totalNumber,
+                };
+            } else {
+                return state;
+            }
+        case SUBSCRIBE:
+            if (!action.error) {
+                message.success('订阅成功！');
+                let nowStation = Object.assign([], state.nowStation);
+                let seriesInfo = nowStation.seriesInfo;
+                for (let i = 0; i < seriesInfo.length; i++) {
+                    if (action.channelKeys.indexOf(seriesInfo[i]._key) === -1) {
+                        seriesInfo[i].isCareSeries = false;
+                    } else {
+                        seriesInfo[i].isCareSeries = true;
+                    }
+                }
+
+                let stationList = Object.assign([], state.stationList);
+                if (action.channelKeys.length !== 0) {
+                    let unSubscribed = true;
+                    for (let i = 0; i < stationList.length; i++) {
+                        if (stationList[i]._key === nowStation._key) {
+                            stationList[i] = nowStation;
+                            unSubscribed = false;
+                            break;
+                        }
+                    }
+                    if (unSubscribed) {
+                        stationList.unshift(nowStation);
+                    }
+                } else {
+                    for (let i = 0; i < stationList.length; i++) {
+                        if (stationList[i]._key === nowStation._key) {
+                            stationList.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                    stationList: stationList,
+                };
+            } else {
+                return state;
+            }
+        case SUBSCRIBE_STATION:
+            if (!action.error) {
+                message.success('订阅成功！');
+                let nowStation = Object.assign([], state.nowStation);
+                let seriesInfo = nowStation.seriesInfo;
+                for (let i = 0; i < seriesInfo.length; i++) {
+                    seriesInfo[i].isCareSeries = true;
+                }
+
+                let stationList = Object.assign([], state.stationList);
+                let unSubscribed = true;
+                for (let i = 0; i < stationList.length; i++) {
+                    if (stationList[i]._key === nowStation._key) {
+                        stationList[i] = nowStation;
+                        unSubscribed = false;
+                        break;
+                    }
+                }
+                if (unSubscribed) {
+                    stationList.unshift(nowStation);
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                    stationList: stationList,
                 };
             } else {
                 return state;

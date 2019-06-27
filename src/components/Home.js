@@ -300,6 +300,7 @@ class Station extends React.Component {
             channelInfo,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
+        const { isCareStar } = content;
         const token = localStorage.getItem('TOKEN');
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
@@ -308,6 +309,18 @@ class Station extends React.Component {
                 break;
             }
         }
+
+        let channelList = [];
+        if (isCareStar) {
+            for (let i = 0; i < seriesInfo.length; i++) {
+                if (seriesInfo[i].isCareSeries) {
+                    channelList.push(seriesInfo[i]);
+                }
+            }
+        } else {
+            channelList = seriesInfo;
+        }
+
         return (
             <div className="station-home">
                 <div

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './SubscribeStation.css';
-import { Button, Pagination, Switch, Divider, } from 'antd';
-import ClickOutside from '../common/ClickOutside';
+import { Button, Pagination, } from 'antd';
+import util from '../../services/Util';
 import { connect } from 'react-redux';
-import { searchStation, subscribe, } from '../../actions/app';
+import { searchStation, changeStation, } from '../../actions/app';
 
 const mapStateToProps = state => ({
     stationList: state.station.matchedStationList,
@@ -23,7 +23,7 @@ class SubscribeStation extends Component {
     };
 
     render() {
-        const { history, stationList, matchedNumber, subscribe } = this.props;
+        const { history, stationList, matchedNumber, changeStation, } = this.props;
         return (
             <div className="app-content">
                 <div
@@ -46,7 +46,8 @@ class SubscribeStation extends Component {
                                 <StationCard
                                     key={index}
                                     station={station}
-                                    saveSubscribe={subscribe}
+                                    history={history}
+                                    changeStation={changeStation}
                                 />
                             ))
                         }
@@ -77,131 +78,52 @@ class StationCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapse: false,
-            checkedChannels: [],
-            allChecked: false,
-        }
-        this.switchCollapse = this.switchCollapse.bind(this);
-        this.closeDropdown = this.closeDropdown.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-    }
-
-    switchCollapse() {
-        this.setState((prevState) => ({
-            collapse: !prevState.collapse
-        }));
-    }
-
-    closeDropdown() {
-        this.setState({
-            collapse: false
-        });
-    }
-
-    onChange(key, checked) {
-        const { station } = this.props;
-        const { seriesInfo } = station;
-        if (key === 'all') {
-            let checkedChannels = [];
-            if (checked) {
-                for (let i = 0; i < seriesInfo.length; i++) {
-                    checkedChannels.push(seriesInfo[i]._key);
-                }
-            }
-            this.setState({
-                checkedChannels: checkedChannels,
-                allChecked: checked,
-            });
-        } else {
-            this.setState((prevState) => {
-                let prevList = prevState.checkedChannels;
-                if (checked) {
-                    prevList.push(key);
-                } else {
-                    prevList.splice(prevList.indexOf(key), 1);
-                }
-                return {
-                    checkedChannels: prevList,
-                    allChecked: prevList.length === seriesInfo.length ? true : false
-                }
-            });
+            logoSize: null,
         }
     }
 
-    handleSave() {
-        const { saveSubscribe, station, } = this.props;
-        const { checkedChannels } = this.state;
-        let list = [];
-        for (let i = 0; i < checkedChannels.length; i++) {
-            list.push({ type: 'series', value: checkedChannels[i] });
-        }
-        saveSubscribe(list, station._key)
+    handleClick(key, domain) {
+        const { history, changeStation } = this.props;
+        changeStation(key);
+        history.push(`/${domain}`);
     }
 
     render() {
-        const { station } = this.props;
-        const { collapse, checkedChannels, allChecked } = this.state;
-        const { seriesInfo } = station;
-        // let roleNmae;
-        // switch (station.role) {
-        //     case 1: roleNmae = '超管'; break;
-        //     case 2: roleNmae = '管理员'; break;
-        //     case 3: roleNmae = '编辑'; break;
-        //     case 4: roleNmae = '作者'; break;
-        //     case 5: roleNmae = '超管'; break;
-        //     case 6: roleNmae = '成员'; break;
-        //     default: roleNmae = '游客'; break;
-        // }
+        const { station, } = this.props;
+        const { logoSize } = this.state;
+        let roleNmae;
+        switch (station.role) {
+            case 1: roleNmae = '超管'; break;
+            case 2: roleNmae = '管理员'; break;
+            case 3: roleNmae = '编辑'; break;
+            case 4: roleNmae = '作者'; break;
+            case 5: roleNmae = '超管'; break;
+            case 6: roleNmae = '成员'; break;
+            default: roleNmae = '游客'; break;
+        }
         return (
-            <ClickOutside onClickOutside={this.closeDropdown}>
-                <div className={`station-card role${station.role ? station.role : ''}`} style={{ zIndex: collapse ? '999' : 'unset' }}>
-                    <span className="card-station-role">粉丝</span>
-                    <i className="card-menu-icon"></i>
-                    <div className="card-station-title">
-                        <i className="card-station-logo" style={{ backgroundImage: `url(${station.logo})` }}></i>
-                        <div className="card-station-info">
-                            <span className="card-station-name">{station.name}</span>
-                        </div>
-                    </div>
-                    <div className="card-station-memo">
-                        {station.memo}
-                    </div>
-                    <i className={`card-arrow ${collapse ? 'card-arrow-up' : ''}`} onClick={this.switchCollapse}></i>
-                    <div className="card-dropdown" style={{
-                        height: collapse ? `${35 + 10 + seriesInfo.length * 35 + 50}px` : 0,
-                    }}>
-                        <SubscribeChannel
-                            channelKey='all'
-                            channelName="全站订阅"
-                            onChange={this.onChange}
-                            checked={allChecked}
-                        />
-                        <Divider />
-                        {
-                            seriesInfo.map((channel, index) => (
-                                <SubscribeChannel
-                                    key={index}
-                                    channelKey={channel._key}
-                                    channelName={channel.seriesName}
-                                    checked={checkedChannels.indexOf(channel._key) === -1 ? false : true}
-                                    onChange={this.onChange}
-                                />
-                            ))
-                        }
-                        <div className="card-foot">
-                            <Button
-                                type="primary"
-                                onClick={this.handleSave}
-                            >保存</Button>
-                        </div>
-                    </div>
+            <div
+                className={`station-card role${station.role ? station.role : ''}`}
+                onClick={this.handleClick.bind(this, station._key, station.domain)}
+            >
+                <span className="card-station-role">{roleNmae}</span>
+                <div className="card-station-title">
+                    <i
+                        className="card-station-logo"
+                        style={{
+                            backgroundImage: `url(${station.logo})`,
+                            width: logoSize ? `${Math.ceil(55 * (logoSize.width / logoSize.height))}px` : '68px'
+                        }}
+                    ></i>
+                    <span className="card-station-name">{station.name}</span>
                 </div>
-            </ClickOutside>
+            </div>
         );
     }
 
-    componentDidMount() {
+
+
+    async componentDidMount() {
         const { station } = this.props;
         const { seriesInfo } = station;
         let checkedChannels = [];
@@ -210,9 +132,12 @@ class StationCard extends Component {
                 checkedChannels.push(seriesInfo[i]._key);
             }
         }
+        // 获取logo大小
+        let size = await util.common.getImageInfo(station.logo);
         this.setState({
             checkedChannels: checkedChannels,
-            allChecked: checkedChannels.length === seriesInfo.length ? true : false
+            allChecked: checkedChannels.length === seriesInfo.length ? true : false,
+            logoSize: size
         });
     }
 
@@ -234,30 +159,7 @@ class StationCard extends Component {
     }
 }
 
-class SubscribeChannel extends Component {
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(checked) {
-        this.props.onChange(this.props.channelKey, checked);
-    }
-
-    render() {
-        const { channelName, checked } = this.props;
-        return (
-            <div className="card-channel-subscribe">
-                <span>{channelName}</span>
-                <Switch onChange={this.onChange} checked={checked} />
-            </div>
-        );
-    }
-}
-
-
-
 export default connect(
     mapStateToProps,
-    { searchStation, subscribe, },
+    { searchStation, changeStation, },
 )(SubscribeStation);

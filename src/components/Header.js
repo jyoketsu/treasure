@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import './Header.css';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Link, withRouter } from "react-router-dom";
-import { connect } from 'react-redux';
-import { getUserInfo, logout, changeStation, getStationList, clearStoryList, } from '../actions/app';
 // import TextMarquee from './common/TextMarquee';
 import { IconWithText } from './common/Common';
 import ClickOutside from './common/ClickOutside';
 import util from '../services/Util';
-import { Modal, message, } from 'antd';
+import { Modal, message, Button, Checkbox, } from 'antd';
+import { connect } from 'react-redux';
+import {
+    getUserInfo,
+    logout,
+    changeStation,
+    getStationList,
+    clearStoryList,
+    subscribe,
+    subscribeStation,
+} from '../actions/app';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -23,9 +31,11 @@ class Header extends Component {
         super(props);
         this.clearLogo = this.clearLogo.bind(this);
         this.switchMenu = this.switchMenu.bind(this);
+        this.switchSubscribe = this.switchSubscribe.bind(this);
         this.state = {
             logoSize: null,
             showMenu: false,
+            showSubscribe: false,
         }
     }
 
@@ -37,9 +47,13 @@ class Header extends Component {
         this.setState((prevState) => ({ showMenu: !prevState.showMenu }));
     }
 
+    switchSubscribe() {
+        this.setState((prevState) => ({ showSubscribe: !prevState.showSubscribe }));
+    }
+
     render() {
         const { location, nowStation, user, } = this.props;
-        const { logoSize, showMenu } = this.state;
+        const { logoSize, showMenu, showSubscribe } = this.state;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
         const isMobile = util.common.isMobile();
@@ -70,9 +84,10 @@ class Header extends Component {
                     <li className="menu-space"></li>
                     {
                         user && !user.isGuest ?
-                            <li className={`head-icon subscribe ${pathname === '/message' ? 'active' : ''}`}>
-                                {/* <Link to={`/message`}></Link> */}
-                            </li>
+                            <li
+                                className={`head-icon subscribe ${pathname === '/message' ? 'active' : ''}`}
+                                onClick={this.switchSubscribe}
+                            ></li>
                             : null
                     }
                     {
@@ -105,7 +120,9 @@ class Header extends Component {
                         <TopMenu clearLogo={this.clearLogo} switchMenu={this.switchMenu} />
                         : null
                     }
-                    <SubscribeMenu />
+                    {
+                        showSubscribe ? <SubscribeMenu switchSubscribe={this.switchSubscribe} /> : null
+                    }
                 </ReactCSSTransitionGroup>
             </div>
         );
@@ -156,27 +173,33 @@ class Header extends Component {
         const stationDomain = pathname.split('/')[1];
 
         // 显示初始微站
-        if (user && !nowStationKey && stationList.length !== 0 && !this.changed) {
+        if (user && !nowStationKey && !this.changed) {
             // 指定了要显示的微站
             if (stationDomain && stationDomain !== 'account') {
                 this.changed = true;
                 changeStation(null, stationDomain);
-            } else if (stationList.length !== 0) {
-                // 主站key
-                let mainStar = null;
-                for (let i = 0; i < stationList.length; i++) {
-                    if (stationList[i].isMainStar) {
-                        mainStar = stationList[i];
-                        break;
+            } else {
+                if (!user.isGuest && stationList.length !== 0) {
+                    // 主站key
+                    let mainStar = null;
+                    for (let i = 0; i < stationList.length; i++) {
+                        if (stationList[i].isMainStar) {
+                            mainStar = stationList[i];
+                            break;
+                        }
                     }
-                }
-                if (mainStar) {
-                    history.push(`/${mainStar.domain}`);
+                    if (mainStar) {
+                        history.push(`/${mainStar.domain}`);
+                    } else {
+                        history.push('/sgkj');
+                    }
+                } else {
+                    history.push('/sgkj');
                 }
             }
         }
 
-        if (!prevProps.user && user && stationList.length === 0 && !this.gettedList) {
+        if (prevProps.user && prevProps.user.isGuest && user && !user.isGuest && stationList.length === 0 && !this.gettedList) {
             this.gettedList = true;
             getStationList();
         }
@@ -249,7 +272,8 @@ class HeadMenu extends Component {
     }
 
     handleStationClick(key, domain) {
-        const { history, changeStation, clearLogo } = this.props;
+        const { history, changeStation, clearLogo, switchMenu } = this.props;
+        switchMenu();
         // 切换站点
         changeStation(key);
         history.push(`/${domain}`);
@@ -319,7 +343,6 @@ class HeadMenu extends Component {
                                 }
                             </div> : null
                     }
-
                 </ClickOutside>
             </div>
         )
@@ -337,24 +360,118 @@ const mapStateToProps3 = state => ({
 });
 
 class Subscribe extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checkedChannels: [],
+            allChecked: false,
+        }
+        this.onChange = this.onChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+    }
+
+    onChange(e) {
+        const { nowStation } = this.props;
+        const { seriesInfo } = nowStation;
+        const key = e.target.name;
+        const checked = e.target.checked;
+        if (key === 'all') {
+            let checkedChannels = [];
+            if (checked) {
+                for (let i = 0; i < seriesInfo.length; i++) {
+                    checkedChannels.push(seriesInfo[i]._key);
+                }
+            }
+            this.setState({
+                checkedChannels: checkedChannels,
+                allChecked: checked,
+            });
+        } else {
+            this.setState((prevState) => {
+                let prevList = prevState.checkedChannels;
+                if (checked) {
+                    prevList.push(key);
+                } else {
+                    prevList.splice(prevList.indexOf(key), 1);
+                }
+                return {
+                    checkedChannels: prevList,
+                    allChecked: prevList.length === seriesInfo.length ? true : false
+                }
+            });
+        }
+    }
+
+    handleSave() {
+        const { subscribe, subscribeStation, nowStation, switchSubscribe, } = this.props;
+        const { checkedChannels, allChecked } = this.state;
+        switchSubscribe();
+        let list = [];
+        for (let i = 0; i < checkedChannels.length; i++) {
+            list.push({ type: 'series', value: checkedChannels[i] });
+        }
+        if (allChecked) {
+            subscribeStation(nowStation._key, allChecked);
+        } else {
+            subscribe(list, nowStation._key, checkedChannels);
+        }
+    }
+
     render() {
+        const { nowStation, switchSubscribe } = this.props;
+        const channelList = nowStation ? nowStation.seriesInfo : [];
+        const { checkedChannels, allChecked } = this.state;
         return (
             <div className="subscribe-menu">
-                <div className="menu-title">
-                    <span>订阅</span>
-                </div>
-                <div className="subscribe-menu-item">
-
-                </div>
-                <div className="menu-title">
-                    <span>频道</span>
-                </div>
+                <ClickOutside onClickOutside={switchSubscribe}>
+                    <div className="menu-title">
+                        <span>订阅</span>
+                        <Button
+                            type="primary"
+                            className="save-subscribe"
+                            onClick={this.handleSave}
+                        >保存</Button>
+                    </div>
+                    <div className="subscribe-menu-item">
+                        <span>全站</span>
+                        <Checkbox name="all" checked={allChecked} onChange={this.onChange} />
+                    </div>
+                    <div className="menu-title">
+                        <span>频道</span>
+                        {/* <span className="select-all">全选</span> */}
+                    </div>
+                    {channelList.map((channel, index) => (
+                        <div className="subscribe-menu-item" key={index}>
+                            <span>{channel.name}</span>
+                            <Checkbox
+                                name={channel._key}
+                                checked={checkedChannels.indexOf(channel._key) === -1 ? false : true}
+                                onChange={this.onChange}
+                            />
+                        </div>
+                    ))}
+                </ClickOutside>
             </div>
         );
+    }
+
+    componentDidMount() {
+        const { nowStation } = this.props;
+        const channelList = nowStation ? nowStation.seriesInfo : [];
+        let checkedChannels = [];
+        for (let i = 0; i < channelList.length; i++) {
+            if (channelList[i].isCareSeries) {
+                checkedChannels.push(channelList[i]._key);
+            }
+        }
+        this.setState({
+            checkedChannels: checkedChannels,
+            allChecked: checkedChannels.length === channelList.length ? true : false
+        });
     }
 }
 
 const SubscribeMenu = withRouter(connect(
     mapStateToProps3,
-    {}
+    { subscribe, subscribeStation, }
 )(Subscribe))
