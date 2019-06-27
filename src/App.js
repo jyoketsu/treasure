@@ -32,7 +32,7 @@ class App extends Component {
     return (
       <Router>
         <div className="app" style={{
-          minHeight: `${window.innerHeight - 70}px`
+          minHeight: `${window.innerHeight}px`
         }}>
           <Header />
           <div className="route-container">

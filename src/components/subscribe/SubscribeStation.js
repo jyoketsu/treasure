@@ -143,15 +143,16 @@ class StationCard extends Component {
         const { station } = this.props;
         const { collapse, checkedChannels, allChecked } = this.state;
         const { seriesInfo } = station;
-        let roleNmae = '';
-        switch(station.role){
-            case 1:roleNmae='超管';break;
-            case 2:roleNmae='管理员';break;
-            case 3:roleNmae='编辑';break;
-            case 4:roleNmae='作者';break;
-            case 5:roleNmae='超管';break;
-            case 6:roleNmae='成员';break;
-        }
+        // let roleNmae;
+        // switch (station.role) {
+        //     case 1: roleNmae = '超管'; break;
+        //     case 2: roleNmae = '管理员'; break;
+        //     case 3: roleNmae = '编辑'; break;
+        //     case 4: roleNmae = '作者'; break;
+        //     case 5: roleNmae = '超管'; break;
+        //     case 6: roleNmae = '成员'; break;
+        //     default: roleNmae = '游客'; break;
+        // }
         return (
             <ClickOutside onClickOutside={this.closeDropdown}>
                 <div className={`station-card role${station.role ? station.role : ''}`} style={{ zIndex: collapse ? '999' : 'unset' }}>

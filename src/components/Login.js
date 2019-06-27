@@ -11,6 +11,7 @@ import { LOGIN, REGISTER, BIND_MOBILE } from '../actions/app';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
+    nowStation: state.station.nowStation,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -167,6 +168,7 @@ class Login extends Component {
     }
 
     render() {
+        const { nowStation } = this.props;
         let style = { borderBottom: '1px solid #DDDDDD' }
 
         let item = null;
@@ -207,7 +209,7 @@ class Login extends Component {
             default:
                 item = [
                     <CheckBox key="remember"
-                        text="记住密码" name="remember" onChange={this.handleInputChange} />,
+                        text="记住我" name="remember" onChange={this.handleInputChange} />,
                     <Button key="login"
                         text="登录"
                         style={{ width: '100%', height: '46px' }}
@@ -218,6 +220,10 @@ class Login extends Component {
         return (
             <div className="login">
                 <div className="login-box">
+                    <div
+                        className="login-logo"
+                        style={{ backgroundImage: nowStation && nowStation.logo ? `url(${nowStation.logo})` : '' }}
+                    ></div>
                     <FormGroup style={style}>
                         <FormTextInput
                             name="mobileArea" showType='edit' placeholder="区号"
@@ -301,15 +307,12 @@ class Login extends Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
-        if (nextProps.user) {
+        if (nextProps.user && !nextProps.user.isGuest) {
             const search = nextProps.location.search;
             const redirect = util.common.getSearchParamValue(search, 'redirect');
-            const targetDomain = util.common.getSearchParamValue(search, 'targetDomain');
             if (!redirect) {
-                if (targetDomain) {
-                    nextProps.history.push(`/${targetDomain}`);
-                } else {
-                    nextProps.history.push('/');
+                if (nextProps.nowStation) {
+                    nextProps.history.push(`/${nextProps.nowStation.domain}`);
                 }
             } else {
                 const token = localStorage.getItem('TOKEN');

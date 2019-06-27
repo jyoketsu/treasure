@@ -11,7 +11,6 @@ import {
 } from '../actions/app';
 const defaultState = {
     user: null,
-    overdue: false,
 };
 
 const auth = (state = defaultState, action) => {
@@ -22,7 +21,6 @@ const auth = (state = defaultState, action) => {
                 return {
                     ...state,
                     user: action.payload,
-                    overdue: false,
                 };
             } else {
                 return state;
@@ -38,7 +36,6 @@ const auth = (state = defaultState, action) => {
                 return {
                     ...state,
                     user: action.payload.data,
-                    overdue: false,
                 };
             } else {
                 return state;
@@ -68,7 +65,6 @@ const auth = (state = defaultState, action) => {
                 return {
                     ...state,
                     user: null,
-                    overdue: true,
                 };
             }
         case EDIT_ACCOUNT:

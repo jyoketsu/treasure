@@ -233,6 +233,10 @@ class Station extends React.Component {
     handleClickAdd(channel, type) {
         const { history, user, nowChannelKey, match } = this.props;
         const stationDomain = match.params.id;
+        if (user.isGuest) {
+            message.error('请先登录！');
+            return;
+        }
         if (!user.profile) {
             message.error('请先完善个人信息！');
             return;

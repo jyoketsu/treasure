@@ -103,7 +103,6 @@
 }
 
 .story-content>pre {
-    text-align: center !important;
     white-space: pre-wrap;
     word-wrap: break-word;
     border: 0;

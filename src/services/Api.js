@@ -2,7 +2,7 @@
 const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const APIURL = 'http://192.168.1.136:8529/_db/TimeBox/my_sgbh';
 
-let token = null;
+let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
 
 const requests = {
     // post方法
@@ -206,7 +206,7 @@ const auth = {
     },
 
     // 获取登录用户信息
-    getUserFullInfo(token) {
+    getUserFullInfo() {
         return requests.get(APIURL + '/account/userinfo', { 'token': token });
     },
 

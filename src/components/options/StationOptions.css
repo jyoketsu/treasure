@@ -2,6 +2,7 @@
     margin: auto;
     background-color: #ffffff;
     display: flex;
+    width: 100%;
 }
 
 .station-options>span>div {

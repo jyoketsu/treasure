@@ -4,22 +4,15 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Link, withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { getUserInfo, logout, changeStation, getStationList, clearStoryList, } from '../actions/app';
-import TextMarquee from './common/TextMarquee';
+// import TextMarquee from './common/TextMarquee';
 import { IconWithText } from './common/Common';
 import ClickOutside from './common/ClickOutside';
 import util from '../services/Util';
-import {
-    Menu,
-    Dropdown,
-    Modal,
-    message,
-    // Divider,
-} from 'antd';
+import { Modal, message, } from 'antd';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
     user: state.auth.user,
-    overdue: state.auth.overdue,
     stationList: state.station.stationList,
     nowStationKey: state.station.nowStationKey,
     nowStation: state.station.nowStation,
@@ -52,7 +45,9 @@ class Header extends Component {
         const isMobile = util.common.isMobile();
 
         return (
-            <div className="app-menu-container">
+            <div className="app-menu-container" style={{
+                display: pathname === '/account/login' ? 'none' : 'flex'
+            }}>
                 <ul className="app-menu" ref={elem => this.nv = elem}>
                     {
                         logoSize ?
@@ -73,13 +68,26 @@ class Header extends Component {
                         !isMobile ? <li className="head-station-name">{nowStation ? nowStation.name : ''}</li> : null
                     }
                     <li className="menu-space"></li>
+                    {
+                        user && !user.isGuest ?
+                            <li className={`head-icon subscribe ${pathname === '/message' ? 'active' : ''}`}>
+                                {/* <Link to={`/message`}></Link> */}
+                            </li>
+                            : null
+                    }
+                    {
+                        user && !user.isGuest && nowStation && nowStation.editRight ?
+                            <li className={`head-icon station-option-icon ${pathname === '/message' ? 'active' : ''}`}>
+                                <Link to={`/${stationDomain}/stationOptions`}></Link>
+                            </li> : null
+                    }
                     <li
                         className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}
                         style={{
-                            backgroundImage: user && user.profile ? `url(${user.profile.avatar})` : '/image/icon/me.svg',
-                            borderRadius: user && user.profile ? '25px' : 'unset',
-                            width: user && user.profile ? '50px' : '32px',
-                            height: user && user.profile ? '50px' : '32px',
+                            backgroundImage: user && user.profile && user.profile.avatar ? `url(${user.profile.avatar})` : '/image/icon/me.svg',
+                            borderRadius: user && user.profile && user.profile.avatar ? '25px' : 'unset',
+                            width: user && user.profile && user.profile.avatar ? '50px' : '24px',
+                            height: user && user.profile && user.profile.avatar ? '50px' : '24px',
                         }}
                         onClick={this.switchMenu}
                     ></li>
@@ -97,6 +105,7 @@ class Header extends Component {
                         <TopMenu clearLogo={this.clearLogo} switchMenu={this.switchMenu} />
                         : null
                     }
+                    <SubscribeMenu />
                 </ReactCSSTransitionGroup>
             </div>
         );
@@ -117,14 +126,9 @@ class Header extends Component {
             query_token = QUERY_PARAMS.get('token');
         }
         token = query_token ? query_token : window.localStorage.getItem('TOKEN');
-        // 已登录，获取用户信息
-        if (token) {
-            getUserInfo(token, history);
-            getStationList();
-        } else {
-            // 没有登录，跳转到登录页
-            history.push(`/account/login${window.location.search}`);
-        }
+        // 获取用户信息
+        getUserInfo(token, history);
+        getStationList();
 
         // 监听路由变化
         const that = this;
@@ -139,7 +143,6 @@ class Header extends Component {
     async componentDidUpdate(prevProps) {
         const {
             user,
-            overdue,
             history,
             location,
             stationList,
@@ -151,9 +154,6 @@ class Header extends Component {
         const { nowStation: prevStation } = prevProps;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
-        if (!prevProps.overdue && overdue) {
-            history.push(`/account/login${window.location.search}`);
-        }
 
         // 显示初始微站
         if (user && !nowStationKey && stationList.length !== 0 && !this.changed) {
@@ -170,7 +170,9 @@ class Header extends Component {
                         break;
                     }
                 }
-                history.push(`/${mainStar.domain}`);
+                if (mainStar) {
+                    history.push(`/${mainStar.domain}`);
+                }
             }
         }
 
@@ -222,9 +224,10 @@ class HeadMenu extends Component {
     }
 
     handleClick(key) {
-        const { user, history, location, } = this.props;
+        const { history, location, switchMenu } = this.props;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
+        switchMenu();
         switch (key) {
             case "account":
                 history.push(`/${stationDomain}/me`);
@@ -236,10 +239,6 @@ class HeadMenu extends Component {
                     history.push('/account/login');
                 }
                 break;
-            // case "stationOptions":
-            //     clearStoryList();
-            //     history.push(`/${stationDomain}/stationOptions`);
-            //     break;
             case "subscribe":
                 history.push(`/${stationDomain}/subscribeStation`);
                 break;
@@ -260,11 +259,9 @@ class HeadMenu extends Component {
     render() {
         const { user, stationList, switchMenu } = this.props;
         return (
-
-
             <div className="head-menu">
                 <ClickOutside onClickOutside={switchMenu}>
-                    {user ?
+                    {user && !user.isGuest ?
                         <div className="head-menu-button">
                             <IconWithText
                                 key={'account'}
@@ -310,7 +307,7 @@ class HeadMenu extends Component {
                                 handleClick={this.handleClick.bind(this, 'login')} />
                         </div>}
                     {
-                        user ?
+                        user && !user.isGuest ?
                             <div className="menu-station-list">
                                 {
                                     stationList.map((station) => (
@@ -333,3 +330,31 @@ const TopMenu = withRouter(connect(
     mapStateToProps2,
     { clearStoryList, logout, changeStation, }
 )(HeadMenu))
+
+const mapStateToProps3 = state => ({
+    user: state.auth.user,
+    nowStation: state.station.nowStation,
+});
+
+class Subscribe extends Component {
+    render() {
+        return (
+            <div className="subscribe-menu">
+                <div className="menu-title">
+                    <span>订阅</span>
+                </div>
+                <div className="subscribe-menu-item">
+
+                </div>
+                <div className="menu-title">
+                    <span>频道</span>
+                </div>
+            </div>
+        );
+    }
+}
+
+const SubscribeMenu = withRouter(connect(
+    mapStateToProps3,
+    {}
+)(Subscribe))

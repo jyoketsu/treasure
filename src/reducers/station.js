@@ -37,8 +37,8 @@ const station = (state = defaultState, action) => {
         case REGISTER:
             return {
                 ...state,
-                nowStationKey: null,
-                nowStation: null,
+                // nowStationKey: null,
+                // nowStation: null,
                 stationList: [],
             }
         case GET_STATION_LIST:

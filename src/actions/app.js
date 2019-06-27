@@ -22,8 +22,10 @@ export function logout(history) {
 }
 
 export function getUserInfo(token, history) {
-    api.setToken(token);
-    let request = api.auth.getUserFullInfo(token);
+    if (token) {
+        api.setToken(token);
+    }
+    let request = api.auth.getUserFullInfo();
     return { type: GET_USER_INFO, history: history, payload: request }
 }
 
@@ -135,7 +137,7 @@ export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curP
         noLoading: true,
         channelKey: seriesKey,
         payload: request,
-        isRefresh:isRefresh,
+        isRefresh: isRefresh,
     }
 }
 
