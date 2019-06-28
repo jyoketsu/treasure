@@ -24,7 +24,7 @@
     height: 55px !important;
     border-radius: 8px;
     /* background-image: url(/image/icon/logo.svg); */
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }

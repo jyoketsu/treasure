@@ -16,6 +16,8 @@ import {
     clearStoryList,
     subscribe,
     subscribeStation,
+    getStationDetail,
+    getStoryList,
 } from '../actions/app';
 const confirm = Modal.confirm;
 
@@ -24,6 +26,8 @@ const mapStateToProps = state => ({
     stationList: state.station.stationList,
     nowStationKey: state.station.nowStationKey,
     nowStation: state.station.nowStation,
+    sortType: state.story.sortType,
+    sortOrder: state.story.sortOrder,
 });
 
 class Header extends Component {
@@ -37,6 +41,7 @@ class Header extends Component {
             showMenu: false,
             showSubscribe: false,
         }
+        this.perPage = 32;
     }
 
     clearLogo() {
@@ -66,13 +71,13 @@ class Header extends Component {
                     {
                         logoSize ?
                             <li className={`menu-logo`} style={{
-                                backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.png'})`,
+                                backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
                                 width: `${Math.ceil(55 * (logoSize.width / logoSize.height))}px`
                             }}>
                                 <Link to={`/${stationDomain}`}></Link>
                             </li> :
                             <li className={`menu-logo`} style={{
-                                backgroundImage: `url(/image/background/logo.png)`,
+                                backgroundImage: `url(/image/background/logo.svg)`,
                                 width: '55px'
                             }}>
                                 <Link to={`/${stationDomain}`}></Link>
@@ -166,7 +171,12 @@ class Header extends Component {
             nowStationKey,
             nowStation,
             getStationList,
+            getStationDetail,
+            getStoryList,
             changeStation,
+            clearStoryList,
+            sortType,
+            sortOrder,
         } = this.props;
         const { nowStation: prevStation } = prevProps;
         const pathname = location.pathname;
@@ -179,6 +189,7 @@ class Header extends Component {
                 this.changed = true;
                 changeStation(null, stationDomain);
             } else {
+                // 登录用户
                 if (!user.isGuest && stationList.length !== 0) {
                     // 主站key
                     let mainStar = null;
@@ -194,17 +205,35 @@ class Header extends Component {
                         history.push('/sgkj');
                     }
                 } else {
-                    history.push('/sgkj');
+                    // 游客用户
+                    if (pathname === '/') {
+                        // 什么站点都不指定，跳转到时光科技站
+                        history.push('/sgkj');
+                    }
                 }
             }
         }
 
-        if (prevProps.user && prevProps.user.isGuest && user && !user.isGuest && stationList.length === 0 && !this.gettedList) {
+        //  用户登录后获取站点列表
+        if (((prevProps.user && prevProps.user.isGuest) || !prevProps.user) && user && !user.isGuest && stationList.length === 0 && !this.gettedList) {
             this.gettedList = true;
             getStationList();
         }
 
-        // 切换微站
+        // 切换微站时重新获取故事
+        if (nowStationKey !== prevProps.nowStationKey) {
+            clearStoryList();
+            this.curPage = 1;
+            if (nowStationKey !== 'notFound') {
+                getStationDetail(nowStationKey);
+                // 获取微站全部故事
+                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            } else {
+                history.push('/station/notFound');
+            }
+        }
+
+        // 切换了微站后，获取logo大小
         if ((nowStation && prevStation && nowStation._key !== prevStation._key && nowStation.logo) ||
             (nowStation && !prevStation && nowStation.logo)) {
             // 获取logo大小
@@ -218,7 +247,15 @@ class Header extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    { getUserInfo, logout, changeStation, getStationList, clearStoryList, }
+    {
+        getUserInfo,
+        logout,
+        changeStation,
+        getStationList,
+        clearStoryList,
+        getStationDetail,
+        getStoryList,
+    }
 )(Header));
 
 const mapStateToProps2 = state => ({

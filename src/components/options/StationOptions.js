@@ -50,24 +50,28 @@ class StationOptions extends Component {
                                 <ClickOutside onClickOutside={this.handleTriggerClick}>
                                     <div className="options-menu">
                                         <div className={!pathname ? 'active' : ''}>
+                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/station-options.svg)' }}></i>
                                             <Link
                                                 to={`${match.url}${search}`}
                                                 onClick={this.handleTriggerClick}
                                             >站点定义</Link>
                                         </div>
                                         <div className={pathname === 'channel' ? 'active' : ''}>
+                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/channel-manage.svg)' }}></i>
                                             <Link
                                                 to={`${match.url}/channel${search}`}
                                                 onClick={this.handleTriggerClick}
                                             >频道管理</Link>
                                         </div>
                                         <div className={pathname === 'plugin' ? 'active' : ''}>
+                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/plugin-manage.svg)' }}></i>
                                             <Link
                                                 to={`${match.url}/plugin${search}`}
                                                 onClick={this.handleTriggerClick}
                                             >插件管理</Link>
                                         </div>
                                         <div className={pathname === 'content' ? 'active' : ''}>
+                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
                                             <Link
                                                 to={`${match.url}/content${search}`}
                                                 onClick={this.handleTriggerClick}

@@ -52,7 +52,15 @@ class StoryEntry extends Component {
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
-        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/200/')` };
+        let coverUrl = story.cover ?
+            (story.cover.indexOf('cdn-icare.qingtime.cn') !== -1 ?
+                `${story.cover}?imageView2/2/w/576/` :
+                story.cover) :
+            '/image/icon/icon-article.svg';
+        let coverStyle = {
+            backgroundImage: `url('${coverUrl}')`,
+            backgroundSize: story.cover ? 'cover' : '30%'
+        };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};

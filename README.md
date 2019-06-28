@@ -30,3 +30,21 @@ sudo chown -R $USER:$GROUP ~/.npm
 sudo chown -R $USER:$GROUP ~/.config
 npm cache clean --force
 ```
+
+### 在create-react-app中build禁止生成源映射
+create-react-app会默认的在构建期间缩小代码并生成源映射，这样的话会在build文件夹的js目录生成.js与.map文件
+
+.map文件会随着我们打开Developer Tools时按需加载，我们就能看到构建前的原始代码
+
+如果想要禁止cli生成源映射文件(.map)，那么我们只需要修改根目录中node_modules/react-scripts/config/webpack.config.prod.js文件，将
+```
+devtool: isEnvProduction
+  ? shouldUseSourceMap
+    ? 'source-map'
+    : false
+  : isEnvDevelopment && 'cheap-module-source-map',
+```
+修改为
+```
+devtool: false,
+```

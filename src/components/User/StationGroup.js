@@ -7,6 +7,7 @@ import { searchUser, groupMember, addGroupMember, setMemberRole } from '../../ac
 
 const Search = Input.Search;
 const mapStateToProps = state => ({
+    nowStation: state.station.nowStation,
     searchUserList: state.station.searchUserList,
     userList: state.station.userList,
     groupKey: state.station.nowStation.intimateGroupKey,
@@ -14,7 +15,15 @@ const mapStateToProps = state => ({
 
 class StationGroup extends Component {
     render() {
-        const { searchUser, userList, searchUserList, addGroupMember, setMemberRole, groupKey, } = this.props;
+        const {
+            searchUser,
+            userList,
+            searchUserList,
+            addGroupMember,
+            setMemberRole,
+            groupKey,
+            nowStation,
+        } = this.props;
         return (
             <div className="station-group">
                 <h2>添加成员</h2>
@@ -52,6 +61,7 @@ class StationGroup extends Component {
                                 name={user.nickName ? user.nickName : ''}
                                 role={user.role}
                                 setMemberRole={setMemberRole}
+                                userRole={nowStation.role}
                             />
                         ))
                     }

@@ -25,6 +25,17 @@
 .options-menu>div {
     height: 70px;
     line-height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.options-menu>div>i {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 15px;
 }
 
 .options-menu>div:hover {

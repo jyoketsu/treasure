@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import './StationBasicInfo.css';
 import util from '../../services/Util';
-import { Form, Input, Button, message, Checkbox, Radio, } from 'antd';
+import { Form, Input, Button, message, Radio, } from 'antd';
 import UploadStationCover from '../common/UploadCover';
 import { withRouter } from "react-router-dom";
-
 import { connect } from 'react-redux';
-
 import { editStation, createStation } from '../../actions/app';
 
 const { TextArea } = Input;
@@ -39,10 +37,6 @@ const CustomizedForm = Form.create({
             inheritedMode: Form.createFormField({
                 ...props.inheritedMode,
                 value: props.inheritedMode.value,
-            }),
-            open: Form.createFormField({
-                ...props.open,
-                value: props.open.value,
             }),
         };
     },
@@ -86,12 +80,6 @@ const CustomizedForm = Form.create({
                 )}
             </Form.Item>
             <Form.Item>
-                {getFieldDecorator('open', {
-                    valuePropName: 'checked',
-                    initialValue: false,
-                })(<Checkbox>公开微站</Checkbox>)}
-            </Form.Item>
-            <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     保存
                 </Button>
@@ -124,9 +112,6 @@ class StationBasicInfo extends Component {
                 },
                 inheritedMode: {
                     value: stationInfo ? stationInfo.inheritedMode : '',
-                },
-                open: {
-                    value: stationInfo ? stationInfo.open : 0,
                 },
             },
         }
@@ -165,7 +150,6 @@ class StationBasicInfo extends Component {
                         fields.domain.value,
                         type,
                         fields.memo.value,
-                        fields.open.value,
                         isMainStar,
                         cover,
                         logo,
@@ -178,7 +162,6 @@ class StationBasicInfo extends Component {
                         fields.domain.value,
                         1,
                         fields.memo.value,
-                        fields.open.value,
                         false,
                         cover,
                         logo,

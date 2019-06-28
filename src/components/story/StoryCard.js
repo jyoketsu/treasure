@@ -60,7 +60,15 @@ class Card extends Component {
 
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
-        let coverStyle = { backgroundImage: `url('${story.cover}?imageView2/2/w/576/')` };
+        let coverUrl = story.cover ?
+            (story.cover.indexOf('cdn-icare.qingtime.cn') !== -1 ?
+                `${story.cover}?imageView2/2/w/576/` :
+                story.cover) :
+            '/image/icon/icon-article.svg';
+        let coverStyle = {
+            backgroundImage: `url('${coverUrl}')`,
+            backgroundSize: story.cover ? 'cover' : '30%'
+        };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};
@@ -95,6 +103,7 @@ class Card extends Component {
                     style={coverStyle}
                     onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
                 >
+                    <div className="story-card-mask"></div>
                     {audit ? option : null}
                 </div>
                 <div className="story-card-title">
@@ -109,10 +118,14 @@ class Card extends Component {
                     </div>
                 </div>
                 {/* 图片数量 */}
-                <span className="picture-count">
-                    <i className="picture-count-icon"></i>
-                    <span>{story.pictureCount}</span>
-                </span>
+                {
+                    story.type !== 9 ?
+                        <span className="picture-count">
+                            <i className="picture-count-icon"></i>
+                            <span>{story.pictureCount}</span>
+                        </span> : null
+                }
+
                 <div className="story-card-info">
                     {
                         showAuthor ?

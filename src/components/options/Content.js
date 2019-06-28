@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Tabs } from 'antd';
 import StoryList from '../story/StoryList';
 import { connect } from 'react-redux';
-import { getStoryList, readyToRefresh, } from '../../actions/app';
+import { getStoryList, readyToRefresh, clearStoryList, } from '../../actions/app';
 const { TabPane } = Tabs;
 
 const mapStateToProps = state => ({
@@ -50,7 +50,8 @@ class Content extends Component {
     }
 
     handleTabChange(key) {
-        const { getStoryList, sortType, sortOrder, nowStationKey, } = this.props;
+        const { getStoryList, sortType, sortOrder, nowStationKey, clearStoryList, } = this.props;
+        clearStoryList();
         this.curPage = 1;
         switch (key) {
             case 'wait':
@@ -87,9 +88,10 @@ class Content extends Component {
     };
 
     componentDidMount() {
-        const { getStoryList, sortType, sortOrder, nowStationKey, storyListLength, readyToRefresh, } = this.props;
+        const { getStoryList, sortType, sortOrder, nowStationKey, readyToRefresh, clearStoryList, } = this.props;
+        clearStoryList();
         readyToRefresh();
-        if (nowStationKey && storyListLength === 0) {
+        if (nowStationKey) {
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 
@@ -116,5 +118,5 @@ class Content extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    { getStoryList, readyToRefresh, },
+    { getStoryList, readyToRefresh, clearStoryList, },
 )(Content));

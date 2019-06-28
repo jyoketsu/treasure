@@ -1,5 +1,5 @@
-// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
+const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+// const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const APIURL = 'http://192.168.1.136:8529/_db/TimeBox/my_sgbh';
 
 let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
@@ -264,14 +264,13 @@ const station = {
      * @param {String} cover 
      * @param {Object} size 
      */
-    createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
+    createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
             name: name,
             domain: domain,
             type: type,
             memo: memo,
-            open: open,
             isMainStar: isMainStar,
             cover: cover,
             logo: logo,
@@ -287,7 +286,7 @@ const station = {
         });
     },
 
-    editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
+    editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
@@ -295,7 +294,6 @@ const station = {
             domain: domain,
             type: type,
             memo: memo,
-            open: open,
             isMainStar: isMainStar,
             cover: cover,
             logo: logo,

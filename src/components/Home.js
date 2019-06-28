@@ -162,29 +162,17 @@ class Home extends Component {
             storyListLength,
             refresh,
         } = this.props;
-        if (nowStationKey && storyListLength === 0) {
+
+        if (nowStationKey) {
             getStationDetail(nowStationKey);
+        }
+        if (nowStationKey && storyListLength === 0) {
             // 获取微站全部故事
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
         }
+
         if (refresh) {
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        const { nowStationKey, getStationDetail, getStoryList, clearStoryList, sortType, sortOrder, history } = this.props;
-        // 切换微站时重新获取故事
-        if (nowStationKey !== prevProps.nowStationKey) {
-            clearStoryList();
-            this.curPage = 1;
-            if (nowStationKey !== 'notFound') {
-                getStationDetail(nowStationKey);
-                // 获取微站全部故事
-                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
-            } else {
-                history.push('/station/notFound');
-            }
         }
     }
 
@@ -231,7 +219,7 @@ class Station extends React.Component {
     }
 
     handleClickAdd(channel, type) {
-        const { history, user, nowChannelKey, match } = this.props;
+        const { history, user, nowChannelKey, match, content } = this.props;
         const stationDomain = match.params.id;
         if (user.isGuest) {
             message.error('请先登录！');
@@ -243,6 +231,10 @@ class Station extends React.Component {
         }
         if (nowChannelKey === 'allSeries') {
             message.error('请先选择要发布的频道！');
+            return;
+        }
+        if (!channel.allowPublicUpload && !content.editRight) {
+            message.error('您没有权限发布到当前频道中！');
             return;
         }
 

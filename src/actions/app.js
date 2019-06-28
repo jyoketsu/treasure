@@ -71,8 +71,8 @@ export function getStationList() {
     return { type: GET_STATION_LIST, payload: request }
 }
 
-export function createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
-    let request = api.station.createStation(name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode);
+export function createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
+    let request = api.station.createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode);
     return { type: CREATE_STATION, flag: 'createStation', payload: request }
 }
 
@@ -81,8 +81,8 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode, ) {
-    let request = api.station.editStation(key, name, domain, type, memo, open, isMainStar, cover, logo, size, inheritedMode);
+export function editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
+    let request = api.station.editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode);
     return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 

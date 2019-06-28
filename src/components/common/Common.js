@@ -18,7 +18,7 @@ class MemberCard extends Component {
         setMemberRole(groupKey, userKey, value);
     }
     render() {
-        const { avatar, name, role, mobile, } = this.props;
+        const { avatar, name, role, mobile, userRole, } = this.props;
         return (
             <div className="member-card">
                 <div className="member-avatar-container">
@@ -31,13 +31,16 @@ class MemberCard extends Component {
                 <div className="member-info">
                     <span className="member-name">{name || ''}</span>
                     <span className="member-name">{mobile || ''}</span>
-                    <Select defaultValue={role} style={{ width: 120 }} onChange={this.handleChange}>
-                        <Option value={1}>超管</Option>
-                        <Option value={2}>管理员</Option>
-                        <Option value={3}>编辑</Option>
-                        <Option value={4}>作者</Option>
-                        <Option value={5}>成员</Option>
-                    </Select>
+                    {
+                        userRole <= 2 && userRole < role ?
+                            <Select defaultValue={role} style={{ width: 120 }} onChange={this.handleChange}>
+                                <Option value={1}>超管</Option>
+                                <Option value={2}>管理员</Option>
+                                <Option value={3}>编辑</Option>
+                                <Option value={4}>作者</Option>
+                                <Option value={5}>成员</Option>
+                            </Select> : null
+                    }
                 </div>
             </div>
         );
@@ -71,7 +74,7 @@ class SearchMemberCard extends Component {
 
 class IconWithText extends Component {
     render() {
-        const {iconUrl, title, handleClick, } = this.props;
+        const { iconUrl, title, handleClick, } = this.props;
         return (
             <div className="icon-with-text" onClick={handleClick}>
                 <i style={{ backgroundImage: `url(${iconUrl})` }}></i>
