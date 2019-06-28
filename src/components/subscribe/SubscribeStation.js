@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './SubscribeStation.css';
-import { Button, Pagination, } from 'antd';
+import { Button, Pagination, Input, } from 'antd';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { searchStation, changeStation, } from '../../actions/app';
+
+const { Search } = Input;
 
 const mapStateToProps = state => ({
     stationList: state.station.matchedStationList,
@@ -13,17 +15,24 @@ const mapStateToProps = state => ({
 class SubscribeStation extends Component {
     constructor(props) {
         super(props);
-        this.curPage = 1;
+        this.curPage = sessionStorage.getItem('searchStationPage') ?
+            parseInt(sessionStorage.getItem('searchStationPage')) : 1;
         this.perPage = 30;
+        this.state = {
+            keyWord: sessionStorage.getItem('searchStationKeyword') ?
+                sessionStorage.getItem('searchStationKeyword') : ''
+        }
     }
 
     onChange = page => {
         this.curPage = page;
-        this.props.searchStation('', this.curPage, this.perPage);
+        sessionStorage.setItem('searchStationPage', page);
+        this.props.searchStation(this.state.keyWord, this.curPage, this.perPage);
     };
 
     render() {
-        const { history, stationList, matchedNumber, changeStation, } = this.props;
+        const { history, stationList, matchedNumber, changeStation, searchStation, } = this.props;
+        const { keyWord } = this.state;
         return (
             <div className="app-content">
                 <div
@@ -34,11 +43,25 @@ class SubscribeStation extends Component {
                 >
                     <div className="channel-head">
                         <span>订阅中心</span>
-                        <Button
-                            type="primary"
-                            className="login-form-button"
-                            onClick={() => { history.push('editStation') }}
-                        >新建站点</Button>
+                        <div>
+                            <Search
+                                placeholder="请输入站点名"
+                                onSearch={
+                                    value => {
+                                        sessionStorage.setItem('searchStationKeyword', value);
+                                        searchStation(value, 1, this.perPage)
+                                    }
+                                }
+                                style={{ width: 200, marginRight: '15px' }}
+                                value={keyWord}
+                                onChange={e => this.setState({ keyWord: e.target.value })}
+                            />
+                            <Button
+                                type="primary"
+                                className="login-form-button"
+                                onClick={() => { history.push('editStation') }}
+                            >新建站点</Button>
+                        </div>
                     </div>
                     <div className="station-container">
                         {
@@ -51,18 +74,17 @@ class SubscribeStation extends Component {
                                 />
                             ))
                         }
+                        {stationList.length === 0 ?
+                            <div style={{ margin: 'auto' }}>暂无结果</div> :
+                            null}
                     </div>
                     <div className="station-foot">
-                        {
-                            matchedNumber !== 0 ?
-                                <Pagination
-                                    current={this.curPage}
-                                    pageSize={this.perPage}
-                                    total={matchedNumber}
-                                    onChange={this.onChange}
-                                /> :
-                                null
-                        }
+                        <Pagination
+                            current={this.curPage}
+                            pageSize={this.perPage}
+                            total={matchedNumber}
+                            onChange={this.onChange}
+                        />
                     </div>
                 </div>
             </div>
@@ -70,7 +92,7 @@ class SubscribeStation extends Component {
     };
 
     componentDidMount() {
-        this.props.searchStation('', this.curPage, this.perPage);
+        // this.props.searchStation('', this.curPage, this.perPage);
     }
 }
 
@@ -111,8 +133,8 @@ class StationCard extends Component {
                     <i
                         className="card-station-logo"
                         style={{
-                            backgroundImage: `url(${station.logo})`,
-                            width: logoSize ? `${Math.ceil(55 * (logoSize.width / logoSize.height))}px` : '68px'
+                            backgroundImage: `url(${station.logo ? station.logo : '/image/background/logo.svg'})`,
+                            width: logoSize ? `${Math.ceil(68 * (logoSize.width / logoSize.height))}px` : '68px'
                         }}
                     ></i>
                     <span className="card-station-name">{station.name}</span>

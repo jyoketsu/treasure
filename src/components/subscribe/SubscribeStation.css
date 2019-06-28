@@ -2,12 +2,15 @@
     margin: auto;
     background-color: #ffffff;
     padding: 0 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .station-container {
     display: flex;
     flex-wrap: wrap;
     padding: 0 33px;
+    flex: 1;
 }
 
 .station-foot {
@@ -65,6 +68,8 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 15px;
+    /* background-color: #BEBEBE;
+    border-radius: 8px; */
 }
 
 .role1:after {
@@ -99,5 +104,15 @@
 @media screen and (max-width:768px) {
     .station-container {
         padding: unset;
+    }
+
+    .channel-head {
+        flex-direction: column;
+        height: unset;
+        padding: 10px 0;
+    }
+
+    .station-card {
+        width: 100vw;
     }
 }

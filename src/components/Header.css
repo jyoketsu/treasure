@@ -79,8 +79,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 24px;
-    height: 24px;
+    width: 35px;
+    height: 35px;
     margin-right: 35px;
 }
 
@@ -227,6 +227,7 @@
     .head-icon {
         width: 35px !important;
         height: 35px !important;
+        margin-right: 15px;
     }
 
     .header-dorpdown {

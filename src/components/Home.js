@@ -317,7 +317,10 @@ class Station extends React.Component {
             <div className="station-home">
                 <div
                     className="station-cover"
-                    style={{ backgroundImage: `url(${content.cover})` }}
+                    style={{
+                        backgroundImage: `url(${content.cover ?
+                            content.cover : '/image/background/banner.png'})`
+                    }}
                 ></div>
                 <div className="main-content station-home-page">
                     <div className="station-plugin-container">
@@ -351,7 +354,7 @@ class Station extends React.Component {
                             >
                                 全部
                             </div>
-                            {seriesInfo.map((serie, index) => (
+                            {channelList.map((serie, index) => (
                                 <div
                                     key={index}
                                     className={`channel-item ${nowChannelKey === serie._key ? 'selected' : ''}`}
