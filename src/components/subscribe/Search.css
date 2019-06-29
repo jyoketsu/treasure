@@ -1,25 +1,36 @@
 .search-station {
-    margin: auto;
-    background-color: #ffffff;
-    padding: 0 15px;
     display: flex;
     flex-direction: column;
+}
+
+.search-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
 }
 
 .station-container {
     display: flex;
     flex-wrap: wrap;
-    padding: 0 33px;
-    flex: 1;
+    padding: 25px 0;
+    margin-bottom: 80px;
 }
 
 .station-foot {
-    margin-top: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     border-top: 1px solid #ddd;
     height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 25px;
 }
 
 /* StationCard-------------------------- */
@@ -103,7 +114,7 @@
 
 @media screen and (max-width:768px) {
     .station-container {
-        padding: unset;
+        flex-direction: column;
     }
 
     .channel-head {
@@ -113,6 +124,14 @@
     }
 
     .station-card {
-        width: 100vw;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .search-container {
+        position: relative;
+        top: 0;
+        right: 0;
+        left: 0;
     }
 }

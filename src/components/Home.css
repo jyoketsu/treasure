@@ -107,6 +107,7 @@
 }
 
 .station-memo {
+    padding: 0 25px;
     background-color: #fff;
 }
 
@@ -124,7 +125,7 @@
     line-height: 1.8;
     word-break: break-all;
     padding: 0 15px 25px 15px;
-    max-width: 670px;
+    /* max-width: 670px; */
     margin: auto;
 }
 

@@ -67,12 +67,12 @@
 }
 
 .router-tabs {
-    height: 46px;
+    height: 56px;
     font-size: 16px;
     line-height: 46px;
-    flex: 1;
     overflow: auto;
     display: flex;
+    align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
     /* 火狐 隐藏滚动条 */
@@ -85,12 +85,12 @@
 }
 
 .tab-item {
-    padding: 0 15px;
-    /* overflow: hidden; */
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 18px;
     color: #7B8492;
     display: inline;
+    margin-right: 15px;
 }
 
 .tab-item:hover {

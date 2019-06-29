@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Common.css';
+import util from '../../services/Util';
 import { Select, message } from 'antd';
 const { Option } = Select;
 
@@ -92,8 +93,8 @@ class Tab extends Component {
                 {tabList.map((tab, index) => (
                     <div
                         key={index}
-                        className={`tab-item ${currentKey === tab._key ? 'selected' : ''}`}
-                        onClick={() => handleClick(tab._key)}
+                        className={`tab-item ${currentKey === tab.key ? 'selected' : ''}`}
+                        onClick={() => handleClick(tab.key)}
                     >
                         {tab.name}
                     </div>
@@ -103,10 +104,96 @@ class Tab extends Component {
     }
 }
 
+class StationCard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            logoSize: null,
+        }
+    }
+
+    handleClick(key, domain) {
+        const { history, changeStation } = this.props;
+        changeStation(key);
+        history.push(`/${domain}`);
+    }
+
+    render() {
+        const { station, } = this.props;
+        const { logoSize } = this.state;
+        let roleNmae;
+        switch (station.role) {
+            case 1: roleNmae = '超管'; break;
+            case 2: roleNmae = '管理员'; break;
+            case 3: roleNmae = '编辑'; break;
+            case 4: roleNmae = '作者'; break;
+            case 5: roleNmae = '超管'; break;
+            case 6: roleNmae = '成员'; break;
+            default: roleNmae = '游客'; break;
+        }
+        return (
+            <div
+                className={`station-card role${station.role ? station.role : ''}`}
+                onClick={this.handleClick.bind(this, station._key, station.domain)}
+            >
+                <span className="card-station-role">{roleNmae}</span>
+                <div className="card-station-title">
+                    <i
+                        className="card-station-logo"
+                        style={{
+                            backgroundImage: `url(${station.logo ? station.logo : '/image/background/logo.svg'})`,
+                            width: logoSize ? `${Math.ceil(68 * (logoSize.width / logoSize.height))}px` : '68px'
+                        }}
+                    ></i>
+                    <span className="card-station-name">{station.name}</span>
+                </div>
+            </div>
+        );
+    }
+
+
+
+    async componentDidMount() {
+        const { station } = this.props;
+        const { seriesInfo } = station;
+        let checkedChannels = [];
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (seriesInfo[i].isCareSeries) {
+                checkedChannels.push(seriesInfo[i]._key);
+            }
+        }
+        // 获取logo大小
+        let size = await util.common.getImageInfo(station.logo);
+        this.setState({
+            checkedChannels: checkedChannels,
+            allChecked: checkedChannels.length === seriesInfo.length ? true : false,
+            logoSize: size
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        const { station } = this.props;
+        if (prevProps.station._key !== station._key) {
+            const { seriesInfo } = station;
+            let checkedChannels = [];
+            for (let i = 0; i < seriesInfo.length; i++) {
+                if (seriesInfo[i].isCareSeries) {
+                    checkedChannels.push(seriesInfo[i]._key);
+                }
+            }
+            this.setState({
+                checkedChannels: checkedChannels,
+                allChecked: checkedChannels.length === seriesInfo.length ? true : false
+            });
+        }
+    }
+}
+
 
 export {
     MemberCard,
     SearchMemberCard,
     IconWithText,
     Tab,
+    StationCard,
 };
