@@ -66,6 +66,41 @@
     font-size: 16px;
 }
 
+.router-tabs {
+    height: 46px;
+    font-size: 16px;
+    line-height: 46px;
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* 火狐 隐藏滚动条 */
+    overflow: -moz-scrollbars-none;
+}
+
+/* chrome 隐藏滚动条 */
+.router-tabs::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.tab-item {
+    padding: 0 15px;
+    /* overflow: hidden; */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #7B8492;
+    display: inline;
+}
+
+.tab-item:hover {
+    cursor: pointer;
+}
+
+.tab-item.selected {
+    border-bottom: 3px solid #E60012;
+}
+
 @media screen and (max-width:768px) {
     .member-card {
         width: 100%;

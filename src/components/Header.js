@@ -292,7 +292,6 @@ class HeadMenu extends Component {
             case "account":
                 history.push(`/${stationDomain}/me`);
                 break;
-            case "myStation": break;
             case "logout": this.showConfirm(); break;
             case "login":
                 if (window.location.pathname !== '/account/login') {
@@ -300,7 +299,10 @@ class HeadMenu extends Component {
                 }
                 break;
             case "subscribe":
-                history.push(`/${stationDomain}/subscribeStation`);
+                history.push(`/${stationDomain}/subscribe`);
+                break;
+            case "discover":
+                history.push(`/${stationDomain}/explore`);
                 break;
             default:
                 message.info('功能开发中，敬请期待...');

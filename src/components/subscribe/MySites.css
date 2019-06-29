@@ -1,0 +1,7 @@
+.my-site {
+    margin: auto;
+    background-color: #ffffff;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+}

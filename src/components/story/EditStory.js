@@ -161,6 +161,17 @@ class EditStory extends Component {
             );
             prevStory.richContent = prevContent;
             this.scrollDown = true;
+
+            if (typeof prevStory.pictureCount === 'number') {
+                prevStory.pictureCount = prevStory.pictureCount + 1;
+            } else {
+                prevStory.pictureCount = 1;
+            }
+            // 设置封面
+            if (!prevStory.cover) {
+                prevStory.cover = `${videoUrl}?vframe/jpg/offset/1`;
+            }
+
             return { story: prevStory }
         });
     }
@@ -174,7 +185,7 @@ class EditStory extends Component {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
             prevContent.splice(index - 1, 1);
-            if (metaType === 'image') {
+            if (metaType === 'image' || metaType === 'video') {
                 prevStory.pictureCount = prevStory.pictureCount - 1;
             }
             prevStory.richContent = prevContent;
@@ -436,6 +447,7 @@ class StoryEditButtonGroup extends Component {
                                     width: '24px',
                                     height: '24px',
                                 }}
+                                maxSize={10000000}
                                 multiple="multiple"
                                 extParam={{ index: this.props.index }}
                                 callback={this.props.uploadImageCallback} />
@@ -454,7 +466,7 @@ class StoryEditButtonGroup extends Component {
                                     height: '24px',
                                 }}
                                 metaType='video'
-                                maxSize={52428800}
+                                maxSize={200000000}
                                 extParam={{ index: this.props.index }}
                                 callback={this.props.uploadVideoCallback} />
                             <span>视频</span>

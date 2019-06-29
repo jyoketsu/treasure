@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import './Explore.css';
+import './MySites.css';
 
-class Explore extends Component {
+class MySites extends Component {
     render() {
         return (
             <div
-                className="app-content explore"
+                className="main-content my-site"
                 style={{
                     minHeight: `${window.innerHeight - 70}px`
                 }}
-            >功能开发中，敬请期待！</div>
+            >
+                我的站点</div>
         );
     };
 }
 
-export default Explore;
+export default MySites;

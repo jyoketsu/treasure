@@ -168,7 +168,11 @@ class Login extends Component {
     }
 
     render() {
-        const { nowStation } = this.props;
+        let { nowStation } = this.props;
+        if (!nowStation && sessionStorage.getItem('STATION_INFO')) {
+            nowStation = JSON.parse(sessionStorage.getItem('STATION_INFO'));
+        }
+
         let style = { borderBottom: '1px solid #DDDDDD' }
 
         let item = null;
@@ -275,10 +279,17 @@ class Login extends Component {
     }
 
     async componentDidMount() {
-        const { history, location, } = this.props;
+        const { history, nowStation, } = this.props;
         let that = this;
-        let tarStationName = util.common.getSearchParamValue(location.search, 'station');
-        document.title = tarStationName ? tarStationName : '时光宝库';
+
+        if (nowStation) {
+            // 将微站信息保存到session中，以防刷新登录页后丢失
+            sessionStorage.setItem('STATION_INFO', JSON.stringify({
+                logo: nowStation.logo,
+                name: nowStation.name,
+                domain: nowStation.domain,
+            }));
+        }
 
         // QQ登录
         setTimeout(() => {
@@ -311,8 +322,11 @@ class Login extends Component {
             const search = nextProps.location.search;
             const redirect = util.common.getSearchParamValue(search, 'redirect');
             if (!redirect) {
-                if (nextProps.nowStation) {
-                    nextProps.history.push(`/${nextProps.nowStation.domain}`);
+                let nowStation = nextProps.nowStation ?
+                    nextProps.nowStation :
+                    sessionStorage.getItem('STATION_INFO') ? JSON.parse(sessionStorage.getItem('STATION_INFO')) : null;
+                if (nowStation) {
+                    nextProps.history.push(`/${nowStation.domain}`);
                 }
             } else {
                 const token = localStorage.getItem('TOKEN');

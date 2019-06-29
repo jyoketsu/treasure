@@ -84,9 +84,29 @@ class IconWithText extends Component {
     }
 }
 
+class Tab extends Component {
+    render() {
+        const { tabList, currentKey, handleClick } = this.props;
+        return (
+            <div className="router-tabs">
+                {tabList.map((tab, index) => (
+                    <div
+                        key={index}
+                        className={`tab-item ${currentKey === tab._key ? 'selected' : ''}`}
+                        onClick={() => handleClick(tab._key)}
+                    >
+                        {tab.name}
+                    </div>
+                ))}
+            </div>
+        );
+    }
+}
+
 
 export {
     MemberCard,
     SearchMemberCard,
     IconWithText,
+    Tab,
 };

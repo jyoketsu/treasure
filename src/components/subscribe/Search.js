@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './SubscribeStation.css';
+import './Search.css';
 import { Button, Pagination, Input, } from 'antd';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
@@ -12,11 +12,11 @@ const mapStateToProps = state => ({
     matchedNumber: state.station.matchedNumber,
 });
 
-class SubscribeStation extends Component {
+class SearchStation extends Component {
     constructor(props) {
         super(props);
         this.curPage = sessionStorage.getItem('searchStationPage') ?
-            parseInt(sessionStorage.getItem('searchStationPage')) : 1;
+            parseInt(sessionStorage.getItem('searchStationPage'), 10) : 1;
         this.perPage = 30;
         this.state = {
             keyWord: sessionStorage.getItem('searchStationKeyword') ?
@@ -34,66 +34,60 @@ class SubscribeStation extends Component {
         const { history, stationList, matchedNumber, changeStation, searchStation, } = this.props;
         const { keyWord } = this.state;
         return (
-            <div className="app-content">
-                <div
-                    className="main-content subscribe-station"
-                    style={{
-                        minHeight: `${window.innerHeight - 70}px`
-                    }}
-                >
-                    <div className="channel-head">
-                        <span>订阅中心</span>
-                        <div>
-                            <Search
-                                placeholder="请输入站点名"
-                                onSearch={
-                                    value => {
-                                        sessionStorage.setItem('searchStationKeyword', value);
-                                        searchStation(value, 1, this.perPage)
-                                    }
+            <div
+                className="main-content search-station"
+                style={{
+                    minHeight: `${window.innerHeight - 70}px`
+                }}
+            >
+                <div className="channel-head">
+                    <span>订阅中心</span>
+                    <div>
+                        <Search
+                            placeholder="请输入站点名"
+                            onSearch={
+                                value => {
+                                    sessionStorage.setItem('searchStationKeyword', value);
+                                    searchStation(value, 1, this.perPage)
                                 }
-                                style={{ width: 200, marginRight: '15px' }}
-                                value={keyWord}
-                                onChange={e => this.setState({ keyWord: e.target.value })}
-                            />
-                            <Button
-                                type="primary"
-                                className="login-form-button"
-                                onClick={() => { history.push('editStation') }}
-                            >新建站点</Button>
-                        </div>
-                    </div>
-                    <div className="station-container">
-                        {
-                            stationList.map((station, index) => (
-                                <StationCard
-                                    key={index}
-                                    station={station}
-                                    history={history}
-                                    changeStation={changeStation}
-                                />
-                            ))
-                        }
-                        {stationList.length === 0 ?
-                            <div style={{ margin: 'auto' }}>暂无结果</div> :
-                            null}
-                    </div>
-                    <div className="station-foot">
-                        <Pagination
-                            current={this.curPage}
-                            pageSize={this.perPage}
-                            total={matchedNumber}
-                            onChange={this.onChange}
+                            }
+                            style={{ width: 200, marginRight: '15px' }}
+                            value={keyWord}
+                            onChange={e => this.setState({ keyWord: e.target.value })}
                         />
+                        <Button
+                            type="primary"
+                            className="login-form-button"
+                            onClick={() => { history.push('editStation') }}
+                        >新建站点</Button>
                     </div>
+                </div>
+                <div className="station-container">
+                    {
+                        stationList.map((station, index) => (
+                            <StationCard
+                                key={index}
+                                station={station}
+                                history={history}
+                                changeStation={changeStation}
+                            />
+                        ))
+                    }
+                    {stationList.length === 0 ?
+                        <div style={{ margin: 'auto' }}>暂无结果</div> :
+                        null}
+                </div>
+                <div className="station-foot">
+                    <Pagination
+                        current={this.curPage}
+                        pageSize={this.perPage}
+                        total={matchedNumber}
+                        onChange={this.onChange}
+                    />
                 </div>
             </div>
         );
     };
-
-    componentDidMount() {
-        // this.props.searchStation('', this.curPage, this.perPage);
-    }
 }
 
 class StationCard extends Component {
@@ -184,4 +178,4 @@ class StationCard extends Component {
 export default connect(
     mapStateToProps,
     { searchStation, changeStation, },
-)(SubscribeStation);
+)(SearchStation);

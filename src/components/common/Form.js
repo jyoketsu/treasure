@@ -353,9 +353,9 @@ class FileUpload extends Component {
         }
 
         switch (this.props.metaType) {
-            case 'image': this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = ".jpg, .jpeg, .png, .svg"; break;
-            case 'video': this.mimeType = ["video/mp4", "video/ogg"]; this.accept = ".mp4, .ogg"; break;
-            default: this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = ".jpg, .jpeg, .png, .svg"; break;
+            case 'image': this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = "image/*"; break;
+            case 'video': this.mimeType = ["video/mp4", "video/ogg"]; this.accept = "video/*"; break;
+            default: this.mimeType = ["image/png", "image/jpeg", "image/svg+xml"]; this.accept = "image/*"; break;
         }
     }
 
@@ -375,7 +375,7 @@ class FileUpload extends Component {
 
         for (let i = 0; i < files.length; i++) {
             if (files[i].size > maxSize) {
-                message.error(`请选择小于${maxSize / 1000000}MB的图片，请压缩并保留元数据。`);
+                message.error(`请选择小于${maxSize / 1000000}MB的文件，请保留元数据。`);
                 return;
             }
         }
@@ -434,9 +434,9 @@ class FileUpload extends Component {
     render() {
         let fileInput = null;
         if (this.props.multiple) {
-            fileInput = <input type="file" accept='image/*' onChange={this.handleFileChange} multiple />
+            fileInput = <input type="file" accept={this.accept} onChange={this.handleFileChange} multiple />
         } else {
-            fileInput = <input type="file" accept='image/*' onChange={this.handleFileChange} />
+            fileInput = <input type="file" accept={this.accept} onChange={this.handleFileChange} />
         }
         return (
             <i className={`file-upload-button ${this.props.className}`} style={this.props.style}>

@@ -16,7 +16,7 @@ import Contribute from './components/story/Contribute';
 import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
 import Article from './components/story/Article';
-import SubscribeStation from './components/subscribe/SubscribeStation';
+import Subscribe from './components/subscribe/Subscribe';
 import NotFound from './components/NotFound';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -48,7 +48,7 @@ class App extends Component {
             <Route path="/:id/stationOptions" component={StationOptions}></Route>
             <Route path="/:id/article" component={Article}></Route>
             <Route path="/:id/editArticle" component={EditArticle} />
-            <Route path="/:id/subscribeStation" component={SubscribeStation} />
+            <Route path="/:id/subscribe" component={Subscribe} />
             <Route path="/station/notFound" component={NotFound} />
           </div>
           {loading ? (
