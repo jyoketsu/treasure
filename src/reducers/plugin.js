@@ -3,12 +3,12 @@ import {
     EDIT_PLUGIN,
     DELETE_PLUGIN,
     GET_PLUGIN_LIST,
-    CLEAR_PLUGIN_LIST
+    CLEAR_PLUGIN_LIST,  
 } from '../actions/app';
 import { message, } from 'antd';
 
 const defaultState = {
-    pluginList: []
+    pluginList: [],
 };
 
 const plugin = (state = defaultState, action) => {

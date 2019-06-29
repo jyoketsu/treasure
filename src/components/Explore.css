@@ -1,5 +1,29 @@
 .explore {
+    top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.zoomRightbottom{
+    position: fixed;
+    bottom:2px;
+    right:3px;
+    z-index:99;
+    width:132px;
+    height: 46px;
+    background-color: #191818;
+    color: #fff;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.zoomRightbottom img{
+    width:40px;
+    height:40px;
+    border-radius:100%;    
+}
+.zoomRightbottom span{
+    margin-left:5px;
+    margin-right:5px;
 }

@@ -255,3 +255,10 @@ export function cancelPlugin(pluginKey) {
     let request = api.plugin.cancelPlugin(pluginKey);
     return { type: CANCEL_PLUGIN, pluginKey: pluginKey, payload: request }
 }
+// explore
+export const GET_EXPLORE = 'GET_EXPLORE'; 
+
+export function getExplore(name,id) {
+    let request = api.explore.getExplore(name,id);
+    return { type: GET_EXPLORE, payload: request }
+}

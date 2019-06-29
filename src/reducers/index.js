@@ -4,6 +4,7 @@ import common from './common';
 import station from './station';
 import story from './story';
 import plugin from './plugin';
+import explore from './explore';
 
 export default combineReducers({
     auth,
@@ -11,4 +12,5 @@ export default combineReducers({
     station,
     story,
     plugin,
+    explore
 });
