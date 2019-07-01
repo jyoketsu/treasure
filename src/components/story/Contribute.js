@@ -382,14 +382,11 @@ class Contribute extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    message.success('删除成功！');
                     history.push(`/${window.location.search}`);
                 } else {
-                    message.success('编辑成功！');
                     history.goBack();
                 }
             } else {
-                message.success('创建成功！');
                 // history.push(`/${window.location.search}`);
                 history.goBack();
             }

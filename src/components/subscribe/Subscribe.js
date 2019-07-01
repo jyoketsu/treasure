@@ -4,6 +4,7 @@ import { Route, } from "react-router-dom";
 import { Tab } from '../common/Common';
 import Search from './Search';
 import MySites from './MySites';
+import Dynamic from './Dynamic';
 
 class Subscribe extends Component {
     constructor(props) {
@@ -26,12 +27,14 @@ class Subscribe extends Component {
                 <Tab
                     currentKey={currentRouteKey}
                     tabList={[
-                        { key: '', name: '站点中心' },
+                        { key: '', name: '订阅中心' },
+                        { key: 'mySites', name: '站点中心' },
                         { key: 'search', name: '搜索站点' }
                     ]}
                     handleClick={this.handleClick}
                 />
-                <Route exact path={`${match.path}`} component={MySites}></Route>
+                <Route exact path={`${match.path}`} component={Dynamic}></Route>
+                <Route path={`${match.path}/mySites`} component={MySites}></Route>
                 <Route path={`${match.path}/search`} component={Search}></Route>
             </div>
         );

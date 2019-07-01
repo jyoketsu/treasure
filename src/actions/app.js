@@ -132,6 +132,7 @@ export const LIKE_STORY = 'LIKE_STORY';
 export const UPDATE_EXIF = 'UPDATE_EXIF';
 export const AUDIT = 'AUDIT';
 export const READYTOREFRESH = 'READYTOREFRESH';
+export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
 
 export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage, isRefresh) {
     let request = api.story.getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage);
@@ -191,6 +192,11 @@ export function updateExif(story) {
 export function auditStory(storyKey, groupKey, passOrNot) {
     let request = api.story.audit(storyKey, groupKey, passOrNot);
     return { type: AUDIT, flag: 'auditStory', storyKey: storyKey, passOrNot: passOrNot, payload: request }
+}
+
+export function myStationLatestStory(curPage) {
+    let request = api.story.myStationLatestStory(curPage);
+    return { type: MY_STATION_LATEST_STORY, curPage: curPage, payload: request }
 }
 
 // 频道
@@ -256,9 +262,9 @@ export function cancelPlugin(pluginKey) {
     return { type: CANCEL_PLUGIN, pluginKey: pluginKey, payload: request }
 }
 // explore
-export const GET_EXPLORE = 'GET_EXPLORE'; 
+export const GET_EXPLORE = 'GET_EXPLORE';
 
-export function getExplore(name,id) {
-    let request = api.explore.getExplore(name,id);
+export function getExplore(name, id) {
+    let request = api.explore.getExplore(name, id);
     return { type: GET_EXPLORE, payload: request }
 }

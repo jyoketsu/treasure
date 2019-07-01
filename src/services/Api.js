@@ -1,5 +1,5 @@
-const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-// const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
+// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const APIURL = 'http://192.168.1.136:8529/_db/TimeBox/my_sgbh';
 // const API = 'http://192.168.1.101:8051';
 const API = 'https://humandata.qingtime.cn';
@@ -431,6 +431,16 @@ const story = {
             key: channelKey,
         });
     },
+    /**
+     * 提取已订阅站点的最新4条
+     * @param {Number} curPage 
+     */
+    myStationLatestStory(curPage) {
+        return requests.get(APIURL + '/star/myAndCareStarAlbumList', {
+            token: token,
+            curPage: curPage,
+        });
+    },
 
     /**
      * 相册审核
@@ -499,8 +509,8 @@ const plugin = {
         });
     },
 }
-const explore = {   
-    getExplore(name,id) {
+const explore = {
+    getExplore(name, id) {
         return requests.get(API + '/api/Person', {
             name: name,
             id: id,

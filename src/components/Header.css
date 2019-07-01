@@ -34,11 +34,14 @@
     font-size: 24px;
     letter-spacing: 1.36px;
     margin-left: 14px;
-    color: #ffffff;
     font-weight: 800;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.head-station-name>a {
+    color: #ffffff !important;
 }
 
 .menu-space {
@@ -65,10 +68,6 @@
     font-size: 18px;
     color: rgba(67, 67, 67, 1);
     display: block;
-}
-
-.app-menu>li:hover>a {
-    color: #E60012 !important;
 }
 
 .app-menu>.active:hover>a {
@@ -173,7 +172,7 @@
 .subscribe-menu {
     position: absolute;
     top: 70px;
-    right: 180px;
+    right: 90px;
     z-index: 2;
     width: 288px;
     background: #FFFFFF;

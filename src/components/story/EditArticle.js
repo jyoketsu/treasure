@@ -104,6 +104,7 @@ class EditArticle extends Component {
                 // memo
                 // 去除标签
                 let sectionStr = str.replace(/<\/?.+?>/g, '');
+                sectionStr = sectionStr.replace(/&nbsp;/g,'')
                 story.memo = sectionStr.substr(0, 100);
                 // 编辑
                 if (story._key) {

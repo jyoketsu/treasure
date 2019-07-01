@@ -10,6 +10,7 @@ import {
     UPDATE_EXIF,
     AUDIT,
     READYTOREFRESH,
+    MY_STATION_LATEST_STORY,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -21,6 +22,7 @@ const defaultState = {
     sortOrder: 1,
     nowChannelKey: 'allSeries',
     refresh: false,
+    dynamicStoryList: [],
 };
 
 const story = (state = defaultState, action) => {
@@ -72,7 +74,6 @@ const story = (state = defaultState, action) => {
 
         case ADD_STORY:
             if (!action.error) {
-                message.success('创建成功！');
                 let storyList = Object.assign([], state.storyList);
                 storyList.unshift(action.payload.result);
                 return {
@@ -84,7 +85,6 @@ const story = (state = defaultState, action) => {
             }
         case MODIFY_STORY:
             if (!action.error) {
-                message.success('编辑成功！');
                 let storyList = Object.assign([], state.storyList);
                 for (let i = 0; i < storyList.length; i++) {
                     if (storyList[i]._key === action.payload.result._key) {
@@ -101,7 +101,6 @@ const story = (state = defaultState, action) => {
             }
         case DELETE_STORY:
             if (!action.error) {
-                message.success('删除成功！');
                 let storyList = Object.assign([], state.storyList);
                 for (let i = 0; i < storyList.length; i++) {
                     if (storyList[i]._key === action.storyKey) {
@@ -171,6 +170,22 @@ const story = (state = defaultState, action) => {
                 }
                 return {
                     ...state,
+                };
+            } else {
+                return state;
+            }
+        case MY_STATION_LATEST_STORY:
+            if (!action.error) {
+                let storyList = [];
+                if (action.curPage === 1) {
+                    storyList = action.payload.result;
+                } else {
+                    storyList = JSON.parse(JSON.stringify(state.dynamicStoryList));
+                    storyList = storyList.concat(action.payload.result)
+                }
+                return {
+                    ...state,
+                    dynamicStoryList: storyList,
                 };
             } else {
                 return state;

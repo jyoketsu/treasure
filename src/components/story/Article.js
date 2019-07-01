@@ -9,6 +9,7 @@ import { getStoryDetail, clearStoryDetail, } from '../../actions/app';
 const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
+    nowStation: state.station.nowStation,
     nowStationKey: state.station.nowStationKey,
     channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
@@ -20,8 +21,9 @@ class Article extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, channelInfo, } = this.props;
+        const { story, userId, nowStationKey, channelInfo, nowStation, } = this.props;
         const { userKey, title, creator = {}, } = story;
+        const { role } = nowStation;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         // 频道信息
         let nowChannel;
@@ -54,7 +56,7 @@ class Article extends Component {
                         </div>
                     </div>
                     {
-                        userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
+                        (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <CKEditor
                         editor={ClassicEditor}

@@ -84,7 +84,7 @@ class Header extends Component {
                             </li>
                     }
                     {
-                        !isMobile ? <li className="head-station-name">{nowStation ? nowStation.name : ''}</li> : null
+                        !isMobile ? <li className="head-station-name"><Link to={`/${stationDomain}`}>{nowStation ? nowStation.name : ''}</Link></li> : null
                     }
                     <li className="menu-space"></li>
                     {

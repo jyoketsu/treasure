@@ -31,8 +31,10 @@ class SearchStation extends Component {
     };
 
     render() {
-        const { history, stationList, matchedNumber, changeStation, searchStation, } = this.props;
+        const { history, stationList, matchedNumber, changeStation, searchStation, location, } = this.props;
         const { keyWord } = this.state;
+        const pathname = location.pathname;
+        const stationDomain = pathname.split('/')[1];
         return (
             <div
                 className="search-station"
@@ -56,7 +58,7 @@ class SearchStation extends Component {
                     <Button
                         type="primary"
                         className="login-form-button"
-                        onClick={() => { history.push('editStation') }}
+                        onClick={() => { history.push(`/${stationDomain}/editStation`) }}
                     >新建站点</Button>
                 </div>
                 <div className="station-container">
