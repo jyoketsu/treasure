@@ -63,8 +63,8 @@ class AddPlugin extends Component {
                                 <span>{`发行方：${plugin.publishStarName}　引用：${plugin.linkCount} ・ 点击：${plugin.clickCount}`}</span>
                             </div>
                             <div
-                                className={`plugin-check-button ${linkedPluginKeys.includes(plugin._key) ? 'active' : ''}`}
-                                onClick={this.handleClick.bind(this, plugin._key)}
+                                className={`plugin-check-button ${linkedPluginKeys.includes(plugin.pluginAppKey) ? 'active' : ''}`}
+                                onClick={this.handleClick.bind(this, plugin.pluginAppKey)}
                             ></div>
                         </div>
                     ))}
@@ -83,7 +83,7 @@ class AddPlugin extends Component {
             let list = [];
             for (let i = 0; i < plugList.length; i++) {
                 if (plugList[i].isLinked) {
-                    list.push(plugList[i]._key);
+                    list.push(plugList[i].pluginAppKey);
                 }
             }
             this.setState({

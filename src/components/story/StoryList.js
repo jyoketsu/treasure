@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './StoryList.css';
 import { StoryLoading, StoryCard } from './StoryCard';
 import StoryEntry from './StoryEntry';
+import Waterfall from '../common/Waterfall';
 import { connect } from 'react-redux';
 import { like, deleteStory, auditStory, } from '../../actions/app';
 
@@ -30,34 +31,38 @@ class StoryList extends Component {
             showStyle,
             showSetting,
         } = this.props;
+        const children = storyList.map((story, index) => (
+            showStyle === 2 ?
+                <StoryCard
+                    key={index}
+                    userKey={userKey}
+                    story={story}
+                    like={like}
+                    deleteStory={deleteStory}
+                    audit={audit}
+                    auditStory={auditStory}
+                    groupKey={groupKey}
+                    showSetting={showSetting}
+                    height={story.type === 9 ? 100 : 330}
+                /> :
+                <StoryEntry
+                    key={index}
+                    userKey={userKey}
+                    story={story}
+                    like={like}
+                    deleteStory={deleteStory}
+                    audit={audit}
+                    auditStory={auditStory}
+                    groupKey={groupKey}
+                    showSetting={showSetting}
+                />
+        ));
         return (
             <div className="story-list">
                 {
-                    storyList.map((story, index) => (
-                        showStyle === 2 ?
-                            <StoryCard
-                                key={index}
-                                userKey={userKey}
-                                story={story}
-                                like={like}
-                                deleteStory={deleteStory}
-                                audit={audit}
-                                auditStory={auditStory}
-                                groupKey={groupKey}
-                                showSetting={showSetting}
-                            /> :
-                            <StoryEntry
-                                key={index}
-                                userKey={userKey}
-                                story={story}
-                                like={like}
-                                deleteStory={deleteStory}
-                                audit={audit}
-                                auditStory={auditStory}
-                                groupKey={groupKey}
-                                showSetting={showSetting}
-                            />
-                    ))
+                    showStyle === 2 ?
+                        <Waterfall ref="container" columnNum={4} kernel={10}>{children}</Waterfall> :
+                        children
                 }
                 {
                     waiting && flag !== 'auditStory' ? <StoryLoading /> : null

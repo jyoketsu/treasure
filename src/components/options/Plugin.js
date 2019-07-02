@@ -86,7 +86,7 @@ class Plugin extends Component {
                             <span className="tabel-actions">
                                 <span onClick={this.handleEdit.bind(this, record._key)}>设置</span>
                                 <Divider type="vertical" />
-                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.name)}>取消订阅</span>
+                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.pluginName)}>取消订阅</span>
                             </span>
                         )}
                     />

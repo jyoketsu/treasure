@@ -64,15 +64,15 @@ class PluginSystem extends Component {
                         >创建插件</Button>
                     </div>
                 </div>
-                <Table dataSource={plugList} rowKey="_key" pagination={false}>
+                <Table dataSource={plugList} rowKey="pluginAppKey" pagination={false}>
                     <Column title="插件名" dataIndex="pluginName" />
                     <Column
                         title="操作"
                         render={(text, record) => (
                             <span className="tabel-actions">
-                                <span onClick={this.handleEdit.bind(this, record._key)}>编辑</span>
+                                <span onClick={this.handleEdit.bind(this, record.pluginAppKey)}>编辑</span>
                                 <Divider type="vertical" />
-                                <span onClick={this.showDeleteConfirm.bind(this, record._key, record.pluginName)}>删除</span>
+                                <span onClick={this.showDeleteConfirm.bind(this, record.pluginAppKey, record.pluginName)}>删除</span>
                             </span>
                         )}
                     />
