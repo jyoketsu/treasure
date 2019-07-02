@@ -1,14 +1,18 @@
 .subscribe-dynamic {
-    height: 100vh;
-    display: grid;
-    /* grid-gap: 15px; */
-    grid-template-columns: repeat(3, 1fr);
-    /* grid-template-rows: repeat(8, 1fr); */
+    padding: 15px 0;
 }
 
 .station-dynamic {
     width: 350px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.more-dynamic {
+    width: 100%;
+    font-size: 13px;
+    color: #ABABAB;
+    margin: 15px 0;
+    text-align: center;
 }
 
 .station-dynamic-header {
@@ -23,6 +27,11 @@
 .station-dynamic-header>span:first-child {
     font-size: 15px;
     color: #000000;
+}
+
+.station-dynamic-header>span:last-child {
+    font-size: 13px;
+    color: #ABABAB;
 }
 
 .station-dynamic-story-list {
@@ -58,4 +67,10 @@
     height: 55px;
     background-size: cover;
     background-position: center;
+}
+
+@media screen and (max-width:768px) {
+    .station-dynamic {
+        width: 100%;
+    }
 }

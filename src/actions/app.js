@@ -196,7 +196,7 @@ export function auditStory(storyKey, groupKey, passOrNot) {
 
 export function myStationLatestStory(curPage) {
     let request = api.story.myStationLatestStory(curPage);
-    return { type: MY_STATION_LATEST_STORY, curPage: curPage, payload: request }
+    return { type: MY_STATION_LATEST_STORY, curPage: curPage, noLoading: true, payload: request }
 }
 
 // 频道

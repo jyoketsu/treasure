@@ -7,9 +7,9 @@
 
 .story-list {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px;
     min-height: 410px;
 }

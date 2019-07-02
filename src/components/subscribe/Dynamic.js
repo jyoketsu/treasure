@@ -2,97 +2,105 @@ import React, { Component } from 'react';
 import './Dynamic.css';
 import { connect } from 'react-redux';
 import { myStationLatestStory, } from '../../actions/app';
+import Waterfall from '../common/Waterfall';
+import { StoryLoading } from '../story/StoryCard';
+import util from '../../services/Util';
+import moment from 'moment';
 
 const mapStateToProps = state => ({
     stationList: state.story.dynamicStoryList,
+    waiting: state.common.waiting,
 });
 
 class Dynamic extends Component {
     constructor(props) {
         super(props);
-        this.getAutoResponsiveProps = this.getAutoResponsiveProps.bind(this);
+        this.curPage = sessionStorage.getItem('dynamic-curpage') ?
+            parseInt(sessionStorage.getItem('dynamic-curpage'), 10) : 1;
+        this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.state = {
-        };
-        this.columns = new Array(3);
-        this.kernel = 10;
+            columnNum: 4
+        }
+        this.setColumn = this.setColumn.bind(this);
     }
 
-    getAutoResponsiveProps() {
-        return {
-            itemMargin: 10,
-            containerWidth: this.state.containerWidth || document.body.clientWidth,
-            itemClassName: 'item',
-            gridWidth: 100,
-            transitionDuration: '.5'
-        };
+    // 滚动查看更多故事
+    handleMouseWheel(e) {
+        const { waiting, myStationLatestStory, } = this.props;
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
+        if (
+            !waiting &&
+            (top + document.body.clientHeight === document.body.scrollHeight)
+        ) {
+            this.curPage++;
+            myStationLatestStory(this.curPage);
+        }
     }
 
     render() {
-        const { stationList, history, } = this.props;
-        this.columns = new Array(3);
-        let itemStyleList = [];
-
-        for (let i = 0; i < stationList.length; i++) {
-            const station = stationList[i];
-            const index = i;
-            const height = 35 + station.albumInfo.length * 70;
-
-            const gridColumn = (index + 1) % 3 === 0 ? 3 : (index + 1) % 3;
-            const gridStart = this.columns[gridColumn - 1] === undefined ? 1 : this.columns[gridColumn - 1] + 1;
-            const gridEnd = gridStart + Math.ceil(height / this.kernel) - 1;
-            const gridRow = `${gridStart} / ${gridEnd}`;
-            this.columns[gridColumn - 1] = gridEnd;
-            let itemStyle = {
-                gridRow: gridRow,
-                gridColumn: gridColumn,
-            };
-            itemStyleList.push(itemStyle);
-        }
-
+        const { stationList, history, waiting } = this.props;
+        const isMobile = util.common.isMobile();
+        const children = stationList.map((station, index) => {
+            return (
+                <StationDynamic
+                    key={index}
+                    station={station}
+                    history={history}
+                    height={35 + station.albumInfo.length * 70}
+                />
+            )
+        });
         return (
             <div
                 className="subscribe-dynamic"
+                ref='container'
                 style={{
-                    // minHeight: `${window.innerHeight - 70 - 56}px`
-                    height: Math.max(...this.columns) * 10
+                    minHeight: `${window.innerHeight - 70 - 56}px`
                 }}
             >
                 {
-                    stationList.map((station, index) => {
-                        const height = 35 + station.albumInfo.length * 70;
-
-                        const gridColumn = (index + 1) % 3 === 0 ? 3 : (index + 1) % 3;
-                        const gridStart = this.columns[gridColumn - 1] === undefined ? 1 : this.columns[gridColumn - 1] + 1;
-                        const gridEnd = gridStart + Math.ceil(height / this.kernel) - 1;
-                        const gridRow = `${gridStart} / ${gridEnd}`;
-                        this.columns[gridColumn - 1] = gridEnd;
-                        let itemStyle = {
-                            gridRow: gridRow,
-                            gridColumn: gridColumn,
-                        };
-                        console.log(index + 1, '--------------', itemStyle);
-                        return (
-                            <StationDynamic
-                                className="item"
-                                key={index}
-                                station={station}
-                                history={history}
-                                style={itemStyleList[index]} />
-                        )
-                    })
+                    isMobile ? children :
+                        <Waterfall
+                            columnNum={this.state.columnNum}
+                            kernel={10}
+                        >{children}</Waterfall>
+                }
+                {
+                    waiting ? <StoryLoading /> : <div className="more-dynamic">滑动鼠标，加载更多内容。</div>
                 }
             </div>
         );
     }
 
+    setColumn() {
+        const containerWidth = this.refs.container.clientWidth;
+        this.setState({
+            columnNum: Math.floor(containerWidth / 350)
+        });
+    }
+
     componentDidMount() {
-        const { myStationLatestStory } = this.props;
-        myStationLatestStory(1);
+        const { stationList, myStationLatestStory } = this.props;
+        if (stationList.length === 0) {
+            this.curPage = 1;
+            sessionStorage.setItem('dynamic-curpage', this.curPage);
+            myStationLatestStory(this.curPage);
+        }
+
+        // 监听滚动，查看更多
+        document.body.addEventListener('wheel', this.handleMouseWheel);
+
         window.addEventListener('resize', () => {
-            this.setState({
-                containerWidth: this.refs.container.clientWidth
-            });
+            this.setColumn();
         }, false);
+        this.setColumn();
+    }
+
+    componentWillUnmount() {
+        // 移除滚动事件
+        document.body.removeEventListener('wheel', this.handleMouseWheel);
+        sessionStorage.setItem('dynamic-curpage', this.curPage);
+        window.removeEventListener('resize', this.setColumn);
     }
 }
 
@@ -107,22 +115,25 @@ class StationDynamic extends Component {
             >
                 <div className="station-dynamic-header">
                     <span>{station.name}</span>
+                    <span>{moment(station.albumInfo[0].updateTime).startOf('hour').fromNow()}</span>
                 </div>
                 <div className="station-dynamic-story-list">
                     {
                         station.albumInfo.map((story, index) => (
-                            <div className="station-dynamic-story"
+                            <div
+                                key={index}
+                                className="station-dynamic-story"
                                 onClick={
                                     () => history.push(`/${station.domain}/${story.type === 9 ? 'article' : 'story'}?key=${story._key}`)
                                 }
-                                key={index}>
+
+                            >
                                 <span>{story.title}</span>
                                 <i style={{ backgroundImage: `url(${story.cover}?imageView2/1/w/100/h/100)` }}></i>
                             </div>
                         ))
                     }
                 </div>
-
             </div>
         );
     }

@@ -60,14 +60,14 @@ class CreatePlugin extends Component {
         let pluginKey = util.common.getSearchParamValue(window.location.search, 'key');
         let plugin = null;
         for (let i = 0; i < plugList.length; i++) {
-            if (plugList[i]._key === pluginKey) {
+            if (plugList[i].pluginAppKey === pluginKey) {
                 plugin = plugList[i];
                 break;
             }
         }
 
         this.state = {
-            key: plugin ? plugin._key : '',
+            key: plugin ? plugin.pluginAppKey : '',
             logo: plugin ? plugin.icon : '',
             fields: {
                 name: {

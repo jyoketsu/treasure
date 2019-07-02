@@ -27,7 +27,8 @@ const mapStateToProps = state => ({
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.curPage = 1;
+        this.curPage = this.curPage = sessionStorage.getItem('home-curpage') ?
+            parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
         this.perPage = 32;
         this.state = {
             showSort: false,
@@ -73,6 +74,7 @@ class Home extends Component {
             sortOrder,
         } = this.props;
         this.curPage = 1;
+        sessionStorage.setItem('home-curpage', 1);
         clearStoryList();
         getStoryList(1, nowStationKey, channelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
@@ -169,10 +171,12 @@ class Home extends Component {
         if (nowStationKey && storyListLength === 0) {
             // 获取微站全部故事
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            sessionStorage.setItem('home-curpage', 1);
         }
 
         if (refresh) {
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
+            sessionStorage.setItem('home-curpage', 1);
         }
     }
 
@@ -183,6 +187,7 @@ class Home extends Component {
             document.documentElement.scrollTop = 0;
         }
         let top = document.body.scrollTop || document.documentElement.scrollTop;
+        sessionStorage.setItem('home-curpage', this.curPage);
         // 保存scrollTop的值
         sessionStorage.setItem('home-scroll', top);
         // 移除滚动事件

@@ -26,7 +26,7 @@ const plugin = (state = defaultState, action) => {
             if (!action.error) {
                 let pluginList = JSON.parse(JSON.stringify(state.pluginList));
                 for (let i = 0; i < pluginList.length; i++) {
-                    if (pluginList[i]._key === action.pluginKey) {
+                    if (pluginList[i].pluginAppKey === action.pluginKey) {
                         pluginList[i] = action.payload.result;
                         break;
                     }

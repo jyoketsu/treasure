@@ -20,7 +20,8 @@ const mapStateToProps = state => ({
 class Content extends Component {
     constructor(props) {
         super(props);
-        this.curPage = 1;
+        this.curPage = this.curPage = sessionStorage.getItem('content-curpage') ?
+            parseInt(sessionStorage.getItem('content-curpage'), 10) : 1;
         this.perPage = 30;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -92,6 +93,8 @@ class Content extends Component {
         clearStoryList();
         readyToRefresh();
         if (nowStationKey) {
+            this.curPage = 1;
+            sessionStorage.setItem('content-curpage', this.curPage);
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 
@@ -113,6 +116,7 @@ class Content extends Component {
         // 移除滚动事件
         document.body.removeEventListener('wheel', this.handleMouseWheel);
         sessionStorage.setItem('audit-scroll', this.auditRef.scrollTop);
+        sessionStorage.setItem('content-curpage', this.curPage);
     }
 }
 

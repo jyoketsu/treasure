@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class PluginOptions extends Component {
     render() {
         return (
-            <div className="app-content">插件设置</div>
+            <div className="app-content">功能开发中。。。</div>
         );
     };
 }
