@@ -263,8 +263,13 @@ export function cancelPlugin(pluginKey) {
 }
 // explore
 export const GET_EXPLORE = 'GET_EXPLORE';
+export const GET_EXPLOREHOT = 'GET_EXPLOREHOT';
 
 export function getExplore(name, id) {
     let request = api.explore.getExplore(name, id);
     return { type: GET_EXPLORE, payload: request }
+}
+export function getExploreHot() {
+    let request = api.explore.getExploreHots();
+    return { type: GET_EXPLOREHOT, payload: request }
 }

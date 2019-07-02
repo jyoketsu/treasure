@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon,Radio } from 'antd';
+import { Icon } from 'antd';
 import './Explore.css';
 import api from '../services/Api';
 import Empty from './common/Empty';
 import ClickOutside from './common/ClickOutside';
 import { getExplore,getExploreHot } from '../actions/app';
-
-const RadioGroup = Radio.Group;
 
 const mapStateToProps = state => ({
     exploreData: state.explore.exploreData,
@@ -282,15 +280,12 @@ class ExploreSearch extends Component {
             searchState: false,
             isSearch:false,  
             isHot:false,
-            isNearby:false,  
-            isSet:false,  
-            websiteIndex:0,
-            sex:0,      
+            isNearby:false,          
         }
     }
     handleChangekeyword(e){ //input change
         this.setState({ noperson:false,websites:[] });      
-        this.setState({ keyword: e.target.value.replace(/^\s+$/g, ''),isHot:false,isNearby:false });
+        this.setState({ keyword: e.target.value.replace(/^\s+$/g, '') });
     }
     handleSendlistAjax(e) { //搜索Ennter 
         if (!e.target.value) {
@@ -335,13 +330,13 @@ class ExploreSearch extends Component {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(() => {                       
                     }, 300);                   
-                    this.setState({isSearch:true,isHot:false,isNearby:false,isSet:false});                 
+                    this.setState({isSearch:true,isHot:false,isNearby:false});                 
                 } else {
-                    this.setState({isSearch:!isSearch,isHot:false,isNearby:false,isSet:false});
+                    this.setState({isSearch:!isSearch,isHot:false,isNearby:false});
                 }
                 break;
             case 'hot':                    
-                this.setState({isSearch:false,isHot:!isHot,isNearby:false,keyword:'',isSet:false});  
+                this.setState({isSearch:false,isHot:!isHot,isNearby:false,keyword:''});  
                 this.props.getExploreHot();                        
                 break;
             case 'nearby':
@@ -351,20 +346,8 @@ class ExploreSearch extends Component {
                 break;
         }       
     }
-    handleChangeWebsite(e){
-        this.setState({websiteIndex:e.target.value});
-    }
-    handleChangeSexType(e){
-        this.setState({sex:e.target.value});        
-    }
-    showNearbySet(){ //是否设置附近的人
-        this.setState({isSet:!this.state.isSet});
-    }
-    setSurebtn(){
-        this.setState({isSet:false});
-    }
     render() {
-        const {isSearch,isHot,isNearby,keyword,websites,page,pageCount,loadings,noperson,isSet,websiteIndex,sex} = this.state;
+        const {isSearch,isHot,isNearby,keyword,websites,page,pageCount,loadings,noperson} = this.state;
         const {exploreHot} = this.props;
         console.log('exploreHot',exploreHot);
         return (
@@ -383,9 +366,8 @@ class ExploreSearch extends Component {
                          <li className={'explore-common-btn explore-hot ' + (isHot ? 'on' : '')}
                               onClick={this.clickExploreBtn.bind(this,'hot')}></li>
                          <li className={'explore-common-btn explore-nearby ' + (isNearby ? 'on' : '')}
-                              onClick={this.clickExploreBtn.bind(this,'nearby')}></li>
-                    </ul> 
-                          
+                              onClick={this.clickExploreBtn.bind('nearby')}></li>
+                    </ul>                  
                     <React.Fragment>
                     {
                             isSearch && keyword ?
@@ -435,17 +417,21 @@ class ExploreSearch extends Component {
                                 {
                                     exploreHot ?
                                         <ul className="scrollbar searchHot">
-                                            <li><span>热门站点</span><span>换一批</span></li>
                                             {
                                                 exploreHot.person && exploreHot.person.length ?
                                                 exploreHot.person.map((item, key) => {
                                                         return (
                                                             <li key={key}  style={{ lineHeight: '1' }}>                                                               
-                                                                 {
-                                                                    item.img && item.img !== '' ?
-                                                                        <span className="explore-search-ava" style={{ backgroundImage: 'url(' + item.img + ')',  backgroundSize: 'cover', }}></span> :
-                                                                        <span className="explore-search-ava" style={{ backgroundImage: 'url(/image/ava.png)',backgroundSize: 'cover' }}></span>
-                                                                 }  
+                                                                {
+                                                                    item.img ?
+                                                                        <span className="editAva" style={{ width: '30px', height: '30px', float: 'left' }}>
+                                                                            <img src={item.img} alt="图片不存在" onError={(e) => {
+                                                                                e.target.onerror = null; e.target.src = 'images/ava.png';
+                                                                            }} />
+                                                                        </span> :
+                                                                        <span className="editAva" style={{ width: '30px', height: '30px', float: 'left' }}>
+                                                                            <img src="images/ava.png" alt='' /></span>
+                                                                }
                                                                 <p className="explore-search-name">{item.name}</p> 
                                                             </li>
                                                         );
@@ -461,63 +447,7 @@ class ExploreSearch extends Component {
                         </div>:null
                         }
                     </React.Fragment>
-                    <React.Fragment>
-                    {
-                        isNearby ?
-                        <div className="explore-search-list">                               
-                            <React.Fragment>                                
-                                <ul className="scrollbar searchHot nearlist">
-                                    <li>
-                                        <span>测试的附近</span>
-                                        <span onClick={()=>this.showNearbySet()}>设置</span>
-                                        
-                                    </li>
-                                    {
-                                        [{name:'摄影大店袋综合事务',range:'100米'},{name:'中国吉利汽车家谱馆集团',range:'500米'}].map((item,index)=>{
-                                            return (
-                                                <li key={index} style={{ lineHeight: '1' }}>                                                   
-                                                    <span className="explore-search-ava" 
-                                                        style={{ backgroundImage: 'url(/image/ava.png)',backgroundSize: 'cover' }}>
-                                                    </span>                                                                                                  
-                                                    <p className="explore-search-name">{item.name}</p>
-                                                    <p className="explore-search-range">{item.range}</p> 
-                                                </li>
-                                            )
-                                        })
-                                    }       
-                                  }
-                                </ul>
-                            
-                            </React.Fragment>
-                            {
-                                isSet ?
-                            <div className="setbox">
-                                <div className="explore-form">
-                                    <div className="form-item">
-                                        <p>全站</p>
-                                        <RadioGroup onChange={(e) => this.handleChangeWebsite(e)} value={websiteIndex}>
-                                            <Radio value={0}>全部</Radio>
-                                            <Radio value={1}>用户</Radio> 
-                                            <Radio value={2}>其他对象</Radio>                                  
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="form-item">
-                                        <p>性别</p>
-                                        <RadioGroup onChange={(e) => this.handleChangeSexType(e)} value={sex}>
-                                            <Radio value={0}>全部</Radio>
-                                            <Radio value={1}>男</Radio> 
-                                            <Radio value={2}>女</Radio>                                  
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="setbtn" onClick={()=>this.setSurebtn()}>确定</div>
-                                </div>
-                            </div> :null
-                            }                                 
-                        </div>:null
-                        }
-                    </React.Fragment>
-                    
-                   
+
                 </div>           
             </div>
         );

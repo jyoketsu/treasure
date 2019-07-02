@@ -1,4 +1,27 @@
 @import '~antd/dist/antd.css';
+/* 滚动轴美化 竖轴 */
+.scrollbar::-webkit-scrollbar-track {
+    width: 4px;
+    border-radius: 4px;
+    background-color: #DEDEDE;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: #DEDEDE;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 4px;
+    background: #5CAC06;
+}
+
+.scrollbar::-webkit-scrollbar-corner {
+    width: 4px;
+    background-color: #5CAC06;
+}
 
 /* 触摸滚动 */
 * {

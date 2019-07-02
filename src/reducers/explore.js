@@ -1,9 +1,11 @@
 import {
-    GET_EXPLORE  
+    GET_EXPLORE,
+    GET_EXPLOREHOT  
 } from '../actions/app';
 
 const defaultState = {   
     exploreData:null,
+    exploreHot:''
 };
 
 const explore = (state = defaultState, action) => {
@@ -17,7 +19,12 @@ const explore = (state = defaultState, action) => {
             } else {
                 return state;
             }
-       
+        case GET_EXPLOREHOT:   
+            return {
+                ...state,
+                exploreHot: action.payload,
+            }       
+           
         default:
             return state;
     }

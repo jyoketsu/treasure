@@ -27,8 +27,8 @@ const mapStateToProps = state => ({
 })
 
 class App extends Component {
-  render() {
-    const { loading } = this.props;
+  render() {   
+    const { loading } = this.props;  
     return (
       <Router>
         <div className="app" style={{

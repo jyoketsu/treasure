@@ -516,6 +516,17 @@ const explore = {
             id: id,
         });
     },
+    exploreSearchlist(name,type,page,limit){
+        return requests.get(API + '/api/Person/FullInfoNew', {
+            name: name,
+            type: type,
+            page:page,
+            limit:limit
+        });
+    },
+    getExploreHots() {      
+        return requests.get(API + '/api/Person/Hot');
+    },
 }
 export default {
     requests,
