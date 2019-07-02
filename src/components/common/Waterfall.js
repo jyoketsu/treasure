@@ -3,14 +3,18 @@ import React, { Component } from 'react';
 class Waterfall extends Component {
     render() {
         // 颗粒度，列数
-        const { kernel, columnNum, width, children, } = this.props;
-        this.columns = new Array(columnNum);
+        const { kernel, columnNum, children, } = this.props;
+        this.columns = Array(columnNum).fill(0);
         let itemStyleList = [];
         for (let i = 0; i < children.length; i++) {
+            // 元素高
             const height = children[i].props.height;
-
-            const gridColumn = (i + 1) % columnNum === 0 ? columnNum : (i + 1) % columnNum;
-            const gridStart = this.columns[gridColumn - 1] === undefined ? 1 : this.columns[gridColumn - 1] + 1;
+            // 列
+            // const gridColumn = (i + 1) % columnNum === 0 ? columnNum : (i + 1) % columnNum;
+            const gridColumn = this.columns.indexOf(Math.min(...this.columns)) + 1;
+            // 开始行
+            const gridStart = this.columns[gridColumn - 1] + 1;
+            // 结束行
             const gridEnd = gridStart + Math.ceil(height / kernel) - 1;
             const gridRow = `${gridStart} / ${gridEnd}`;
             this.columns[gridColumn - 1] = gridEnd;
@@ -19,16 +23,14 @@ class Waterfall extends Component {
                 gridColumn: gridColumn,
             });
         }
-        const containerHeight = Math.max(...this.columns) * 10;
         return (
             <div
                 className="waterfall"
                 style={{
                     display: 'grid',
                     gridTemplateColumns: `repeat(${columnNum}, 1fr)`,
+                    gridGap: '5px 5px',
                     justifyItems: 'center',
-                    width: width,
-                    height: isNaN(containerHeight) ? 'unset' : containerHeight,
                 }}
             >
                 {children.map((child, index) => (

@@ -74,6 +74,7 @@ class Home extends Component {
             sortOrder,
         } = this.props;
         this.curPage = 1;
+        sessionStorage.setItem('home-curpage', 1);
         clearStoryList();
         getStoryList(1, nowStationKey, channelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
@@ -170,10 +171,12 @@ class Home extends Component {
         if (nowStationKey && storyListLength === 0) {
             // 获取微站全部故事
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            sessionStorage.setItem('home-curpage', 1);
         }
 
         if (refresh) {
             getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
+            sessionStorage.setItem('home-curpage', 1);
         }
     }
 

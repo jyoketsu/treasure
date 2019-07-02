@@ -68,3 +68,9 @@
     background-size: cover;
     background-position: center;
 }
+
+@media screen and (max-width:768px) {
+    .station-dynamic {
+        width: 100%;
+    }
+}

@@ -93,6 +93,8 @@ class Content extends Component {
         clearStoryList();
         readyToRefresh();
         if (nowStationKey) {
+            this.curPage = 1;
+            sessionStorage.setItem('content-curpage', this.curPage);
             getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 

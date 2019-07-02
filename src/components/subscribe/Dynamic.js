@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { myStationLatestStory, } from '../../actions/app';
 import Waterfall from '../common/Waterfall';
 import { StoryLoading } from '../story/StoryCard';
+import util from '../../services/Util';
 import moment from 'moment';
 
 const mapStateToProps = state => ({
@@ -17,6 +18,10 @@ class Dynamic extends Component {
         this.curPage = sessionStorage.getItem('dynamic-curpage') ?
             parseInt(sessionStorage.getItem('dynamic-curpage'), 10) : 1;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
+        this.state = {
+            columnNum: 4
+        }
+        this.setColumn = this.setColumn.bind(this);
     }
 
     // 滚动查看更多故事
@@ -34,32 +39,32 @@ class Dynamic extends Component {
 
     render() {
         const { stationList, history, waiting } = this.props;
-
+        const isMobile = util.common.isMobile();
+        const children = stationList.map((station, index) => {
+            return (
+                <StationDynamic
+                    key={index}
+                    station={station}
+                    history={history}
+                    height={35 + station.albumInfo.length * 70}
+                />
+            )
+        });
         return (
             <div
                 className="subscribe-dynamic"
+                ref='container'
                 style={{
                     minHeight: `${window.innerHeight - 70 - 56}px`
                 }}
             >
-                <Waterfall
-                    ref="container"
-                    columnNum={3}
-                    kernel={10}
-                >
-                    {
-                        stationList.map((station, index) => {
-                            return (
-                                <StationDynamic
-                                    key={index}
-                                    station={station}
-                                    history={history}
-                                    height={35 + station.albumInfo.length * 70}
-                                />
-                            )
-                        })
-                    }
-                </Waterfall>
+                {
+                    isMobile ? children :
+                        <Waterfall
+                            columnNum={this.state.columnNum}
+                            kernel={10}
+                        >{children}</Waterfall>
+                }
                 {
                     waiting ? <StoryLoading /> : <div className="more-dynamic">滑动鼠标，加载更多内容。</div>
                 }
@@ -67,20 +72,35 @@ class Dynamic extends Component {
         );
     }
 
+    setColumn() {
+        const containerWidth = this.refs.container.clientWidth;
+        this.setState({
+            columnNum: Math.floor(containerWidth / 350)
+        });
+    }
+
     componentDidMount() {
         const { stationList, myStationLatestStory } = this.props;
         if (stationList.length === 0) {
+            this.curPage = 1;
+            sessionStorage.setItem('dynamic-curpage', this.curPage);
             myStationLatestStory(this.curPage);
         }
 
         // 监听滚动，查看更多
         document.body.addEventListener('wheel', this.handleMouseWheel);
+
+        window.addEventListener('resize', () => {
+            this.setColumn();
+        }, false);
+        this.setColumn();
     }
 
     componentWillUnmount() {
         // 移除滚动事件
         document.body.removeEventListener('wheel', this.handleMouseWheel);
         sessionStorage.setItem('dynamic-curpage', this.curPage);
+        window.removeEventListener('resize', this.setColumn);
     }
 }
 

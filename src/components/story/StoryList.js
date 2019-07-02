@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './StoryList.css';
 import { StoryLoading, StoryCard } from './StoryCard';
+import util from '../../services/Util';
 import StoryEntry from './StoryEntry';
 import Waterfall from '../common/Waterfall';
 import { connect } from 'react-redux';
@@ -16,6 +17,13 @@ const mapStateToProps = state => ({
 });
 
 class StoryList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            columnNum: 4
+        }
+        this.setColumn = this.setColumn.bind(this);
+    }
     render() {
         const {
             groupKey,
@@ -31,6 +39,8 @@ class StoryList extends Component {
             showStyle,
             showSetting,
         } = this.props;
+        const { columnNum } = this.state;
+        const isMobile = util.common.isMobile();
         const children = storyList.map((story, index) => (
             showStyle === 2 ?
                 <StoryCard
@@ -43,7 +53,7 @@ class StoryList extends Component {
                     auditStory={auditStory}
                     groupKey={groupKey}
                     showSetting={showSetting}
-                    height={story.type === 9 ? 100 : 330}
+                    height={story.type === 9 ? 80 : 310}
                 /> :
                 <StoryEntry
                     key={index}
@@ -58,10 +68,10 @@ class StoryList extends Component {
                 />
         ));
         return (
-            <div className="story-list">
+            <div className="story-list" ref='container'>
                 {
-                    showStyle === 2 ?
-                        <Waterfall ref="container" columnNum={4} kernel={10}>{children}</Waterfall> :
+                    showStyle === 2 && !isMobile ?
+                        <Waterfall columnNum={columnNum} kernel={10}>{children}</Waterfall> :
                         children
                 }
                 {
@@ -80,6 +90,24 @@ class StoryList extends Component {
             </div>
         );
     };
+
+    setColumn() {
+        const containerWidth = this.refs.container.clientWidth - 30;
+        this.setState({
+            columnNum: Math.floor(containerWidth / 310)
+        });
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', () => {
+            this.setColumn();
+        }, false);
+        this.setColumn();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.setColumn);
+    }
 }
 
 export default connect(
