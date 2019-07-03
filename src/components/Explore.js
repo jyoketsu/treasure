@@ -4,7 +4,7 @@ import { Icon,Radio } from 'antd';
 import './Explore.css';
 import api from '../services/Api';
 import Empty from './common/Empty';
-import ClickOutside from './common/ClickOutside';
+// import ClickOutside from './common/ClickOutside';
 import { getExplore,getExploreHot } from '../actions/app';
 
 const RadioGroup = Radio.Group;

@@ -1,6 +1,5 @@
-// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
-// const APIURL = 'http://192.168.1.136:8529/_db/TimeBox/my_sgbh';
+const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+// const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const API = 'http://192.168.1.101:8051';
 const API = 'https://humandata.qingtime.cn';
 let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
