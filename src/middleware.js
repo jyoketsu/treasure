@@ -54,8 +54,10 @@ const localStorageMiddleware = store => next => action => {
             api.setToken(action.payload.token);
         }
     } else if (action.type === REGISTER) {
-        window.localStorage.setItem('TOKEN', action.payload.data.token);
-        api.setToken(action.payload.data.token);
+        if (!action.error) {
+            window.localStorage.setItem('TOKEN', action.payload.data.token);
+            api.setToken(action.payload.data.token);
+        }
     }
     else if (action.type === LOGOUT) {
         window.sessionStorage.clear();

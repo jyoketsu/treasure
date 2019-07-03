@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Form, Button, Tooltip, message, Select, Input, Modal } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
+import api from '../../services/Api';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
 const confirm = Modal.confirm;
@@ -152,7 +153,7 @@ class Contribute extends Component {
         const { user, nowStationKey, addStory, modifyStory } = this.props;
         const { story, fields, } = this.state;
         e.preventDefault();
-        this.form.validateFields((err, values) => {
+        this.form.validateFields(async (err, values) => {
             if (fields.isGroup.value === 1) {
                 if (story.pictureCount !== 1) {
                     message.error('单张作品，请上传一张图片');
@@ -178,7 +179,7 @@ class Contribute extends Component {
                         }
                     }
                     // 封面大小
-                    let size = util.common.getImageInfo(story.cover);
+                    let size = await util.common.getImageInfo(story.cover);
                     story.size = size;
                     Object.assign(story, {
                         title: fields.title.value,
@@ -192,7 +193,7 @@ class Contribute extends Component {
                     // 新增
                     story.cover = story.richContent[0].url;
                     // 封面大小
-                    let size = util.common.getImageInfo(story.cover);
+                    let size = await util.common.getImageInfo(story.cover);
                     Object.assign(story, {
                         userKey: user._key,
                         type: 6,
@@ -365,9 +366,13 @@ class Contribute extends Component {
     }
 
     componentDidMount() {
-        const { seriesInfo, history } = this.props;
+        const { seriesInfo, history, story, } = this.props;
         if (seriesInfo.length === 0) {
             history.push(`/${window.location.search}`);
+        }
+        // 申请编辑
+        if (story._key) {
+            api.story.applyEdit(story._key, story.updateTime);
         }
     }
 

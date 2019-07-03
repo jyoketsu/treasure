@@ -23,7 +23,7 @@ class Article extends Component {
     render() {
         const { story, userId, nowStationKey, channelInfo, nowStation, } = this.props;
         const { userKey, title, creator = {}, } = story;
-        const { role } = nowStation;
+        const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         // 频道信息
         let nowChannel;

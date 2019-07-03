@@ -65,7 +65,7 @@ class Header extends Component {
 
         return (
             <div className="app-menu-container" style={{
-                display: pathname === '/account/login' ? 'none' : 'flex'
+                display: (pathname === '/account/login' || pathname === '/account/register') ? 'none' : 'flex'
             }}>
                 <ul className="app-menu" ref={elem => this.nv = elem}>
                     {

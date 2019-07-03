@@ -79,7 +79,7 @@ class Plugin extends Component {
                     </div>
                 </div>
                 <Table dataSource={pluginInfo} rowKey="_key" pagination={false}>
-                    <Column title="插件名" dataIndex="name" />
+                    <Column title="插件名" dataIndex="pluginName" />
                     <Column
                         title="操作"
                         render={(text, record) => (

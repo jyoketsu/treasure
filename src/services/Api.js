@@ -1,5 +1,6 @@
-const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-// const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
+import api from './Util';
+// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const API = 'http://192.168.1.101:8051';
 const API = 'https://humandata.qingtime.cn';
 let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
@@ -112,17 +113,17 @@ const requests = {
 const auth = {
     // 登录
     login(params) {
+        const isMobile = api.common.isMobile();
         let param = {
             mobileArea: params.mobileArea,
             mobile: params.mobile,
             password: params.password,
-            // ip: "127.0.0.1",
             service: 3,
             lo: 13,
             la: 14,
             app: 3,
-            deviceType: 4,
-            deviceModel: 'web'
+            deviceType: isMobile ? 1 : 4,
+            deviceModel: isMobile ? 'mobile' : 'web',
         };
         return requests.get(APIURL + '/account', param);
     },
@@ -515,15 +516,15 @@ const explore = {
             id: id,
         });
     },
-    exploreSearchlist(name,type,page,limit){
+    exploreSearchlist(name, type, page, limit) {
         return requests.get(API + '/api/Person/FullInfoNew', {
             name: name,
             type: type,
-            page:page,
-            limit:limit
+            page: page,
+            limit: limit
         });
     },
-    getExploreHots() {      
+    getExploreHots() {
         return requests.get(API + '/api/Person/Hot');
     },
 }

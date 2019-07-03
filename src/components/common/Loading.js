@@ -24,7 +24,7 @@ export default class Loading extends Component {
     }
 
     render() {
-        let text = this.props.text || '正在加载数据，请稍候...';
+        let text = this.props.text || '请稍候...';
         return (
             <div className="loading-box">
                 <div className="loading-dialog">

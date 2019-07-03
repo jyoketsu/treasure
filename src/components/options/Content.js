@@ -46,7 +46,7 @@ class Content extends Component {
             (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
     }
 
@@ -54,15 +54,19 @@ class Content extends Component {
         const { getStoryList, sortType, sortOrder, nowStationKey, clearStoryList, } = this.props;
         clearStoryList();
         this.curPage = 1;
+        sessionStorage.setItem('content-curpage', this.curPage);
         switch (key) {
             case 'wait':
-                getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                this.filterType = 7;
+                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             case 'passed':
-                getStoryList(6, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                this.filterType = 6;
+                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             case 'unpass':
-                getStoryList(8, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                this.filterType = 8;
+                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             default:
                 break;
@@ -94,8 +98,9 @@ class Content extends Component {
         readyToRefresh();
         if (nowStationKey) {
             this.curPage = 1;
+            this.filterType = 7;
             sessionStorage.setItem('content-curpage', this.curPage);
-            getStoryList(7, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 
         // 监听滚动，查看更多

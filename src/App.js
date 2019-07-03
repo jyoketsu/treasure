@@ -10,6 +10,8 @@ import Message from './components/Message';
 import Me from './components/User/Me';
 import EditStation from './components/User/EditStation';
 import Login from './components/Login';
+import Register from './components/Register';
+import ResetPassword from './components/ResetPassword';
 import Story from './components/story/Story';
 import EditStory from './components/story/EditStory';
 import Contribute from './components/story/Contribute';
@@ -27,8 +29,8 @@ const mapStateToProps = state => ({
 })
 
 class App extends Component {
-  render() {   
-    const { loading } = this.props;  
+  render() {
+    const { loading } = this.props;
     return (
       <Router>
         <div className="app" style={{
@@ -40,7 +42,6 @@ class App extends Component {
             <Route path="/:id/explore" component={Explore} />
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
-            <Route path="/account/login" component={Login} />
             <Route path="/:id/editStation" component={EditStation} />
             <Route path="/:id/story" component={Story} />
             <Route path="/:id/editStory" component={EditStory}></Route>
@@ -49,6 +50,9 @@ class App extends Component {
             <Route path="/:id/article" component={Article}></Route>
             <Route path="/:id/editArticle" component={EditArticle} />
             <Route path="/:id/subscribe" component={Subscribe} />
+            <Route path="/account/login" component={Login} />
+            <Route path="/account/register" component={Register} />
+            <Route path="/account/reset" component={ResetPassword} />
             <Route path="/station/notFound" component={NotFound} />
           </div>
           {loading ? (

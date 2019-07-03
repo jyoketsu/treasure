@@ -48,7 +48,7 @@ class Card extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, userKey, groupKey, showSetting, } = this.props;
+        const { story, like, audit, auditStory, userKey, groupKey, showSetting, height } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
 
@@ -67,7 +67,8 @@ class Card extends Component {
             '/image/icon/icon-article.svg';
         let coverStyle = {
             backgroundImage: `url('${coverUrl}')`,
-            backgroundSize: story.cover ? 'cover' : '30%'
+            backgroundSize: story.cover ? 'cover' : '30%',
+            height: `${height - 80}px`,
         };
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
@@ -99,7 +100,7 @@ class Card extends Component {
         return (
             <div
                 className={`story-card type-${storyType}`}
-                style={{ height: storyType === 'article' ? '80px' : '310px' }}
+                style={{ height: height }}
                 onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
             >
                 {
@@ -108,7 +109,7 @@ class Card extends Component {
                             className="story-card-cover"
                             style={coverStyle}
                         >
-                            <div className="story-card-mask"></div>
+                            <div className="story-card-mask" style={{ height: `${height - 80}px`, }}></div>
                             {audit ? option : null}
                         </div> : null
                 }

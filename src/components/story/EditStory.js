@@ -44,7 +44,7 @@ class EditStory extends Component {
         this.props.history.goBack();
     }
 
-    handleCommit() {
+    async handleCommit() {
         const { user, nowStationKey, addStory, modifyStory } = this.props;
         const { story } = this.state;
         if (!story || (!story.series && !story._key)) {
@@ -70,7 +70,7 @@ class EditStory extends Component {
                 story.series = story.series._key;
             }
             // 封面大小
-            let size = util.common.getImageInfo(story.cover);
+            let size = await util.common.getImageInfo(story.cover);
             story.size = size;
             for (let i = 0; i < story.richContent.length; i++) {
                 if (story.richContent[i].metaType === 'image') {
@@ -81,7 +81,7 @@ class EditStory extends Component {
         } else {
             // 新增
             // 封面大小
-            let size = util.common.getImageInfo(story.cover);
+            let size = await util.common.getImageInfo(story.cover);
             Object.assign(story, {
                 userKey: user._key,
                 type: 6,
@@ -332,7 +332,9 @@ class EditStory extends Component {
             history.push(`/${window.location.search}`);
         }
         // 申请编辑
-        api.story.applyEdit(story._key, story.updateTime);
+        if(story._key){
+            api.story.applyEdit(story._key, story.updateTime);
+        }
         // 位置定位
         util.common.getLocation((data) => {
             console.log('定位信息：', data);

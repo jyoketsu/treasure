@@ -24,6 +24,7 @@ class StoryList extends Component {
         }
         this.setColumn = this.setColumn.bind(this);
     }
+
     render() {
         const {
             groupKey,
@@ -41,32 +42,50 @@ class StoryList extends Component {
         } = this.props;
         const { columnNum } = this.state;
         const isMobile = util.common.isMobile();
-        const children = storyList.map((story, index) => (
-            showStyle === 2 ?
-                <StoryCard
-                    key={index}
-                    userKey={userKey}
-                    story={story}
-                    like={like}
-                    deleteStory={deleteStory}
-                    audit={audit}
-                    auditStory={auditStory}
-                    groupKey={groupKey}
-                    showSetting={showSetting}
-                    height={story.type === 9 ? 80 : 310}
-                /> :
-                <StoryEntry
-                    key={index}
-                    userKey={userKey}
-                    story={story}
-                    like={like}
-                    deleteStory={deleteStory}
-                    audit={audit}
-                    auditStory={auditStory}
-                    groupKey={groupKey}
-                    showSetting={showSetting}
-                />
-        ));
+
+        const children = storyList.map((story, index) => {
+            let height;
+            if (story.type === 9) {
+                height = 80;
+            } else {
+                let size = story.size;
+                if (!(size.height && size.width)) {
+                    height = 310;
+                } else {
+                    height = 80 + size.height / size.width * 290;
+                }
+            }
+            if (showStyle === 2) {
+                return (
+                    <StoryCard
+                        key={index}
+                        userKey={userKey}
+                        story={story}
+                        like={like}
+                        deleteStory={deleteStory}
+                        audit={audit}
+                        auditStory={auditStory}
+                        groupKey={groupKey}
+                        showSetting={showSetting}
+                        height={height}
+                    />
+                )
+            } else {
+                return (
+                    <StoryEntry
+                        key={index}
+                        userKey={userKey}
+                        story={story}
+                        like={like}
+                        deleteStory={deleteStory}
+                        audit={audit}
+                        auditStory={auditStory}
+                        groupKey={groupKey}
+                        showSetting={showSetting}
+                    />
+                );
+            }
+        });
         return (
             <div className="story-list" ref='container'>
                 {
