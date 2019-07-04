@@ -19,6 +19,7 @@ import {
     SEARCH_STATION,
     SUBSCRIBE,
     SUBSCRIBE_STATION,
+    TRANSFER_STATION,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -321,6 +322,15 @@ const station = (state = defaultState, action) => {
                     ...state,
                     nowStation: nowStation,
                     stationList: stationList,
+                };
+            } else {
+                return state;
+            }
+        case TRANSFER_STATION:
+            if (!action.error) {
+                message.success('已发送移交请求，等待对方确认。');
+                return {
+                    ...state,
                 };
             } else {
                 return state;

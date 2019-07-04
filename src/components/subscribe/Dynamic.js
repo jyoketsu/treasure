@@ -108,6 +108,13 @@ class Dynamic extends Component {
 }
 
 class StationDynamic extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            logoSize: null,
+        }
+    }
+
     handleClick(key, domain) {
         const { history, changeStation } = this.props;
         changeStation(key);
@@ -116,6 +123,7 @@ class StationDynamic extends Component {
 
     render() {
         const { station, style, history, } = this.props;
+        const { logoSize } = this.state;
 
         return (
             <div
@@ -123,8 +131,16 @@ class StationDynamic extends Component {
                 style={style}
             >
                 <div className="station-dynamic-header">
-                    <span onClick={this.handleClick.bind(this, station._key, station.domain)}>{station.name}</span>
-                    <span>{moment(station.albumInfo[0].updateTime).startOf('hour').fromNow()}</span>
+                    <div onClick={this.handleClick.bind(this, station._key, station.domain)}>
+                        <i className="station-dynamic-logo" style={{
+                            backgroundImage: `url(${station.logo ? station.logo : '/image/background/logo.svg'})`,
+                            width: logoSize ? `${Math.ceil(26 * (logoSize.width / logoSize.height))}px` : '26px'
+                        }}></i>
+                        <span className="station-dynamic-name">
+                            {station.name}
+                        </span>
+                    </div>
+                    <span className="dynamic-time">{moment(station.albumInfo[0].updateTime).startOf('hour').fromNow()}</span>
                 </div>
                 <div className="station-dynamic-story-list">
                     {
@@ -145,6 +161,18 @@ class StationDynamic extends Component {
                 </div>
             </div>
         );
+    }
+
+    async componentDidMount() {
+        const { station } = this.props;
+        if (!station.logo) {
+            return;
+        }
+        // 获取logo大小
+        let size = await util.common.getImageInfo(station.logo);
+        this.setState({
+            logoSize: size
+        });
     }
 }
 

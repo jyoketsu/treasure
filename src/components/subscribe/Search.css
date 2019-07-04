@@ -42,14 +42,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid gainsboro;
     padding: 0 15px;
     margin: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+    transition: transform .2s;
 }
 
 .station-card:hover {
     cursor: pointer;
     box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+    transform: scale(1.1, 1.1);
 }
 
 .card-station-title {
@@ -95,6 +97,32 @@
     border-bottom: 50px solid transparent;
 }
 
+.role2:after {
+    content: "";
+    position: absolute;
+    margin-top: 0;
+    top: 0;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-right: 50px solid #F75C2F;
+    border-bottom: 50px solid transparent;
+}
+
+.role3:after,
+.role4:after,
+.role5:after {
+    content: "";
+    position: absolute;
+    margin-top: 0;
+    top: 0;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-right: 50px solid #A28C37;
+    border-bottom: 50px solid transparent;
+}
+
 .card-station-role {
     font-size: 12px;
     color: #FFFFFF;
@@ -115,12 +143,6 @@
 @media screen and (max-width:768px) {
     .station-container {
         flex-direction: column;
-    }
-
-    .channel-head {
-        flex-direction: column;
-        height: unset;
-        padding: 10px 0;
     }
 
     .station-card {

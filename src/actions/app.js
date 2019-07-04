@@ -65,6 +65,7 @@ export const GET_STATION_DETAIL_DOMAIN = 'GET_STATION_DETAIL_DOMAIN';
 export const SEARCH_STATION = 'SEARCH_STATION';
 export const SUBSCRIBE = 'SUBSCRIBE';
 export const SUBSCRIBE_STATION = 'SUBSCRIBE_STATION';
+export const TRANSFER_STATION = 'TRANSFER_STATION';
 
 export function getStationList() {
     let request = api.station.getStationList();
@@ -118,6 +119,11 @@ export function subscribe(channelKeys, stationKey, keys) {
 export function subscribeStation(stationKey, checked) {
     let request = api.station.subscribeStation(stationKey, checked ? 1 : 2);
     return { type: SUBSCRIBE_STATION, stationKey: stationKey, checked: checked, payload: request }
+}
+
+export function transferStation(stationKey, targetUKey) {
+    let request = api.station.transfer(1, stationKey, null, targetUKey);
+    return { type: TRANSFER_STATION, stationKey: stationKey, payload: request }
 }
 
 // story
@@ -260,16 +266,4 @@ export function clearPluginList() {
 export function cancelPlugin(pluginKey) {
     let request = api.plugin.cancelPlugin(pluginKey);
     return { type: CANCEL_PLUGIN, pluginKey: pluginKey, payload: request }
-}
-// explore
-export const GET_EXPLORE = 'GET_EXPLORE';
-export const GET_EXPLOREHOT = 'GET_EXPLOREHOT';
-
-export function getExplore(name, id) {
-    let request = api.explore.getExplore(name, id);
-    return { type: GET_EXPLORE, payload: request }
-}
-export function getExploreHot() {
-    let request = api.explore.getExploreHots();
-    return { type: GET_EXPLOREHOT, payload: request }
 }

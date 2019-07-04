@@ -101,7 +101,7 @@ class CreatePlugin extends Component {
         this.form.validateFields(async (err, values) => {
             if (!err) {
                 if (!logo) {
-                    message.error('请上传logo！');
+                    message.info('请上传logo！');
                     console.log('请上传logo！');
                     return;
                 }

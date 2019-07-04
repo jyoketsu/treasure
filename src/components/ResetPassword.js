@@ -45,7 +45,7 @@ class ResetPassword extends Component {
                     message.success('重置密码成功！');
                     history.push('/account/login');
                 } else {
-                    message.error(res.msg);
+                    message.info(res.msg);
                 }
             }
         });
@@ -56,7 +56,7 @@ class ResetPassword extends Component {
         const mobileArea = form.getFieldValue('mobileArea');
         const mobile = form.getFieldValue('mobile');
         if (!(mobileArea && mobile)) {
-            message.error('请输入手机号！');
+            message.info('请输入手机号！');
             return;
         }
         let that = this;
@@ -88,7 +88,7 @@ class ResetPassword extends Component {
                     });
                 }, 1000);
             } else {
-                message.error(res.msg);
+                message.info(res.msg);
             }
         }
     }

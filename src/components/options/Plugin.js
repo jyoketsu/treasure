@@ -62,13 +62,14 @@ class Plugin extends Component {
                         {
                             nowStation && nowStation._key === '593122852' ? [
                                 <Button
+                                    key="systemPlugin"
                                     type="primary"
                                     className="plugin-system-button"
                                     onClick={this.toPluginSystem.bind(this)}
                                 >
                                     系统插件管理
-                            </Button>,
-                                <Divider type="vertical" />
+                                </Button>,
+                                <Divider key="divider" type="vertical" />
                             ] : null
                         }
                         <Button

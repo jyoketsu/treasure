@@ -375,7 +375,7 @@ class FileUpload extends Component {
 
         for (let i = 0; i < files.length; i++) {
             if (files[i].size > maxSize) {
-                message.error(`请选择小于${maxSize / 1000000}MB的文件，请保留元数据。`);
+                message.info(`请选择小于${maxSize / 1000000}MB的文件，请保留元数据。`);
                 return;
             }
         }
@@ -399,7 +399,7 @@ class FileUpload extends Component {
             next(res) {
             },
             error(err) {
-                message.error('上传失败！');
+                message.info('上传失败！');
                 Loading.close();
             },
             complete(res) {
@@ -428,7 +428,7 @@ class FileUpload extends Component {
         if (res.msg === 'OK') {
             this.setState({ uptoken: res.result });
         } else {
-            message.error(res.msg);
+            message.info(res.msg);
         }
     }
     render() {

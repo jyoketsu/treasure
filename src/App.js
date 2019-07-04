@@ -5,7 +5,6 @@ import { Spin } from 'antd';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import Home from './components/Home';
-import Explore from './components/Explore';
 import Message from './components/Message';
 import Me from './components/User/Me';
 import EditStation from './components/User/EditStation';
@@ -19,6 +18,7 @@ import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
 import Article from './components/story/Article';
 import Subscribe from './components/subscribe/Subscribe';
+import MyArticle from './components/myArticle/MyArticle';
 import NotFound from './components/NotFound';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -39,7 +39,6 @@ class App extends Component {
           <Header />
           <div className="route-container">
             <Route exact path="/:id" component={Home} />
-            <Route path="/:id/explore" component={Explore} />
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
             <Route path="/:id/editStation" component={EditStation} />
@@ -49,10 +48,11 @@ class App extends Component {
             <Route path="/:id/stationOptions" component={StationOptions}></Route>
             <Route path="/:id/article" component={Article}></Route>
             <Route path="/:id/editArticle" component={EditArticle} />
-            <Route path="/:id/subscribe" component={Subscribe} />
             <Route path="/account/login" component={Login} />
             <Route path="/account/register" component={Register} />
             <Route path="/account/reset" component={ResetPassword} />
+            <Route path="/:id/subscribe" component={Subscribe} />
+            <Route path="/:id/myArticle" component={MyArticle} />
             <Route path="/station/notFound" component={NotFound} />
           </div>
           {loading ? (

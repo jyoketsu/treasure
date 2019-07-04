@@ -227,19 +227,19 @@ class Station extends React.Component {
         const { history, user, nowChannelKey, match, content } = this.props;
         const stationDomain = match.params.id;
         if (user.isGuest) {
-            message.error('请先登录！');
+            message.info('请先登录！');
             return;
         }
         if (!user.profile) {
-            message.error('请先完善个人信息！');
+            message.info('请先完善个人信息！');
             return;
         }
         if (nowChannelKey === 'allSeries') {
-            message.error('请先选择要发布的频道！');
+            message.info('请先选择要发布的频道！');
             return;
         }
         if (!channel.allowPublicUpload && !content.editRight) {
-            message.error('您没有权限发布到当前频道中！');
+            message.info('您没有权限发布到当前频道中！');
             return;
         }
 

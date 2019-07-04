@@ -203,7 +203,7 @@ class EditArticle extends Component {
         if (res.msg === 'OK') {
             this.setState({ uptoken: res.result });
         } else {
-            message.error({ text: res.msg });
+            message.info({ text: res.msg });
         }
 
         api.story.applyEdit(story._key, story.updateTime);
@@ -225,12 +225,13 @@ class EditArticle extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    history.push(`/${window.location.search}`);
+                    const pathname = window.location.pathname;
+                    const stationDomain = pathname.split('/')[1];
+                    history.push(`/${stationDomain}`);
                 } else {
                     history.goBack();
                 }
             } else {
-                // history.push(`/${window.location.search}`);
                 history.goBack();
             }
         }

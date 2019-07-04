@@ -48,19 +48,19 @@ class EditStory extends Component {
         const { user, nowStationKey, addStory, modifyStory } = this.props;
         const { story } = this.state;
         if (!story || (!story.series && !story._key)) {
-            message.error('请选择一个频道！');
+            message.info('请选择一个频道！');
             return;
         }
         if (!story || !story.title) {
-            message.error('请输入标题！');
+            message.info('请输入标题！');
             return;
         }
         if (!story.pictureCount) {
-            message.error('请至少上传一张图片！');
+            message.info('请至少上传一张图片！');
             return;
         }
         if (story.pictureCount > 8) {
-            message.error('不能超过8张图片！');
+            message.info('不能超过8张图片！');
             return;
         }
         // 编辑

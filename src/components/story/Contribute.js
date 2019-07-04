@@ -156,12 +156,12 @@ class Contribute extends Component {
         this.form.validateFields(async (err, values) => {
             if (fields.isGroup.value === 1) {
                 if (story.pictureCount !== 1) {
-                    message.error('单张作品，请上传一张图片');
+                    message.info('单张作品，请上传一张图片');
                     return;
                 }
             } else {
                 if (story.pictureCount < 4 || story.pictureCount > 8) {
-                    message.error('组图，请上传4～8张图片');
+                    message.info('组图，请上传4～8张图片');
                     return;
                 }
             }
@@ -387,12 +387,13 @@ class Contribute extends Component {
         if (!loading && prevProps.loading) {
             if (story._key) {
                 if (flag === 'deleteStory') {
-                    history.push(`/${window.location.search}`);
+                    const pathname = window.location.pathname;
+                    const stationDomain = pathname.split('/')[1];
+                    history.push(`/${stationDomain}`);
                 } else {
                     history.goBack();
                 }
             } else {
-                // history.push(`/${window.location.search}`);
                 history.goBack();
             }
         }

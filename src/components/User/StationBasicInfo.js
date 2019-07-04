@@ -52,14 +52,14 @@ const CustomizedForm = Form.create({
                     ],
                 })(<Input />)}
             </Form.Item>
-            <Form.Item label="域名">
+            <Form.Item label="网站地址">
                 {getFieldDecorator('domain', {
                     rules: [
                         { required: true, message: '请输入微站域名！' },
                         { pattern: /^[A-Za-z0-9]+$/, message: '请输入英文数字！' },
                         { max: 20, message: '不能超过20个字符！' }
                     ],
-                })(<Input />)}
+                })(<Input addonBefore="https://baoku.qingtime.cn/" />)}
             </Form.Item>
             <Form.Item label="概述">
                 {getFieldDecorator('memo', {
@@ -138,7 +138,7 @@ class StationBasicInfo extends Component {
         this.form.validateFields(async (err, values) => {
             if (!err) {
                 if (!cover) {
-                    message.error('请上传封面！');
+                    message.info('请上传封面！');
                     console.log('请上传封面！');
                     return;
                 }

@@ -3,7 +3,7 @@ import './StationGroup.css';
 import { Input } from 'antd';
 import { MemberCard, SearchMemberCard, } from '../common/Common';
 import { connect } from 'react-redux';
-import { searchUser, groupMember, addGroupMember, setMemberRole } from '../../actions/app';
+import { searchUser, groupMember, addGroupMember, setMemberRole, transferStation, } from '../../actions/app';
 
 const Search = Input.Search;
 const mapStateToProps = state => ({
@@ -23,6 +23,7 @@ class StationGroup extends Component {
             setMemberRole,
             groupKey,
             nowStation,
+            transferStation,
         } = this.props;
         return (
             <div className="station-group">
@@ -54,14 +55,16 @@ class StationGroup extends Component {
                         userList.map((user, index) => (
                             <MemberCard
                                 key={index}
+                                nowStationKey={nowStation._key}
                                 groupKey={groupKey}
                                 userKey={user.userId}
                                 avatar={user.avatar ? user.avatar : ''}
                                 mobile={`${user.mobileArea} ${user.mobile}`}
                                 name={user.nickName ? user.nickName : ''}
                                 role={user.role}
-                                setMemberRole={setMemberRole}
                                 userRole={nowStation.role}
+                                setMemberRole={setMemberRole}
+                                transferStation={transferStation}
                             />
                         ))
                     }
@@ -78,5 +81,5 @@ class StationGroup extends Component {
 
 export default connect(
     mapStateToProps,
-    { searchUser, groupMember, addGroupMember, setMemberRole, },
+    { searchUser, groupMember, addGroupMember, setMemberRole, transferStation, },
 )(StationGroup);

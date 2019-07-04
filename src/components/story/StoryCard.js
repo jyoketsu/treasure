@@ -48,7 +48,7 @@ class Card extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, userKey, groupKey, showSetting, height } = this.props;
+        const { story, like, audit, auditStory, userKey, groupKey, showSetting, height, role, } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
 
@@ -73,7 +73,7 @@ class Card extends Component {
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};
-        if (isMyStory || audit) {
+        if ((isMyStory && role && role > 2) || audit) {
             switch (story.pass) {
                 case 1: status = '待审核'; statusStyle = { color: '#9F353A' }; break;
                 case 2: status = '审核通过'; statusStyle = { color: '#7BA23F' }; break;

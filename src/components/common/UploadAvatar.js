@@ -69,7 +69,7 @@ class UploadAvatar extends Component {
                 that.setState({
                     showMask: false
                 });
-                message.error('上传失败！');
+                message.info('上传失败！');
             },
             complete(res) {
                 that.setState({
@@ -102,7 +102,7 @@ class UploadAvatar extends Component {
         let file = files[0];
 
         if (file.size > maxSize) {
-            message.error(`请选择小于${maxSize / 1000000}MB的图片`);
+            message.info(`请选择小于${maxSize / 1000000}MB的图片`);
             return;
         }
 
@@ -154,7 +154,7 @@ class UploadAvatar extends Component {
         if (res.msg === 'OK') {
             this.setState({ uptoken: res.result });
         } else {
-            message.error(res.msg);
+            message.info(res.msg);
         }
     }
 

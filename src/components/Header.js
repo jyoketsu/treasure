@@ -65,7 +65,11 @@ class Header extends Component {
 
         return (
             <div className="app-menu-container" style={{
-                display: (pathname === '/account/login' || pathname === '/account/register') ? 'none' : 'flex'
+                display: (
+                    pathname === '/account/login' ||
+                    pathname === '/account/register' ||
+                    pathname === '/account/reset') ?
+                    'none' : 'flex'
             }}>
                 <ul className="app-menu" ref={elem => this.nv = elem}>
                     {
@@ -303,7 +307,10 @@ class HeadMenu extends Component {
                 history.push(`/${stationDomain}/subscribe`);
                 break;
             case "discover":
-                history.push(`/${stationDomain}/explore`);
+                message.info('功能开发中，敬请期待...');
+                break;
+            case "article":
+                history.push(`/${stationDomain}/myArticle`);
                 break;
             default:
                 message.info('功能开发中，敬请期待...');

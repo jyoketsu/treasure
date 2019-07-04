@@ -58,7 +58,7 @@ class Register extends Component {
         const mobileArea = form.getFieldValue('mobileArea');
         const mobile = form.getFieldValue('mobile');
         if (!(mobileArea && mobile)) {
-            message.error('请输入手机号！');
+            message.info('请输入手机号！');
             return;
         }
         let that = this;
@@ -90,7 +90,7 @@ class Register extends Component {
                     });
                 }, 1000);
             } else {
-                message.error(res.msg);
+                message.info(res.msg);
             }
         }
     }

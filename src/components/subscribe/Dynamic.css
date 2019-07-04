@@ -8,6 +8,12 @@
 .station-dynamic {
     width: 350px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+    transition: transform .2s;
+}
+
+.station-dynamic:hover {
+    transform: scale(1.03, 1.03);
+    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
 }
 
 .more-dynamic {
@@ -20,25 +26,40 @@
 
 .station-dynamic-header {
     background: #EEEEEE;
-    height: 35px;
+    height: 40px;
     padding: 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.station-dynamic-header>span:first-child {
+.station-dynamic-name {
     font-size: 15px;
     color: #000000;
 }
 
-.station-dynamic-header>span:first-child:hover {
+.station-dynamic-logo:hover,
+.station-dynamic-name:hover {
     cursor: pointer;
 }
 
-.station-dynamic-header>span:last-child {
+.dynamic-time {
     font-size: 13px;
     color: #ABABAB;
+}
+
+.station-dynamic-header>div {
+    display: flex;
+    align-items: center;
+}
+
+.station-dynamic-logo {
+    width: 26px;
+    height: 26px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 15px;
 }
 
 .station-dynamic-story-list {

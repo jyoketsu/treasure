@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
     storyNumber: state.story.storyNumber,
     flag: state.common.flag,
     groupKey: state.station.nowStation ? state.station.nowStation.intimateGroupKey : null,
+    role: state.station.nowStation ? state.station.nowStation.role : null,
 });
 
 class StoryList extends Component {
@@ -39,6 +40,7 @@ class StoryList extends Component {
             userKey,
             showStyle,
             showSetting,
+            role,
         } = this.props;
         const { columnNum } = this.state;
         const isMobile = util.common.isMobile();;
@@ -67,6 +69,7 @@ class StoryList extends Component {
                         auditStory={auditStory}
                         groupKey={groupKey}
                         showSetting={showSetting}
+                        role={role}
                         height={height}
                     />
                 )

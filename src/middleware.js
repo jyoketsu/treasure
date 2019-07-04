@@ -32,7 +32,7 @@ const promiseMiddleware = store => next => action => {
                     action.error = true;
                     action.payload = res;
                     if (res.statusCode !== "701") {
-                        message.error(res.msg);
+                        message.info(res.msg);
                     } else {
                         window.location.href = `/account/login${window.location.search}`;
                     }

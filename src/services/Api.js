@@ -2,7 +2,6 @@ import api from './Util';
 const APIURL = 'https://baokudata.qingtime.cn/sgbh';
 // const APIURL = 'http://192.168.1.137:8529/_db/TimeBox/my/sgbh';
 // const API = 'http://192.168.1.101:8051';
-const API = 'https://humandata.qingtime.cn';
 let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
 
 const requests = {
@@ -344,7 +343,24 @@ const station = {
             starKey: stationKey,
             status: checked,
         });
-    }
+    },
+
+    /**
+     * 移交微站/频道/插件
+     * @param {Number} type 1 微站 2 频道或者插件 
+     * @param {String} stationKey 微站key
+     * @param {String} transferContent 频道或者插件内容
+     * @param {String} targetUKey  目标用户key
+     */
+    transfer(type, stationKey, transferContent, targetUKey) {
+        return requests.post(APIURL + '/transfer/transfer', {
+            token: token,
+            type: type,
+            starKey: stationKey,
+            transferContent: transferContent,
+            targetUKey: targetUKey
+        });
+    },
 }
 
 const story = {
@@ -509,32 +525,13 @@ const plugin = {
         });
     },
 }
-const explore = {
-    getExplore(name, id) {
-        return requests.get(API + '/api/Person', {
-            name: name,
-            id: id,
-        });
-    },
-    exploreSearchlist(name, type, page, limit) {
-        return requests.get(API + '/api/Person/FullInfoNew', {
-            name: name,
-            type: type,
-            page: page,
-            limit: limit
-        });
-    },
-    getExploreHots() {
-        return requests.get(API + '/api/Person/Hot');
-    },
-}
+
 export default {
     requests,
     auth,
     station,
     story,
     plugin,
-    explore,
     setToken: _token => {
         window.localStorage.setItem('TOKEN', _token);
         token = _token;

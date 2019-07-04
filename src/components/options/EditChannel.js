@@ -262,11 +262,11 @@ class EditChannel extends Component {
 
         if (fields.publish.value === 3) {
             if (!fields.question.value) {
-                message.error('请输入问题！');
+                message.info('请输入问题！');
                 return;
             }
             if (!fields.answer.value) {
-                message.error('请输入答案！');
+                message.info('请输入答案！');
                 return;
             }
         }

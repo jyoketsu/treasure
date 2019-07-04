@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
 import './Common.css';
 import util from '../../services/Util';
-import { Select, message } from 'antd';
+import { Select, Modal, } from 'antd';
 const { Option } = Select;
+const confirm = Modal.confirm;
 
 class MemberCard extends Component {
     constructor(props) {
         super(props);
+        this.state = { role: props.role }
         this.handleChange = this.handleChange.bind(this);
+        this.showConfirm = this.showConfirm.bind(this);
+    }
+
+    showConfirm() {
+        const { transferStation, nowStationKey, userKey } = this.props;
+        confirm({
+            title: '移交',
+            content: '每个站点只有一名超管，确认后您将降级为管理员。（对方确认后生效）',
+            onOk() {
+                transferStation(nowStationKey, userKey);
+            },
+        });
     }
 
     handleChange(value) {
         const { userKey, groupKey, setMemberRole, } = this.props;
         if (value === 1) {
-            message.error('不能设置超管！');
+            this.showConfirm();
             return;
         }
         setMemberRole(groupKey, userKey, value);
+        this.setState({
+            role: value
+        });
     }
     render() {
-        const { avatar, name, role, mobile, userRole, } = this.props;
+        const { avatar, name, mobile, userRole, } = this.props;
+        const { role } = this.state;
         return (
             <div className="member-card">
                 <div className="member-avatar-container">
@@ -34,7 +52,12 @@ class MemberCard extends Component {
                     <span className="member-name">{mobile || ''}</span>
                     {
                         userRole <= 2 && userRole < role ?
-                            <Select defaultValue={role} style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select
+                                value={role}
+                                style={{ width: 120 }}
+                                ref={node => this.select = node}
+                                onChange={this.handleChange}
+                            >
                                 <Option value={1}>超管</Option>
                                 <Option value={2}>管理员</Option>
                                 <Option value={3}>编辑</Option>
@@ -127,8 +150,7 @@ class StationCard extends Component {
             case 2: roleNmae = '管理员'; break;
             case 3: roleNmae = '编辑'; break;
             case 4: roleNmae = '作者'; break;
-            case 5: roleNmae = '超管'; break;
-            case 6: roleNmae = '成员'; break;
+            case 5: roleNmae = '成员'; break;
             default: roleNmae = '游客'; break;
         }
         return (
