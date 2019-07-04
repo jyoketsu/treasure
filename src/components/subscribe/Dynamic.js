@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Dynamic.css';
 import { connect } from 'react-redux';
-import { myStationLatestStory, } from '../../actions/app';
+import { myStationLatestStory, changeStation, } from '../../actions/app';
 import Waterfall from '../common/Waterfall';
 import { StoryLoading } from '../story/StoryCard';
 import util from '../../services/Util';
@@ -38,7 +38,7 @@ class Dynamic extends Component {
     }
 
     render() {
-        const { stationList, history, waiting } = this.props;
+        const { stationList, history, waiting, changeStation, } = this.props;
         const isMobile = util.common.isMobile();
         const children = stationList.map((station, index) => {
             return (
@@ -47,6 +47,7 @@ class Dynamic extends Component {
                     station={station}
                     history={history}
                     height={35 + station.albumInfo.length * 70}
+                    changeStation={changeStation}
                 />
             )
         });
@@ -68,15 +69,17 @@ class Dynamic extends Component {
                 {
                     waiting ? <StoryLoading /> : <div className="more-dynamic">滑动鼠标，加载更多内容。</div>
                 }
-            </div>
+            </div >
         );
     }
 
     setColumn() {
-        const containerWidth = this.refs.container.clientWidth;
-        this.setState({
-            columnNum: Math.floor(containerWidth / 350)
-        });
+        if (this.refs.container) {
+            const containerWidth = this.refs.container.clientWidth;
+            this.setState({
+                columnNum: Math.floor(containerWidth / 350)
+            });
+        }
     }
 
     componentDidMount() {
@@ -105,6 +108,12 @@ class Dynamic extends Component {
 }
 
 class StationDynamic extends Component {
+    handleClick(key, domain) {
+        const { history, changeStation } = this.props;
+        changeStation(key);
+        history.push(`/${domain}`);
+    }
+
     render() {
         const { station, style, history, } = this.props;
 
@@ -114,7 +123,7 @@ class StationDynamic extends Component {
                 style={style}
             >
                 <div className="station-dynamic-header">
-                    <span>{station.name}</span>
+                    <span onClick={this.handleClick.bind(this, station._key, station.domain)}>{station.name}</span>
                     <span>{moment(station.albumInfo[0].updateTime).startOf('hour').fromNow()}</span>
                 </div>
                 <div className="station-dynamic-story-list">
@@ -141,5 +150,5 @@ class StationDynamic extends Component {
 
 export default connect(
     mapStateToProps,
-    { myStationLatestStory, },
+    { myStationLatestStory, changeStation, },
 )(Dynamic);

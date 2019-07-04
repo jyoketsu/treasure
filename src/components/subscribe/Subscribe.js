@@ -9,7 +9,13 @@ import Dynamic from './Dynamic';
 class Subscribe extends Component {
     constructor(props) {
         super(props);
-        this.state = { currentRouteKey: '' }
+        let nowRouteKey = '';
+        if (window.location.pathname.indexOf('mySites') !== -1) {
+            nowRouteKey = 'mySites';
+        } else if (window.location.pathname.indexOf('search')!==-1) {
+            nowRouteKey = 'search';
+        }
+        this.state = { currentRouteKey: nowRouteKey }
         this.handleClick = this.handleClick.bind(this);
     }
 

@@ -5,8 +5,8 @@
     /* border: 1px solid gainsboro; */
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, .04), 0 1px 6px 0 rgba(0, 0, 0, .03);
     background: #FFFFFF;
-    border-radius: 8px;
-    margin: 0 10px;
+    border-radius: 4px;
+    /* margin: 0 10px; */
     transition: all .2s ease-in;
 }
 
@@ -23,7 +23,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border-radius: 8px 8px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 .story-card-mask {
@@ -33,7 +33,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 8px 8px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 .story-card-icon:hover {

@@ -1,5 +1,8 @@
 .subscribe-dynamic {
     padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .station-dynamic {
@@ -27,6 +30,10 @@
 .station-dynamic-header>span:first-child {
     font-size: 15px;
     color: #000000;
+}
+
+.station-dynamic-header>span:first-child:hover {
+    cursor: pointer;
 }
 
 .station-dynamic-header>span:last-child {

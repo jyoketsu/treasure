@@ -88,7 +88,7 @@ class EditArticle extends Component {
         const { user, nowStationKey, addStory, modifyStory, nowChannelKey, } = this.props;
         const { story, fields, } = this.state;
         e.preventDefault();
-        this.form.validateFields((err, values) => {
+        this.form.validateFields(async (err, values) => {
             if (!err) {
                 // 验证通过
                 let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
@@ -99,12 +99,12 @@ class EditArticle extends Component {
                     let src = arr[0].match(srcReg);
                     story.cover = src[1];
                     // 封面大小
-                    story.size = util.common.getImageInfo(story.cover);
+                    story.size = await util.common.getImageInfo(story.cover);
                 }
                 // memo
                 // 去除标签
                 let sectionStr = str.replace(/<\/?.+?>/g, '');
-                sectionStr = sectionStr.replace(/&nbsp;/g,'')
+                sectionStr = sectionStr.replace(/&nbsp;/g, '')
                 story.memo = sectionStr.substr(0, 100);
                 // 编辑
                 if (story._key) {

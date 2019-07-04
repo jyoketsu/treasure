@@ -41,19 +41,19 @@ class StoryList extends Component {
             showSetting,
         } = this.props;
         const { columnNum } = this.state;
-        const isMobile = util.common.isMobile();
+        const isMobile = util.common.isMobile();;
 
         const children = storyList.map((story, index) => {
             let height;
-            if (story.type === 9) {
-                height = 80;
-            } else {
-                let size = story.size;
-                if (!(size.height && size.width)) {
-                    height = 310;
+            let size = story.size;
+            if (!(size && size.height && size.width)) {
+                if (story.type === 9 && !story.cover) {
+                    height = 80;
                 } else {
-                    height = 80 + size.height / size.width * 290;
+                    height = 310;
                 }
+            } else {
+                height = 80 + size.height / size.width * 290;
             }
             if (showStyle === 2) {
                 return (
@@ -111,10 +111,12 @@ class StoryList extends Component {
     };
 
     setColumn() {
-        const containerWidth = this.refs.container.clientWidth - 30;
-        this.setState({
-            columnNum: Math.floor(containerWidth / 310)
-        });
+        if (this.refs.container) {
+            const containerWidth = this.refs.container.clientWidth;
+            this.setState({
+                columnNum: Math.floor(containerWidth / 290)
+            });
+        }
     }
 
     componentDidMount() {

@@ -8,6 +8,7 @@ import { getStoryDetail, clearStoryDetail, updateExif, } from '../../actions/app
 const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
+    nowStation: state.station.nowStation,
     nowStationKey: state.station.nowStationKey,
     channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
@@ -43,8 +44,9 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, channelInfo, } = this.props;
+        const { story, userId, nowStationKey, channelInfo, nowStation, } = this.props;
         const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
+        const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
         // 频道信息
         let nowChannel;
@@ -88,7 +90,7 @@ class Story extends Component {
                         </div>
                     </div>
                     {
-                        userId === userKey && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
+                        (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
                     {memo ? <pre className="story-memo">{memo}</pre> : null}
                     {

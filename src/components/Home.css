@@ -1,9 +1,11 @@
 .homepage {
     top: 0;
+    overflow: hidden;
 }
 
 .station-home-page {
-    width: 1270px;
+    max-width: 1490px;
+    width: calc(100% - 50px);
 }
 
 .station-list {
@@ -125,7 +127,7 @@
     line-height: 1.8;
     word-break: break-all;
     padding: 0 15px 25px 15px;
-    /* max-width: 670px; */
+    max-width: 960px;
     margin: auto;
 }
 
@@ -295,9 +297,20 @@
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */
-@media screen and (max-width:1290px) {
+@media screen and (max-width:1490px) {
     .station-home-page {
-        width: 960px;
+        width: 1190px;
+    }
+}
+
+@media screen and (max-width:1190px) {
+    .station-home-page {
+        width: 890px;
+    }
+}
+@media screen and (max-width:890px) {
+    .station-home-page {
+        width: 590px;
     }
 }
 

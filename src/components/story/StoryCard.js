@@ -103,16 +103,13 @@ class Card extends Component {
                 style={{ height: height }}
                 onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
             >
-                {
-                    storyType === 'story' ?
-                        <div
-                            className="story-card-cover"
-                            style={coverStyle}
-                        >
-                            <div className="story-card-mask" style={{ height: `${height - 80}px`, }}></div>
-                            {audit ? option : null}
-                        </div> : null
-                }
+                <div
+                    className="story-card-cover"
+                    style={coverStyle}
+                >
+                    <div className="story-card-mask" style={{ height: `${height - 80}px`, }}></div>
+                    {audit ? option : null}
+                </div>
                 <div className="story-card-title">
                     {
                         showTitle ?

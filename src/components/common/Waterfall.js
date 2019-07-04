@@ -29,7 +29,7 @@ class Waterfall extends Component {
                 style={{
                     display: 'grid',
                     gridTemplateColumns: `repeat(${columnNum}, 1fr)`,
-                    gridGap: '5px 5px',
+                    gridGap: '5px 10px',
                     justifyItems: 'center',
                 }}
             >
