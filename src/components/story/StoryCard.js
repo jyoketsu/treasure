@@ -47,8 +47,13 @@ class Card extends Component {
         });
     }
 
+    handleLike(storyKey, e) {
+        e.stopPropagation();
+        this.props.like(storyKey);
+    }
+
     render() {
-        const { story, like, audit, auditStory, userKey, groupKey, showSetting, height, role, } = this.props;
+        const { story, audit, auditStory, userKey, groupKey, showSetting, height, role, } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
 
@@ -143,7 +148,10 @@ class Card extends Component {
                         {
                             showClickNumber ?
                                 <span className="story-card-record">
-                                    <i className="story-card-icon" style={{ backgroundImage: 'url(/image/icon/readNum.svg)' }}></i>
+                                    <i className="story-card-icon" style={{ 
+                                        backgroundImage: 'url(/image/icon/readNum.svg)' ,
+                                        width:'18px',
+                                        }}></i>
                                     <span>{story.clickNumber || 1}</span>
                                 </span> : null
                         }
@@ -152,7 +160,7 @@ class Card extends Component {
                                 <span className="story-card-record">
                                     <i
                                         className="story-card-icon"
-                                        onClick={like.bind(this, story._key)}
+                                        onClick={this.handleLike.bind(this, story._key)}
                                         style={{ backgroundImage: `url(/image/icon/${story.islike ? 'like' : 'like2'}.svg)` }}
                                     >
                                     </i>

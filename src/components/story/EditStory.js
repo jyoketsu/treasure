@@ -59,8 +59,8 @@ class EditStory extends Component {
             message.info('请至少上传一张图片！');
             return;
         }
-        if (story.pictureCount > 8) {
-            message.info('不能超过8张图片！');
+        if (story.pictureCount > 200) {
+            message.info('不能超过200张图片！');
             return;
         }
         // 编辑
@@ -332,7 +332,7 @@ class EditStory extends Component {
             history.push(`/${window.location.search}`);
         }
         // 申请编辑
-        if(story._key){
+        if (story._key) {
             api.story.applyEdit(story._key, story.updateTime);
         }
         // 位置定位

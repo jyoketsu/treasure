@@ -467,6 +467,7 @@ class Station extends React.Component {
 
         // 切换微站
         if (content._key !== prevContent._key) {
+            sessionStorage.setItem('DOMAIN', content.domain);
             let tarStationName = util.common.getSearchParamValue(window.location.search, 'station');
             if (!tarStationName) {
                 document.title = content.name ? content.name : '时光宝库'

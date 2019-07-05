@@ -143,7 +143,7 @@ class Header extends Component {
             e.preventDefault();
         }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
 
-        const { history, getUserInfo, location, getStationList, } = this.props;
+        const { history, getUserInfo, location, getStationList, changeStation, } = this.props;
         const SEARCH_STR = location.search;
         let token = null;
         let query_token = null;
@@ -158,10 +158,20 @@ class Header extends Component {
 
         // 监听路由变化
         const that = this;
-        this.props.history.listen((route) => {
+        this.props.history.listen((route, action) => {
             if (route.pathname === '/account/login') {
                 that.gettedList = false;
                 that.changed = false;
+            }
+
+            // 点击了浏览器前进，后退按钮
+            if (action === 'POP') {
+                const nowDomain = route.pathname.split('/')[1];
+                const prevDomain = sessionStorage.getItem('DOMAIN');
+                if (nowDomain !== prevDomain) {
+                    console.log('换站了');
+                    changeStation(null, nowDomain);
+                }
             }
         })
     }
@@ -307,7 +317,7 @@ class HeadMenu extends Component {
                 history.push(`/${stationDomain}/subscribe`);
                 break;
             case "discover":
-                message.info('功能开发中，敬请期待...');
+                window.open(`https://exp.qingtime.cn?token=${localStorage.getItem('TOKEN')}`, '_blank');
                 break;
             case "article":
                 history.push(`/${stationDomain}/myArticle`);

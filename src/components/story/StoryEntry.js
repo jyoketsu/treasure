@@ -120,7 +120,10 @@ class StoryEntry extends Component {
                         <div>
                             <span style={statusStyle}>{status}</span>
                             <span className="story-card-record">
-                                <i className="story-card-icon" style={{ backgroundImage: 'url(/image/icon/readNum.svg)' }}></i>
+                                <i className="story-card-icon" style={{ 
+                                    backgroundImage: 'url(/image/icon/readNum.svg)' ,
+                                    width:'18px',
+                                }}></i>
                                 <span>{story.clickNumber}</span>
                             </span>
                             <span className="story-card-record">
