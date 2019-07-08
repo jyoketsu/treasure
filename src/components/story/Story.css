@@ -160,6 +160,27 @@
     background-color: bisque;
 }
 
+.story-title {
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    font-size: 24px;
+    color: #333333;
+    background: unset;
+    border: none;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    font-weight: 800;
+}
+
+.story-image,
+.story-video {
+    width: 100%;
+}
+
 @media screen and (max-width:768px) {
     .story-content {
         width: 100%;

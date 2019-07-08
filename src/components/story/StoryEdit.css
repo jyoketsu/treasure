@@ -1,0 +1,153 @@
+.story-edit-head {
+    position: relative;
+    width: 810px;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgb(214, 248, 247);
+    margin: auto;
+}
+
+.story-edit-head-buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 810px;
+    height: 50px;
+    align-items: center;
+    margin: auto;
+}
+
+.story-edit-head-buttons .ant-btn {
+    margin-right: 15px;
+}
+
+.story-text-title {
+    width: 100%;
+    font-size: 20px;
+    font-weight: 18px;
+    color: #333333;
+    background: unset;
+    border: none;
+    text-align: center;
+}
+
+.story-edit-title {
+    width: 810px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #FAFAFA;
+    margin: auto;
+}
+
+.story-edit-title-ext {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-edit-icon {
+    width: 14px;
+    height: 14px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    margin-right: 5px;
+}
+
+.time-icon {
+    background-image: url(/image/icon/story/time.png);
+}
+
+.address-icon {
+    background-image: url(/image/icon/story/address.png);
+}
+
+.story-edit-title-ext>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-edit-title-ext>div:first-child {
+    margin-right: 35px;
+}
+
+.story-edit-item {
+    position: relative;
+    width: 119px;
+    height: 119px;
+    background-size: cover;
+    background-position: center;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-edit-item:hover {
+    cursor: pointer;
+}
+
+.story-edit-container {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    justify-items: center;
+    align-items: center;
+}
+
+.story-edit-item.selected {
+    border: 2px solid #40a9ff;
+    box-shadow: 0 2px 3px 0 rgba(87, 87, 87, 0.37);
+}
+
+.story-edit-item>div {
+    width: 50px;
+    height: 50px;
+}
+
+.dragged {
+    opacity: 0.7;
+}
+
+.placeholderContent {
+    width: 119px;
+    height: 119px;
+    background-color: #40a9ff;
+    text-align: center;
+    line-height: 119px;
+    color: #FFFFFF;
+}
+
+.delete-story-item {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: -11px;
+    right: -11px;
+    background-image: url(/image/icon/story/delete-item.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+@media screen and (max-width:768px) {
+
+    .story-edit-head,
+    .story-edit-head-buttons,
+    .story-edit-title {
+        width: 100%;
+    }
+
+    .story-edit-title-ext>div:first-child>span {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

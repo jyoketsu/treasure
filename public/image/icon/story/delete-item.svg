@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>删除按钮@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="网页版web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-540.000000, -1026.000000)" fill="#C2C2C2" fill-rule="nonzero">
+            <g id="删除按钮" transform="translate(540.000000, 1026.000000)">
+                <path d="M9,0 C4.32500171,0 0.5,3.82500171 0.5,8.5 C0.5,13.1749983 4.32500171,17 9,17 C13.6749983,17 17.5,13.1749983 17.5,8.5 C17.5,3.82500171 13.6749983,0 9,0 Z M13.25,11.6875043 L12.1875043,12.75 L9,9.56251281 L5.81249574,12.7500171 L4.75000001,11.6875213 L7.93750427,8.50001708 L4.74998293,5.3125128 L5.81247865,4.25001707 L8.99998292,7.43752134 L12.1874872,4.25001707 L13.2499829,5.3125128 L10.0624957,8.5 L13.25,11.6875043 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

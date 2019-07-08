@@ -24,6 +24,7 @@ class Content extends Component {
             parseInt(sessionStorage.getItem('content-curpage'), 10) : 1;
         this.perPage = 30;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
+        this.showMore = this.showMore.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
     }
 
@@ -48,6 +49,18 @@ class Content extends Component {
             this.curPage++;
             getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
+    }
+
+    showMore() {
+        const {
+            nowStationKey,
+            getStoryList,
+            sortType,
+            sortOrder,
+        } = this.props;
+
+        this.curPage++;
+        getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
     }
 
     handleTabChange(key) {
@@ -79,13 +92,13 @@ class Content extends Component {
                 <h2>内容管理</h2>
                 <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
                     <TabPane tab="待审核" key="wait">
-                        <StoryList audit={true} />
+                        <StoryList audit={true} showMore={this.showMore} />
                     </TabPane>
                     <TabPane tab="已审核" key="passed">
-                        <StoryList audit={true} />
+                        <StoryList audit={true} showMore={this.showMore} />
                     </TabPane>
                     <TabPane tab="审核不通过" key="unpass">
-                        <StoryList audit={true} />
+                        <StoryList audit={true} showMore={this.showMore} />
                     </TabPane>
                 </Tabs>
             </div>

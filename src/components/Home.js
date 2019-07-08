@@ -35,6 +35,7 @@ class Home extends Component {
         }
         this.switchSortModal = this.switchSortModal.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
+        this.showMore = this.showMore.bind(this);
         this.handleSort = this.handleSort.bind(this);
         this.changeChannel = this.changeChannel.bind(this);
     }
@@ -63,6 +64,18 @@ class Home extends Component {
                 getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
             }
         }
+    }
+
+    // 查看更多
+    showMore(e) {
+        const {
+            nowStationKey,
+            getStoryList,
+            sortType,
+            sortOrder,
+            nowChannelKey, } = this.props;
+        this.curPage++;
+        getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     changeChannel(channelKey) {
@@ -134,6 +147,7 @@ class Home extends Component {
                             showSort={showSort}
                             curPage={this.curPage}
                             perPage={this.perPage}
+                            showMore={this.showMore}
                         /> :
                         <HomeSubscribe
                             getStoryList={getStoryList}
@@ -181,11 +195,11 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
-        if (document.body.scrollTop !== 0) {
-            document.body.scrollTop = 0;
-        } else {
-            document.documentElement.scrollTop = 0;
-        }
+        // if (document.body.scrollTop !== 0) {
+        //     document.body.scrollTop = 0;
+        // } else {
+        //     document.documentElement.scrollTop = 0;
+        // }
         let top = document.body.scrollTop || document.documentElement.scrollTop;
         sessionStorage.setItem('home-curpage', this.curPage);
         // 保存scrollTop的值
@@ -295,6 +309,7 @@ class Station extends React.Component {
             nowChannelKey,
             changeChannel,
             channelInfo,
+            showMore,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
         const { isCareStar } = content;
@@ -373,6 +388,7 @@ class Station extends React.Component {
                     <StoryList
                         showStyle={nowChannel ? nowChannel.showStyle : 2}
                         showSetting={nowChannel ? nowChannel.showSetting : null}
+                        showMore={showMore}
                     />
                 </div>
                 <HomeFooter stationName={content.name} />

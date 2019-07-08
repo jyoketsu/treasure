@@ -94,22 +94,6 @@
     background-color: transparent;
 }
 
-.story-title {
-    width: 100%;
-    height: 70px;
-    line-height: 70px;
-    font-size: 24px;
-    color: #333333;
-    background: unset;
-    border: none;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    font-weight: 800;
-}
-
 .story-text-title {
     position: relative;
     top: 22px;

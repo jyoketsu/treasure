@@ -12,13 +12,14 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ResetPassword from './components/ResetPassword';
 import Story from './components/story/Story';
-import EditStory from './components/story/EditStory';
+// import EditStory from './components/story/EditStory';
 import Contribute from './components/story/Contribute';
 import StationOptions from './components/options/StationOptions';
 import EditArticle from './components/story/EditArticle';
 import Article from './components/story/Article';
 import Subscribe from './components/subscribe/Subscribe';
 import MyArticle from './components/myArticle/MyArticle';
+import StoryEdit from './components/story/StoryEdit';
 import NotFound from './components/NotFound';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -43,7 +44,8 @@ class App extends Component {
             <Route path="/:id/me" component={Me} />
             <Route path="/:id/editStation" component={EditStation} />
             <Route path="/:id/story" component={Story} />
-            <Route path="/:id/editStory" component={EditStory}></Route>
+            {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
+            <Route path="/:id/editStory" component={StoryEdit}></Route>
             <Route path="/:id/contribute" component={Contribute}></Route>
             <Route path="/:id/stationOptions" component={StationOptions}></Route>
             <Route path="/:id/article" component={Article}></Route>

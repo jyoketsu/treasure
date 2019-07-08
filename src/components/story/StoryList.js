@@ -41,6 +41,7 @@ class StoryList extends Component {
             showStyle,
             showSetting,
             role,
+            showMore,
         } = this.props;
         const { columnNum } = this.state;
         const isMobile = util.common.isMobile();;
@@ -102,7 +103,10 @@ class StoryList extends Component {
                 {
                     storyList.length !== 0 && storyList.length >= storyNumber ?
                         <div className="story-is-all">已加载全部</div>
-                        : null
+                        : (
+                            storyList.length !== 0 ?
+                                <div className="show-more-story" onClick={showMore}>查看更多</div> : null
+                        )
                 }
                 {
                     !waiting && storyList.length === 0 ?

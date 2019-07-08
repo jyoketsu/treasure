@@ -1,8 +1,13 @@
-.story-is-all {
+.story-is-all,
+.show-more-story {
     width: 100%;
     height: 50px;
     line-height: 50px;
     text-align: center;
+}
+
+.show-more-story {
+    color: #4A90E2;
 }
 
 .story-list {
