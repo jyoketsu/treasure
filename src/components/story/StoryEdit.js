@@ -30,6 +30,7 @@ class StoryEdit extends Component {
         this.state = {
             story: type === 'new' ? { series: props.nowChannelKey } : props.story,
             selectedItemId: null,
+            selectedItemIndex: null,
         }
         this.addContent = this.addContent.bind(this);
         this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -108,7 +109,7 @@ class StoryEdit extends Component {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
-            prevContent.splice(index, 0, { _id: util.common.randomStr(false, 12), metaType: metaType, memo: '' });
+            prevContent.splice(index ? index + 1 : prevContent.length, 0, { _id: util.common.randomStr(false, 12), metaType: metaType, memo: '' });
             prevStory.richContent = prevContent;
             this.scrollDown = true;
             return { story: prevStory }
@@ -121,10 +122,11 @@ class StoryEdit extends Component {
      * @param {Object} extParams 参数
      */
     uploadImageCallback(images, extParams) {
-        let index = extParams.index;
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
+            let index = extParams.index ? extParams.index + 1 : prevStory.richContent.length;
+
             for (let i = 0; i < images.length; i++) {
                 let size = util.common.getImageInfo(images[i]);
                 prevContent.splice(index, 0, { _id: util.common.randomStr(false, 12), metaType: 'image', url: images[i], size: size, memo: '' });
@@ -150,10 +152,12 @@ class StoryEdit extends Component {
      * @param {Object} extParams 参数
      */
     uploadVideoCallback(videoUrl, extParams) {
-        let index = extParams.index;
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
+
+            let index = extParams.index ? extParams.index + 1 : prevStory.richContent.length;
+
             prevContent.splice(
                 index,
                 0,
@@ -189,7 +193,7 @@ class StoryEdit extends Component {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
-            prevContent.splice(index - 1, 1);
+            prevContent.splice(index, 1);
             if (metaType === 'image' || metaType === 'video') {
                 prevStory.pictureCount = prevStory.pictureCount - 1;
             }
@@ -251,21 +255,23 @@ class StoryEdit extends Component {
         });
     }
 
-    handleSelectItem(id, e) {
+    handleSelectItem(index, id, e) {
         e.stopPropagation();
-        this.setState({ selectedItemId: id });
+        this.setState({ selectedItemId: id, selectedItemIndex: index });
     }
 
     render() {
-        const { story = {}, selectedItemId, } = this.state;
+        const { story = {}, selectedItemId, selectedItemIndex } = this.state;
         const { cover, title = '', richContent = [], address, time, } = story;
         let items = [];
         for (let i = 0; i < richContent.length; i++) {
             items.push({
                 content: (
                     <EditItem
+                        index={i}
                         content={richContent[i]}
                         handleSelect={this.handleSelectItem}
+                        handleDelete={this.deleteContent}
                         selectedId={selectedItemId}
                     />)
             });
@@ -293,7 +299,7 @@ class StoryEdit extends Component {
                     handleInput={this.handleInput}
                 />
                 <div className="main-content story-content story-edit-container">
-                    {
+                    <div className="drag-item-container">
                         <DragSortableList
                             items={items}
                             dropBackTransitionDuration={0.3}
@@ -301,7 +307,15 @@ class StoryEdit extends Component {
                             type="grid"
                             placeholder={placeholder}
                         />
-                    }
+                    </div>
+                    <ItemPreview
+                        addContent={this.addContent}
+                        uploadImageCallback={this.uploadImageCallback}
+                        uploadVideoCallback={this.uploadVideoCallback}
+                        index={selectedItemIndex}
+                        itemContent={richContent[selectedItemIndex]}
+                        handleInput={this.handleInput}
+                    />
                 </div>
             </div>
         );
@@ -324,6 +338,29 @@ class StoryEdit extends Component {
         }, () => {
             this.selectAddress('获取位置失败');
         });
+    }
+
+    componentWillUnmount() {
+        const { story } = this.props;
+        api.story.exitEdit(story._key);
+    }
+
+    async componentDidUpdate(prevProps) {
+        const { history, loading, flag, } = this.props;
+        const { story } = this.state;
+        if (!loading && prevProps.loading) {
+            if (story._key) {
+                if (flag === 'deleteStory') {
+                    const pathname = window.location.pathname;
+                    const stationDomain = pathname.split('/')[1];
+                    history.push(`/${stationDomain}`);
+                } else {
+                    history.goBack();
+                }
+            } else {
+                history.goBack();
+            }
+        }
     }
 }
 
@@ -351,16 +388,142 @@ class StoryEditTitle extends Component {
 
 class EditItem extends Component {
     render() {
-        const { content, handleSelect, selectedId } = this.props;
+        const { content, handleSelect, selectedId, handleDelete, index } = this.props;
+        const imageUrl = content.metaType !== 'video' ?
+            (
+                content.url ?
+                    `${content.url}?imageView2/2/w/200/` : '/image/icon/icon-article.svg'
+            ) : content.thumbnailUrl;
         return (
             <div
                 className={`story-edit-item ${selectedId === content._id ? 'selected' : ''}`}
-                style={{ backgroundImage: `url(${content.url}?imageView2/2/w/200/)` }}
-                onClick={handleSelect.bind(this, content._id)}
+                style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: content.url ? 'cover' : '50%' }}
+                onClick={handleSelect.bind(this, index, content._id)}
             >
-                <div className="delete-story-item"></div>
-            </div>
+                <div
+                    className="delete-story-item"
+                    onClick={handleDelete.bind(this, index, content.metaType)}
+                >
+                </div>
+            </div >
         )
+    }
+}
+
+class ItemPreview extends Component {
+    render() {
+        const {
+            addContent,
+            index,
+            uploadImageCallback,
+            uploadVideoCallback,
+            itemContent,
+            handleInput,
+        } = this.props;
+        let result;
+        let style = {};
+        if (itemContent) {
+            switch (itemContent.metaType) {
+                case 'html':
+                    result =
+                        <textarea
+                            className="story-content-textArea"
+                            placeholder="点击输入文本"
+                            value={itemContent.memo}
+                            onChange={handleInput.bind(this, 'richContent', index)} />;
+                    break;
+                case 'header':
+                    result =
+                        <input
+                            className='story-text-title'
+                            placeholder="点击输入标题"
+                            value={itemContent.memo}
+                            onChange={handleInput.bind(this, 'richContent', index)} />
+                    break;
+                case 'image':
+                    style = {}
+                    result =
+                        <div className="story-imageGroup" style={{padding:'5px'}}>
+                            <div className="story-image-box">
+                                <img
+                                    className="story-image"
+                                    src={`${itemContent.url}?imageView2/2/w/600/`} alt="story" />
+                            </div>
+                            <Input placeholder="请输入图片描述" value={itemContent.memo} onChange={handleInput.bind(this, 'richContent', index)} />
+                        </div>
+                    break;
+                case 'video':
+                    result =
+                        <video className="story-video" src={itemContent.url} controls="controls">
+                            Your browser does not support the video tag.
+                        </video>
+                    break;
+                default: break;
+            }
+        } else {
+            result = <div className="no-selected-item">没有选择内容</div>;
+        }
+
+
+        return (
+            <div className="item-preview">
+                <div className="item-actions">
+                    <Tooltip title="添加小标题">
+                        <div className="story-edit-button"
+                            onClick={addContent.bind(this, index, 'header')}>
+                            <i style={{ backgroundImage: 'url(/image/icon/story-title.png)' }} className="story-title-icon"></i>
+                            <span>标题</span>
+                        </div>
+                    </Tooltip>
+                    <Tooltip title="添加文本">
+                        <div className="story-edit-button"
+                            onClick={addContent.bind(this, index, 'html')}>
+                            <i style={{ backgroundImage: 'url(/image/icon/story-text.png)' }} className="story-text-icon"></i>
+                            <span>文本</span>
+                        </div>
+                    </Tooltip>
+                    <Tooltip title="点击上传图片">
+                        <div className="story-edit-button">
+                            <FileUpload
+                                className="story-image-icon"
+                                style={{
+                                    backgroundImage: 'url(/image/icon/story-image.png)',
+                                    display: 'block',
+                                    width: '24px',
+                                    height: '24px',
+                                }}
+                                maxSize={10000000}
+                                multiple="multiple"
+                                extParam={{ index: index }}
+                                callback={uploadImageCallback} />
+                            <span>图片</span>
+                        </div>
+                    </Tooltip>
+                    <Tooltip title="点击上传视频">
+                        <div className="story-edit-button">
+                            <FileUpload
+                                className="story-video-icon"
+                                style={{
+                                    backgroundImage: 'url(/image/icon/story-video.png)',
+                                    display: 'block',
+                                    width: '24px',
+                                    height: '24px',
+                                }}
+                                metaType='video'
+                                maxSize={200000000}
+                                extParam={{ index: index }}
+                                callback={uploadVideoCallback} />
+                            <span>视频</span>
+                        </div>
+                    </Tooltip>
+                </div>
+                <div className="item-preview-editor">
+                    {
+                        result
+                    }
+                </div>
+            </div>
+        );
     }
 }
 

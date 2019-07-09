@@ -84,10 +84,12 @@
     height: 119px;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #F8F8F8;
 }
 
 .story-edit-item:hover {
@@ -96,19 +98,14 @@
 
 .story-edit-container {
     display: grid;
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: 53% 47%;
     justify-items: center;
-    align-items: center;
+    align-items: top;
 }
 
 .story-edit-item.selected {
     border: 2px solid #40a9ff;
     box-shadow: 0 2px 3px 0 rgba(87, 87, 87, 0.37);
-}
-
-.story-edit-item>div {
-    width: 50px;
-    height: 50px;
 }
 
 .dragged {
@@ -127,13 +124,95 @@
 .delete-story-item {
     width: 22px;
     height: 22px;
+    border-radius: 11px;
     position: absolute;
     top: -11px;
     right: -11px;
+    background-color: #FFFFFF;
+    border: 2px solid #FFFFFF;
     background-image: url(/image/icon/story/delete-item.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.item-preview {
+    display: flex;
+    flex-direction: column;
+    background: #FAFAFA;
+    border: 1px solid #DDDDDD;
+    width: 360px;
+}
+
+.item-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.item-preview-editor {
+    height: 300px;
+    background-position: top;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.story-edit-button {
+    display: inline-block;
+    width: 34px;
+    height: 46px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.story-edit-button>i {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    left: 50%;
+    margin-left: -12px;
+}
+
+.story-edit-button>i:hover {
+    cursor: pointer;
+}
+
+.story-edit-button>span {
+    font-size: 12px;
+}
+
+.story-image,
+.story-video {
+    width: 100%;
+}
+
+.story-content-textArea {
+    width: 100%;
+    border: unset;
+    background: unset;
+    padding: 15px;
+    margin: 0;
+    resize: none;
+    height: 300px;
+}
+
+.drag-item-container {
+    width: 414px;
+    height: 365px;
+    overflow: auto;
+    padding: 5px 0;
+}
+
+.no-selected-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
 }
 
 @media screen and (max-width:768px) {
@@ -149,5 +228,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .story-edit-container {
+        grid-template-rows: 375px 310px;
+        grid-template-columns: 100%;
     }
 }
