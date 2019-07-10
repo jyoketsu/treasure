@@ -89,6 +89,10 @@ class Story extends Component {
                             </div>
                         </div>
                     </div>
+                    <div className="story-edit-music"
+                        dangerouslySetInnerHTML={{ __html: story.backGroundMusic }}
+                    >
+                    </div>
                     {
                         (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }

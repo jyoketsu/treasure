@@ -22,6 +22,19 @@
     margin-right: 15px;
 }
 
+.story-edit-cover-buttons {
+    position: absolute;
+    right: 15px;
+    bottom: -16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-edit-cover-buttons>i {
+    margin-right: 15px;
+}
+
 .story-text-title {
     width: 100%;
     font-size: 20px;
@@ -184,11 +197,6 @@
     font-size: 12px;
 }
 
-.story-image,
-.story-video {
-    width: 100%;
-}
-
 .story-content-textArea {
     width: 100%;
     border: unset;
@@ -201,8 +209,6 @@
 
 .drag-item-container {
     width: 414px;
-    height: 365px;
-    overflow: auto;
     padding: 5px 0;
 }
 
@@ -216,6 +222,33 @@
 }
 
 @media screen and (max-width:768px) {
+    .story-edit {
+        padding-bottom: 265px;
+    }
+
+    .item-preview-editor .story-image,
+    .item-preview-editor .story-video {
+        width: unset;
+        height: 150px;
+        margin: auto;
+    }
+
+    .item-preview-editor {
+        height: 200px;
+    }
+
+    .item-preview {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0px -3px 4px 0 rgba(71, 110, 87, 0.25)
+    }
+
+    .story-edit-container {
+        display: flex;
+        flex-direction: column;
+    }
 
     .story-edit-head,
     .story-edit-head-buttons,
@@ -231,7 +264,49 @@
     }
 
     .story-edit-container {
-        grid-template-rows: 375px 310px;
+        grid-template-rows: 375px 365px;
         grid-template-columns: 100%;
+    }
+
+    .drag-item-container,
+    .item-preview {
+        width: 100%;
+    }
+
+    .story-image-box {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width:414px) {
+    .story-edit-item {
+        width: 115px;
+        height: 115px;
+    }
+
+    .drag-item-container {
+        width: 385px;
+    }
+}
+
+@media screen and (max-width:375px) {
+    .story-edit-item {
+        width: 100px;
+        height: 100px;
+    }
+
+    .drag-item-container {
+        width: 340px;
+    }
+}
+
+@media screen and (max-width:320px) {
+    .story-edit-item {
+        width: 85px;
+        height: 85px;
+    }
+
+    .drag-item-container {
+        width: 295px;
     }
 }

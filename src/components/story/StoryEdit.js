@@ -27,15 +27,20 @@ class StoryEdit extends Component {
     constructor(props) {
         super(props);
         let type = util.common.getSearchParamValue(props.location.search, 'type');
+        let story = type === 'new' ? { series: props.nowChannelKey } : props.story;
         this.state = {
-            story: type === 'new' ? { series: props.nowChannelKey } : props.story,
+            story: story,
             selectedItemId: null,
             selectedItemIndex: null,
+            musicPanelvisible: false,
+            musicAddress: story.backGroundMusic,
         }
         this.addContent = this.addContent.bind(this);
         this.uploadImageCallback = this.uploadImageCallback.bind(this);
         this.uploadVideoCallback = this.uploadVideoCallback.bind(this);
+        this.uploadCoverCallback = this.uploadCoverCallback.bind(this);
         this.deleteContent = this.deleteContent.bind(this);
+        this.showDeleteContentConfirm = this.showDeleteContentConfirm.bind(this);
         this.handleInput = this.handleInput.bind(this);
         this.selectChannel = this.selectChannel.bind(this);
         this.selectAddress = this.selectAddress.bind(this);
@@ -44,6 +49,15 @@ class StoryEdit extends Component {
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.onSort = this.onSort.bind(this);
+        this.switchMusic = this.switchMusic.bind(this);
+        this.handleMusicInput = this.handleMusicInput.bind(this);
+        this.setMusic = this.setMusic.bind(this);
+    }
+
+    switchMusic() {
+        this.setState((prevState) => ({
+            musicPanelvisible: !prevState.musicPanelvisible
+        }));
     }
 
     handleCancel() {
@@ -152,6 +166,7 @@ class StoryEdit extends Component {
      * @param {Object} extParams 参数
      */
     uploadVideoCallback(videoUrl, extParams) {
+        if (videoUrl.length !== 0) videoUrl = videoUrl[0];
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
@@ -186,10 +201,37 @@ class StoryEdit extends Component {
     }
 
     /**
+     * 封面图片上传回调
+     * @param {Array} images 图片url数组
+     */
+    uploadCoverCallback(images) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            // 设置封面
+            prevStory.cover = images[0];
+            return { story: prevStory }
+        });
+    }
+
+    setMusic() {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            let regex1 = /[^<iframe {1}]/;
+            if (regex1.test(prevState.musicAddress)) {
+                prevStory.backGroundMusic = prevState.musicAddress;
+                return { story: prevStory, musicPanelvisible: false }
+            } else {
+                message.info('外链格式不正确！');
+                return null;
+            }
+        });
+    }
+
+    /**
      * 删除内容
      * @param {Number} index 要删除的位置
      */
-    deleteContent(index, metaType) {
+    deleteContent(index, metaType, ) {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
@@ -199,6 +241,21 @@ class StoryEdit extends Component {
             }
             prevStory.richContent = prevContent;
             return { story: prevStory }
+        });
+    }
+
+    showDeleteContentConfirm(index, metaType, e) {
+        e.stopPropagation();
+        let that = this;
+        confirm({
+            title: '删除',
+            content: `确定要删除吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                that.deleteContent(index, metaType, e);
+            },
         });
     }
 
@@ -213,6 +270,10 @@ class StoryEdit extends Component {
             richContent[index].memo = value;
         }
         this.setState({ story: changedStory });
+    }
+
+    handleMusicInput(e) {
+        this.setState({ musicAddress: e.target.value });
     }
 
     selectChannel(value) {
@@ -255,13 +316,15 @@ class StoryEdit extends Component {
         });
     }
 
-    handleSelectItem(index, id, e) {
-        e.stopPropagation();
-        this.setState({ selectedItemId: id, selectedItemIndex: index });
+    handleSelectItem(index, id, dragable, e) {
+        if (!dragable) {
+            e.stopPropagation();
+            this.setState({ selectedItemId: id, selectedItemIndex: index });
+        }
     }
 
     render() {
-        const { story = {}, selectedItemId, selectedItemIndex } = this.state;
+        const { story = {}, selectedItemId, selectedItemIndex, musicAddress, } = this.state;
         const { cover, title = '', richContent = [], address, time, } = story;
         let items = [];
         for (let i = 0; i < richContent.length; i++) {
@@ -271,7 +334,7 @@ class StoryEdit extends Component {
                         index={i}
                         content={richContent[i]}
                         handleSelect={this.handleSelectItem}
-                        handleDelete={this.deleteContent}
+                        handleDelete={this.showDeleteContentConfirm}
                         selectedId={selectedItemId}
                     />)
             });
@@ -291,7 +354,27 @@ class StoryEdit extends Component {
                 </div>
                 <div className="story-edit-head" style={{
                     backgroundImage: `url(${cover}?imageView2/2/w/960/)`
-                }}></div>
+                }}>
+                    <div className="story-edit-cover-buttons">
+                        <FileUpload
+                            className="story-image-icon"
+                            style={{
+                                width: '84px',
+                                height: '32px',
+                                lineHeight: '32px',
+                                color: '#fff',
+                                backgroundColor: '#1890ff',
+                                borderColor: '#1890ff',
+                                borderRadius: '4px',
+                                fontStyle: 'normal',
+                                textAlign: 'center',
+                            }}
+                            text="设置封面"
+                            maxSize={10000000}
+                            callback={this.uploadCoverCallback} />
+                        <Button type="primary" onClick={this.switchMusic}>设置音乐</Button>
+                    </div>
+                </div>
                 <StoryEditTitle
                     title={title}
                     address={address}
@@ -317,6 +400,18 @@ class StoryEdit extends Component {
                         handleInput={this.handleInput}
                     />
                 </div>
+                <Modal
+                    title="设置音乐"
+                    visible={this.state.musicPanelvisible}
+                    onOk={this.setMusic}
+                    onCancel={this.switchMusic}
+                >
+                    <Input
+                        placeholder="请粘贴音乐外链"
+                        value={musicAddress}
+                        onChange={this.handleMusicInput}
+                    />
+                </Modal>
             </div>
         );
     }
@@ -331,13 +426,15 @@ class StoryEdit extends Component {
             api.story.applyEdit(story._key, story.updateTime);
         }
         // 位置定位
-        util.common.getLocation((data) => {
-            console.log('定位信息：', data);
-            const address = data && data.addressComponent ? `${data.addressComponent.province}${data.addressComponent.city}${data.addressComponent.district}${data.addressComponent.township}${data.addressComponent.street}` : '地址错误';
-            this.selectAddress(address);
-        }, () => {
-            this.selectAddress('获取位置失败');
-        });
+        if (!story.address && story.address !== '获取位置失败') {
+            util.common.getLocation((data) => {
+                console.log('定位信息：', data);
+                const address = data && data.addressComponent ? `${data.addressComponent.province}${data.addressComponent.city}${data.addressComponent.district}${data.addressComponent.township}${data.addressComponent.street}` : '地址错误';
+                this.selectAddress(address);
+            }, () => {
+                this.selectAddress('获取位置失败');
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -394,15 +491,18 @@ class EditItem extends Component {
                 content.url ?
                     `${content.url}?imageView2/2/w/200/` : '/image/icon/icon-article.svg'
             ) : content.thumbnailUrl;
+        const isSelected = selectedId === content._id ? true : false;
         return (
             <div
-                className={`story-edit-item ${selectedId === content._id ? 'selected' : ''}`}
+                className={`story-edit-item ${isSelected ? 'selected' : 'no-drag'}`}
                 style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: content.url ? 'cover' : '50%' }}
-                onClick={handleSelect.bind(this, index, content._id)}
+                onClick={handleSelect.bind(this, index, content._id, isSelected)}
+                onTouchStart={handleSelect.bind(this, index, content._id, isSelected)}
             >
                 <div
                     className="delete-story-item"
                     onClick={handleDelete.bind(this, index, content.metaType)}
+                    onTouchStart={handleDelete.bind(this, index, content.metaType)}
                 >
                 </div>
             </div >
@@ -421,7 +521,6 @@ class ItemPreview extends Component {
             handleInput,
         } = this.props;
         let result;
-        let style = {};
         if (itemContent) {
             switch (itemContent.metaType) {
                 case 'html':
@@ -441,9 +540,8 @@ class ItemPreview extends Component {
                             onChange={handleInput.bind(this, 'richContent', index)} />
                     break;
                 case 'image':
-                    style = {}
                     result =
-                        <div className="story-imageGroup" style={{padding:'5px'}}>
+                        <div className="story-imageGroup" style={{ padding: '5px' }}>
                             <div className="story-image-box">
                                 <img
                                     className="story-image"

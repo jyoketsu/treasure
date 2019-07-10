@@ -181,6 +181,17 @@
     width: 100%;
 }
 
+.story-footer {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 80px;
+    align-items: center;
+}
+
+.story-footer .ant-btn {
+    margin-right: 15px;
+}
+
 @media screen and (max-width:768px) {
     .story-content {
         width: 100%;

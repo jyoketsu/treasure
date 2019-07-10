@@ -1,4 +1,5 @@
 @import '~antd/dist/antd.css';
+
 /* 滚动轴美化 竖轴 */
 .scrollbar::-webkit-scrollbar-track {
     width: 4px;
@@ -32,7 +33,7 @@
     outline: 0 !important;
 }
 
-*:not(input) {
+*:not(input, textarea) {
     user-select: none;
     outline: none;
 }
