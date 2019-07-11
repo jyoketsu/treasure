@@ -80,19 +80,24 @@ class Story extends Component {
                     <div className="story-head-title">
                         <div className="story-title">{title}</div>
                         <div className="story-head-info">
-                            {address ? <div className="story-head-address">{address}</div> : null}
                             <div className="story-head-other">
                                 <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
-                                <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
-                                <div className="story-card-name">{creator.name}</div>
-                                <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
+                                    <div className="story-card-name">{creator.name}</div>
+                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                </div>
                             </div>
+                            {address ? <div className="story-head-address">{address}</div> : null}
                         </div>
                     </div>
-                    <div className="story-edit-music"
-                        dangerouslySetInnerHTML={{ __html: story.backGroundMusic }}
-                    >
-                    </div>
+                    {
+                        /<iframe.*?(?:>|\/>)/gi.test(story.backGroundMusic) ?
+                            <div className="story-edit-music"
+                                dangerouslySetInnerHTML={{ __html: story.backGroundMusic }}
+                            >
+                            </div> : null
+                    }
                     {
                         (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }

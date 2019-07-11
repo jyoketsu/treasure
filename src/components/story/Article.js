@@ -44,14 +44,16 @@ class Article extends Component {
                         minHeight: `${window.innerHeight - 70}px`
                     }}
                 >
-                    <div className="story-head-title">
+                    <div className="story-head-title" style={{ border: 'unset' }}>
                         <div className="story-title">{title}</div>
                         <div className="story-head-info">
                             <div className="story-head-other">
                                 <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
-                                <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
-                                <div className="story-card-name">{creator.name}</div>
-                                <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
+                                    <div className="story-card-name">{creator.name}</div>
+                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -66,7 +66,6 @@ const CustomizedForm = Form.create({
             }),
         };
     },
-
 })(props => {
     const { getFieldDecorator } = props.form;
     const formItemLayout = {
@@ -102,15 +101,16 @@ const CustomizedForm = Form.create({
                         <Option value={4}>需要同意</Option>
                     </Select>)}
             </Form.Item>
-
-            <Form.Item label="问题">
-                {getFieldDecorator('question')(<Input />)}
-            </Form.Item>
-
-            <Form.Item label="答案">
-                {getFieldDecorator('answer')(<Input />)}
-            </Form.Item>
-
+            {
+                props.publish.value === 3 ? [
+                    <Form.Item label="问题" key="question">
+                        {getFieldDecorator('question')(<Input />)}
+                    </Form.Item>,
+                    <Form.Item label="答案" key="answer">
+                        {getFieldDecorator('answer')(<Input />)}
+                    </Form.Item>
+                ] : null
+            }
             <Divider />
 
             <Form.Item label="显示风格">
@@ -293,8 +293,7 @@ class EditChannel extends Component {
 
         return (
             <div className="edit-channel">
-                <h2>{fields.key.value ? '频道设置' : '创建频道'}</h2>
-                <Divider />
+                <div className="channel-head">{fields.key.value ? '频道设置' : '创建频道'}</div>
                 <CustomizedForm
                     ref={node => this.form = node}
                     {...fields}

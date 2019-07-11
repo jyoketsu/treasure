@@ -193,6 +193,7 @@
 .series-container {
     display: flex;
     flex-direction: row;
+    overflow: hidden;
 }
 
 .series-tabs {
@@ -200,17 +201,10 @@
     font-size: 16px;
     line-height: 46px;
     flex: 1;
-    overflow: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    /* 火狐 隐藏滚动条 */
-    overflow: -moz-scrollbars-none;
-}
-
-/* chrome 隐藏滚动条 */
-.series-tabs::-webkit-scrollbar {
-    width: 0 !important
+    transition: transform 0.2s;
 }
 
 .series-options {
@@ -228,12 +222,15 @@
 }
 
 .channel-item {
-    padding: 0 15px;
-    /* overflow: hidden; */
+    width: 80px;
+    overflow: hidden;
     white-space: nowrap;
+    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     color: #7B8492;
-    display: inline;
+    display: inline-block;
+    text-align: center;
+    padding: 0 5px;
 }
 
 .channel-item:hover {
@@ -308,6 +305,7 @@
         width: 890px;
     }
 }
+
 @media screen and (max-width:890px) {
     .station-home-page {
         width: 590px;
@@ -322,10 +320,6 @@
 
     .station-list {
         padding: 0 20px;
-    }
-
-    .series-tabs {
-        height: 55px;
     }
 
     .station-name {

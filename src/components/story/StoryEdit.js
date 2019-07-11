@@ -139,7 +139,7 @@ class StoryEdit extends Component {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
-            let index = extParams.index ? extParams.index + 1 : prevStory.richContent.length;
+            let index = extParams && extParams.index ? extParams.index + 1 : (prevStory.richContent ? prevStory.richContent.length : 0);
 
             for (let i = 0; i < images.length; i++) {
                 let size = util.common.getImageInfo(images[i]);
@@ -216,7 +216,7 @@ class StoryEdit extends Component {
     setMusic() {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
-            let regex1 = /[^<iframe {1}]/;
+            let regex1 = /<iframe.*?(?:>|\/>)/gi;
             if (regex1.test(prevState.musicAddress)) {
                 prevStory.backGroundMusic = prevState.musicAddress;
                 return { story: prevStory, musicPanelvisible: false }

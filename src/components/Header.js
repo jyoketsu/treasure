@@ -100,7 +100,7 @@ class Header extends Component {
                             : null
                     }
                     {
-                        user && !user.isGuest && nowStation && nowStation.editRight ?
+                        user && !user.isGuest && nowStation && nowStation.role <= 3 ?
                             <li className={`head-icon station-option-icon ${pathname === '/message' ? 'active' : ''}`}>
                                 <Link to={`/${stationDomain}/stationOptions`}></Link>
                             </li> : null

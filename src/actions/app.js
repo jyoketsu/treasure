@@ -233,6 +233,7 @@ export const GET_PLUGIN_LIST = 'GET_PLUGIN_LIST';
 export const SUBSCRIBE_PLUGIN = 'SUBSCRIBE_PLUGIN';
 export const CLEAR_PLUGIN_LIST = 'CLEAR_PLUGIN_LIST';
 export const CANCEL_PLUGIN = 'CANCEL_PLUGIN';
+export const SET_PLUGIN = 'SET_PLUGIN';
 
 export function createPlugin(stationKey, name, icon, url) {
     let request = api.plugin.createPlugin(stationKey, name, icon, url);
@@ -266,4 +267,9 @@ export function clearPluginList() {
 export function cancelPlugin(pluginKey) {
     let request = api.plugin.cancelPlugin(pluginKey);
     return { type: CANCEL_PLUGIN, pluginKey: pluginKey, payload: request }
+}
+
+export function setPlugin(pluginKey, publish, question, answer, subscribePay, monthlyFee, annualFee, lifelongFee) {
+    let request = api.plugin.setPlugin(pluginKey, publish, question, answer, subscribePay, monthlyFee, annualFee, lifelongFee);
+    return { type: SET_PLUGIN, pluginKey: pluginKey, payload: request }
 }

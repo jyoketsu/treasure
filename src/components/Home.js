@@ -4,7 +4,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
 import util from '../services/Util';
-import { Modal, Tooltip, message } from 'antd';
+import { Modal, Tooltip, message, Input, } from 'antd';
 import { connect } from 'react-redux';
 import ClickOutside from './common/ClickOutside';
 import { changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
@@ -214,9 +214,17 @@ class Station extends React.Component {
         super(props);
         this.state = {
             showExtButton: false,
+            xAxis: 0,
+            questionVisible: false,
+            question: '',
+            answer: '',
         }
         this.handleClickAdd = this.handleClickAdd.bind(this);
         this.switchExtButton = this.switchExtButton.bind(this);
+        this.handleClickChannel = this.handleClickChannel.bind(this);
+        this.switchPluginVisible = this.switchPluginVisible.bind(this);
+        this.handleInputAnswer = this.handleInputAnswer.bind(this);
+        this.handleAnswer = this.handleAnswer.bind(this);
     }
     /**
      * 回到顶部，动画效果
@@ -298,6 +306,80 @@ class Station extends React.Component {
         }));
     }
 
+    handleClickChannel(index, key, answered) {
+        const { changeChannel, content } = this.props;
+        const { seriesInfo = [] } = content;
+        let nowChannel;
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (key === seriesInfo[i]._key) {
+                nowChannel = seriesInfo[i];
+                break;
+            }
+        }
+        if (nowChannel && nowChannel.publish === 3 && !answered) {
+            this.rightAnswer = nowChannel.answer;
+            this.question = {
+                type: 'album',
+                param: { index: index, key: key },
+            }
+            this.switchPluginVisible(nowChannel.question, '');
+            return;
+        }
+
+        changeChannel(key);
+
+        const { clientWidth: containerWidth } = this.tabContainer;
+        const { clientWidth: tabsWidth } = this.tabs;
+        const nowX = index * 80;
+        // 容器中点位置
+        const middleX = containerWidth / 2;
+        // 内容长度与容器长度的差
+        const differ = tabsWidth - containerWidth;
+        if (tabsWidth > containerWidth) {
+            if (nowX > middleX && nowX < differ) {
+                this.setState({ xAxis: -(nowX - middleX) });
+            } else if (nowX > differ) {
+                this.setState({ xAxis: -differ });
+            } else {
+                this.setState({ xAxis: 0 });
+            }
+        }
+    }
+
+    switchPluginVisible(question, answer) {
+        this.setState((prevState) => ({
+            question: question ? question : '',
+            answer: answer ? answer : '',
+            questionVisible: !prevState.questionVisible
+        }));
+    }
+
+    handleInputAnswer(e) {
+        this.setState({
+            answer: e.target.value
+        });
+    }
+
+    handleAnswer() {
+        const { answer } = this.state;
+        if (answer === this.rightAnswer) {
+            if (this.question.type === 'plugin') {
+                window.open(this.question.param, '_blank');
+            } else if (this.question.type === 'album') {
+                this.handleClickChannel(
+                    this.question.param.index,
+                    this.question.param.key,
+                    true
+                );
+            }
+            this.setState({
+                questionVisible: false
+            });
+        } else {
+            message.error('回答错误');
+        }
+    }
+
     render() {
         const {
             content = {},
@@ -307,12 +389,18 @@ class Station extends React.Component {
             showSort,
             switchSortModal,
             nowChannelKey,
-            changeChannel,
             channelInfo,
             showMore,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
         const { isCareStar } = content;
+        const {
+            xAxis,
+            questionVisible,
+            question,
+            answer,
+        } = this.state;
+
         const token = localStorage.getItem('TOKEN');
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
@@ -351,7 +439,23 @@ class Station extends React.Component {
                                     className="station-plugin"
                                     onClick={
                                         () => {
-                                            window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank')
+                                            switch (plugin.publish) {
+                                                case 1: window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank');
+                                                    break;
+                                                case 2: content.role > 2 ?
+                                                    message.info('没有权限访问！') :
+                                                    window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank');
+                                                    break;
+                                                case 3:
+                                                    this.rightAnswer = plugin.answer;
+                                                    this.question = {
+                                                        type: 'plugin',
+                                                        param: `${plugin.url}/${content.domain}?token=${token}`,
+                                                    }
+                                                    this.switchPluginVisible(plugin.question, '');
+                                                    break;
+                                                default: break;
+                                            }
                                         }
                                     }
                                 >
@@ -366,11 +470,15 @@ class Station extends React.Component {
                         {/* <span className="station-memo-title">概述</span> */}
                         <pre>{content.memo}</pre>
                     </div>
-                    <div className="series-container">
-                        <div className="series-tabs">
+                    <div className="series-container" ref={node => this.tabContainer = node}>
+                        <div
+                            className="series-tabs"
+                            ref={node => this.tabs = node}
+                            style={{ transform: `translate(${xAxis}px, 0)` }}
+                        >
                             <div
                                 className={`channel-item ${nowChannelKey === 'allSeries' ? 'selected' : ''}`}
-                                onClick={changeChannel.bind(this, 'allSeries')}
+                                onClick={this.handleClickChannel.bind(this, 0, 'allSeries', false)}
                             >
                                 全部
                             </div>
@@ -378,7 +486,7 @@ class Station extends React.Component {
                                 <div
                                     key={index}
                                     className={`channel-item ${nowChannelKey === serie._key ? 'selected' : ''}`}
-                                    onClick={changeChannel.bind(this, serie._key)}
+                                    onClick={this.handleClickChannel.bind(this, index + 1, serie._key, false)}
                                 >
                                     {serie.name}
                                 </div>
@@ -472,6 +580,15 @@ class Station extends React.Component {
                         点赞（投票）数
                     </p>
                     {/* <p className={sortType === 3 && sortOrder === 1 ? 'active' : ''}>阅读数</p> */}
+                </Modal>
+                <Modal
+                    title="回答问题"
+                    visible={questionVisible}
+                    onOk={this.handleAnswer}
+                    onCancel={this.switchPluginVisible.bind(this, '', '')}
+                >
+                    <p>{question}</p>
+                    <Input placeholder="请输入答案" value={answer} onChange={this.handleInputAnswer} />
                 </Modal>
             </div>
         );

@@ -35,7 +35,7 @@ class StationOptions extends Component {
     }
 
     render() {
-        const { match, location, } = this.props;
+        const { match, location, nowStation, } = this.props;
         const search = location.search;
         const pathname = location.pathname.split('/')[3];
         const isMobile = util.common.isMobile();
@@ -49,34 +49,42 @@ class StationOptions extends Component {
                             !isMobile || this.state.showMenu ?
                                 <ClickOutside onClickOutside={this.handleTriggerClick}>
                                     <div className="options-menu">
-                                        <div className={!pathname ? 'active' : ''}>
-                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/station-options.svg)' }}></i>
-                                            <Link
-                                                to={`${match.url}${search}`}
-                                                onClick={this.handleTriggerClick}
-                                            >站点定义</Link>
-                                        </div>
-                                        <div className={pathname === 'channel' ? 'active' : ''}>
-                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/channel-manage.svg)' }}></i>
-                                            <Link
-                                                to={`${match.url}/channel${search}`}
-                                                onClick={this.handleTriggerClick}
-                                            >频道管理</Link>
-                                        </div>
-                                        <div className={pathname === 'plugin' ? 'active' : ''}>
-                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/plugin-manage.svg)' }}></i>
-                                            <Link
-                                                to={`${match.url}/plugin${search}`}
-                                                onClick={this.handleTriggerClick}
-                                            >插件管理</Link>
-                                        </div>
-                                        <div className={pathname === 'content' ? 'active' : ''}>
-                                            <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
-                                            <Link
-                                                to={`${match.url}/content${search}`}
-                                                onClick={this.handleTriggerClick}
-                                            >内容管理</Link>
-                                        </div>
+                                        {
+                                            nowStation && nowStation.role <= 2 ? [
+                                                <div key="station" className={!pathname ? 'active' : ''}>
+                                                    <i style={{ backgroundImage: 'url(/image/icon/stationOptions/station-options.svg)' }}></i>
+                                                    <Link
+                                                        to={`${match.url}${search}`}
+                                                        onClick={this.handleTriggerClick}
+                                                    >站点定义</Link>
+                                                </div>,
+                                                <div key="channel" className={pathname === 'channel' ? 'active' : ''}>
+                                                    <i style={{ backgroundImage: 'url(/image/icon/stationOptions/channel-manage.svg)' }}></i>
+                                                    <Link
+                                                        to={`${match.url}/channel${search}`}
+                                                        onClick={this.handleTriggerClick}
+                                                    >频道管理</Link>
+                                                </div>,
+                                                <div key="plugin" className={pathname === 'plugin' ? 'active' : ''}>
+                                                    <i style={{ backgroundImage: 'url(/image/icon/stationOptions/plugin-manage.svg)' }}></i>
+                                                    <Link
+                                                        to={`${match.url}/plugin${search}`}
+                                                        onClick={this.handleTriggerClick}
+                                                    >插件管理</Link>
+                                                </div>
+                                            ] : null
+                                        }
+                                        {
+                                            nowStation && nowStation.role <= 3 ?
+                                                <div className={pathname === 'content' ? 'active' : ''}>
+                                                    <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
+                                                    <Link
+                                                        to={`${match.url}/content${search}`}
+                                                        onClick={this.handleTriggerClick}
+                                                    >内容管理</Link>
+                                                </div> : null
+                                        }
+
                                     </div>
                                 </ClickOutside> :
                                 null

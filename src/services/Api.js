@@ -524,6 +524,20 @@ const plugin = {
             key: pluginKey,
         });
     },
+    setPlugin(pluginKey, publish, question, answer, subscribePay, monthlyFee, annualFee, lifelongFee) {
+        return requests.patch(APIURL + '/plugin/quote', {
+            token: token,
+            key: pluginKey,
+            groupArray: [],
+            publish: publish,
+            question: question,
+            answer: answer,
+            subscribePay: subscribePay,
+            monthlyFee: monthlyFee,
+            annualFee: annualFee,
+            lifelongFee: lifelongFee,
+        });
+    },
 }
 
 export default {

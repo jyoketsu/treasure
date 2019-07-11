@@ -51,7 +51,7 @@ class Login extends Component {
         const prefixSelector = getFieldDecorator('mobileArea', {
             initialValue: '+86',
         })(
-            <Select style={{ width: 70 }}>
+            <Select style={{ width: 80 }}>
                 <Option value="+86">+86</Option>
                 <Option value="+87">+87</Option>
             </Select>,

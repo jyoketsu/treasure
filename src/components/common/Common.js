@@ -50,21 +50,19 @@ class MemberCard extends Component {
                 <div className="member-info">
                     <span className="member-name">{name || ''}</span>
                     <span className="member-name">{mobile || ''}</span>
-                    {
-                        userRole <= 2 && userRole < role ?
-                            <Select
-                                value={role}
-                                style={{ width: 120 }}
-                                ref={node => this.select = node}
-                                onChange={this.handleChange}
-                            >
-                                <Option value={1}>超管</Option>
-                                <Option value={2}>管理员</Option>
-                                <Option value={3}>编辑</Option>
-                                <Option value={4}>作者</Option>
-                                <Option value={5}>成员</Option>
-                            </Select> : null
-                    }
+                    <Select
+                        value={role}
+                        style={{ width: 120 }}
+                        ref={node => this.select = node}
+                        onChange={this.handleChange}
+                        disabled={userRole <= 2 && userRole < role ? false : true}
+                    >
+                        <Option value={1}>超管</Option>
+                        <Option value={2}>管理员</Option>
+                        <Option value={3}>编辑</Option>
+                        <Option value={4}>作者</Option>
+                        <Option value={5}>成员</Option>
+                    </Select>
                 </div>
             </div>
         );

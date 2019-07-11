@@ -20,6 +20,7 @@ import {
     SUBSCRIBE,
     SUBSCRIBE_STATION,
     TRANSFER_STATION,
+    SET_PLUGIN,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -238,6 +239,22 @@ const station = (state = defaultState, action) => {
                 message.success('取消成功！');
                 let nowStation = Object.assign([], state.nowStation);
                 nowStation.pluginInfo.splice(nowStation.pluginInfo.indexOf(action.pluginKey), 1);
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case SET_PLUGIN:
+            if (!action.error) {
+                message.success('设置成功！');
+                let nowStation = Object.assign([], state.nowStation);
+                for (let i = 0; i < nowStation.pluginInfo.length; i++) {
+                    if (nowStation.pluginInfo[i]._key === action.pluginKey) {
+                        nowStation.pluginInfo[i] = Object.assign(nowStation.pluginInfo[i], action.payload.result);
+                    }
+                }
                 return {
                     ...state,
                     nowStation: nowStation,
