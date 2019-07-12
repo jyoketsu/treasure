@@ -1,3 +1,20 @@
-.edit-article{
-    padding: 15px;
+.edit-article {
+    padding: 5px;
+    width: 100%;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-container {
+    flex: 1;
+}
+
+.article-footer {
+    position: absolute;
+    right: 15px;
+    bottom: 25px;
+}
+.article-footer>button{
+    margin-right: 15px
 }

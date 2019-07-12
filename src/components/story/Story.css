@@ -189,6 +189,7 @@
     flex-direction: row-reverse;
     height: 80px;
     align-items: center;
+    background-color: #fafafa;
 }
 
 .story-footer .ant-btn {

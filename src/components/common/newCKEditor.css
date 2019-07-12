@@ -1,0 +1,42 @@
+#editor {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    background-color: #fafafa;
+}
+
+#editor>.ant-menu,
+#editor .ant-menu-sub {
+    background-color: #fafafa;
+}
+
+.my-ckeditor {
+    display: flex;
+    flex-flow: column nowrap;
+
+}
+
+/* chrome 隐藏滚动条 */
+.ck-content::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.ck-content {
+    padding: 1cm 2cm 2cm !important;
+    border: 1px hsl(0, 0%, 82.7%) solid !important;
+    border-radius: var(--ck-border-radius) !important;
+    background: white !important;
+    /* box-shadow: 0 0 5px hsla(0, 0%, 0%, .1); */
+    margin: 5px 15px;
+    /* 火狐 隐藏滚动条 */
+    overflow: -moz-scrollbars-none;
+    flex: 1;
+}
+
+.ck.ck-toolbar {
+    border: none !important;
+    margin-bottom: 5px !important;
+}
+
+.ck-focused {
+    box-shadow: unset !important;
+}

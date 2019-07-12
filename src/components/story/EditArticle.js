@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './EditArticle.css';
 import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
-import { Form, Button, message, Input, Modal } from 'antd';
-import MyCKEditor from '../common/MyCKEditor';
+import { Form, Button, message, Modal } from 'antd';
+// import MyCKEditor from '../common/MyCKEditor';
+import MyCKEditor from '../common/newCKEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
@@ -21,35 +22,6 @@ const mapStateToProps = state => ({
     flag: state.common.flag,
 });
 
-const CustomizedForm = Form.create({
-    name: 'global_state',
-    onFieldsChange(props, changedFields) {
-        props.onChange(changedFields);
-    },
-    mapPropsToFields(props) {
-        return {
-            title: Form.createFormField({
-                ...props.title,
-                value: props.title.value,
-            }),
-        };
-    },
-
-})(props => {
-    const { getFieldDecorator } = props.form;
-    return (
-        <Form onSubmit={props.onSubmit}>
-            <Form.Item label="请输入标题">
-                {getFieldDecorator('title', {
-                    rules: [
-                        { max: 30, message: '不能超过30个字符！' },
-                        { required: true, message: '请输入作品标题！' }],
-                })(<Input />)}
-            </Form.Item>
-        </Form>
-    );
-});
-
 class EditArticle extends Component {
     constructor(props) {
         super(props);
@@ -58,13 +30,8 @@ class EditArticle extends Component {
         this.state = {
             story: story,
             uptoken: null,
-            fields: {
-                title: {
-                    value: story.title,
-                },
-            },
+            eidtorHeight: 0,
         }
-        this.handleCancel = this.handleCancel.bind(this);
         this.handleCommit = this.handleCommit.bind(this);
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
 
@@ -73,68 +40,54 @@ class EditArticle extends Component {
     }
 
     handleAticleChange() {
-        const { story = {} } = this.state;
+        const { story = {}, } = this.state;
         let changedStory = JSON.parse(JSON.stringify(story));
         const content = this.editor.getData()
         changedStory.content = content;
         this.setState({ story: changedStory });
     }
 
-    handleCancel() {
-        this.props.history.goBack();
-    }
-
-    handleCommit(e) {
+    async handleCommit(e) {
         const { user, nowStationKey, addStory, modifyStory, nowChannelKey, } = this.props;
-        const { story, fields, } = this.state;
+        const { story, } = this.state;
         e.preventDefault();
-        this.form.validateFields(async (err, values) => {
-            if (!err) {
-                // 验证通过
-                let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
-                let srcReg = /src=['"]?([^'"]*)['"]?/i // 匹配图片中的src
-                let str = story.content;
-                let arr = str.match(imgReg)  //筛选出所有的img
-                if (arr) {
-                    let src = arr[0].match(srcReg);
-                    story.cover = src[1];
-                    // 封面大小
-                    story.size = await util.common.getImageInfo(story.cover);
-                }
-                // memo
-                // 去除标签
-                let sectionStr = str.replace(/<\/?.+?>/g, '');
-                sectionStr = sectionStr.replace(/&nbsp;/g, '')
-                story.memo = sectionStr.substr(0, 100);
-                // 编辑
-                if (story._key) {
-                    story.key = story._key;
-                    if (typeof story.series === 'object') {
-                        story.series = story.series._key;
-                    }
-                    Object.assign(story, {
-                        title: fields.title.value,
-                    });
-                    modifyStory(story);
-                } else {
-                    Object.assign(story, {
-                        userKey: user._key,
-                        type: 9,
-                        starKey: nowStationKey,
-                        title: fields.title.value,
-                        series: nowChannelKey,
-                    });
-                    addStory(story);
-                }
-            }
-        });
-    }
 
-    handleFormChange = changedFields => {
-        this.setState(({ fields }) => ({
-            fields: { ...fields, ...changedFields },
-        }));
-    };
+        let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
+        let srcReg = /src=['"]?([^'"]*)['"]?/i // 匹配图片中的src
+        let str = story.content;
+        let arr = str.match(imgReg)  //筛选出所有的img
+        if (arr) {
+            let src = arr[0].match(srcReg);
+            story.cover = src[1];
+            // 封面大小
+            story.size = await util.common.getImageInfo(story.cover);
+        }
+        // memo
+        // 去除标签
+        let sectionStr = str.replace(/<\/?.+?>/g, '');
+        sectionStr = sectionStr.replace(/&nbsp;/g, '')
+        story.memo = sectionStr.substr(0, 100);
+        // 编辑
+        if (story._key) {
+            story.key = story._key;
+            if (typeof story.series === 'object') {
+                story.series = story.series._key;
+            }
+            Object.assign(story, {
+                title: '',
+            });
+            modifyStory(story);
+        } else {
+            Object.assign(story, {
+                userKey: user._key,
+                type: 9,
+                starKey: nowStationKey,
+                title: '',
+                series: nowChannelKey,
+            });
+            addStory(story);
+        }
+    }
 
     showDeleteConfirm(key) {
         const { deleteStory } = this.props;
@@ -155,7 +108,7 @@ class EditArticle extends Component {
     }
 
     render() {
-        const { story = {}, fields, uptoken, } = this.state;
+        const { story = {}, uptoken, eidtorHeight, } = this.state;
         return (
             <div
                 className="app-content edit-story"
@@ -164,27 +117,23 @@ class EditArticle extends Component {
                 <div
                     className="main-content story-content edit-article"
                     style={{
-                        minHeight: `${window.innerHeight}px`
+                        height: `${window.innerHeight - 70}px`
                     }}
                 >
-                    <CustomizedForm
-                        {...fields}
-                        ref={node => this.form = node}
-                        onChange={this.handleFormChange}
-                        onSubmit={this.handleSubmit}
-                    />
-                    {uptoken ?
-                        <MyCKEditor
-                            domain='http://cdn-icare.qingtime.cn/'
-                            uptoken={uptoken}
-                            onInit={this.getEditor}
-                            onChange={this.handleAticleChange}
-                            data={story.content}
-                            locale="zh"
-                            disabled={false}
-                        /> : null}
-                    <div className="story-footer">
-                        <Button onClick={this.handleCancel}>取消</Button>
+                    <div className="editor-container" ref={node => this.editorRef = node}>
+                        {uptoken ?
+                            <MyCKEditor
+                                domain='http://cdn-icare.qingtime.cn/'
+                                uptoken={uptoken}
+                                onInit={this.getEditor}
+                                onChange={this.handleAticleChange}
+                                data={story.content}
+                                locale="zh"
+                                disabled={false}
+                                height={eidtorHeight}
+                            /> : null}
+                    </div>
+                    <div className="article-footer">
                         {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
                         <Button type="primary" onClick={this.handleCommit}>保存</Button>
                     </div>
@@ -204,6 +153,11 @@ class EditArticle extends Component {
             this.setState({ uptoken: res.result });
         } else {
             message.info({ text: res.msg });
+        }
+        if (this.editorRef) {
+            this.setState({
+                eidtorHeight: this.editorRef.clientHeight
+            });
         }
 
         api.story.applyEdit(story._key, story.updateTime);
