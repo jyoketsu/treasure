@@ -18,3 +18,9 @@
 .article-footer>button{
     margin-right: 15px
 }
+
+.article-footer {
+    position: absolute;
+    right: 15px;
+    bottom: 25px;
+}

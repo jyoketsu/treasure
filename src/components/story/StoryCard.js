@@ -67,7 +67,7 @@ class Card extends Component {
         let name = story.creator ? story.creator.name : '';
         let coverUrl = story.cover ?
             (story.cover.indexOf('cdn-icare.qingtime.cn') !== -1 ?
-                `${story.cover}?imageView2/2/w/576/` :
+                (story.cover.indexOf('vframe') === -1 ? `${story.cover}?imageView2/2/w/576/` : story.cover) :
                 story.cover) :
             '/image/icon/icon-article.svg';
         let coverStyle = {
@@ -148,10 +148,10 @@ class Card extends Component {
                         {
                             showClickNumber ?
                                 <span className="story-card-record">
-                                    <i className="story-card-icon" style={{ 
-                                        backgroundImage: 'url(/image/icon/readNum.svg)' ,
-                                        width:'18px',
-                                        }}></i>
+                                    <i className="story-card-icon" style={{
+                                        backgroundImage: 'url(/image/icon/readNum.svg)',
+                                        width: '18px',
+                                    }}></i>
                                     <span>{story.clickNumber || 1}</span>
                                 </span> : null
                         }

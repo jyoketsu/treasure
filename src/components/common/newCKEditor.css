@@ -40,3 +40,25 @@
 .ck-focused {
     box-shadow: unset !important;
 }
+
+.no-menu {
+    padding: 15px;
+}
+
+@media screen and (max-width:768px) {
+
+    #editor>.ant-menu,
+    .no-menu {
+        display: none;
+    }
+
+    #editor {
+        display: flex;
+    }
+
+    .ck-content {
+        padding: 10px !important;
+        margin: unset;
+    }
+
+}

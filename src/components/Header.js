@@ -216,13 +216,15 @@ class Header extends Component {
                     if (mainStar) {
                         history.push(`/${mainStar.domain}`);
                     } else {
-                        history.push('/sgkj');
+                        const prevDomain = sessionStorage.getItem('DOMAIN') || 'sgkj';
+                        history.push(`/${prevDomain}`);
                     }
                 } else {
                     // 游客用户
                     if (pathname === '/') {
-                        // 什么站点都不指定，跳转到时光科技站
-                        history.push('/sgkj');
+                        // 什么站点都不指定，跳转到上次访问的微站或者时光科技站
+                        const prevDomain = sessionStorage.getItem('DOMAIN') || 'sgkj';
+                        history.push(`/${prevDomain}`);
                     }
                 }
             }

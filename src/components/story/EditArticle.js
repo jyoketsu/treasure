@@ -3,7 +3,6 @@ import './EditArticle.css';
 import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
 import { Form, Button, message, Modal } from 'antd';
-// import MyCKEditor from '../common/MyCKEditor';
 import MyCKEditor from '../common/newCKEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
@@ -26,7 +25,14 @@ class EditArticle extends Component {
     constructor(props) {
         super(props);
         let type = util.common.getSearchParamValue(props.location.search, 'type');
-        const story = type === 'new' ? {} : props.story;
+        let story = type === 'new' ?
+            {
+                content:
+                    '<p style="text-align:center;"><span class="text-huge"><strong>请输入标题</strong></span></p>'
+            } : props.story;
+        if (story._key) {
+            story.content = `<p style="text-align:center;"><span class="text-huge"><strong>${story.title}</strong></span></p>${story.content}`
+        }
         this.state = {
             story: story,
             uptoken: null,
@@ -67,22 +73,26 @@ class EditArticle extends Component {
         let sectionStr = str.replace(/<\/?.+?>/g, '');
         sectionStr = sectionStr.replace(/&nbsp;/g, '')
         story.memo = sectionStr.substr(0, 100);
+
+        // 文章标题（文章内容的第1行为标题）
+        let title = util.common.getDomFirstChild(story.content);
+        if (title) {
+            story.title = title.innerText;
+            story.content = story.content.replace(title.htmlStr, '')
+        }
+
         // 编辑
         if (story._key) {
             story.key = story._key;
             if (typeof story.series === 'object') {
                 story.series = story.series._key;
             }
-            Object.assign(story, {
-                title: '',
-            });
             modifyStory(story);
         } else {
             Object.assign(story, {
                 userKey: user._key,
                 type: 9,
                 starKey: nowStationKey,
-                title: '',
                 series: nowChannelKey,
             });
             addStory(story);

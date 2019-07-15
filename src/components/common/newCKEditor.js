@@ -3,8 +3,6 @@ import "./newCKEditor.css";
 import PropTypes from 'prop-types';
 import util from '../../services/Util';
 import CKEditor from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import '@ckeditor/ckeditor5-build-decoupled-document/build/translations/zh-cn';
 import * as qiniu from 'qiniu-js';
@@ -24,6 +22,7 @@ class MyCKEditor extends Component {
 			typeArr: [],
 		}
 		this.createMenu = this.createMenu.bind(this);
+		this.recursionMenu = this.recursionMenu.bind(this);
 	}
 	myCustomUploadAdapterPlugin(editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -36,13 +35,16 @@ class MyCKEditor extends Component {
 			"ck-editor__editable_inline"
 		)[0];
 		let target = editor.getElementsByTagName(type)[index];
-		// editor.scrollTop = target.offsetTop - editorBody.offsetTop;
-		// if (document.body.scrollTop !== 0) {
-		// 	document.body.scrollTop = target.offsetTop;
-		// } else {
-		// 	document.documentElement.scrollTop = target.offsetTop;
-		// }
-		editor.scrollTop = target.offsetTop - editor.offsetTop;
+
+		if (util.common.isMobile()) {
+			if (document.body.scrollTop !== 0) {
+				document.body.scrollTop = target.offsetTop;
+			} else {
+				document.documentElement.scrollTop = target.offsetTop;
+			}
+		} else {
+			editor.scrollTop = target.offsetTop - editor.offsetTop;
+		}
 
 		let range = document.createRange();
 		range.selectNodeContents(target);
@@ -85,7 +87,7 @@ class MyCKEditor extends Component {
 					}
 					typeArr[submenuIndex].submenuItem.push({
 						name: node.innerText,
-						submenuItemOption: [],
+						submenuItem: [],
 						num: h2Num,
 						type: "h3"
 					});
@@ -106,14 +108,14 @@ class MyCKEditor extends Component {
 					if (typeArr[submenuIndex].submenuItem.length === 0) {
 						typeArr[submenuIndex].submenuItem[submenuItemIndex] = {
 							name: "",
-							submenuItemOption: [],
+							submenuItem: [],
 							num: h2Num,
 							type: "h3"
 						};
 					}
 					typeArr[submenuIndex].submenuItem[
 						submenuItemIndex
-					].submenuItemOption.push({
+					].submenuItem.push({
 						name: node.innerText,
 						num: h3Num,
 						type: "h4"
@@ -128,13 +130,23 @@ class MyCKEditor extends Component {
 		})
 	}
 
+	recursionMenu(dataSource, prefix) {
+		return dataSource.map((item, index) => {
+			let result;
+			if (!item.submenuItem || item.submenuItem.length === 0) {
+				result = <Menu.Item key={prefix ? `prefix-${index}` : index} onClick={() => { this.clickEditor(item.type, item.num) }}>{item.name}</Menu.Item>
+			} else {
+				result = <SubMenu key={`sub-${prefix ? `prefix-${index}` : index}`} title={item.name} onTitleClick={() => { this.clickEditor(item.type, item.num) }}>
+					{this.recursionMenu(item.submenuItem, index)}
+				</SubMenu>;
+			}
+			return result;
+		});
+	}
+
 	render() {
 		const { onInit, data, onChange, disabled, locale, height, } = this.props;
 		const { typeArr } = this.state;
-		// let toolbar = ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload', 'blockQuote', 'insertTable', 'undo', 'redo'];
-		// if (document.querySelector('body').offsetWidth < 768) {
-		// 	toolbar = ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'];
-		// }
 
 		let language = 'en';
 		switch (locale) {
@@ -143,63 +155,58 @@ class MyCKEditor extends Component {
 		}
 		let that = this;
 
+		let subs = [];
+		for (let i = 0; i < typeArr.length; i++) {
+			subs.push(`sub-${i}`);
+		}
+
 		return (
 			<div className="editor" id="editor">
-				<Menu
-					style={{
-						height: height,
-						overflowY: 'auto',
-						overflowX: 'hidden',
-					}}
-					mode="inline"
-					inlineCollapsed={false}
-				>
-					{typeArr.map((item, index) => {
-						return (item.submenuItem.length === 0 ?
-							<Menu.Item key={index + 'index'} onClick={() => { this.clickEditor(item.type, item.num) }}>{item.name}</Menu.Item>
-							:
-							<SubMenu key={index + 'index'} title={item.name} onTitleClick={() => { this.clickEditor(item.type, item.num) }}>
-								{item.submenuItem.map((subItem, subIndex) => {
-									return (
-										<SubMenu key={subIndex + 'subIndex'} title={subItem.name} onTitleClick={() => { this.clickEditor(subItem.type, subItem.num) }}>
-											{subItem.submenuItemOption.map((optionItem, optionIndex) => {
-												return (<Menu.Item key={optionIndex + 'optionIndex'} onClick={() => { this.clickEditor(optionItem.type, optionItem.num) }}>{optionItem.name}</Menu.Item>)
-											})}
-										</SubMenu>
-									)
-								})}
-							</SubMenu>
-						)
-					})
-					}
-				</Menu>
+				{typeArr.length !== 0 ? (
+					<Menu
+						style={{
+							height: height,
+							overflowY: 'auto',
+							overflowX: 'hidden',
+						}}
+						mode="inline"
+						inlineCollapsed={false}
+						defaultOpenKeys={subs}
+					>
+						{this.recursionMenu(typeArr)}
+					</Menu>
+				) : <span className="no-menu">暂无目录...</span>}
 
 				<div
 					className={`my-ckeditor ${disabled ? 'disabled' : ''}`}
 					style={{
-						height: height
+						height: util.common.isMobile() ? 'unset' : height
 					}}>
 					<CKEditor
 						editor={DecoupledEditor}
 						data={data ? data : ''}
 						config={{
-							// toolbar: toolbar,
 							extraPlugins: [this.myCustomUploadAdapterPlugin],
 							language: language,
 						}}
 						disabled={disabled}
 						onInit={editor => {
 							// Insert the toolbar before the editable area.
-							editor.ui.getEditableElement().parentElement.insertBefore(
-								editor.ui.view.toolbar.element,
-								editor.ui.getEditableElement()
-							);
-							onInit(editor);
+							if (!disabled) {
+								editor.ui.getEditableElement().parentElement.insertBefore(
+									editor.ui.view.toolbar.element,
+									editor.ui.getEditableElement()
+								);
+							}
+
+							if (onInit) onInit(editor);
 						}}
 						onChange={(event, editor) => {
 							const data = editor.getData();
 							// console.log({ event, editor, data });
-							onChange();
+							if (onChange) {
+								onChange();
+							}
 							that.createMenu(data);
 						}}
 						// onBlur={editor => {

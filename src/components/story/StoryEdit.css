@@ -166,7 +166,7 @@
 }
 
 .item-preview-editor {
-    height: 300px;
+    min-height: 300px;
     background-position: top;
     background-size: contain;
     background-repeat: no-repeat;

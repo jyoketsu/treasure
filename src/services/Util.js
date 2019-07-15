@@ -277,6 +277,29 @@ const common = {
             }
         });
     },
+
+    /**
+     * 获取dom字符串中的第一个元素内容
+     * @param {String} domStr html字符串
+     * @returns {Object} result 结果 innerText htmlStr
+     */
+    getDomFirstChild(domStr) {
+        let result = null;
+        let doc = new DOMParser().parseFromString(domStr, "text/html");
+        let walker = document.createTreeWalker(doc, NodeFilter.SHOW_ELEMENT);
+        let node = walker.nextNode();
+        while (node !== null) {
+            node = walker.nextNode();
+            if (node && node.tagName !== "HEAD" && node.tagName !== "BODY") {
+                result = {
+                    innerText: node.innerText,
+                    htmlStr: node.outerHTML
+                }
+                break;
+            }
+        }
+        return result;
+    },
 }
 
 export default {

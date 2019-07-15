@@ -126,7 +126,6 @@ class Story extends Component {
 
                                     result =
                                         <div className="story-imageGroup">
-                                            <div className="image-memo">{memo}</div>
                                             <div className="story-image-box">
                                                 <img
                                                     className="story-image"
@@ -136,6 +135,7 @@ class Story extends Component {
                                                 />
                                                 {exifStr ? <div className="img-exif">{exifStr}</div> : null}
                                             </div>
+                                            <div className="image-memo">{memo}</div>
                                         </div>;
                                     break;
                                 }

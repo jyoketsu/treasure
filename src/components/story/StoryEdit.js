@@ -171,7 +171,7 @@ class StoryEdit extends Component {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
 
-            let index = extParams.index ? extParams.index + 1 : prevStory.richContent.length;
+            let index = extParams && extParams.index ? extParams.index + 1 : (prevStory.richContent ? prevStory.richContent.length : 0);
 
             prevContent.splice(
                 index,
