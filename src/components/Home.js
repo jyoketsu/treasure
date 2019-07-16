@@ -7,7 +7,14 @@ import util from '../services/Util';
 import { Modal, Tooltip, message, Input, } from 'antd';
 import { connect } from 'react-redux';
 import ClickOutside from './common/ClickOutside';
-import { changeStation, getStationDetail, getStoryList, clearStoryList } from '../actions/app';
+import {
+    changeStation,
+    getStationDetail,
+    getStoryList,
+    clearStoryList,
+    seePlugin,
+    seeChannel
+} from '../actions/app';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -122,7 +129,9 @@ class Home extends Component {
             match,
             sortType,
             sortOrder,
-            nowChannelKey } = this.props;
+            nowChannelKey,
+            seePlugin,
+            seeChannel, } = this.props;
         const { showSort } = this.state;
 
         return (
@@ -148,6 +157,8 @@ class Home extends Component {
                             curPage={this.curPage}
                             perPage={this.perPage}
                             showMore={this.showMore}
+                            seePlugin={seePlugin}
+                            seeChannel={seeChannel}
                         /> :
                         <HomeSubscribe
                             getStoryList={getStoryList}
@@ -307,7 +318,7 @@ class Station extends React.Component {
     }
 
     handleClickChannel(index, key, answered) {
-        const { changeChannel, content } = this.props;
+        const { changeChannel, content, user, } = this.props;
         const { seriesInfo = [] } = content;
         let nowChannel;
         for (let i = 0; i < seriesInfo.length; i++) {
@@ -316,7 +327,16 @@ class Station extends React.Component {
                 break;
             }
         }
-        if (nowChannel && nowChannel.publish === 3 && !answered) {
+
+        if (user.isGuest && nowChannel && nowChannel.publish === 3) {
+            message.info('请登录');
+            return;
+        }
+        if (
+            (!content.role && nowChannel && !nowChannel.isSeeSeries) &&
+            nowChannel && nowChannel.publish === 3
+            && !answered
+        ) {
             this.rightAnswer = nowChannel.answer;
             this.question = {
                 type: 'album',
@@ -361,16 +381,19 @@ class Station extends React.Component {
     }
 
     handleAnswer() {
+        const { seePlugin, seeChannel } = this.props;
         const { answer } = this.state;
         if (answer === this.rightAnswer) {
             if (this.question.type === 'plugin') {
-                window.open(this.question.param, '_blank');
+                window.open(this.question.param.url, '_blank');
+                seePlugin(this.question.param.key);
             } else if (this.question.type === 'album') {
                 this.handleClickChannel(
                     this.question.param.index,
                     this.question.param.key,
                     true
                 );
+                seeChannel(this.question.param.key);
             }
             this.setState({
                 questionVisible: false
@@ -391,6 +414,7 @@ class Station extends React.Component {
             nowChannelKey,
             channelInfo,
             showMore,
+            user,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
         const { isCareStar } = content;
@@ -447,12 +471,24 @@ class Station extends React.Component {
                                                     window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank');
                                                     break;
                                                 case 3:
-                                                    this.rightAnswer = plugin.answer;
-                                                    this.question = {
-                                                        type: 'plugin',
-                                                        param: `${plugin.url}/${content.domain}?token=${token}`,
+                                                    if (content.role || plugin.isSeePlugin) {
+                                                        window.open(`${plugin.url}/${content.domain}?token=${token}`, '_blank');
+                                                    } else {
+                                                        if (user.isGuest) {
+                                                            message.info('请登录');
+                                                            return;
+                                                        } else {
+                                                            this.rightAnswer = plugin.answer;
+                                                            this.question = {
+                                                                type: 'plugin',
+                                                                param: {
+                                                                    url: `${plugin.url}/${content.domain}?token=${token}`,
+                                                                    key: plugin._key,
+                                                                },
+                                                            }
+                                                            this.switchPluginVisible(plugin.question, '');
+                                                        }
                                                     }
-                                                    this.switchPluginVisible(plugin.question, '');
                                                     break;
                                                 default: break;
                                             }
@@ -641,5 +677,12 @@ class HomeFooter extends React.Component {
 
 export default connect(
     mapStateToProps,
-    { changeStation, getStationDetail, getStoryList, clearStoryList },
+    {
+        changeStation,
+        getStationDetail,
+        getStoryList,
+        clearStoryList,
+        seePlugin,
+        seeChannel
+    },
 )(Home);

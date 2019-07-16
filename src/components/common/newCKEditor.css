@@ -9,6 +9,12 @@
     background-color: #fafafa;
 }
 
+#editor .ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+    border-right: unset;
+}
+
 .my-ckeditor {
     display: flex;
     flex-flow: column nowrap;
@@ -22,8 +28,7 @@
 
 .ck-content {
     padding: 1cm 2cm 2cm !important;
-    border: 1px hsl(0, 0%, 82.7%) solid !important;
-    border-radius: var(--ck-border-radius) !important;
+    box-shadow: 0 1px 6px #ccc;
     background: white !important;
     /* box-shadow: 0 0 5px hsla(0, 0%, 0%, .1); */
     margin: 5px 15px;

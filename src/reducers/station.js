@@ -21,6 +21,8 @@ import {
     SUBSCRIBE_STATION,
     TRANSFER_STATION,
     SET_PLUGIN,
+    SEE_CHANNEL,
+    SEE_PLUGIN,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -348,6 +350,40 @@ const station = (state = defaultState, action) => {
                 message.success('已发送移交请求，等待对方确认。');
                 return {
                     ...state,
+                };
+            } else {
+                return state;
+            }
+        case SEE_CHANNEL:
+            if (!action.error) {
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let channels = nowStation.seriesInfo;
+                for (let i = 0; i < channels.length; i++) {
+                    if (channels[i]._key === action.channelKey) {
+                        channels[i].isSeeSeries = true;
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case SEE_PLUGIN:
+            if (!action.error) {
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let plugins = nowStation.pluginInfo;
+                for (let i = 0; i < plugins.length; i++) {
+                    if (plugins[i]._key === action.pluginKey) {
+                        plugins[i].isSeePlugin = true;
+                        break;
+                    }
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
                 };
             } else {
                 return state;

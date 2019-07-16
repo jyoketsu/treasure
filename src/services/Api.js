@@ -267,7 +267,7 @@ const station = {
     createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
-            name: name,
+            name: name.trim(),
             domain: domain,
             type: type,
             memo: memo,
@@ -290,7 +290,7 @@ const station = {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
-            name: name,
+            name: name.trim(),
             domain: domain,
             type: type,
             memo: memo,
@@ -471,6 +471,17 @@ const story = {
             groupKey: groupKey,
             passOrNot: passOrNot,
         });
+    },
+
+    /**
+     * 回答问题正确后调用，记录回答正确的状态
+     * @param {String} channelKey 
+     */
+    seeChannel(channelKey) {
+        return requests.post(APIURL + '/series/seeSeries', {
+            token: token,
+            seriesKey: channelKey,
+        });
     }
 }
 
@@ -536,6 +547,17 @@ const plugin = {
             monthlyFee: monthlyFee,
             annualFee: annualFee,
             lifelongFee: lifelongFee,
+        });
+    },
+
+    /**
+     * 回答问题正确后调用，记录回答正确的状态
+     * @param {String} pluginKey 
+     */
+    seePlugin(pluginKey) {
+        return requests.post(APIURL + '/plugin/seePlugin', {
+            token: token,
+            pluginKey: pluginKey,
         });
     },
 }

@@ -3,7 +3,7 @@ import {
     EDIT_PLUGIN,
     DELETE_PLUGIN,
     GET_PLUGIN_LIST,
-    CLEAR_PLUGIN_LIST,  
+    CLEAR_PLUGIN_LIST,
 } from '../actions/app';
 import { message, } from 'antd';
 

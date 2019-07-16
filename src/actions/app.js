@@ -209,6 +209,7 @@ export function myStationLatestStory(curPage) {
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const EDIT_CHANNEL = 'EDIT_CHANNEL';
 export const DELETE_CHANNEL = 'DELETE_CHANNEL';
+export const SEE_CHANNEL = 'SEE_CHANNEL';
 
 export function addChannel(stationKey, name, type, extParams, ) {
     let request = api.story.addChannel(stationKey, name, type, extParams);
@@ -225,6 +226,11 @@ export function deleteChannel(channelKey) {
     return { type: DELETE_CHANNEL, channelKey: channelKey, payload: request }
 }
 
+export function seeChannel(channelKey) {
+    let request = api.story.seeChannel(channelKey);
+    return { type: SEE_CHANNEL, channelKey: channelKey, payload: request }
+}
+
 // 插件
 export const CREATE_PLUGIN = 'CREATE_PLUGIN';
 export const EDIT_PLUGIN = 'EDIT_PLUGIN';
@@ -234,6 +240,7 @@ export const SUBSCRIBE_PLUGIN = 'SUBSCRIBE_PLUGIN';
 export const CLEAR_PLUGIN_LIST = 'CLEAR_PLUGIN_LIST';
 export const CANCEL_PLUGIN = 'CANCEL_PLUGIN';
 export const SET_PLUGIN = 'SET_PLUGIN';
+export const SEE_PLUGIN = 'SEE_PLUGIN';
 
 export function createPlugin(stationKey, name, icon, url) {
     let request = api.plugin.createPlugin(stationKey, name, icon, url);
@@ -272,4 +279,9 @@ export function cancelPlugin(pluginKey) {
 export function setPlugin(pluginKey, publish, question, answer, subscribePay, monthlyFee, annualFee, lifelongFee) {
     let request = api.plugin.setPlugin(pluginKey, publish, question, answer, subscribePay, monthlyFee, annualFee, lifelongFee);
     return { type: SET_PLUGIN, pluginKey: pluginKey, payload: request }
+}
+
+export function seePlugin(pluginKey) {
+    let request = api.plugin.seePlugin(pluginKey);
+    return { type: SEE_PLUGIN, pluginKey: pluginKey, payload: request }
 }
