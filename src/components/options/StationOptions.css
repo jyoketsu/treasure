@@ -68,7 +68,7 @@
     height: 50px;
     position: fixed;
     right: 0;
-    top: 150px;
+    bottom: 80px;
     background-image: url(/image/icon/menu.svg);
     background-color: #FFFFFF;
     background-size: 70%;

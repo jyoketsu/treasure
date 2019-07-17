@@ -13,8 +13,10 @@ export const BIND_MOBILE = 'BIND_MOBILE';
 export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
 export const SEARCH_USER = 'SEARCH_USER';
 export const GET_GROUP_MEMBER = 'GET_GROUP_MEMBER';
+export const CLEAR_GROUP_MEMBER = 'CLEAR_GROUP_MEMBER';
 export const ADD_GROUP_MEMBER = 'ADD_GROUP_MEMBER';
 export const SET_MEMBER_ROLE = 'SET_MEMBER_ROLE';
+export const REMOVE_GROUP_MEMBER = 'REMOVE_GROUP_MEMBER';
 
 export function logout(history) {
     history.push(`/account/login${window.location.search}`)
@@ -44,6 +46,10 @@ export function groupMember(groupId) {
     return { type: GET_GROUP_MEMBER, payload: request }
 }
 
+export function clearGroupMember() {
+    return { type: CLEAR_GROUP_MEMBER }
+}
+
 export function addGroupMember(groupId, targetUidList) {
     let request = api.auth.addGroupMember(groupId, targetUidList);
     return { type: ADD_GROUP_MEMBER, payload: request }
@@ -52,6 +58,11 @@ export function addGroupMember(groupId, targetUidList) {
 export function setMemberRole(groupId, targetUKey, role) {
     let request = api.auth.setMemberRole(groupId, targetUKey, role);
     return { type: SET_MEMBER_ROLE, targetUKey, role, payload: request }
+}
+
+export function removeMember(groupId, targetUKeyList) {
+    let request = api.auth.removeGroupMember(groupId, targetUKeyList);
+    return { type: REMOVE_GROUP_MEMBER, targetUKeyList, payload: request }
 }
 
 // station
@@ -140,8 +151,8 @@ export const AUDIT = 'AUDIT';
 export const READYTOREFRESH = 'READYTOREFRESH';
 export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
 
-export function getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage, isRefresh) {
-    let request = api.story.getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage);
+export function getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage, isRefresh) {
+    let request = api.story.getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage);
     return {
         type: GET_STORY_LIST,
         curPage: curPage,

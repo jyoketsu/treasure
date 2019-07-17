@@ -75,8 +75,8 @@ class StoryEdit extends Component {
             message.info('请输入标题！');
             return;
         }
-        if (!story.pictureCount) {
-            message.info('请至少上传一张图片！');
+        if (!story.pictureCount && !story.videoCount) {
+            message.info('请至少上传一张图片/视频！');
             return;
         }
         if (story.pictureCount > 200) {
@@ -186,10 +186,10 @@ class StoryEdit extends Component {
             prevStory.richContent = prevContent;
             this.scrollDown = true;
 
-            if (typeof prevStory.pictureCount === 'number') {
-                prevStory.pictureCount = prevStory.pictureCount + 1;
+            if (typeof prevStory.videoCount === 'number') {
+                prevStory.videoCount = prevStory.videoCount + 1;
             } else {
-                prevStory.pictureCount = 1;
+                prevStory.videoCount = 1;
             }
             // 设置封面
             if (!prevStory.cover) {

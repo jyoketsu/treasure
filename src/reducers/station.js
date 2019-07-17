@@ -11,6 +11,8 @@ import {
     EDIT_CHANNEL,
     DELETE_CHANNEL,
     SEARCH_USER,
+    CLEAR_GROUP_MEMBER,
+    REMOVE_GROUP_MEMBER,
     GET_GROUP_MEMBER,
     ADD_GROUP_MEMBER,
     SET_MEMBER_ROLE,
@@ -194,12 +196,33 @@ const station = (state = defaultState, action) => {
             } else {
                 return state;
             }
+        case CLEAR_GROUP_MEMBER:
+            return {
+                ...state,
+                userList: [],
+            }
         case ADD_GROUP_MEMBER:
             if (!action.error) {
                 let userList = JSON.parse(JSON.stringify(state.userList));
                 let result = action.payload.result;
                 if (result.length !== 0) {
                     userList.push(result[0]);
+                }
+                return {
+                    ...state,
+                    userList: userList,
+                };
+            } else {
+                return state;
+            }
+        case REMOVE_GROUP_MEMBER:
+            if (!action.error) {
+                let userList = JSON.parse(JSON.stringify(state.userList));
+                for (let i = 0; i < userList.length; i++) {
+                    if (userList[i].userId === action.targetUKeyList[0]) {
+                        userList.splice(i, 1);
+                        break;
+                    }
                 }
                 return {
                     ...state,

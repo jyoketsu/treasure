@@ -47,14 +47,14 @@ class StoryEntry extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, userKey, groupKey, } = this.props;
+        const { story, like, audit, auditStory, userKey, groupKey, role, } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
         let name = story.creator ? story.creator.name : '';
         let coverUrl = story.cover ?
             (story.cover.indexOf('cdn-icare.qingtime.cn') !== -1 ?
-                `${story.cover}?imageView2/2/w/576/` :
+                (story.cover.indexOf('vframe') === -1 ? `${story.cover}?imageView2/2/w/576/` : story.cover) :
                 story.cover) :
             '/image/icon/icon-article.svg';
         let coverStyle = {
@@ -64,7 +64,7 @@ class StoryEntry extends Component {
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};
-        if (isMyStory || audit) {
+        if ((isMyStory && role && role > 2) || audit) {
             switch (story.pass) {
                 case 1: status = '待审核'; statusStyle = { color: '#9F353A' }; break;
                 case 2: status = '审核通过'; statusStyle = { color: '#7BA23F' }; break;
@@ -120,9 +120,9 @@ class StoryEntry extends Component {
                         <div>
                             <span style={statusStyle}>{status}</span>
                             <span className="story-card-record">
-                                <i className="story-card-icon" style={{ 
-                                    backgroundImage: 'url(/image/icon/readNum.svg)' ,
-                                    width:'18px',
+                                <i className="story-card-icon" style={{
+                                    backgroundImage: 'url(/image/icon/readNum.svg)',
+                                    width: '18px',
                                 }}></i>
                                 <span>{story.clickNumber}</span>
                             </span>

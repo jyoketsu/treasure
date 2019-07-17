@@ -36,10 +36,25 @@ class MemberCard extends Component {
         });
     }
     render() {
-        const { avatar, name, mobile, userRole, } = this.props;
+        const { avatar, name, mobile, userRole, disabled, handleClick, handleDelete } = this.props;
         const { role } = this.state;
+        let roleName = '';
+        if (disabled) {
+            switch (role) {
+                case 1: roleName = '站长'; break;
+                case 2: roleName = '管理员'; break;
+                case 3: roleName = '编辑'; break;
+                case 4: roleName = '作者'; break;
+                case 5: roleName = '成员'; break;
+                default: roleName = '粉丝';
+            }
+        }
         return (
-            <div className="member-card">
+            <div className={`member-card ${handleClick ? 'clickable' : ''}`} onClick={handleClick}>
+                {
+                    !disabled && userRole <= 2 && userRole < role ?
+                        < i className="deleteMember" onClick={handleDelete}></i> : null
+                }
                 <div className="member-avatar-container">
                     <i className="member-avatar" style={{
                         backgroundImage: `url(${avatar ?
@@ -50,21 +65,25 @@ class MemberCard extends Component {
                 <div className="member-info">
                     <span className="member-name">{name || ''}</span>
                     <span className="member-name">{mobile || ''}</span>
-                    <Select
-                        value={role}
-                        style={{ width: 120 }}
-                        ref={node => this.select = node}
-                        onChange={this.handleChange}
-                        disabled={userRole <= 2 && userRole < role ? false : true}
-                    >
-                        <Option value={1}>超管</Option>
-                        <Option value={2}>管理员</Option>
-                        <Option value={3}>编辑</Option>
-                        <Option value={4}>作者</Option>
-                        <Option value={5}>成员</Option>
-                    </Select>
+                    {
+                        disabled ?
+                            <div>{roleName}</div> :
+                            <Select
+                                value={role}
+                                style={{ width: 120 }}
+                                ref={node => this.select = node}
+                                onChange={this.handleChange}
+                                disabled={userRole <= 2 && userRole < role ? false : true}
+                            >
+                                <Option value={1}>站长</Option>
+                                <Option value={2}>管理员</Option>
+                                <Option value={3}>编辑</Option>
+                                <Option value={4}>作者</Option>
+                                <Option value={5}>成员</Option>
+                            </Select>
+                    }
                 </div>
-            </div>
+            </div >
         );
     };
 }

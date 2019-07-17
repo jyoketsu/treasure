@@ -1,4 +1,5 @@
 .member-card {
+    position: relative;
     width: 265px;
     height: 97px;
     background: #F2F2F2;
@@ -7,6 +8,27 @@
     align-items: center;
     margin-bottom: 15px;
     margin-right: 11px;
+}
+
+.member-card.clickable:hover {
+    cursor: pointer;
+}
+
+.deleteMember {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    display: block;
+    background-image: url(/image/icon/story/delete-item.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.deleteMember:hover {
+    cursor: pointer;
 }
 
 .member-avatar {

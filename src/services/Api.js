@@ -1,6 +1,6 @@
 import api from './Util';
-const APIURL = 'https://baokudata.qingtime.cn/sgbh';
-// const APIURL = 'http://192.168.1.138:8529/_db/TimeBox/my/sgbh';
+// const APIURL = 'https://baokudata.qingtime.cn/sgbh';
+const APIURL = 'http://192.168.1.138:8529/_db/TimeBox/my/sgbh';
 // const API = 'http://192.168.1.101:8051';
 let token = 'FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667';
 
@@ -223,6 +223,10 @@ const auth = {
             searchCondition: keyword,
         });
     },
+    /**
+     * 获取群特定成员信息
+     * @param {String} groupId 
+     */
     groupMember(groupId) {
         return requests.get(APIURL + '/groupmember', {
             token: token,
@@ -234,6 +238,13 @@ const auth = {
             token: token,
             groupKey: groupId,
             targetUidList: targetUidList
+        });
+    },
+    removeGroupMember(groupId, targetUKeyList) {
+        return requests.delete(APIURL + '/groupmember/remove', {
+            token: token,
+            groupKey: groupId,
+            targetUKeyList: targetUKeyList
         });
     },
     setMemberRole(groupId, targetUKey, role, ) {
@@ -364,11 +375,12 @@ const station = {
 }
 
 const story = {
-    getStoryList(type, starKey, seriesKey, sortType, sortOrder, curPage, perPage) {
+    getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage, ) {
         return requests.get(APIURL + '/album', {
             token: token,
             type: type,
             starKey: starKey,
+            targetUKey: targetUKey,
             seriesKey: seriesKey,
             sortType: sortType,
             sortOrder: sortOrder,

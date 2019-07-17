@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import './StationGroup.css';
-import { Input } from 'antd';
+import { Input, Modal, } from 'antd';
 import { MemberCard, SearchMemberCard, } from '../common/Common';
 import { connect } from 'react-redux';
-import { searchUser, groupMember, addGroupMember, setMemberRole, transferStation, } from '../../actions/app';
+import {
+    searchUser,
+    groupMember,
+    addGroupMember,
+    setMemberRole,
+    transferStation,
+    removeMember,
+} from '../../actions/app';
+const confirm = Modal.confirm;
 
 const Search = Input.Search;
 const mapStateToProps = state => ({
@@ -14,6 +22,23 @@ const mapStateToProps = state => ({
 });
 
 class StationGroup extends Component {
+    showDeleteConfirm(key, name) {
+        const { removeMember, groupKey, } = this.props;
+        confirm({
+            title: '移除成员',
+            content: `确定要删除【${name}】吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                removeMember(groupKey, [key]);
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
+
     render() {
         const {
             searchUser,
@@ -65,6 +90,8 @@ class StationGroup extends Component {
                                 userRole={nowStation.role}
                                 setMemberRole={setMemberRole}
                                 transferStation={transferStation}
+                                handleDelete={this.showDeleteConfirm.bind(this, user.userId, user.nickName ?
+                                    user.nickName : '')}
                             />
                         ))
                     }
@@ -81,5 +108,12 @@ class StationGroup extends Component {
 
 export default connect(
     mapStateToProps,
-    { searchUser, groupMember, addGroupMember, setMemberRole, transferStation, },
+    {
+        searchUser,
+        groupMember,
+        addGroupMember,
+        setMemberRole,
+        transferStation,
+        removeMember
+    },
 )(StationGroup);

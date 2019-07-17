@@ -44,18 +44,10 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, channelInfo, nowStation, } = this.props;
+        const { story, userId, nowStationKey, nowStation, } = this.props;
         const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
-        // 频道信息
-        let nowChannel;
-        for (let i = 0; i < channelInfo.length; i++) {
-            if (story.series && story.series._key === channelInfo[i]._key) {
-                nowChannel = channelInfo[i];
-                break;
-            }
-        }
 
         return (
             <div className="app-content story-container"
@@ -81,11 +73,11 @@ class Story extends Component {
                         <div className="story-title">{title}</div>
                         <div className="story-head-info">
                             <div className="story-head-other">
-                                <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
+                                <div>频道：{story.series ? story.series.name : ''}</div>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
                                     <div className="story-card-name">{creator.name}</div>
-                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.updateTime, 'yyyy-MM-dd')}</div>
                                 </div>
                             </div>
                             {address ? <div className="story-head-address">{address}</div> : null}

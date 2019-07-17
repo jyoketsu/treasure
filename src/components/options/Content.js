@@ -47,7 +47,7 @@ class Content extends Component {
             (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
     }
 
@@ -60,7 +60,7 @@ class Content extends Component {
         } = this.props;
 
         this.curPage++;
-        getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
     }
 
     handleTabChange(key) {
@@ -71,15 +71,15 @@ class Content extends Component {
         switch (key) {
             case 'wait':
                 this.filterType = 7;
-                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             case 'passed':
                 this.filterType = 6;
-                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             case 'unpass':
                 this.filterType = 8;
-                getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
                 break;
             default:
                 break;
@@ -113,7 +113,7 @@ class Content extends Component {
             this.curPage = 1;
             this.filterType = 7;
             sessionStorage.setItem('content-curpage', this.curPage);
-            getStoryList(this.filterType, nowStationKey, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 
         // 监听滚动，查看更多

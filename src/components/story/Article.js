@@ -10,7 +10,6 @@ const mapStateToProps = state => ({
     story: state.story.story,
     nowStation: state.station.nowStation,
     nowStationKey: state.station.nowStationKey,
-    channelInfo: state.station.nowStation ? state.station.nowStation.seriesInfo : [],
 });
 
 class Article extends Component {
@@ -20,25 +19,18 @@ class Article extends Component {
             eidtorHeight: 0,
         }
     }
+    
     handleToEdit() {
         const { history, location } = this.props;
         history.push(`editArticle${location.search}`);
     }
 
     render() {
-        const { story, userId, nowStationKey, channelInfo, nowStation, } = this.props;
+        const { story, userId, nowStationKey, nowStation, } = this.props;
         const { userKey, title, creator = {}, } = story;
         const { eidtorHeight } = this.state;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
-        // 频道信息
-        let nowChannel;
-        for (let i = 0; i < channelInfo.length; i++) {
-            if (story.series && story.series._key === channelInfo[i]._key) {
-                nowChannel = channelInfo[i];
-                break;
-            }
-        }
 
         return (
             <div
@@ -54,11 +46,11 @@ class Article extends Component {
                         <div className="story-title">{title}</div>
                         <div className="story-head-info">
                             <div className="story-head-other">
-                                <div>频道：{nowChannel ? nowChannel.name : '未知'}</div>
+                                <div>频道：{story.series ? story.series.name : ''}</div>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <i className="story-head-avatar" style={{ backgroundImage: `url('${avatar || "/image/icon/avatar.svg"}')` }}></i>
                                     <div className="story-card-name">{creator.name}</div>
-                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</div>
+                                    <div className="story-card-time">{util.common.timestamp2DataStr(story.updateTime, 'yyyy-MM-dd')}</div>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import Station from './Station';
 import Channel from './Channel';
 import Plugin from './Plugin';
 import Content from './Content';
+import MemberList from './MemberList';
 import { connect } from 'react-redux';
 import util from '../../services/Util';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -14,7 +15,8 @@ import AddPlugin from './AddPlugin';
 import CreatePlugin from './CreatePlugin';
 import PluginOptions from './PluginOptions';
 import PluginSystem from './PluginSystem';
-import { clearPluginList, clearStoryList, } from './../../actions/app';
+import MemberStoryList from './MemberStoryList';
+import { clearPluginList } from './../../actions/app';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
 });
@@ -42,7 +44,7 @@ class StationOptions extends Component {
         return (
             <div className="app-content">
                 <div className="main-content station-options" style={{
-                    minHeight: `${window.innerHeight}px`
+                    minHeight: `${window.innerHeight - 70}px`
                 }}>
                     <ReactCSSTransitionGroup transitionName="sideMenu" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
                         {
@@ -75,14 +77,22 @@ class StationOptions extends Component {
                                             ] : null
                                         }
                                         {
-                                            nowStation && nowStation.role <= 3 ?
-                                                <div className={pathname === 'content' ? 'active' : ''}>
+                                            nowStation && nowStation.role <= 3 ? [
+                                                <div className={pathname === 'content' ? 'active' : ''} key="content">
                                                     <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
                                                     <Link
                                                         to={`${match.url}/content${search}`}
                                                         onClick={this.handleTriggerClick}
                                                     >内容管理</Link>
-                                                </div> : null
+                                                </div>,
+                                                <div className={pathname === 'memberList' ? 'active' : ''} key="memberlist">
+                                                    <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
+                                                    <Link
+                                                        to={`${match.url}/memberList${search}`}
+                                                        onClick={this.handleTriggerClick}
+                                                    >粉丝列表</Link>
+                                                </div>,
+                                            ] : null
                                         }
 
                                     </div>
@@ -96,11 +106,13 @@ class StationOptions extends Component {
                         <Route path={`${match.path}/channel`} component={Channel}></Route>
                         <Route path={`${match.path}/plugin`} component={Plugin}></Route>
                         <Route path={`${match.path}/content`} component={Content}></Route>
+                        <Route path={`${match.path}/memberList`} component={MemberList}></Route>
                         <Route path={`${match.path}/editChannel`} component={EditChannel}></Route>
                         <Route path={`${match.path}/addPlugin`} component={AddPlugin}></Route>
                         <Route path={`${match.path}/pluginOptions`} component={PluginOptions}></Route>
                         <Route path={`${match.path}/createPlugin`} component={CreatePlugin}></Route>
                         <Route path={`${match.path}/pluginSystem`} component={PluginSystem}></Route>
+                        <Route path={`${match.path}/memberStory`} component={MemberStoryList}></Route>
                     </div>
                 </div>
             </div>
@@ -115,12 +127,11 @@ class StationOptions extends Component {
     }
 
     componentWillUnmount() {
-        // this.props.clearStoryList();
         this.props.clearPluginList();
     }
 }
 
 export default connect(
     mapStateToProps,
-    { clearPluginList, clearStoryList, },
+    { clearPluginList },
 )(StationOptions);

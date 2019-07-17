@@ -5,6 +5,7 @@ import StationGroup from '../User/StationGroup';
 import { Tabs, } from 'antd';
 
 import { connect } from 'react-redux';
+import { clearGroupMember } from '../../actions/app';
 
 const TabPane = Tabs.TabPane;
 
@@ -32,9 +33,13 @@ class Station extends Component {
             </div>
         );
     };
+
+    componentDidMount() {
+        this.props.clearGroupMember();
+    }
 }
 
 export default connect(
     mapStateToProps,
-    {},
+    { clearGroupMember },
 )(Station);

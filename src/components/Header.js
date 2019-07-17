@@ -243,7 +243,7 @@ class Header extends Component {
             if (nowStationKey !== 'notFound') {
                 getStationDetail(nowStationKey);
                 // 获取微站全部故事
-                getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+                getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage);
                 sessionStorage.setItem('home-curpage', 1);
             } else {
                 history.push('/station/notFound');

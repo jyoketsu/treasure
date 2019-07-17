@@ -68,7 +68,7 @@ class Home extends Component {
             if (nowStationKey === 'all') {
                 getStoryList(4, null, null, 1, 1, this.curPage, this.perPage);
             } else {
-                getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
             }
         }
     }
@@ -82,7 +82,7 @@ class Home extends Component {
             sortOrder,
             nowChannelKey, } = this.props;
         this.curPage++;
-        getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     changeChannel(channelKey) {
@@ -96,7 +96,7 @@ class Home extends Component {
         this.curPage = 1;
         sessionStorage.setItem('home-curpage', 1);
         clearStoryList();
-        getStoryList(1, nowStationKey, channelKey, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, null, channelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     switchSortModal() {
@@ -115,7 +115,7 @@ class Home extends Component {
         this.setState({
             showSort: false,
         });
-        getStoryList(1, nowStationKey, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
     }
 
     render() {
@@ -182,6 +182,7 @@ class Home extends Component {
 
         const {
             nowStationKey,
+            nowStation,
             sortType,
             sortOrder,
             getStoryList,
@@ -190,17 +191,17 @@ class Home extends Component {
             refresh,
         } = this.props;
 
-        if (nowStationKey) {
+        if (nowStationKey && !nowStation) {
             getStationDetail(nowStationKey);
         }
         if (nowStationKey && storyListLength === 0) {
             // 获取微站全部故事
-            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage);
+            getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage);
             sessionStorage.setItem('home-curpage', 1);
         }
 
         if (refresh) {
-            getStoryList(1, nowStationKey, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
+            getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
             sessionStorage.setItem('home-curpage', 1);
         }
     }

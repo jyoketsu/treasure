@@ -144,7 +144,7 @@ class Card extends Component {
                             </div> : null
                     }
                     <div>
-                        <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
+                        <span className="story-card-time">{util.common.timestamp2DataStr(story.updateTime, 'yyyy-MM-dd')}</span>
                         {
                             showClickNumber ?
                                 <span className="story-card-record">
