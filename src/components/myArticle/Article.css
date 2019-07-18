@@ -1,0 +1,24 @@
+.story-preview-modal {
+    margin: unset;
+    position: absolute;
+    padding: unset;
+}
+
+.story-preview-modal>.ant-modal-content {
+    height: 100%;
+    border-radius: 0;
+    overflow: auto;
+}
+
+.story-preview-modal .ant-modal-body {
+    padding: unset;
+}
+
+.story-preview-modal .story-content,
+.story-preview-modal .main-content {
+    width: unset;
+}
+
+.story-preview-modal .app-content {
+    position: unset;
+}

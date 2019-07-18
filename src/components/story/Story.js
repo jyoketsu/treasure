@@ -18,6 +18,7 @@ class Story extends Component {
         super(props);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.handleToEdit = this.handleToEdit.bind(this);
+        this.state = { propsKey: null }
     }
 
     handleClickImage(url) {
@@ -44,7 +45,7 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, } = this.props;
+        const { story, userId, nowStationKey, nowStation, readOnly, } = this.props;
         const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
@@ -91,7 +92,7 @@ class Story extends Component {
                             </div> : null
                     }
                     {
-                        (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
+                        !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
                     {memo ? <pre className="story-memo">{memo}</pre> : null}
                     {
@@ -155,9 +156,11 @@ class Story extends Component {
     }
 
     componentDidMount() {
-        const { location, getStoryDetail, } = this.props;
-        let storyKey = util.common.getSearchParamValue(location.search, 'key');
-        getStoryDetail(storyKey);
+        const { location, getStoryDetail } = this.props;
+        if (location) {
+            let storyKey = util.common.getSearchParamValue(location.search, 'key');
+            getStoryDetail(storyKey);
+        }
     }
 
     componentDidUpdate(prevPros) {

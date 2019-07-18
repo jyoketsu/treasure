@@ -47,7 +47,7 @@ class StoryEntry extends Component {
     }
 
     render() {
-        const { story, like, audit, auditStory, userKey, groupKey, role, } = this.props;
+        const { story, like, audit, auditStory, userKey, groupKey, role, handleCoverClick } = this.props;
         const { showDrop } = this.state;
         const isMyStory = (userKey === story.userKey) ? true : false;
         let avatar = (story.creator && story.creator.avatar) || '';
@@ -91,7 +91,9 @@ class StoryEntry extends Component {
         return (
             <div
                 className={`story-entry type-${storyType}`}
-                onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}>
+                onClick={handleCoverClick ?
+                    handleCoverClick.bind(this, story._key) :
+                    this.handleClick.bind(this, story._key, story.type)}>
                 <div
                     className="story-entry-cover"
                     style={coverStyle}

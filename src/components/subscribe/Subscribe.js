@@ -12,7 +12,7 @@ class Subscribe extends Component {
         let nowRouteKey = '';
         if (window.location.pathname.indexOf('mySites') !== -1) {
             nowRouteKey = 'mySites';
-        } else if (window.location.pathname.indexOf('search')!==-1) {
+        } else if (window.location.pathname.indexOf('search') !== -1) {
             nowRouteKey = 'search';
         }
         this.state = { currentRouteKey: nowRouteKey }
@@ -29,7 +29,12 @@ class Subscribe extends Component {
         const { match, } = this.props;
         const { currentRouteKey } = this.state;
         return (
-            <div className="app-content subscribe-container">
+            <div
+                className="app-content subscribe-container"
+                style={{
+                    minHeight: `${window.innerHeight - 70}px`,
+                }}
+            >
                 <Tab
                     currentKey={currentRouteKey}
                     tabList={[

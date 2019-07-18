@@ -42,6 +42,7 @@ class StoryList extends Component {
             showSetting,
             role,
             showMore,
+            handleCoverClick,
         } = this.props;
         const { columnNum } = this.state;
         const isMobile = util.common.isMobile();;
@@ -86,6 +87,7 @@ class StoryList extends Component {
                         auditStory={auditStory}
                         groupKey={groupKey}
                         showSetting={showSetting}
+                        handleCoverClick={handleCoverClick}
                     />
                 );
             }

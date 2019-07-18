@@ -63,6 +63,7 @@ const story = (state = defaultState, action) => {
         case READYTOREFRESH:
             return {
                 ...state,
+                storyList: [],
                 refresh: true,
             }
         case CLEAR_STORY_LIST:

@@ -19,14 +19,14 @@ class Article extends Component {
             eidtorHeight: 0,
         }
     }
-    
+
     handleToEdit() {
         const { history, location } = this.props;
         history.push(`editArticle${location.search}`);
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, } = this.props;
+        const { story, userId, nowStationKey, nowStation, readOnly } = this.props;
         const { userKey, title, creator = {}, } = story;
         const { eidtorHeight } = this.state;
         const role = nowStation ? nowStation.role : 8;
@@ -56,7 +56,7 @@ class Article extends Component {
                         </div>
                     </div>
                     {
-                        (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
+                        !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <div className="editor-container" ref={node => this.editorRef = node}>
                         <MyCKEditor
@@ -74,10 +74,6 @@ class Article extends Component {
         );
     }
 
-    componentWillMount() {
-        this.props.clearStoryDetail();
-    }
-
     componentDidMount() {
         const { location, getStoryDetail, } = this.props;
 
@@ -87,8 +83,10 @@ class Article extends Component {
             });
         }
 
-        let storyKey = util.common.getSearchParamValue(location.search, 'key');
-        getStoryDetail(storyKey);
+        if (location) {
+            let storyKey = util.common.getSearchParamValue(location.search, 'key');
+            getStoryDetail(storyKey);
+        }
     }
 }
 
