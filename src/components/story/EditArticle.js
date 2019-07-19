@@ -4,6 +4,7 @@ import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
 import { Form, Button, message, Modal } from 'antd';
 import MyCKEditor from '../common/newCKEditor';
+import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
@@ -45,11 +46,10 @@ class EditArticle extends Component {
         this.handleAticleChange = this.handleAticleChange.bind(this);
     }
 
-    handleAticleChange() {
+    handleAticleChange(model) {
         const { story = {}, } = this.state;
         let changedStory = JSON.parse(JSON.stringify(story));
-        const content = this.editor.getData()
-        changedStory.content = content;
+        changedStory.content = model;
         this.setState({ story: changedStory });
     }
 
@@ -131,7 +131,7 @@ class EditArticle extends Component {
                     }}
                 >
                     <div className="editor-container" ref={node => this.editorRef = node}>
-                        {uptoken ?
+                        {/* {uptoken ?
                             <MyCKEditor
                                 domain='http://cdn-icare.qingtime.cn/'
                                 uptoken={uptoken}
@@ -141,7 +141,11 @@ class EditArticle extends Component {
                                 locale="zh"
                                 disabled={false}
                                 height={eidtorHeight}
-                            /> : null}
+                            /> : null} */}
+                        {
+                            uptoken ? <FroalaEditor data={story ? story.content : ''} handleChange={this.handleAticleChange} uptoken={uptoken} /> : null
+                        }
+
                     </div>
                     <div className="article-footer">
                         {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
@@ -164,12 +168,6 @@ class EditArticle extends Component {
         } else {
             message.info({ text: res.msg });
         }
-        if (this.editorRef) {
-            this.setState({
-                eidtorHeight: this.editorRef.clientHeight
-            });
-        }
-
         api.story.applyEdit(story._key, story.updateTime);
     }
 

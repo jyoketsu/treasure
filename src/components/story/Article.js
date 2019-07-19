@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Article.css'
-import MyCKEditor from '../common/newCKEditor';
+import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { getStoryDetail, clearStoryDetail, } from '../../actions/app';
@@ -13,13 +13,6 @@ const mapStateToProps = state => ({
 });
 
 class Article extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            eidtorHeight: 0,
-        }
-    }
-
     handleToEdit() {
         const { history, location } = this.props;
         history.push(`editArticle${location.search}`);
@@ -28,7 +21,6 @@ class Article extends Component {
     render() {
         const { story, userId, nowStationKey, nowStation, readOnly } = this.props;
         const { userKey, title, creator = {}, } = story;
-        const { eidtorHeight } = this.state;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
 
@@ -39,7 +31,7 @@ class Article extends Component {
             >
                 <div className="main-content story-content article-show"
                     style={{
-                        height: `${window.innerHeight - 70}px`
+                        minHeight: `${window.innerHeight - 70}px`
                     }}
                 >
                     <div className="story-head-title" style={{ border: 'unset' }}>
@@ -59,16 +51,18 @@ class Article extends Component {
                         !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <div className="editor-container" ref={node => this.editorRef = node}>
-                        <MyCKEditor
+                        {/* <MyCKEditor
                             domain=''
                             uptoken={''}
                             data={story ? story.content : ''}
                             locale="zh"
                             disabled={true}
-                            height={eidtorHeight}
+                        /> */}
+                        <FroalaEditor
+                            previewMode={true}
+                            data={story ? story.content || '' : ''}
                         />
                     </div>
-
                 </div>
             </div>
         );
@@ -76,12 +70,6 @@ class Article extends Component {
 
     componentDidMount() {
         const { location, getStoryDetail, } = this.props;
-
-        if (this.editorRef) {
-            this.setState({
-                eidtorHeight: this.editorRef.clientHeight
-            });
-        }
 
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');

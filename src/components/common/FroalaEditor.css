@@ -1,0 +1,18 @@
+.my-froala-editor {
+    width: 816px;
+    min-height: 1173px;
+    box-shadow: 0 1px 6px #ccc;
+    background-color: #FFFFFF;
+    padding: 1cm 2cm 2cm;
+    margin: auto;
+}
+
+@media screen and (max-width:768px) {
+    .my-froala-editor {
+        width: unset;
+        min-height: unset;
+        box-shadow: unset;
+        background-color: unset;
+        padding: 15px;
+    }
+}
