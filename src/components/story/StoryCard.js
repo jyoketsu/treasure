@@ -3,19 +3,11 @@ import './StoryCard.css';
 import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
 import { Spin } from 'antd';
-import ClickOutside from '../common/ClickOutside';
-import { Modal } from 'antd';
-const confirm = Modal.confirm;
 
 class Card extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showDrop: false,
-        }
-        this.switchDrop = this.switchDrop.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
     }
 
     handleClick(key, type) {
@@ -27,34 +19,13 @@ class Card extends Component {
         });
     }
 
-    switchDrop() {
-        this.setState((prevState) => ({
-            showDrop: !prevState.showDrop
-        }));
-    }
-
-    showDeleteConfirm() {
-        const { deleteStory, story } = this.props;
-        confirm({
-            title: '删除',
-            content: `确定要删除吗？`,
-            okText: 'Yes',
-            okType: 'danger',
-            cancelText: 'No',
-            onOk() {
-                deleteStory(story._key);
-            },
-        });
-    }
-
     handleLike(storyKey, e) {
         e.stopPropagation();
         this.props.like(storyKey);
     }
 
     render() {
-        const { story, audit, auditStory, userKey, groupKey, showSetting, height, role, } = this.props;
-        const { showDrop } = this.state;
+        const { story, userKey, showSetting, height, role, } = this.props;
         const isMyStory = (userKey === story.userKey) ? true : false;
 
         // 显示项目设定
@@ -78,7 +49,7 @@ class Card extends Component {
         let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
         let status = '';
         let statusStyle = {};
-        if ((isMyStory && role && role > 2) || audit) {
+        if (isMyStory && role && role > 2) {
             switch (story.pass) {
                 case 1: status = '待审核'; statusStyle = { color: '#9F353A' }; break;
                 case 2: status = '审核通过'; statusStyle = { color: '#7BA23F' }; break;
@@ -86,34 +57,18 @@ class Card extends Component {
                 default: break;
             }
         }
-        let option = (
-            <div>
-                <div className="station-option" onClick={this.switchDrop}></div>
-                {
-                    showDrop ?
-                        <ClickOutside onClickOutside={this.switchDrop}>
-                            <div className="station-option-dorpdown">
-                                <div onClick={this.handleClick.bind(this, story._key, story.type)}>查看</div>
-                                <div onClick={auditStory.bind(this, story._key, groupKey, 2)}>通过</div>
-                                <div onClick={auditStory.bind(this, story._key, groupKey, 3)}>不通过</div>
-                                <div onClick={this.showDeleteConfirm}>删除</div>
-                            </div>
-                        </ClickOutside>
-                        : null
-                }
-            </div>);
+
         return (
             <div
                 className={`story-card type-${storyType}`}
                 style={{ height: height }}
-                onClick={audit ? null : this.handleClick.bind(this, story._key, story.type)}
+                onClick={this.handleClick.bind(this, story._key, story.type)}
             >
                 <div
                     className="story-card-cover"
                     style={coverStyle}
                 >
                     <div className="story-card-mask" style={{ height: `${height - 80}px`, }}></div>
-                    {audit ? option : null}
                 </div>
                 <div className="story-card-title">
                     {

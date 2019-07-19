@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import './Content.css';
 import { withRouter } from "react-router-dom";
-import { Tabs } from 'antd';
+import { Tabs, Modal, } from 'antd';
 import StoryList from '../story/StoryList';
+import Story from '../story/Story';
+import ArticlePreview from '../story/Article';
 import { connect } from 'react-redux';
-import { getStoryList, readyToRefresh, clearStoryList, } from '../../actions/app';
+import {
+    getStoryList,
+    readyToRefresh,
+    clearStoryList,
+    getStoryDetail,
+    clearStoryDetail,
+} from '../../actions/app';
+import CheckArticle from '../common/CheckArticle';
+import util from '../../services/Util';
 const { TabPane } = Tabs;
 
 const mapStateToProps = state => ({
@@ -14,19 +24,30 @@ const mapStateToProps = state => ({
     sortOrder: state.story.sortOrder,
     storyListLength: state.story.storyList.length,
     storyNumber: state.story.storyNumber,
+    storyType: state.story.story.type,
     nowStoryNumber: state.story.storyList.length,
 });
 
 class Content extends Component {
     constructor(props) {
         super(props);
-        this.curPage = this.curPage = sessionStorage.getItem('content-curpage') ?
-            parseInt(sessionStorage.getItem('content-curpage'), 10) : 1;
+        this.state = { visible: false }
+        this.curPage = 1;
         this.perPage = 30;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.showMore = this.showMore.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.switchVisible = this.switchVisible.bind(this);
     }
+
+    switchVisible(key) {
+        this.setState((prevState) => ({ visible: !prevState.visible }));
+        if (key) {
+            this.props.clearStoryDetail();
+            this.props.getStoryDetail(key);
+        }
+    }
+
 
     // 滚动查看更多故事
     handleMouseWheel(e) {
@@ -67,7 +88,6 @@ class Content extends Component {
         const { getStoryList, sortType, sortOrder, nowStationKey, clearStoryList, } = this.props;
         clearStoryList();
         this.curPage = 1;
-        sessionStorage.setItem('content-curpage', this.curPage);
         switch (key) {
             case 'wait':
                 this.filterType = 7;
@@ -87,20 +107,33 @@ class Content extends Component {
     }
 
     render() {
+        const { storyType } = this.props;
         return (
             <div className="content-manage" ref={node => this.auditRef = node}>
                 <h2>内容管理</h2>
                 <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
                     <TabPane tab="待审核" key="wait">
-                        <StoryList audit={true} showMore={this.showMore} />
+                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
                     </TabPane>
                     <TabPane tab="已审核" key="passed">
-                        <StoryList audit={true} showMore={this.showMore} />
+                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
                     </TabPane>
                     <TabPane tab="审核不通过" key="unpass">
-                        <StoryList audit={true} showMore={this.showMore} />
+                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
                     </TabPane>
                 </Tabs>
+                <Modal
+                    className="story-preview-modal"
+                    title="文章预览"
+                    footer={null}
+                    style={{ top: 0, right: 0, bottom: 0 }}
+                    visible={this.state.visible}
+                    onCancel={this.switchVisible.bind(this, null)}
+                    width={util.common.isMobile() ? '100%' : `${window.innerWidth * (2 / 3)}px`}
+                >
+                    <CheckArticle />
+                    {storyType === 9 ? <ArticlePreview readOnly={true} /> : <Story readOnly={true} />}
+                </Modal>
             </div>
         );
     };
@@ -112,33 +145,26 @@ class Content extends Component {
         if (nowStationKey) {
             this.curPage = 1;
             this.filterType = 7;
-            sessionStorage.setItem('content-curpage', this.curPage);
             getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
         }
 
         // 监听滚动，查看更多
         document.body.addEventListener('wheel', this.handleMouseWheel);
-        if (this.homepage) {
-            let scrollTop = sessionStorage.getItem('home-scroll');
-            this.homepage.scrollTop = scrollTop;
-        }
-
-        // 自动滚动
-        if (this.auditRef) {
-            let scrollTop = sessionStorage.getItem('audit-scroll');
-            this.auditRef.scrollTop = scrollTop;
-        }
     }
 
     componentWillUnmount() {
         // 移除滚动事件
         document.body.removeEventListener('wheel', this.handleMouseWheel);
-        sessionStorage.setItem('audit-scroll', this.auditRef.scrollTop);
-        sessionStorage.setItem('content-curpage', this.curPage);
     }
 }
 
 export default withRouter(connect(
     mapStateToProps,
-    { getStoryList, readyToRefresh, clearStoryList, },
+    {
+        getStoryList,
+        readyToRefresh,
+        clearStoryList,
+        getStoryDetail,
+        clearStoryDetail,
+    },
 )(Content));

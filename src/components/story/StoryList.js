@@ -5,7 +5,7 @@ import util from '../../services/Util';
 import StoryEntry from './StoryEntry';
 import Waterfall from '../common/Waterfall';
 import { connect } from 'react-redux';
-import { like, deleteStory, auditStory, } from '../../actions/app';
+import { like } from '../../actions/app';
 
 const mapStateToProps = state => ({
     userKey: state.auth.user ? state.auth.user._key : '',
@@ -13,7 +13,6 @@ const mapStateToProps = state => ({
     storyList: state.story.storyList,
     storyNumber: state.story.storyNumber,
     flag: state.common.flag,
-    groupKey: state.station.nowStation ? state.station.nowStation.intimateGroupKey : null,
     role: state.station.nowStation ? state.station.nowStation.role : null,
 });
 
@@ -28,14 +27,10 @@ class StoryList extends Component {
 
     render() {
         const {
-            groupKey,
             storyList,
             waiting,
             storyNumber,
             like,
-            audit,
-            deleteStory,
-            auditStory,
             flag,
             userKey,
             showStyle,
@@ -66,10 +61,6 @@ class StoryList extends Component {
                         userKey={userKey}
                         story={story}
                         like={like}
-                        deleteStory={deleteStory}
-                        audit={audit}
-                        auditStory={auditStory}
-                        groupKey={groupKey}
                         showSetting={showSetting}
                         role={role}
                         height={height}
@@ -82,11 +73,8 @@ class StoryList extends Component {
                         userKey={userKey}
                         story={story}
                         like={like}
-                        deleteStory={deleteStory}
-                        audit={audit}
-                        auditStory={auditStory}
-                        groupKey={groupKey}
                         showSetting={showSetting}
+                        role={role}
                         handleCoverClick={handleCoverClick}
                     />
                 );
@@ -112,7 +100,7 @@ class StoryList extends Component {
                 }
                 {
                     !waiting && storyList.length === 0 ?
-                        <div className="story-is-all">没有故事，请先创建</div>
+                        <div className="story-is-all">没有内容</div>
                         : null
                 }
             </div>
@@ -142,5 +130,5 @@ class StoryList extends Component {
 
 export default connect(
     mapStateToProps,
-    { like, deleteStory, auditStory, },
+    { like },
 )(StoryList);

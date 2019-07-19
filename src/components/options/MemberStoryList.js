@@ -69,8 +69,8 @@ class MemberStoryList extends Component {
     componentDidMount() {
         const { nowStationKey, getStoryList, location, readyToRefresh, storyNumber } = this.props;
         this.userId = util.common.getSearchParamValue(location.search, 'key');
-        readyToRefresh();
         if (!storyNumber) {
+            readyToRefresh();
             this.curPage = 1;
             sessionStorage.setItem('member-story-curpage', this.curPage);
             getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);

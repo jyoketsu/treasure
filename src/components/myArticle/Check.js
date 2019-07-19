@@ -4,6 +4,7 @@ import StoryList from '../story/StoryList';
 import Story from '../story/Story';
 import ArticlePreview from '../story/Article';
 import util from '../../services/Util';
+import CheckArticle from '../common/CheckArticle';
 import { Modal } from 'antd';
 import { connect } from 'react-redux';
 import { getStoryList, readyToRefresh, getStoryDetail, clearStoryDetail, } from '../../actions/app';
@@ -23,12 +24,11 @@ class Check extends Component {
     constructor(props) {
         super(props);
         this.state = { visible: false }
-        this.curPage = this.curPage = sessionStorage.getItem('member-story-curpage') ?
-            parseInt(sessionStorage.getItem('member-story-curpage'), 10) : 1;
+        this.curPage = 1;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.showMore = this.showMore.bind(this);
         this.switchVisible = this.switchVisible.bind(this);
-        this.perPage = 3;
+        this.perPage = 30;
         this.sortType = 1;
         this.sortOrder = 1;
         this.type = 10;
@@ -59,6 +59,7 @@ class Check extends Component {
                     onCancel={this.switchVisible.bind(this, null)}
                     width={util.common.isMobile() ? '100%' : `${window.innerWidth * (2 / 3)}px`}
                 >
+                    <CheckArticle />
                     {storyType === 9 ? <ArticlePreview readOnly={true} /> : <Story readOnly={true} />}
                 </Modal>
             </div>
@@ -99,10 +100,9 @@ class Check extends Component {
     }
 
     componentDidMount() {
-        const { nowStationKey, getStoryList, readyToRefresh, storyNumber } = this.props;
+        const { nowStationKey, getStoryList, readyToRefresh } = this.props;
         readyToRefresh();
         this.curPage = 1;
-        sessionStorage.setItem('member-story-curpage', this.curPage);
         getStoryList(this.type, nowStationKey, null, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
 
         // 监听滚动，查看更多
@@ -112,9 +112,6 @@ class Check extends Component {
     componentWillUnmount() {
         // 移除滚动事件
         document.body.removeEventListener('wheel', this.handleMouseWheel);
-        let top = document.body.scrollTop || document.documentElement.scrollTop;
-        sessionStorage.setItem('member-story-scroll', top);
-        sessionStorage.setItem('member-story-curpage', this.curPage);
     }
 }
 

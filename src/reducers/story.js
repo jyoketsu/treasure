@@ -160,17 +160,18 @@ const story = (state = defaultState, action) => {
             }
         case AUDIT:
             if (!action.error) {
-                message.success(`审核${action.passOrNot === 2 ? '通过' : '不通过'}成功！`);
+                message.success("操作成功！");
                 let storyList = Object.assign([], state.storyList);
                 for (let i = 0; i < storyList.length; i++) {
                     let story = storyList[i];
                     if (story._key === action.storyKey) {
-                        story.pass = action.passOrNot;
+                        storyList.splice(i, 1);
                         break;
                     }
                 }
                 return {
                     ...state,
+                    storyList: storyList,
                 };
             } else {
                 return state;
