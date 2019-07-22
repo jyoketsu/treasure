@@ -60,7 +60,7 @@ class Article extends Component {
                         /> */}
                         <FroalaEditor
                             previewMode={true}
-                            data={story ? story.content || '' : ''}
+                            data={story ? story.content || null : null}
                         />
                     </div>
                 </div>
@@ -68,9 +68,18 @@ class Article extends Component {
         );
     }
 
+    componentWillMount() {
+        this.props.clearStoryDetail();
+    }
+
     componentDidMount() {
         const { location, getStoryDetail, } = this.props;
-
+        if (document.body.scrollTop !== 0) {
+            document.body.scrollTop = 0;
+        } else {
+            document.documentElement.scrollTop = 0;
+        }
+        
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
             getStoryDetail(storyKey);

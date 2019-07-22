@@ -1,10 +1,43 @@
-.my-froala-editor {
+.my-froala-editor-container {
+    display: flex;
+}
+
+.editor-menu {
+    width: 350px;
+}
+
+.editor-container {
+    flex: 1;
+}
+
+.my-froala-editor.preview {
     width: 816px;
     min-height: 1173px;
     box-shadow: 0 1px 6px #ccc;
     background-color: #FFFFFF;
     padding: 1cm 2cm 2cm;
     margin: auto;
+}
+
+.my-froala-editor-container .ant-menu {
+    background: unset !important;
+    border-right: unset !important;
+}
+
+.editor-menu>ul {
+    overflow: -moz-scrollbars-none;
+    transition: top 0.2s;
+}
+
+/* chrome 隐藏滚动条 */
+.editor-menu>ul::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.fr-wrapper>div:first-child {
+    /* position: absolute;
+    top: -10000px;
+    opacity: 0; */
 }
 
 @media screen and (max-width:768px) {

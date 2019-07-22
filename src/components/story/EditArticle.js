@@ -3,7 +3,6 @@ import './EditArticle.css';
 import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
 import { Form, Button, message, Modal } from 'antd';
-import MyCKEditor from '../common/newCKEditor';
 import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
@@ -37,7 +36,6 @@ class EditArticle extends Component {
         this.state = {
             story: story,
             uptoken: null,
-            eidtorHeight: 0,
         }
         this.handleCommit = this.handleCommit.bind(this);
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -118,7 +116,7 @@ class EditArticle extends Component {
     }
 
     render() {
-        const { story = {}, uptoken, eidtorHeight, } = this.state;
+        const { story = {}, uptoken, } = this.state;
         return (
             <div
                 className="app-content edit-story"
@@ -131,17 +129,6 @@ class EditArticle extends Component {
                     }}
                 >
                     <div className="editor-container" ref={node => this.editorRef = node}>
-                        {/* {uptoken ?
-                            <MyCKEditor
-                                domain='http://cdn-icare.qingtime.cn/'
-                                uptoken={uptoken}
-                                onInit={this.getEditor}
-                                onChange={this.handleAticleChange}
-                                data={story.content}
-                                locale="zh"
-                                disabled={false}
-                                height={eidtorHeight}
-                            /> : null} */}
                         {
                             uptoken ? <FroalaEditor data={story ? story.content : ''} handleChange={this.handleAticleChange} uptoken={uptoken} /> : null
                         }
