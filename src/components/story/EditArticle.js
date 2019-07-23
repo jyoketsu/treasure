@@ -125,7 +125,7 @@ class EditArticle extends Component {
                 <div
                     className="main-content story-content edit-article"
                     style={{
-                        height: `${window.innerHeight - 70}px`
+                        minHeight: `${window.innerHeight - 70}px`
                     }}
                 >
                     <div className="editor-container" ref={node => this.editorRef = node}>

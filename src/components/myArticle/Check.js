@@ -37,7 +37,6 @@ class Check extends Component {
     switchVisible(key) {
         this.setState((prevState) => ({ visible: !prevState.visible }));
         if (key) {
-            this.props.clearStoryDetail();
             this.props.getStoryDetail(key);
         }
     }
@@ -60,7 +59,7 @@ class Check extends Component {
                     width={util.common.isMobile() ? '100%' : `${window.innerWidth * (2 / 3)}px`}
                 >
                     <CheckArticle />
-                    {storyType === 9 ? <ArticlePreview readOnly={true} /> : <Story readOnly={true} />}
+                    {storyType === 9 ? <ArticlePreview readOnly={true} hideMenu={true}/> : <Story readOnly={true} />}
                 </Modal>
             </div>
         );

@@ -8,15 +8,29 @@
 }
 
 .article-show {
-    padding: 5px;
+    padding: 5px 5px 25px 5px;
     width: 100%;
+    min-width: 1200px;
     background-color: #fafafa;
     display: flex;
     flex-direction: column;
 }
 
+.article-show.hide-menu {
+    min-width: unset;
+}
+
 @media screen and (max-width:768px) {
     .article-footer {
         position: fixed;
+    }
+
+    .article-show {
+        min-width: unset;
+    }
+
+    .to-edit-story {
+        top: -1px;
+        right: 5px;
     }
 }

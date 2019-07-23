@@ -81,6 +81,7 @@ class Story extends Component {
                                     <div className="story-card-time">{util.common.timestamp2DataStr(story.updateTime, 'yyyy-MM-dd')}</div>
                                 </div>
                             </div>
+                            {story.tag ? <div>标签：{story.tag}</div> : null}
                             {address ? <div className="story-head-address">{address}</div> : null}
                         </div>
                     </div>

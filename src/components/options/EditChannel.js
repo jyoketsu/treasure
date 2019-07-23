@@ -5,6 +5,7 @@ import { Form, Input, Button, message, Select, Radio, Switch, Divider, Checkbox,
 import { connect } from 'react-redux';
 import { addChannel, editChannel, } from '../../actions/app';
 const Option = Select.Option;
+const { TextArea } = Input;
 
 const mapStateToProps = state => ({
     stationList: state.station.stationList,
@@ -63,6 +64,10 @@ const CustomizedForm = Form.create({
             showSetting: Form.createFormField({
                 ...props.showSetting,
                 value: props.showSetting.value,
+            }),
+            tag: Form.createFormField({
+                ...props.tag,
+                value: props.tag.value,
             }),
         };
     },
@@ -176,6 +181,11 @@ const CustomizedForm = Form.create({
                         <Option value="contest">大赛类型</Option>
                     </Select>)}
             </Form.Item>
+            <Form.Item label="标签">
+                {getFieldDecorator('tag', {
+                    initialValue: '',
+                })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
+            </Form.Item>
 
             <Divider />
 
@@ -245,6 +255,9 @@ class EditChannel extends Component {
                 albumType: {
                     value: channelInfo ? channelInfo.albumType : 'normal',
                 },
+                tag: {
+                    value: channelInfo ? channelInfo.tag : '',
+                }
             },
         }
     }
@@ -279,7 +292,6 @@ class EditChannel extends Component {
                     extParams[key] = fields[key].value;
                 }
                 if (fields.key.value) {
-                    console.log('编辑频道字段：', extParams);
                     editChannel(fields.key.value, fields.name.value, 1, extParams);
                 } else {
                     addChannel(nowStationKey, fields.name.value, 1, extParams);

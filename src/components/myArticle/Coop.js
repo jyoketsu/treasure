@@ -58,7 +58,7 @@ class Coop extends Component {
                     onCancel={this.switchVisible.bind(this, null)}
                     width={util.common.isMobile() ? '100%' : `${window.innerWidth * (2 / 3)}px`}
                 >
-                    {storyType === 9 ? <ArticlePreview readOnly={true} /> : <Story readOnly={true} />}
+                    {storyType === 9 ? <ArticlePreview readOnly={true} hideMenu={true}/> : <Story readOnly={true} />}
                 </Modal>
             </div>
         );

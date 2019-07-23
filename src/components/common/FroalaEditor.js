@@ -89,8 +89,6 @@ class MyFroalaEditor extends Component {
         let h3Num = 0;
         let walker = document.createTreeWalker(doc, NodeFilter.SHOW_ELEMENT);
         let node = walker.nextNode();
-        let submenuIndex = 0;
-        let submenuItemIndex = 0;
         let temp = [];
         let maxHead = 4;
         while (node !== null) {
@@ -212,7 +210,7 @@ class MyFroalaEditor extends Component {
     }
 
     render() {
-        const { data, previewMode, handleChange, uptoken } = this.props;
+        const { data, previewMode, handleChange, uptoken, hideMenu, } = this.props;
         const { typeArr, subs, top, } = this.state;
         const that = this;
         const events = {
@@ -248,9 +246,10 @@ class MyFroalaEditor extends Component {
         };
         return (
             <div className="my-froala-editor-container">
-                <div className="editor-menu">
-                    {
-                        typeArr.length ?
+
+                {
+                    !hideMenu && previewMode && typeArr.length ?
+                        <div className="editor-menu">
                             <Menu
                                 style={{
                                     overflowY: 'auto',
@@ -265,10 +264,10 @@ class MyFroalaEditor extends Component {
                                 defaultOpenKeys={subs}
                             >
                                 {this.recursionMenu(typeArr)}
-                            </Menu> : null
-                    }
+                            </Menu>
+                        </div> : null
+                }
 
-                </div>
                 <div className="editor-container">
                     <div className={`my-froala-editor ${previewMode ? 'preview' : ''}`}>
                         {

@@ -34,10 +34,20 @@
     width: 0 !important
 }
 
+.fr-box.fr-basic .fr-wrapper {
+    border: unset !important;
+}
+
+.fr-toolbar,
+.second-toolbar {
+    border-radius: unset !important;
+    border: unset !important;
+}
+
 .fr-wrapper>div:first-child {
-    /* position: absolute;
+    position: absolute;
     top: -10000px;
-    opacity: 0; */
+    opacity: 0;
 }
 
 @media screen and (max-width:768px) {
@@ -46,6 +56,20 @@
         min-height: unset;
         box-shadow: unset;
         background-color: unset;
+    }
+
+    .editor-menu {
+        display: none;
+    }
+
+    .my-froala-editor-container {
+        display: unset;
+    }
+
+    .my-froala-editor.preview {
+        width: 100%;
+        background-color: unset;
+        box-shadow: unset;
         padding: 15px;
     }
 }

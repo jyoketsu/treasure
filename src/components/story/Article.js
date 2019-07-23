@@ -19,7 +19,7 @@ class Article extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, readOnly } = this.props;
+        const { story, userId, nowStationKey, nowStation, readOnly, hideMenu } = this.props;
         const { userKey, title, creator = {}, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
@@ -29,9 +29,9 @@ class Article extends Component {
                 className="app-content story-container article-display"
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
             >
-                <div className="main-content story-content article-show"
+                <div className={`main-content story-content article-show ${hideMenu ? 'hide-menu' : ''}`}
                     style={{
-                        minHeight: `${window.innerHeight - 70}px`
+                        minHeight: `${window.innerHeight - 70}px`,
                     }}
                 >
                     <div className="story-head-title" style={{ border: 'unset' }}>
@@ -51,25 +51,15 @@ class Article extends Component {
                         !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <div className="editor-container" ref={node => this.editorRef = node}>
-                        {/* <MyCKEditor
-                            domain=''
-                            uptoken={''}
-                            data={story ? story.content : ''}
-                            locale="zh"
-                            disabled={true}
-                        /> */}
                         <FroalaEditor
                             previewMode={true}
+                            hideMenu={hideMenu}
                             data={story ? story.content || null : null}
                         />
                     </div>
                 </div>
             </div>
         );
-    }
-
-    componentWillMount() {
-        this.props.clearStoryDetail();
     }
 
     componentDidMount() {
@@ -79,11 +69,15 @@ class Article extends Component {
         } else {
             document.documentElement.scrollTop = 0;
         }
-        
+
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
             getStoryDetail(storyKey);
         }
+    }
+
+    componentWillUnmount() {
+        this.props.clearStoryDetail();
     }
 }
 

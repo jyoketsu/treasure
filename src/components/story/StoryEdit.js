@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './StoryEdit.css';
 import { withRouter } from "react-router-dom";
-import { Button, Tooltip, message, Input, Modal } from 'antd';
+import { Button, Tooltip, message, Input, Modal, Select, } from 'antd';
 import { FileUpload } from '../common/Form';
 import util from '../../services/Util';
 import api from '../../services/Api';
@@ -9,6 +9,7 @@ import DragSortableList from 'react-drag-sortable'
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
 const confirm = Modal.confirm;
+const Option = Select.Option;
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.nowStation ?
@@ -52,6 +53,7 @@ class StoryEdit extends Component {
         this.switchMusic = this.switchMusic.bind(this);
         this.handleMusicInput = this.handleMusicInput.bind(this);
         this.setMusic = this.setMusic.bind(this);
+        this.handleSetTag = this.handleSetTag.bind(this);
     }
 
     switchMusic() {
@@ -227,6 +229,14 @@ class StoryEdit extends Component {
         });
     }
 
+    handleSetTag(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.tag = value;
+            return { story: prevStory }
+        });
+    }
+
     /**
      * 删除内容
      * @param {Number} index 要删除的位置
@@ -324,8 +334,19 @@ class StoryEdit extends Component {
     }
 
     render() {
+        const { seriesInfo, nowChannelKey, } = this.props;
         const { story = {}, selectedItemId, selectedItemIndex, musicAddress, } = this.state;
-        const { cover, title = '', richContent = [], address, time, } = story;
+        const { cover, title = '', richContent = [], address, time } = story;
+        let channelInfo = {};
+        const nowChannelId = story._key ? story.series._key : nowChannelKey;
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (seriesInfo[i]._key === nowChannelId) {
+                channelInfo = seriesInfo[i];
+                break;
+            }
+        }
+        const { tag } = channelInfo;
+
         let items = [];
         for (let i = 0; i < richContent.length; i++) {
             items.push({
@@ -344,7 +365,6 @@ class StoryEdit extends Component {
             <div className="placeholderContent">拖放到这里</div>
         );
 
-
         return (
             <div className="app-content story-edit">
                 <div className="story-edit-head-buttons">
@@ -353,8 +373,27 @@ class StoryEdit extends Component {
                     <Button type="primary" onClick={this.handleCommit}>保存</Button>
                 </div>
                 <div className="story-edit-head" style={{
-                    backgroundImage: `url(${cover}?imageView2/2/w/960/)`
+                    backgroundImage: cover ? `url(${cover}?imageView2/2/w/960/)` : 'url(/image/background/background.png)',
+                    backgroundSize: cover ? 'cover' : 'contain',
+                    backgroundPosition: cover ? 'center' : 'bottom',
                 }}>
+                    <div className="left-bottom-buttons">
+                        {
+                            tag ?
+                                <Select
+                                    style={{ width: 120 }}
+                                    placeholder="请选择标签"
+                                    value={story.tag}
+                                    onChange={this.handleSetTag}
+                                >
+                                    {
+                                        tag.split(' ').map((item, index) => (
+                                            <Option key={index} index={index} value={item}>{item}</Option>
+                                        ))
+                                    }
+                                </Select> : null
+                        }
+                    </div>
                     <div className="story-edit-cover-buttons">
                         <FileUpload
                             className="story-image-icon"
@@ -426,13 +465,13 @@ class StoryEdit extends Component {
             api.story.applyEdit(story._key, story.updateTime);
         }
         // 位置定位
-        if (!story.address && story.address !== '获取位置失败') {
+        if (!story.address && (story.address !== '获取位置失败' || story.address !== '')) {
             util.common.getLocation((data) => {
                 console.log('定位信息：', data);
                 const address = data && data.addressComponent ? `${data.addressComponent.province}${data.addressComponent.city}${data.addressComponent.district}${data.addressComponent.township}${data.addressComponent.street}` : '地址错误';
                 this.selectAddress(address);
             }, () => {
-                this.selectAddress('获取位置失败');
+                this.selectAddress('');
             });
         }
     }
@@ -542,12 +581,12 @@ class ItemPreview extends Component {
                 case 'image':
                     result =
                         <div className="story-imageGroup" style={{ padding: '5px' }}>
+                            <Input placeholder="请输入图片描述" value={itemContent.memo} onChange={handleInput.bind(this, 'richContent', index)} />
                             <div className="story-image-box">
                                 <img
                                     className="story-image"
                                     src={`${itemContent.url}?imageView2/2/w/600/`} alt="story" />
                             </div>
-                            <Input placeholder="请输入图片描述" value={itemContent.memo} onChange={handleInput.bind(this, 'richContent', index)} />
                         </div>
                     break;
                 case 'video':
