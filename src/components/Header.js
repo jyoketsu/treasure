@@ -148,8 +148,7 @@ class Header extends Component {
         let token = null;
         let query_token = null;
         if (SEARCH_STR) {
-            const QUERY_PARAMS = new URLSearchParams(SEARCH_STR);
-            query_token = QUERY_PARAMS.get('token');
+            query_token = util.common.getSearchParamValue(location.search, 'token');
         }
         token = query_token ? query_token : window.localStorage.getItem('TOKEN');
         // 获取用户信息
@@ -237,7 +236,7 @@ class Header extends Component {
         }
 
         // 切换微站时重新获取故事
-        if (nowStationKey !== prevProps.nowStationKey) {
+        if ((nowStationKey !== prevProps.nowStationKey) || (prevProps.user && prevProps.user.isGuest && !user.isGuest)) {
             clearStoryList();
             this.curPage = 1;
             if (nowStationKey !== 'notFound') {

@@ -37,11 +37,7 @@ class Story extends Component {
         if (!nowChannel) {
             return;
         }
-        if (nowChannel.albumType === 'normal') {
-            history.push(`editStory${location.search}`);
-        } else {
-            history.push(`contribute${location.search}`);
-        }
+        history.push(`editStory${location.search}`);
     }
 
     render() {

@@ -16,10 +16,23 @@
     height: 50px;
     align-items: center;
     margin: auto;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
 }
 
 .story-edit-head-buttons .ant-btn {
     margin-right: 15px;
+}
+
+.top-right-buttons {
+    position: absolute;
+    right: 15px;
+    top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .left-bottom-buttons {

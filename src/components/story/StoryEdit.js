@@ -28,7 +28,9 @@ class StoryEdit extends Component {
     constructor(props) {
         super(props);
         let type = util.common.getSearchParamValue(props.location.search, 'type');
-        let story = type === 'new' ? { series: props.nowChannelKey } : props.story;
+        let story = type === 'new' ?
+            { series: { _key: util.common.getSearchParamValue(window.location.search, 'channel') } } :
+            props.story;
         this.state = {
             story: story,
             selectedItemId: null,
@@ -54,6 +56,7 @@ class StoryEdit extends Component {
         this.handleMusicInput = this.handleMusicInput.bind(this);
         this.setMusic = this.setMusic.bind(this);
         this.handleSetTag = this.handleSetTag.bind(this);
+        this.handleSelectChannel = this.handleSelectChannel.bind(this);
     }
 
     switchMusic() {
@@ -67,7 +70,7 @@ class StoryEdit extends Component {
     }
 
     async handleCommit() {
-        const { user, nowStationKey, addStory, modifyStory } = this.props;
+        const { user, nowStationKey, addStory, modifyStory, seriesInfo } = this.props;
         const { story } = this.state;
         if (!story || (!story.series && !story._key)) {
             message.info('请选择一个频道！');
@@ -85,12 +88,28 @@ class StoryEdit extends Component {
             message.info('不能超过200张图片！');
             return;
         }
+
+        let channelInfo = {};
+        const nowChannelId = story.series._key;
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (seriesInfo[i]._key === nowChannelId) {
+                channelInfo = seriesInfo[i];
+                break;
+            }
+        }
+        const { tag } = channelInfo;
+
+        if (tag && !story.tag) {
+            message.info('请选择一个标签！');
+            return;
+        }
+
+        if (typeof story.series === 'object') {
+            story.series = story.series._key;
+        }
         // 编辑
         if (story._key) {
             story.key = story._key;
-            if (typeof story.series === 'object') {
-                story.series = story.series._key;
-            }
             // 封面大小
             let size = await util.common.getImageInfo(story.cover);
             story.size = size;
@@ -237,6 +256,15 @@ class StoryEdit extends Component {
         });
     }
 
+    handleSelectChannel(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.series = { _key: value };
+            prevStory.tag = undefined;
+            return { story: prevStory }
+        });
+    }
+
     /**
      * 删除内容
      * @param {Number} index 要删除的位置
@@ -334,11 +362,11 @@ class StoryEdit extends Component {
     }
 
     render() {
-        const { seriesInfo, nowChannelKey, } = this.props;
+        const { seriesInfo, } = this.props;
         const { story = {}, selectedItemId, selectedItemIndex, musicAddress, } = this.state;
         const { cover, title = '', richContent = [], address, time } = story;
         let channelInfo = {};
-        const nowChannelId = story._key ? story.series._key : nowChannelKey;
+        const nowChannelId = story.series ? story.series._key : util.common.getSearchParamValue(window.location.search, 'channel');
         for (let i = 0; i < seriesInfo.length; i++) {
             if (seriesInfo[i]._key === nowChannelId) {
                 channelInfo = seriesInfo[i];
@@ -377,6 +405,20 @@ class StoryEdit extends Component {
                     backgroundSize: cover ? 'cover' : 'contain',
                     backgroundPosition: cover ? 'center' : 'bottom',
                 }}>
+                    <div className="top-right-buttons">
+                        <Select
+                            style={{ width: 120 }}
+                            placeholder="请选择频道"
+                            value={nowChannelId}
+                            onChange={this.handleSelectChannel}
+                        >
+                            {
+                                seriesInfo.map((item, index) => (
+                                    <Option key={index} value={item._key}>{item.name}</Option>
+                                ))
+                            }
+                        </Select>
+                    </div>
                     <div className="left-bottom-buttons">
                         {
                             tag ?
@@ -600,7 +642,6 @@ class ItemPreview extends Component {
         } else {
             result = <div className="no-selected-item">没有选择内容</div>;
         }
-
 
         return (
             <div className="item-preview">

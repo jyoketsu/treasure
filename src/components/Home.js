@@ -4,17 +4,18 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
 import util from '../services/Util';
-import { Modal, Tooltip, message, Input, } from 'antd';
+import { Modal, Tooltip, message, Input, Select } from 'antd';
 import { connect } from 'react-redux';
 import ClickOutside from './common/ClickOutside';
 import {
     changeStation,
-    getStationDetail,
     getStoryList,
     clearStoryList,
     seePlugin,
     seeChannel
 } from '../actions/app';
+
+const { Option } = Select;
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -182,18 +183,13 @@ class Home extends Component {
 
         const {
             nowStationKey,
-            nowStation,
             sortType,
             sortOrder,
             getStoryList,
-            getStationDetail,
             storyListLength,
             refresh,
         } = this.props;
 
-        if (nowStationKey && !nowStation) {
-            getStationDetail(nowStationKey);
-        }
         if (nowStationKey && storyListLength === 0) {
             // 获取微站全部故事
             getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage);
@@ -207,11 +203,6 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
-        // if (document.body.scrollTop !== 0) {
-        //     document.body.scrollTop = 0;
-        // } else {
-        //     document.documentElement.scrollTop = 0;
-        // }
         let top = document.body.scrollTop || document.documentElement.scrollTop;
         sessionStorage.setItem('home-curpage', this.curPage);
         // 保存scrollTop的值
@@ -230,6 +221,7 @@ class Station extends React.Component {
             questionVisible: false,
             question: '',
             answer: '',
+            showSelectChannel: false,
         }
         this.handleClickAdd = this.handleClickAdd.bind(this);
         this.switchExtButton = this.switchExtButton.bind(this);
@@ -237,6 +229,9 @@ class Station extends React.Component {
         this.switchPluginVisible = this.switchPluginVisible.bind(this);
         this.handleInputAnswer = this.handleInputAnswer.bind(this);
         this.handleAnswer = this.handleAnswer.bind(this);
+        this.switchChannelVisible = this.switchChannelVisible.bind(this);
+        this.handleSelectedChannel = this.handleSelectedChannel.bind(this);
+        this.handleSelectChannel = this.handleSelectChannel.bind(this);
     }
     /**
      * 回到顶部，动画效果
@@ -269,7 +264,8 @@ class Station extends React.Component {
             return;
         }
         if (nowChannelKey === 'allSeries') {
-            message.info('请先选择要发布的频道！');
+            this.contributeType = type;
+            this.switchChannelVisible();
             return;
         }
         if (!channel.allowPublicUpload && !content.editRight) {
@@ -279,9 +275,8 @@ class Station extends React.Component {
 
         switch (type) {
             case 'album':
-                let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
                 history.push({
-                    pathname: `/${stationDomain}/${path}`,
+                    pathname: `/${stationDomain}/editStory`,
                     search: '?type=new',
                 });
                 break;
@@ -292,22 +287,6 @@ class Station extends React.Component {
                 });
                 break;
             default:
-                switch (channel.contributeType[0]) {
-                    case 1:
-                        let path = channel && channel.albumType === 'normal' ? 'editStory' : 'contribute';
-                        history.push({
-                            pathname: `/${stationDomain}/${path}`,
-                            search: '?type=new',
-                        });
-                        break;
-                    case 2:
-                        history.push({
-                            pathname: `/${stationDomain}/editArticle`,
-                            search: '?type=new',
-                        });
-                        break;
-                    default: break;
-                }
                 break;
         }
     }
@@ -375,6 +354,37 @@ class Station extends React.Component {
         }));
     }
 
+    switchChannelVisible() {
+        this.setState((prevState) => ({
+            showSelectChannel: !prevState.showSelectChannel
+        }));
+    }
+
+    handleSelectedChannel() {
+        const { match, history } = this.props;
+        const stationDomain = match.params.id;
+        switch (this.contributeType) {
+            case 'album':
+                history.push({
+                    pathname: `/${stationDomain}/editStory`,
+                    search: `?type=new&channel=${this.channelKey}`,
+                });
+                break;
+            case 'article':
+                history.push({
+                    pathname: `/${stationDomain}/editArticle`,
+                    search: `?type=new&channel=${this.channelKey}`,
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleSelectChannel(value) {
+        this.channelKey = value;
+    }
+
     handleInputAnswer(e) {
         this.setState({
             answer: e.target.value
@@ -424,6 +434,7 @@ class Station extends React.Component {
             questionVisible,
             question,
             answer,
+            showSelectChannel,
         } = this.state;
 
         const token = localStorage.getItem('TOKEN');
@@ -548,48 +559,37 @@ class Station extends React.Component {
                             <i></i>
                         </div>
                     </Tooltip>
-                    {
-                        (nowChannelKey === 'allSeries') || (nowChannel && nowChannel.contributeType && nowChannel.contributeType.length === 1) ?
-                            <Tooltip title="投稿" placement="left">
-                                <div className="story-tool add-story" onClick={this.handleClickAdd.bind(this, nowChannel, '')}>
-                                    <i></i>
-                                </div>
-                            </Tooltip> : null
-                    }
-                    {
-                        nowChannel && nowChannel.contributeType && nowChannel.contributeType.length > 1 ?
-                            <div className="multi-button">
-                                <Tooltip title="投稿" placement="bottom">
-                                    <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
-                                        <i></i>
-                                    </div>
-                                </Tooltip>
-                                <ReactCSSTransitionGroup transitionName="myFade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-                                    {this.state.showExtButton ? (
-                                        <ClickOutside onClickOutside={this.switchExtButton}>
-                                            <div className="ext-buttons">
-                                                <Tooltip title="创建相册" placement="top">
-                                                    <div
-                                                        className="story-tool add-album"
-                                                        onClick={this.handleClickAdd.bind(this, nowChannel, 'album')}
-                                                    >
-                                                        <i></i>
-                                                    </div>
-                                                </Tooltip>
-                                                <Tooltip title="创建文章" placement="top">
-                                                    <div
-                                                        className="story-tool add-article"
-                                                        onClick={this.handleClickAdd.bind(this, nowChannel, 'article')}
-                                                    >
-                                                        <i></i>
-                                                    </div>
-                                                </Tooltip>
+                    <div className="multi-button">
+                        <Tooltip title="投稿" placement="bottom">
+                            <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
+                                <i></i>
+                            </div>
+                        </Tooltip>
+                        <ReactCSSTransitionGroup transitionName="myFade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+                            {this.state.showExtButton ? (
+                                <ClickOutside onClickOutside={this.switchExtButton}>
+                                    <div className="ext-buttons">
+                                        <Tooltip title="创建相册" placement="top">
+                                            <div
+                                                className="story-tool add-album"
+                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'album')}
+                                            >
+                                                <i></i>
                                             </div>
-                                        </ClickOutside>
-                                    ) : null}
-                                </ReactCSSTransitionGroup>
-                            </div> : null
-                    }
+                                        </Tooltip>
+                                        <Tooltip title="创建文章" placement="top">
+                                            <div
+                                                className="story-tool add-article"
+                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'article')}
+                                            >
+                                                <i></i>
+                                            </div>
+                                        </Tooltip>
+                                    </div>
+                                </ClickOutside>
+                            ) : null}
+                        </ReactCSSTransitionGroup>
+                    </div>
                 </div>
                 <Modal
                     title="排序"
@@ -626,6 +626,27 @@ class Station extends React.Component {
                 >
                     <p>{question}</p>
                     <Input placeholder="请输入答案" value={answer} onChange={this.handleInputAnswer} />
+                </Modal>
+                <Modal
+                    title="请选择要发布的频道"
+                    visible={showSelectChannel}
+                    onOk={this.handleSelectedChannel}
+                    onCancel={this.switchChannelVisible}
+                >
+                    <Select
+                        style={{ width: '100%' }}
+                        placeholder="请选择频道"
+                        onChange={this.handleSelectChannel}
+                    >
+                        {
+                            channelList.map((channel, index) => (
+                                channel.isSeeSeries &&
+                                    (channel.allowPublicUpload || (!channel.allowPublicUpload && channel.role < 5)) ?
+                                    <Option key={index} value={channel._key}>{channel.name}</Option> :
+                                    <Option key={index} value={channel._key} disabled>{channel.name}</Option>
+                            ))
+                        }
+                    </Select>
                 </Modal>
             </div>
         );
@@ -680,7 +701,6 @@ export default connect(
     mapStateToProps,
     {
         changeStation,
-        getStationDetail,
         getStoryList,
         clearStoryList,
         seePlugin,
