@@ -459,6 +459,13 @@ const story = {
             key: channelKey,
         });
     },
+    sortChannel(stationKey, channelKeys, ) {
+        return requests.patch(APIURL + '/star/setSeriesOrder', {
+            token: token,
+            starKey: stationKey,
+            seriesOrder: channelKeys,
+        });
+    },
     /**
      * 提取已订阅站点的最新4条
      * @param {Number} curPage 

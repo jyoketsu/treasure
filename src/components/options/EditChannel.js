@@ -69,6 +69,18 @@ const CustomizedForm = Form.create({
                 ...props.tag,
                 value: props.tag.value,
             }),
+            allowPublicTag: Form.createFormField({
+                ...props.allowPublicTag,
+                value: props.allowPublicTag.value,
+            }),
+            statusTag: Form.createFormField({
+                ...props.statusTag,
+                value: props.statusTag.value,
+            }),
+            allowPublicStatus: Form.createFormField({
+                ...props.allowPublicStatus,
+                value: props.allowPublicStatus.value,
+            }),
         };
     },
 })(props => {
@@ -181,10 +193,27 @@ const CustomizedForm = Form.create({
                         <Option value="contest">大赛类型</Option>
                     </Select>)}
             </Form.Item>
-            <Form.Item label="标签">
+
+            <Divider />
+
+            <Form.Item label="分类标签">
                 {getFieldDecorator('tag', {
                     initialValue: '',
                 })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
+            </Form.Item>
+            <Form.Item label="允许公众设置">
+                {getFieldDecorator('allowPublicTag', { valuePropName: 'checked' })(<Switch />)}
+            </Form.Item>
+
+            <Divider />
+
+            <Form.Item label="状态标签">
+                {getFieldDecorator('statusTag', {
+                    initialValue: '',
+                })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
+            </Form.Item>
+            <Form.Item label="允许公众设置">
+                {getFieldDecorator('allowPublicStatus', { valuePropName: 'checked' })(<Switch />)}
             </Form.Item>
 
             <Divider />
@@ -257,6 +286,15 @@ class EditChannel extends Component {
                 },
                 tag: {
                     value: channelInfo ? channelInfo.tag : '',
+                },
+                allowPublicTag: {
+                    value: channelInfo ? channelInfo.allowPublicTag : '',
+                },
+                statusTag: {
+                    value: channelInfo ? channelInfo.statusTag : '',
+                },
+                allowPublicStatus: {
+                    value: channelInfo ? channelInfo.allowPublicStatus : '',
                 }
             },
         }

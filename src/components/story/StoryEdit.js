@@ -29,7 +29,7 @@ class StoryEdit extends Component {
         super(props);
         let type = util.common.getSearchParamValue(props.location.search, 'type');
         let story = type === 'new' ?
-            { series: { _key: util.common.getSearchParamValue(window.location.search, 'channel') } } :
+            { series: { _key: util.common.getSearchParamValue(window.location.search, 'channel') || props.nowChannelKey } } :
             props.story;
         this.state = {
             story: story,
@@ -56,6 +56,7 @@ class StoryEdit extends Component {
         this.handleMusicInput = this.handleMusicInput.bind(this);
         this.setMusic = this.setMusic.bind(this);
         this.handleSetTag = this.handleSetTag.bind(this);
+        this.handleSetStatus = this.handleSetStatus.bind(this);
         this.handleSelectChannel = this.handleSelectChannel.bind(this);
     }
 
@@ -97,11 +98,15 @@ class StoryEdit extends Component {
                 break;
             }
         }
-        const { tag } = channelInfo;
+        const { tag, statusTag, } = channelInfo;
 
         if (tag && !story.tag) {
             message.info('请选择一个标签！');
             return;
+        }
+
+        if (statusTag && !story.statusTag) {
+            story.statusTag = statusTag.split(' ')[0];
         }
 
         if (typeof story.series === 'object') {
@@ -256,6 +261,14 @@ class StoryEdit extends Component {
         });
     }
 
+    handleSetStatus(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.statusTag = value;
+            return { story: prevStory }
+        });
+    }
+
     handleSelectChannel(value) {
         this.setState((prevState) => {
             let { story: prevStory = {} } = prevState;
@@ -373,7 +386,7 @@ class StoryEdit extends Component {
                 break;
             }
         }
-        const { tag } = channelInfo;
+        const { tag, allowPublicTag, statusTag, allowPublicStatus, role, } = channelInfo;
 
         let items = [];
         for (let i = 0; i < richContent.length; i++) {
@@ -421,7 +434,7 @@ class StoryEdit extends Component {
                     </div>
                     <div className="left-bottom-buttons">
                         {
-                            tag ?
+                            tag && (allowPublicTag || (!allowPublicTag && role < 4)) ?
                                 <Select
                                     style={{ width: 120 }}
                                     placeholder="请选择标签"
@@ -430,6 +443,23 @@ class StoryEdit extends Component {
                                 >
                                     {
                                         tag.split(' ').map((item, index) => (
+                                            <Option key={index} index={index} value={item}>{item}</Option>
+                                        ))
+                                    }
+                                </Select> : null
+                        }
+                    </div>
+                    <div className="left-top-buttons">
+                        {
+                            statusTag && (allowPublicStatus || (!allowPublicStatus && role < 4)) ?
+                                <Select
+                                    style={{ width: 120 }}
+                                    placeholder="请选择状态"
+                                    value={story.statusTag}
+                                    onChange={this.handleSetStatus}
+                                >
+                                    {
+                                        statusTag.split(' ').map((item, index) => (
                                             <Option key={index} index={index} value={item}>{item}</Option>
                                         ))
                                     }

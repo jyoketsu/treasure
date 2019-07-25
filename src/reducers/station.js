@@ -25,6 +25,7 @@ import {
     SET_PLUGIN,
     SEE_CHANNEL,
     SEE_PLUGIN,
+    SORT_CHANNEL,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -386,6 +387,25 @@ const station = (state = defaultState, action) => {
                         channels[i].isSeeSeries = true;
                         break;
                     }
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case SORT_CHANNEL:
+            if (!action.error) {
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let channels = nowStation.seriesInfo;
+                const temp = channels[action.channelIndex];
+                if (action.isUp) {
+                    channels[action.channelIndex] = channels[action.channelIndex - 1];
+                    channels[action.channelIndex - 1] = temp;
+                } else {
+                    channels[action.channelIndex] = channels[action.channelIndex + 1];
+                    channels[action.channelIndex + 1] = temp;
                 }
                 return {
                     ...state,

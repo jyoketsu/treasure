@@ -44,6 +44,15 @@
     align-items: center;
 }
 
+.left-top-buttons {
+    position: absolute;
+    left: 15px;
+    top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .story-edit-cover-buttons {
     position: absolute;
     right: 15px;

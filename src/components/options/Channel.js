@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Channel.css';
 import { connect } from 'react-redux';
 import { Table, Divider, Modal, Button, } from 'antd';
-import { deleteChannel } from '../../actions/app';
+import { deleteChannel, sortChannel, } from '../../actions/app';
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -44,6 +44,16 @@ class Channel extends Component {
         });
     }
 
+    handleSort(index, isUp) {
+        const { nowStation, nowStationKey, sortChannel } = this.props;
+        let seriesInfo = nowStation ? nowStation.seriesInfo : [];
+        let keys = [];
+        for (let i = 0; i < seriesInfo.length; i++) {
+            keys.push(seriesInfo[i]._key);
+        }
+        sortChannel(index, isUp, keys, nowStationKey);
+    }
+
     render() {
         const { nowStation } = this.props;
         let seriesInfo = nowStation ? nowStation.seriesInfo : [];
@@ -69,6 +79,21 @@ class Channel extends Component {
                             </span>
                         )}
                     />
+                    <Column
+                        title="排序"
+                        render={(text, record, index) => (
+                            <div className="table-sort">
+                                <i
+                                    className={`sort-up ${index === 0 ? 'disabled' : ''}`}
+                                    onClick={this.handleSort.bind(this, index, true)}
+                                ></i>
+                                <i
+                                    className={`sort-down ${index === seriesInfo.length - 1 ? 'disabled' : ''}`}
+                                    onClick={this.handleSort.bind(this, index, false)}
+                                ></i>
+                            </div>
+                        )}
+                    />
                 </Table>
             </div>
         );
@@ -84,5 +109,5 @@ class Channel extends Component {
 
 export default connect(
     mapStateToProps,
-    { deleteChannel },
+    { deleteChannel, sortChannel, },
 )(Channel);

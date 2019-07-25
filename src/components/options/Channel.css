@@ -26,6 +26,43 @@
     cursor: pointer;
 }
 
+.table-sort {
+    display: flex;
+}
+
+.table-sort>i {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 5px;
+}
+
+.table-sort>i:hover {
+    cursor: pointer;
+}
+
+.table-sort>i.disabled:hover {
+    cursor: auto;
+}
+
+.sort-up {
+    background-image: url(/image/icon/stationOptions/sort-up.svg);
+}
+
+.sort-up.disabled {
+    background-image: url(/image/icon/stationOptions/sort-up-disable.svg);
+}
+
+.sort-down {
+    background-image: url(/image/icon/stationOptions/sort-down.svg);
+}
+
+.sort-down.disabled {
+    background-image: url(/image/icon/stationOptions/sort-down-disable.svg);
+}
+
 @media screen and (max-width:768px) {
     .channel-head {
         text-align: center;

@@ -28,7 +28,8 @@ class EditArticle extends Component {
         let story = type === 'new' ?
             {
                 content:
-                    '<p style="text-align:center;"><span class="text-huge"><strong>请输入标题</strong></span></p>'
+                    '<p style="text-align:center;"><span class="text-huge"><strong>请输入标题</strong></span></p>',
+                series: { _key: util.common.getSearchParamValue(window.location.search, 'channel') || props.nowChannelKey }
             } : props.story;
         if (story._key) {
             story.content = `<p style="text-align:center;"><span class="text-huge"><strong>${story.title}</strong></span></p>${story.content}`
@@ -52,7 +53,7 @@ class EditArticle extends Component {
     }
 
     async handleCommit(e) {
-        const { user, nowStationKey, addStory, modifyStory, nowChannelKey, } = this.props;
+        const { user, nowStationKey, addStory, modifyStory, } = this.props;
         const { story, } = this.state;
         e.preventDefault();
 
@@ -79,19 +80,19 @@ class EditArticle extends Component {
             story.content = story.content.replace(title.htmlStr, '')
         }
 
+        if (typeof story.series === 'object') {
+            story.series = story.series._key;
+        }
+
         // 编辑
         if (story._key) {
             story.key = story._key;
-            if (typeof story.series === 'object') {
-                story.series = story.series._key;
-            }
             modifyStory(story);
         } else {
             Object.assign(story, {
                 userKey: user._key,
                 type: 9,
                 starKey: nowStationKey,
-                series: nowChannelKey,
             });
             addStory(story);
         }

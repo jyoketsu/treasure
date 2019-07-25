@@ -221,6 +221,7 @@ export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const EDIT_CHANNEL = 'EDIT_CHANNEL';
 export const DELETE_CHANNEL = 'DELETE_CHANNEL';
 export const SEE_CHANNEL = 'SEE_CHANNEL';
+export const SORT_CHANNEL = 'SORT_CHANNEL';
 
 export function addChannel(stationKey, name, type, extParams, ) {
     let request = api.story.addChannel(stationKey, name, type, extParams);
@@ -240,6 +241,19 @@ export function deleteChannel(channelKey) {
 export function seeChannel(channelKey) {
     let request = api.story.seeChannel(channelKey);
     return { type: SEE_CHANNEL, channelKey: channelKey, payload: request }
+}
+
+export function sortChannel(index, isUp, keys, nowStationKey, ) {
+    const temp = keys[index];
+    if (isUp) {
+        keys[index] = keys[index - 1];
+        keys[index - 1] = temp;
+    } else {
+        keys[index] = keys[index + 1];
+        keys[index + 1] = temp;
+    }
+    let request = api.story.sortChannel(nowStationKey, keys);
+    return { type: SORT_CHANNEL, channelIndex: index, isUp: isUp, request: request }
 }
 
 // 插件

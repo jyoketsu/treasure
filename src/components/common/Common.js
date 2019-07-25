@@ -228,7 +228,6 @@ class StationCard extends Component {
     }
 }
 
-
 export {
     MemberCard,
     SearchMemberCard,

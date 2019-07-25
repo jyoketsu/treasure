@@ -81,15 +81,14 @@ class Card extends Component {
                         <span style={statusStyle}>{status}</span>
                     </div>
                 </div>
-                {/* 图片数量 */}
                 {
+                    // 图片数量
                     story.type !== 9 ?
                         <span className="picture-count">
                             <i className="picture-count-icon"></i>
                             <span>{story.pictureCount}</span>
                         </span> : null
                 }
-
                 <div className="story-card-info">
                     {
                         showAuthor ?
@@ -124,6 +123,9 @@ class Card extends Component {
                         }
                     </div>
                 </div>
+                {
+                    story.statusTag ? <span className="cover-status">{story.statusTag}</span> : null
+                }
             </div>
         );
     }

@@ -91,6 +91,9 @@ class Story extends Component {
                     {
                         !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
+                    {
+                        story.statusTag ? <span className="preview-status">{story.statusTag}</span> : null
+                    }
                     {memo ? <pre className="story-memo">{memo}</pre> : null}
                     {
                         richContent ? richContent.map((content, index) => {

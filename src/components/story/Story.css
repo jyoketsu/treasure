@@ -196,6 +196,21 @@
     margin-right: 15px;
 }
 
+.preview-status {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: block;
+    min-width: 50px;
+    height: 30px;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 30px;
+    color: #FFFFFF;
+    padding: 0 8px;
+    background-color: rgba(0, 0, 0, .3);
+}
+
 @media screen and (max-width:768px) {
     .story-content {
         width: 100%;
