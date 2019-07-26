@@ -170,13 +170,14 @@ class StoryEdit extends Component {
             for (let i = 0; i < images.length; i++) {
                 let size = util.common.getImageInfo(images[i]);
                 prevContent.splice(index, 0, { _id: util.common.randomStr(false, 12), metaType: 'image', url: images[i], size: size, memo: '' });
+                if (typeof prevStory.pictureCount === 'number') {
+                    prevStory.pictureCount = prevStory.pictureCount + 1;
+                } else {
+                    prevStory.pictureCount = 1;
+                }
             }
             prevStory.richContent = prevContent;
-            if (typeof prevStory.pictureCount === 'number') {
-                prevStory.pictureCount = prevStory.pictureCount + 1;
-            } else {
-                prevStory.pictureCount = 1;
-            }
+            
             // 设置封面
             if (!prevStory.cover) {
                 prevStory.cover = images[0];
