@@ -15,7 +15,7 @@ class CheckArticle extends Component {
         super(props);
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
     }
-    
+
     showDeleteConfirm() {
         const { deleteStory, story } = this.props;
         confirm({
@@ -31,11 +31,12 @@ class CheckArticle extends Component {
     }
 
     render() {
-        const { auditStory, story, groupKey } = this.props;
+        const { auditStory, story, groupKey, handleClickEdit } = this.props;
         return (
             <div className="check-button-container">
                 <Button type="primary" onClick={auditStory.bind(this, story._key, groupKey, 2)}>审核通过</Button>
                 <Button onClick={auditStory.bind(this, story._key, groupKey, 3)}>审核不通过</Button>
+                {/* <Button onClick={handleClickEdit}>编辑</Button> */}
                 <Button type="danger" onClick={this.showDeleteConfirm}>删除</Button>
             </div>
         )

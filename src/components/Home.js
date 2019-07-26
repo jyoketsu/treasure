@@ -35,17 +35,17 @@ const mapStateToProps = state => ({
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.curPage = this.curPage = sessionStorage.getItem('home-curpage') ?
-            parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
         this.perPage = 32;
         this.state = {
             showSort: false,
+            showFilter: false,
         }
         this.switchSortModal = this.switchSortModal.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.showMore = this.showMore.bind(this);
         this.handleSort = this.handleSort.bind(this);
         this.changeChannel = this.changeChannel.bind(this);
+        this.switchFilterModal = this.switchFilterModal.bind(this);
     }
 
     // 滚动查看更多故事
@@ -65,11 +65,13 @@ class Home extends Component {
             !waiting &&
             (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
-            this.curPage++;
+            let curPage = sessionStorage.getItem('home-curpage') ?
+                parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
+            curPage++;
             if (nowStationKey === 'all') {
-                getStoryList(4, null, null, 1, 1, this.curPage, this.perPage);
+                getStoryList(4, null, null, 1, 1, curPage, this.perPage);
             } else {
-                getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, curPage, this.perPage);
             }
         }
     }
@@ -82,8 +84,10 @@ class Home extends Component {
             sortType,
             sortOrder,
             nowChannelKey, } = this.props;
-        this.curPage++;
-        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+        let curPage = sessionStorage.getItem('home-curpage') ?
+            parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
+        curPage++;
+        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, curPage, this.perPage);
     }
 
     changeChannel(channelKey) {
@@ -94,15 +98,20 @@ class Home extends Component {
             sortType,
             sortOrder,
         } = this.props;
-        this.curPage = 1;
         sessionStorage.setItem('home-curpage', 1);
         clearStoryList();
-        getStoryList(1, nowStationKey, null, channelKey, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, null, channelKey, sortType, sortOrder, 1, this.perPage);
     }
 
     switchSortModal() {
         this.setState((prevState) => ({
             showSort: !prevState.showSort
+        }));
+    }
+
+    switchFilterModal() {
+        this.setState((prevState) => ({
+            showFilter: !prevState.showFilter
         }));
     }
 
@@ -112,11 +121,11 @@ class Home extends Component {
             nowStationKey,
             nowChannelKey,
         } = this.props;
-        this.curPage = 1;
+        sessionStorage.setItem('home-curpage', 1);
         this.setState({
             showSort: false,
         });
-        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, 1, this.perPage);
     }
 
     render() {
@@ -133,7 +142,7 @@ class Home extends Component {
             nowChannelKey,
             seePlugin,
             seeChannel, } = this.props;
-        const { showSort } = this.state;
+        const { showSort, showFilter, } = this.state;
 
         return (
             <div className="app-content homepage">
@@ -152,19 +161,17 @@ class Home extends Component {
                             handleSort={this.handleSort}
                             changeChannel={this.changeChannel}
                             switchSortModal={this.switchSortModal}
+                            switchFilterModal={this.switchFilterModal}
                             history={history}
                             match={match}
                             showSort={showSort}
-                            curPage={this.curPage}
-                            perPage={this.perPage}
+                            showFilter={showFilter}
                             showMore={this.showMore}
                             seePlugin={seePlugin}
                             seeChannel={seeChannel}
                         /> :
                         <HomeSubscribe
                             getStoryList={getStoryList}
-                            curPage={this.curPage}
-                            perPage={this.perPage}
                         />
                 }
             </div>
@@ -183,28 +190,21 @@ class Home extends Component {
 
         const {
             nowStationKey,
+            nowStation,
             sortType,
             sortOrder,
             getStoryList,
-            storyListLength,
             refresh,
         } = this.props;
 
-        if (nowStationKey && storyListLength === 0) {
-            // 获取微站全部故事
-            getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage);
-            sessionStorage.setItem('home-curpage', 1);
-        }
-
-        if (refresh) {
-            getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage, true);
+        if (refresh && nowStation) {
+            getStoryList(1, nowStationKey, null, nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key, sortType, sortOrder, 1, this.perPage, true);
             sessionStorage.setItem('home-curpage', 1);
         }
     }
 
     componentWillUnmount() {
         let top = document.body.scrollTop || document.documentElement.scrollTop;
-        sessionStorage.setItem('home-curpage', this.curPage);
         // 保存scrollTop的值
         sessionStorage.setItem('home-scroll', top);
         // 移除滚动事件
@@ -421,14 +421,16 @@ class Station extends React.Component {
             sortOrder,
             handleSort,
             showSort,
+            showFilter,
             switchSortModal,
+            switchFilterModal,
             nowChannelKey,
             channelInfo,
             showMore,
             user,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
-        const { isCareStar } = content;
+        const { isCareStar, showAll, } = content;
         const {
             xAxis,
             questionVisible,
@@ -524,12 +526,14 @@ class Station extends React.Component {
                             ref={node => this.tabs = node}
                             style={{ transform: `translate(${xAxis}px, 0)` }}
                         >
-                            <div
-                                className={`channel-item ${nowChannelKey === 'allSeries' ? 'selected' : ''}`}
-                                onClick={this.handleClickChannel.bind(this, 0, 'allSeries', false)}
-                            >
-                                全部
-                            </div>
+                            {
+                                showAll ? <div
+                                    className={`channel-item ${nowChannelKey === 'allSeries' ? 'selected' : ''}`}
+                                    onClick={this.handleClickChannel.bind(this, 0, 'allSeries', false)}
+                                >
+                                    全部
+                            </div> : null
+                            }
                             {channelList.map((serie, index) => (
                                 <div
                                     key={index}
@@ -559,6 +563,11 @@ class Station extends React.Component {
                             <i></i>
                         </div>
                     </Tooltip>
+                    {/* <Tooltip title="筛选" placement="left">
+                        <div className="story-tool filter-story" onClick={switchFilterModal}>
+                            <i></i>
+                        </div>
+                    </Tooltip> */}
                     <div className="multi-button">
                         <Tooltip title="投稿" placement="bottom">
                             <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
@@ -617,6 +626,35 @@ class Station extends React.Component {
                         点赞（投票）数
                     </p>
                     {/* <p className={sortType === 3 && sortOrder === 1 ? 'active' : ''}>阅读数</p> */}
+                </Modal>
+                <Modal
+                    title="筛选"
+                    visible={showFilter}
+                    onCancel={switchFilterModal}
+                    width="320px"
+                >
+                    {/* <Select
+                        style={{ width: 200 }}
+                        placeholder="请选择分类"
+                        onChange={this.handleSetTag}
+                    >
+                        {
+                            tag.split(' ').map((item, index) => (
+                                <Option key={index} index={index} value={item}>{item}</Option>
+                            ))
+                        }
+                    </Select>
+                    <Select
+                        style={{ width: 200 }}
+                        placeholder="请选择状态"
+                        onChange={this.handleSetStatus}
+                    >
+                        {
+                            statusTag.split(' ').map((item, index) => (
+                                <Option key={index} index={index} value={item}>{item}</Option>
+                            ))
+                        }
+                    </Select> */}
                 </Modal>
                 <Modal
                     title="回答问题"

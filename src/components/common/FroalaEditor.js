@@ -38,6 +38,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
+import Froalaeditor from 'froala-editor';
 
 import { Menu } from 'antd';
 const { SubMenu } = Menu;
@@ -204,7 +205,7 @@ class MyFroalaEditor extends Component {
             }
         }
         // 上传
-        let observable = qiniu.upload(file, `${util.common.guid(8, 16)}${file.name.substr(file.name.lastIndexOf('.'))}`, uptoken, putExtra, qiniuConfig);
+        let observable = qiniu.upload(file, `${util.common.guid(8, 16)}${file.name ? file.name.substr(file.name.lastIndexOf('.')) : '.jpg'}`, uptoken, putExtra, qiniuConfig);
         // 上传开始
         observable.subscribe(observer);
     }
@@ -239,10 +240,24 @@ class MyFroalaEditor extends Component {
             documentReady: true,
             language: 'zh_cn',
             pluginsEnabled: ['align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'embedly', 'emoticons', 'entities', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
-            toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'check', '|', 'insertLink', 'insertImage', 'insertVideo', 'embedly', 'insertTable', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
-            toolbarButtonsMD: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'check', '|', 'insertLink', 'insertImage', 'insertVideo', 'embedly', 'insertTable', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
-            toolbarButtonsSM: ['bold', 'italic', 'underline', 'strikeThrough', '|', 'fontFamily', 'fontSize', 'color', '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'check', '|', 'insertLink', 'insertImage', 'insertVideo', 'embedly', 'insertTable', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', 'help', 'html', '|', 'undo', 'redo'],
-            toolbarButtonsXS: ['bold', 'italic', 'underline', '|', 'fontFamily', 'fontSize', 'color', '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'check', '|', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', '|', 'insertHR', 'selectAll', 'clearFormatting', '|', 'spellChecker', '|', 'undo', 'redo'],
+            // Set custom buttons.
+            toolbarButtons: {
+                'moreText': {
+                    'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+                },
+                'moreParagraph': {
+                    'buttons': ['paragraphFormat', 'paragraphStyle', 'alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'lineHeight', 'outdent', 'indent', 'quote']
+                },
+                'moreRich': {
+                    'buttons': ['insertImage', 'insertVideo', 'insertLink', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
+                },
+                'moreMisc': {
+                    'buttons': ['undo', 'redo', 'alert',]
+                },
+            },
+
+            // Change buttons for XS screen.
+            toolbarButtonsXS: [['bold', 'italic', 'underline'], ['paragraphFormat'], ['insertImage', 'insertVideo',], ['alert']]
         };
         return (
             <div className="my-froala-editor-container">
@@ -302,7 +317,18 @@ class MyFroalaEditor extends Component {
     }
 
     componentDidMount() {
+        const { handleClickMore } = this.props;
         document.body.addEventListener('wheel', this.handleMouseWheel);
+        Froalaeditor.DefineIcon('alert', { NAME: 'info', SVG_KEY: 'more' });
+        Froalaeditor.RegisterCommand('alert', {
+            title: '文章设定',
+            focus: false,
+            undo: false,
+            refreshAfterCallback: false,
+            callback: function () {
+                handleClickMore();
+            }
+        });
     }
 
     componentWillUnmount() {

@@ -99,6 +99,7 @@ const station = (state = defaultState, action) => {
                 }
                 return {
                     ...state,
+                    nowStation: action.payload.result,
                     stationList: stationList,
                 };
             } else {

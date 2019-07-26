@@ -288,13 +288,13 @@ class EditChannel extends Component {
                     value: channelInfo ? channelInfo.tag : '',
                 },
                 allowPublicTag: {
-                    value: channelInfo ? channelInfo.allowPublicTag : '',
+                    value: channelInfo ? channelInfo.allowPublicTag : true,
                 },
                 statusTag: {
                     value: channelInfo ? channelInfo.statusTag : '',
                 },
                 allowPublicStatus: {
-                    value: channelInfo ? channelInfo.allowPublicStatus : '',
+                    value: channelInfo ? channelInfo.allowPublicStatus : false,
                 }
             },
         }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './StationBasicInfo.css';
 import util from '../../services/Util';
-import { Form, Input, Button, message, Radio, } from 'antd';
+import { Form, Input, Button, message, Radio, Switch, } from 'antd';
 import UploadStationCover from '../common/UploadCover';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -37,6 +37,10 @@ const CustomizedForm = Form.create({
             inheritedMode: Form.createFormField({
                 ...props.inheritedMode,
                 value: props.inheritedMode.value,
+            }),
+            showAll: Form.createFormField({
+                ...props.showAll,
+                value: props.showAll.value,
             }),
         };
     },
@@ -79,6 +83,9 @@ const CustomizedForm = Form.create({
                     </Radio.Group>,
                 )}
             </Form.Item>
+            <Form.Item label="显示全部故事">
+                {getFieldDecorator('showAll', { valuePropName: 'checked' })(<Switch />)}
+            </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     保存
@@ -113,6 +120,9 @@ class StationBasicInfo extends Component {
                 inheritedMode: {
                     value: stationInfo ? stationInfo.inheritedMode : '',
                 },
+                showAll: {
+                    value: stationInfo ? stationInfo.showAll : true,
+                }
             },
         }
         this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
@@ -154,7 +164,8 @@ class StationBasicInfo extends Component {
                         cover,
                         logo,
                         size,
-                        fields.inheritedMode.value
+                        fields.inheritedMode.value,
+                        fields.showAll.value,
                     );
                 } else {
                     createStation(
@@ -166,7 +177,9 @@ class StationBasicInfo extends Component {
                         cover,
                         logo,
                         size,
-                        fields.inheritedMode.value);
+                        fields.inheritedMode.value,
+                        fields.showAll.value,
+                    );
                 }
             }
         });

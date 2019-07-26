@@ -238,15 +238,18 @@ class Header extends Component {
         // 切换微站时重新获取故事
         if ((nowStationKey !== prevProps.nowStationKey) || (prevProps.user && prevProps.user.isGuest && !user.isGuest)) {
             clearStoryList();
-            this.curPage = 1;
             if (nowStationKey !== 'notFound') {
                 getStationDetail(nowStationKey);
-                // 获取微站全部故事
-                getStoryList(1, nowStationKey, null, 'allSeries', sortType, sortOrder, 1, this.perPage);
-                sessionStorage.setItem('home-curpage', 1);
             } else {
                 history.push('/station/notFound');
             }
+        }
+
+        if ((nowStation && ((prevStation && nowStation._key !== prevStation._key) || !prevStation)) ||
+            (nowStation && prevProps.user && prevProps.user.isGuest && !user.isGuest)) {
+            this.curPage = 1;
+            getStoryList(1, nowStationKey, null, nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key, sortType, sortOrder, 1, this.perPage);
+            sessionStorage.setItem('home-curpage', this.curPage);
         }
 
         // 切换了微站后，获取logo大小

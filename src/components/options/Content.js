@@ -5,6 +5,8 @@ import { Tabs, Modal, } from 'antd';
 import StoryList from '../story/StoryList';
 import Story from '../story/Story';
 import ArticlePreview from '../story/Article';
+import EditArticle from '../story/EditArticle';
+import StoryEdit from '../story/StoryEdit';
 import { connect } from 'react-redux';
 import {
     getStoryList,
@@ -31,13 +33,14 @@ const mapStateToProps = state => ({
 class Content extends Component {
     constructor(props) {
         super(props);
-        this.state = { visible: false }
+        this.state = { visible: false, isEdit: false }
         this.curPage = 1;
         this.perPage = 30;
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.showMore = this.showMore.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.switchVisible = this.switchVisible.bind(this);
+        this.handleClickEdit = this.handleClickEdit.bind(this);
     }
 
     switchVisible(key) {
@@ -46,6 +49,12 @@ class Content extends Component {
             this.props.clearStoryDetail();
             this.props.getStoryDetail(key);
         }
+    }
+
+    handleClickEdit() {
+        this.setState({
+            isEdit: true,
+        });
     }
 
 
@@ -108,6 +117,10 @@ class Content extends Component {
 
     render() {
         const { storyType } = this.props;
+        const { isEdit, visible, } = this.state;
+        const storyComp = storyType === 9 ?
+            isEdit ? <EditArticle /> : <ArticlePreview readOnly={true} hideMenu={true} /> :
+            isEdit ? <StoryEdit keep={true} /> : <Story readOnly={true} />;
         return (
             <div className="content-manage" ref={node => this.auditRef = node}>
                 <h2>内容管理</h2>
@@ -127,12 +140,12 @@ class Content extends Component {
                     title="文章预览"
                     footer={null}
                     style={{ top: 0, right: 0, bottom: 0 }}
-                    visible={this.state.visible}
+                    visible={visible}
                     onCancel={this.switchVisible.bind(this, null)}
                     width={util.common.isMobile() ? '100%' : `${window.innerWidth * (2 / 3)}px`}
                 >
-                    <CheckArticle />
-                    {storyType === 9 ? <ArticlePreview readOnly={true} hideMenu={true}/> : <Story readOnly={true} />}
+                    <CheckArticle handleClickEdit={this.handleClickEdit} />
+                    {storyComp}
                 </Modal>
             </div>
         );

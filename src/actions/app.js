@@ -93,8 +93,8 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
-    let request = api.station.editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode);
+export function editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll) {
+    let request = api.station.editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll);
     return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 

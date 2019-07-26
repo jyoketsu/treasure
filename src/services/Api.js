@@ -297,7 +297,7 @@ const station = {
         });
     },
 
-    editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
+    editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
@@ -310,6 +310,7 @@ const station = {
             logo: logo,
             size: size,
             inheritedMode: inheritedMode,
+            showAll: showAll,
         });
     },
     getStationDetail(key) {

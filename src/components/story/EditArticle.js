@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import './EditArticle.css';
 import api from '../../services/Api';
 import { withRouter } from "react-router-dom";
-import { Form, Button, message, Modal } from 'antd';
+import { Form, Button, message, Modal, Select, } from 'antd';
 import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { addStory, modifyStory, deleteStory, } from '../../actions/app';
 const confirm = Modal.confirm;
+const Option = Select.Option;
 
 const mapStateToProps = state => ({
     seriesInfo: state.station.nowStation ?
@@ -28,7 +29,7 @@ class EditArticle extends Component {
         let story = type === 'new' ?
             {
                 content:
-                    '<p style="text-align:center;"><span class="text-huge"><strong>请输入标题</strong></span></p>',
+                    '<p><span class="text-huge"><strong>请输入标题</strong></span></p>',
                 series: { _key: util.common.getSearchParamValue(window.location.search, 'channel') || props.nowChannelKey }
             } : props.story;
         if (story._key) {
@@ -37,12 +38,43 @@ class EditArticle extends Component {
         this.state = {
             story: story,
             uptoken: null,
+            moreVisible: false,
         }
         this.handleCommit = this.handleCommit.bind(this);
         this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
 
         this.getEditor = this.getEditor.bind(this);
         this.handleAticleChange = this.handleAticleChange.bind(this);
+        this.switchMoreVisible = this.switchMoreVisible.bind(this);
+
+        this.handleSetTag = this.handleSetTag.bind(this);
+        this.handleSetStatus = this.handleSetStatus.bind(this);
+        this.handleSelectChannel = this.handleSelectChannel.bind(this);
+    }
+
+    handleSetTag(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.tag = value;
+            return { story: prevStory }
+        });
+    }
+
+    handleSetStatus(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.statusTag = value;
+            return { story: prevStory }
+        });
+    }
+
+    handleSelectChannel(value) {
+        this.setState((prevState) => {
+            let { story: prevStory = {} } = prevState;
+            prevStory.series = { _key: value };
+            prevStory.tag = undefined;
+            return { story: prevStory }
+        });
     }
 
     handleAticleChange(model) {
@@ -52,10 +84,35 @@ class EditArticle extends Component {
         this.setState({ story: changedStory });
     }
 
+    switchMoreVisible() {
+        this.setState((prevState) => ({
+            moreVisible: !prevState.moreVisible
+        }));
+    }
+
     async handleCommit(e) {
-        const { user, nowStationKey, addStory, modifyStory, } = this.props;
+        const { user, nowStationKey, addStory, modifyStory, seriesInfo } = this.props;
         const { story, } = this.state;
         e.preventDefault();
+
+        let channelInfo = {};
+        const nowChannelId = story.series._key;
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (seriesInfo[i]._key === nowChannelId) {
+                channelInfo = seriesInfo[i];
+                break;
+            }
+        }
+        const { tag, statusTag, allowPublicTag } = channelInfo;
+
+        if (tag && !story.tag && allowPublicTag) {
+            message.info('请选择一个标签！');
+            return;
+        }
+
+        if (statusTag && !story.statusTag) {
+            story.statusTag = statusTag.split(' ')[0];
+        }
 
         let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
         let srcReg = /src=['"]?([^'"]*)['"]?/i // 匹配图片中的src
@@ -117,7 +174,17 @@ class EditArticle extends Component {
     }
 
     render() {
+        const { seriesInfo, } = this.props;
         const { story = {}, uptoken, } = this.state;
+        let channelInfo = {};
+        const nowChannelId = story.series ? story.series._key : util.common.getSearchParamValue(window.location.search, 'channel');
+        for (let i = 0; i < seriesInfo.length; i++) {
+            if (seriesInfo[i]._key === nowChannelId) {
+                channelInfo = seriesInfo[i];
+                break;
+            }
+        }
+        const { tag, allowPublicTag, statusTag, allowPublicStatus, role, } = channelInfo;
         return (
             <div
                 className="app-content edit-story"
@@ -131,7 +198,14 @@ class EditArticle extends Component {
                 >
                     <div className="editor-container" ref={node => this.editorRef = node}>
                         {
-                            uptoken ? <FroalaEditor data={story ? story.content : ''} handleChange={this.handleAticleChange} uptoken={uptoken} /> : null
+                            uptoken ?
+                                <FroalaEditor
+                                    data={story ? story.content : ''}
+                                    handleChange={this.handleAticleChange}
+                                    uptoken={uptoken}
+                                    handleClickMore={this.switchMoreVisible}
+                                /> :
+                                null
                         }
 
                     </div>
@@ -140,6 +214,56 @@ class EditArticle extends Component {
                         <Button type="primary" onClick={this.handleCommit}>保存</Button>
                     </div>
                 </div>
+                <Modal
+                    className="article-options-modal"
+                    title="文章设定"
+                    visible={this.state.moreVisible}
+                    onOk={this.switchMoreVisible}
+                    onCancel={this.switchMoreVisible}
+                >
+                    <Select
+                        style={{ width: 200 }}
+                        placeholder="请选择频道"
+                        value={nowChannelId}
+                        onChange={this.handleSelectChannel}
+                    >
+                        {
+                            seriesInfo.map((item, index) => (
+                                <Option key={index} value={item._key}>{item.name}</Option>
+                            ))
+                        }
+                    </Select>
+                    {
+                        tag && (allowPublicTag || (!allowPublicTag && role < 4)) ?
+                            <Select
+                                style={{ width: 200 }}
+                                placeholder="请选择标签"
+                                value={story.tag}
+                                onChange={this.handleSetTag}
+                            >
+                                {
+                                    tag.split(' ').map((item, index) => (
+                                        <Option key={index} index={index} value={item}>{item}</Option>
+                                    ))
+                                }
+                            </Select> : null
+                    }
+                    {
+                        statusTag && (allowPublicStatus || (!allowPublicStatus && role < 4)) ?
+                            <Select
+                                style={{ width: 200 }}
+                                placeholder="请选择状态"
+                                value={story.statusTag}
+                                onChange={this.handleSetStatus}
+                            >
+                                {
+                                    statusTag.split(' ').map((item, index) => (
+                                        <Option key={index} index={index} value={item}>{item}</Option>
+                                    ))
+                                }
+                            </Select> : null
+                    }
+                </Modal>
             </div>
         );
     }

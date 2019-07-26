@@ -7,7 +7,6 @@
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
     cursor: pointer;
     border: 1px solid transparent;
-    user-select: none;
     touch-action: manipulation;
     height: 32px;
     line-height: 32px;

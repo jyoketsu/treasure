@@ -20,3 +20,12 @@
 .article-footer>button {
     margin-right: 15px
 }
+
+.article-options-modal .ant-modal-body {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -98,9 +98,9 @@ class StoryEdit extends Component {
                 break;
             }
         }
-        const { tag, statusTag, } = channelInfo;
+        const { tag, statusTag, allowPublicTag } = channelInfo;
 
-        if (tag && !story.tag) {
+        if (tag && !story.tag && allowPublicTag) {
             message.info('请选择一个标签！');
             return;
         }
@@ -287,8 +287,11 @@ class StoryEdit extends Component {
             let { story: prevStory = {} } = prevState;
             let { richContent: prevContent = [] } = prevStory;
             prevContent.splice(index, 1);
-            if (metaType === 'image' || metaType === 'video') {
+            if (metaType === 'image') {
                 prevStory.pictureCount = prevStory.pictureCount - 1;
+            }
+            if (metaType === 'video') {
+                prevStory.videoCount = prevStory.videoCount - 1;
             }
             prevStory.richContent = prevContent;
             return { story: prevStory }
@@ -554,9 +557,9 @@ class StoryEdit extends Component {
     }
 
     async componentDidUpdate(prevProps) {
-        const { history, loading, flag, } = this.props;
+        const { history, loading, flag, keep } = this.props;
         const { story } = this.state;
-        if (!loading && prevProps.loading) {
+        if (!loading && prevProps.loading && !keep) {
             if (story._key) {
                 if (flag === 'deleteStory') {
                     const pathname = window.location.pathname;

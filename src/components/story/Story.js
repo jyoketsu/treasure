@@ -22,7 +22,9 @@ class Story extends Component {
     }
 
     handleClickImage(url) {
-        window.open(url, '_blank');
+        if (!util.common.isMiniProgram()) {
+            window.open(url, '_blank');
+        }
     }
 
     handleToEdit() {
