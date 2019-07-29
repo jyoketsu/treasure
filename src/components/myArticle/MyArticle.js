@@ -28,7 +28,12 @@ class MyArticle extends Component {
         const { match, } = this.props;
         const { currentRouteKey } = this.state;
         return (
-            <div className="app-content subscribe-container">
+            <div
+                className="app-content subscribe-container"
+                style={{
+                    height: `${window.innerHeight - 70}px`,
+                }}
+            >
                 <Tab
                     currentKey={currentRouteKey}
                     tabList={[

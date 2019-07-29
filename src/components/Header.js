@@ -248,7 +248,18 @@ class Header extends Component {
         if ((nowStation && ((prevStation && nowStation._key !== prevStation._key) || !prevStation)) ||
             (nowStation && prevProps.user && prevProps.user.isGuest && !user.isGuest)) {
             this.curPage = 1;
-            getStoryList(1, nowStationKey, null, nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key, sortType, sortOrder, 1, this.perPage);
+            getStoryList(
+                1,
+                nowStationKey,
+                null,
+                nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key,
+                sortType,
+                sortOrder,
+                '',
+                '',
+                1,
+                this.perPage
+            );
             sessionStorage.setItem('home-curpage', this.curPage);
         }
 

@@ -21,6 +21,8 @@ const defaultState = {
     sortType: 1,
     sortOrder: 1,
     nowChannelKey: 'allSeries',
+    tag: undefined,
+    statusTag: undefined,
     refresh: false,
     dynamicStoryList: [],
 };
@@ -45,6 +47,8 @@ const story = (state = defaultState, action) => {
                         sortOrder: action.sortOrder,
                         nowChannelKey: action.channelKey,
                         refresh: false,
+                        tag: action.tag,
+                        statusTag: action.statusTag,
                     };
                 } else {
                     return {
@@ -54,6 +58,8 @@ const story = (state = defaultState, action) => {
                         sortType: action.sortType,
                         sortOrder: action.sortOrder,
                         nowChannelKey: action.channelKey,
+                        tag: action.tag,
+                        statusTag: action.statusTag,
                     };
                 }
 

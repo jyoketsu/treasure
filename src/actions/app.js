@@ -151,8 +151,30 @@ export const AUDIT = 'AUDIT';
 export const READYTOREFRESH = 'READYTOREFRESH';
 export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
 
-export function getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage, isRefresh) {
-    let request = api.story.getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage);
+export function getStoryList(
+    type,
+    starKey,
+    targetUKey,
+    seriesKey,
+    sortType,
+    sortOrder,
+    tag,
+    statusTag,
+    curPage,
+    perPage,
+    isRefresh) {
+    let request = api.story.getStoryList(
+        type,
+        starKey,
+        targetUKey,
+        seriesKey,
+        sortType,
+        sortOrder,
+        tag,
+        statusTag,
+        curPage,
+        perPage
+    );
     return {
         type: GET_STORY_LIST,
         curPage: curPage,
@@ -162,6 +184,8 @@ export function getStoryList(type, starKey, targetUKey, seriesKey, sortType, sor
         channelKey: seriesKey,
         payload: request,
         isRefresh: isRefresh,
+        tag: tag,
+        statusTag: statusTag,
     }
 }
 

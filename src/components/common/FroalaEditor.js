@@ -211,7 +211,7 @@ class MyFroalaEditor extends Component {
     }
 
     render() {
-        const { data, previewMode, handleChange, uptoken, hideMenu, } = this.props;
+        const { data, previewMode, handleChange, uptoken, hideMenu, inline, } = this.props;
         const { typeArr, subs, top, } = this.state;
         const that = this;
         const events = {
@@ -237,7 +237,7 @@ class MyFroalaEditor extends Component {
         const config = {
             placeholder: "Edit Me",
             events: events,
-            documentReady: true,
+            documentReady: inline ? false : true,
             language: 'zh_cn',
             pluginsEnabled: ['align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'embedly', 'emoticons', 'entities', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
             // Set custom buttons.

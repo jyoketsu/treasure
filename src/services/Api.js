@@ -376,7 +376,18 @@ const station = {
 }
 
 const story = {
-    getStoryList(type, starKey, targetUKey, seriesKey, sortType, sortOrder, curPage, perPage, ) {
+    getStoryList(
+        type,
+        starKey,
+        targetUKey,
+        seriesKey,
+        sortType,
+        sortOrder,
+        tag,
+        statusTag,
+        curPage,
+        perPage,
+    ) {
         return requests.get(APIURL + '/album', {
             token: token,
             type: type,
@@ -385,6 +396,8 @@ const story = {
             seriesKey: seriesKey,
             sortType: sortType,
             sortOrder: sortOrder,
+            tag: tag ? tag : '',
+            statusTag: statusTag ? statusTag : '',
             curPage: curPage,
             perPage: perPage,
         });

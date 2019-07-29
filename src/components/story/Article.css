@@ -1,3 +1,9 @@
+.app-content.inline .my-froala-editor {
+    width: unset;
+    box-shadow: unset;
+    background-color: unset;
+}
+
 .article-display>div>h1 {
     text-align: center;
     padding: 0.5em;

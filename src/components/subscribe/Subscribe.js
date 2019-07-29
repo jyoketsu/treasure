@@ -30,10 +30,10 @@ class Subscribe extends Component {
         const { currentRouteKey } = this.state;
         return (
             <div
-                className="app-content subscribe-container"
                 style={{
-                    minHeight: `${window.innerHeight - 70}px`,
+                    height: `${window.innerHeight - 70}px`,
                 }}
+                className="app-content subscribe-container"
             >
                 <Tab
                     currentKey={currentRouteKey}

@@ -157,6 +157,10 @@
     background-image: url(/image/icon/sortStory.svg);
 }
 
+.filter-story>i {
+    background-image: url(/image/icon/filter.svg);
+}
+
 .add-story,
 .add-story-multi {
     background-color: #4A90E2;
@@ -291,6 +295,14 @@
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 20px;
+}
+
+.story-filter-modal .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 150px;
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */

@@ -43,13 +43,13 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, readOnly, } = this.props;
+        const { story, userId, nowStationKey, nowStation, readOnly, inline, } = this.props;
         const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
 
         return (
-            <div className="app-content story-container"
+            <div className={`app-content story-container ${inline ? 'inline' : ''}`}
             >
                 {/* <div
                     className="story-head"

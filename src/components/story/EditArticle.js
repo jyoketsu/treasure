@@ -174,7 +174,7 @@ class EditArticle extends Component {
     }
 
     render() {
-        const { seriesInfo, } = this.props;
+        const { seriesInfo, inline } = this.props;
         const { story = {}, uptoken, } = this.state;
         let channelInfo = {};
         const nowChannelId = story.series ? story.series._key : util.common.getSearchParamValue(window.location.search, 'channel');
@@ -184,10 +184,10 @@ class EditArticle extends Component {
                 break;
             }
         }
-        const { tag, allowPublicTag, statusTag, allowPublicStatus, role, } = channelInfo;
+        const { tag, allowPublicTag, statusTag, allowPublicStatus, role } = channelInfo;
         return (
             <div
-                className="app-content edit-story"
+                className={`app-content edit-story ${inline ? 'inline' : ''}`}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
             >
                 <div
@@ -204,6 +204,7 @@ class EditArticle extends Component {
                                     handleChange={this.handleAticleChange}
                                     uptoken={uptoken}
                                     handleClickMore={this.switchMoreVisible}
+                                    inline={inline}
                                 /> :
                                 null
                         }

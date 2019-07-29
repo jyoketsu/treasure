@@ -91,15 +91,17 @@ const station = (state = defaultState, action) => {
         case EDIT_STATION:
             if (!action.error) {
                 let stationList = Object.assign([], state.stationList);
+                let nowStation =  JSON.parse(JSON.stringify(state.nowStation))
                 for (let i = 0; i < stationList.length; i++) {
                     if (stationList[i]._key === action.stationKey) {
-                        stationList[i] = action.payload.result
+                        nowStation = Object.assign(stationList[i], action.payload.result);
+                        stationList[i] = nowStation;
                         break;
                     }
                 }
                 return {
                     ...state,
-                    nowStation: action.payload.result,
+                    nowStation: nowStation,
                     stationList: stationList,
                 };
             } else {

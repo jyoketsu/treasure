@@ -34,7 +34,9 @@ class Article extends Component {
     }
 
     switchVisible(key) {
-        this.setState((prevState) => ({ visible: !prevState.visible }));
+        if (util.common.isMobile()) {
+            this.setState((prevState) => ({ visible: !prevState.visible }))
+        }
         if (key) {
             this.props.clearStoryDetail();
             this.props.getStoryDetail(key);
@@ -45,10 +47,17 @@ class Article extends Component {
         const { storyType } = this.props;
         return (
             <div className="member-story-list">
-                <StoryList
-                    showMore={this.showMore}
-                    handleCoverClick={this.switchVisible}
-                />
+                <div ref={node => this.contentRef = node}>
+                    <StoryList
+                        showMore={this.showMore}
+                        handleCoverClick={this.switchVisible}
+                    />
+                </div>
+                <div>
+                    {storyType === 9 ?
+                        <ArticlePreview readOnly={true} hideMenu={true} inline={true} /> :
+                        <Story readOnly={true} inline={true} />}
+                </div>
                 <Modal
                     className="story-preview-modal"
                     title="文章预览"
@@ -75,15 +84,26 @@ class Article extends Component {
         } = this.props;
         const { visible } = this.state;
 
-        let top = document.body.scrollTop || document.documentElement.scrollTop;
+        let top = this.contentRef.scrollTop;
         if (
             !visible &&
             nowStoryNumber < storyNumber &&
             !waiting &&
-            (top + document.body.clientHeight === document.body.scrollHeight)
+            (top + this.contentRef.clientHeight === this.contentRef.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+            getStoryList(
+                this.type,
+                nowStationKey,
+                this.userId,
+                'allSeries',
+                this.sortType,
+                this.sortOrder,
+                '',
+                '',
+                this.curPage,
+                this.perPage
+            );
         }
     }
 
@@ -94,14 +114,36 @@ class Article extends Component {
         } = this.props;
 
         this.curPage++;
-        getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+        getStoryList(
+            this.type,
+            nowStationKey,
+            this.userId,
+            'allSeries',
+            this.sortType,
+            this.sortOrder,
+            '',
+            '',
+            this.curPage,
+            this.perPage
+        );
     }
 
     componentDidMount() {
         const { nowStationKey, getStoryList, readyToRefresh } = this.props;
         readyToRefresh();
         this.curPage = 1;
-        getStoryList(this.type, nowStationKey, null, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+        getStoryList(
+            this.type,
+            nowStationKey,
+            null,
+            'allSeries',
+            this.sortType,
+            this.sortOrder,
+            '',
+            '',
+            this.curPage,
+            this.perPage
+        );
 
         // 监听滚动，查看更多
         document.body.addEventListener('wheel', this.handleMouseWheel);

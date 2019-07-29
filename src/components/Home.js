@@ -30,6 +30,8 @@ const mapStateToProps = state => ({
     nowChannelKey: state.story.nowChannelKey,
     storyListLength: state.story.storyList.length,
     refresh: state.story.refresh,
+    tag: state.story.tag,
+    statusTag: state.story.statusTag,
 });
 
 class Home extends Component {
@@ -39,6 +41,8 @@ class Home extends Component {
         this.state = {
             showSort: false,
             showFilter: false,
+            tag: props.tag,
+            statusTag: props.statusTag,
         }
         this.switchSortModal = this.switchSortModal.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
@@ -46,6 +50,9 @@ class Home extends Component {
         this.handleSort = this.handleSort.bind(this);
         this.changeChannel = this.changeChannel.bind(this);
         this.switchFilterModal = this.switchFilterModal.bind(this);
+        this.handleSetTag = this.handleSetTag.bind(this);
+        this.handleSetStatus = this.handleSetStatus.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
     }
 
     // 滚动查看更多故事
@@ -58,7 +65,9 @@ class Home extends Component {
             storyNumber,
             sortType,
             sortOrder,
-            nowChannelKey, } = this.props;
+            nowChannelKey,
+        } = this.props;
+        const { tag, statusTag, } = this.state;
         let top = document.body.scrollTop || document.documentElement.scrollTop;
         if (
             nowStoryNumber < storyNumber &&
@@ -69,9 +78,20 @@ class Home extends Component {
                 parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
             curPage++;
             if (nowStationKey === 'all') {
-                getStoryList(4, null, null, 1, 1, curPage, this.perPage);
+
             } else {
-                getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, curPage, this.perPage);
+                getStoryList(
+                    1,
+                    nowStationKey,
+                    null,
+                    nowChannelKey,
+                    sortType,
+                    sortOrder,
+                    tag,
+                    statusTag,
+                    curPage,
+                    this.perPage
+                );
             }
         }
     }
@@ -83,11 +103,24 @@ class Home extends Component {
             getStoryList,
             sortType,
             sortOrder,
-            nowChannelKey, } = this.props;
+            nowChannelKey,
+        } = this.props;
+        const { tag, statusTag, } = this.state;
         let curPage = sessionStorage.getItem('home-curpage') ?
             parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
         curPage++;
-        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, curPage, this.perPage);
+        getStoryList(
+            1,
+            nowStationKey,
+            null,
+            nowChannelKey,
+            sortType,
+            sortOrder,
+            tag,
+            statusTag,
+            curPage,
+            this.perPage
+        );
     }
 
     changeChannel(channelKey) {
@@ -99,8 +132,23 @@ class Home extends Component {
             sortOrder,
         } = this.props;
         sessionStorage.setItem('home-curpage', 1);
+        this.setState({
+            tag:undefined,
+            statusTag:undefined,
+        });
         clearStoryList();
-        getStoryList(1, nowStationKey, null, channelKey, sortType, sortOrder, 1, this.perPage);
+        getStoryList(
+            1,
+            nowStationKey,
+            null,
+            channelKey,
+            sortType,
+            sortOrder,
+            '',
+            '',
+            1,
+            this.perPage
+        );
     }
 
     switchSortModal() {
@@ -110,6 +158,11 @@ class Home extends Component {
     }
 
     switchFilterModal() {
+        const { nowChannelKey } = this.props;
+        if (nowChannelKey === 'allSeries') {
+            message.info('请在频道中筛选！');
+            return;
+        }
         this.setState((prevState) => ({
             showFilter: !prevState.showFilter
         }));
@@ -121,11 +174,56 @@ class Home extends Component {
             nowStationKey,
             nowChannelKey,
         } = this.props;
+        const { tag, statusTag, } = this.state;
         sessionStorage.setItem('home-curpage', 1);
         this.setState({
             showSort: false,
         });
-        getStoryList(1, nowStationKey, null, nowChannelKey, sortType, sortOrder, 1, this.perPage);
+        getStoryList(
+            1,
+            nowStationKey,
+            null,
+            nowChannelKey,
+            sortType,
+            sortOrder,
+            tag,
+            statusTag,
+            1,
+            this.perPage
+        );
+    }
+
+    handleFilter() {
+        const {
+            getStoryList,
+            nowStationKey,
+            nowChannelKey,
+        } = this.props;
+        const { sortType, sortOrder, tag, statusTag, } = this.state;
+        sessionStorage.setItem('home-curpage', 1);
+        this.setState({
+            showFilter: false,
+        });
+        getStoryList(
+            1,
+            nowStationKey,
+            null,
+            nowChannelKey,
+            sortType,
+            sortOrder,
+            tag,
+            statusTag,
+            1,
+            this.perPage
+        );
+    }
+
+    handleSetTag(value) {
+        this.setState({ tag: value });
+    }
+
+    handleSetStatus(value) {
+        this.setState({ statusTag: value });
     }
 
     render() {
@@ -141,8 +239,9 @@ class Home extends Component {
             sortOrder,
             nowChannelKey,
             seePlugin,
-            seeChannel, } = this.props;
-        const { showSort, showFilter, } = this.state;
+            seeChannel,
+        } = this.props;
+        const { showSort, showFilter, tag, statusTag, } = this.state;
 
         return (
             <div className="app-content homepage">
@@ -169,6 +268,11 @@ class Home extends Component {
                             showMore={this.showMore}
                             seePlugin={seePlugin}
                             seeChannel={seeChannel}
+                            tag={tag}
+                            statusTag={statusTag}
+                            handleSetTag={this.handleSetTag}
+                            handleSetStatus={this.handleSetStatus}
+                            handleFilter={this.handleFilter}
                         /> :
                         <HomeSubscribe
                             getStoryList={getStoryList}
@@ -198,7 +302,19 @@ class Home extends Component {
         } = this.props;
 
         if (refresh && nowStation) {
-            getStoryList(1, nowStationKey, null, nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key, sortType, sortOrder, 1, this.perPage, true);
+            getStoryList(
+                1,
+                nowStationKey,
+                null,
+                nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key,
+                sortType,
+                sortOrder,
+                '',
+                '',
+                1,
+                this.perPage,
+                true
+            );
             sessionStorage.setItem('home-curpage', 1);
         }
     }
@@ -259,10 +375,10 @@ class Station extends React.Component {
             message.info('请先登录！');
             return;
         }
-        if (!user.profile) {
-            message.info('请先完善个人信息！');
-            return;
-        }
+        // if (!user.profile) {
+        //     message.info('请先完善个人信息！');
+        //     return;
+        // }
         if (nowChannelKey === 'allSeries') {
             this.contributeType = type;
             this.switchChannelVisible();
@@ -428,6 +544,11 @@ class Station extends React.Component {
             channelInfo,
             showMore,
             user,
+            handleSetTag,
+            handleSetStatus,
+            tag: nowTag,
+            statusTag: nowStatusTag,
+            handleFilter,
         } = this.props;
         const { seriesInfo = [], pluginInfo = [], } = content;
         const { isCareStar, showAll, } = content;
@@ -440,6 +561,8 @@ class Station extends React.Component {
         } = this.state;
 
         const token = localStorage.getItem('TOKEN');
+
+        // 获取当前频道信息
         let nowChannel;
         for (let i = 0; i < channelInfo.length; i++) {
             if (nowChannelKey === channelInfo[i]._key) {
@@ -447,6 +570,9 @@ class Station extends React.Component {
                 break;
             }
         }
+        const { tag = '', statusTag = '', } = nowChannel || {};
+        let tagStr = tag ? `全部 ${tag}` : tag;
+        let statusStr = statusTag ? `全部 ${statusTag}` : statusTag;
 
         let channelList = [];
         if (isCareStar) {
@@ -563,11 +689,11 @@ class Station extends React.Component {
                             <i></i>
                         </div>
                     </Tooltip>
-                    {/* <Tooltip title="筛选" placement="left">
+                    <Tooltip title="筛选" placement="left">
                         <div className="story-tool filter-story" onClick={switchFilterModal}>
                             <i></i>
                         </div>
-                    </Tooltip> */}
+                    </Tooltip>
                     <div className="multi-button">
                         <Tooltip title="投稿" placement="bottom">
                             <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
@@ -629,32 +755,40 @@ class Station extends React.Component {
                 </Modal>
                 <Modal
                     title="筛选"
+                    className="story-filter-modal"
                     visible={showFilter}
+                    onOk={handleFilter}
                     onCancel={switchFilterModal}
                     width="320px"
                 >
-                    {/* <Select
+                    <Select
+                        value={nowTag}
                         style={{ width: 200 }}
                         placeholder="请选择分类"
-                        onChange={this.handleSetTag}
+                        onChange={handleSetTag}
                     >
                         {
-                            tag.split(' ').map((item, index) => (
-                                <Option key={index} index={index} value={item}>{item}</Option>
-                            ))
+                            tagStr ? (
+                                tagStr.split(' ').map((item, index) => (
+                                    <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
+                                ))
+                            ) : null
                         }
                     </Select>
                     <Select
+                        value={nowStatusTag}
                         style={{ width: 200 }}
                         placeholder="请选择状态"
-                        onChange={this.handleSetStatus}
+                        onChange={handleSetStatus}
                     >
                         {
-                            statusTag.split(' ').map((item, index) => (
-                                <Option key={index} index={index} value={item}>{item}</Option>
-                            ))
+                            statusStr?(
+                                statusStr.split(' ').map((item, index) => (
+                                    <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
+                                ))
+                            ):null
                         }
-                    </Select> */}
+                    </Select>
                 </Modal>
                 <Modal
                     title="回答问题"

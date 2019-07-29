@@ -54,6 +54,16 @@
     overflow: hidden;
 }
 
+.app-content.inline {
+    position: relative;
+    top: 0;
+}
+
+.app-content.inline>.main-content,
+.app-content.inline>.story-content {
+    width: unset;
+}
+
 .story-container .story-content-edit-box {
     margin: 15px 0;
 }

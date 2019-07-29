@@ -56,6 +56,7 @@
 }
 
 .options-content {
+    position: relative;
     flex: 1;
     padding: 15px 25px;
     width: 720px;

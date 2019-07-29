@@ -44,7 +44,8 @@ class Content extends Component {
     }
 
     switchVisible(key) {
-        this.setState((prevState) => ({ visible: !prevState.visible }));
+        // this.setState((prevState) => ({ visible: !prevState.visible }));
+        this.setState({ isEdit: false });
         if (key) {
             this.props.clearStoryDetail();
             this.props.getStoryDetail(key);
@@ -70,14 +71,25 @@ class Content extends Component {
             sortOrder,
         } = this.props;
 
-        let top = document.body.scrollTop || document.documentElement.scrollTop;
+        let top = this.contentRef.scrollTop;
         if (
             nowStoryNumber < storyNumber &&
             !waiting &&
-            (top + document.body.clientHeight === document.body.scrollHeight)
+            (top + this.contentRef.clientHeight === this.contentRef.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(
+                this.filterType,
+                nowStationKey,
+                null,
+                'allSeries',
+                sortType,
+                sortOrder,
+                '',
+                '',
+                this.curPage,
+                this.perPage
+            );
         }
     }
 
@@ -90,7 +102,18 @@ class Content extends Component {
         } = this.props;
 
         this.curPage++;
-        getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+        getStoryList(
+            this.filterType,
+            nowStationKey,
+            null,
+            'allSeries',
+            sortType,
+            sortOrder,
+            '',
+            '',
+            this.curPage,
+            this.perPage
+        );
     }
 
     handleTabChange(key) {
@@ -100,15 +123,48 @@ class Content extends Component {
         switch (key) {
             case 'wait':
                 this.filterType = 7;
-                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(
+                    this.filterType,
+                    nowStationKey,
+                    null,
+                    'allSeries',
+                    sortType,
+                    sortOrder,
+                    '',
+                    '',
+                    this.curPage,
+                    this.perPage
+                );
                 break;
             case 'passed':
                 this.filterType = 6;
-                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(
+                    this.filterType,
+                    nowStationKey,
+                    null,
+                    'allSeries',
+                    sortType,
+                    sortOrder,
+                    '',
+                    '',
+                    this.curPage,
+                    this.perPage
+                );
                 break;
             case 'unpass':
                 this.filterType = 8;
-                getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+                getStoryList(
+                    this.filterType,
+                    nowStationKey,
+                    null,
+                    'allSeries',
+                    sortType,
+                    sortOrder,
+                    '',
+                    '',
+                    this.curPage,
+                    this.perPage
+                );
                 break;
             default:
                 break;
@@ -119,22 +175,28 @@ class Content extends Component {
         const { storyType } = this.props;
         const { isEdit, visible, } = this.state;
         const storyComp = storyType === 9 ?
-            isEdit ? <EditArticle /> : <ArticlePreview readOnly={true} hideMenu={true} /> :
-            isEdit ? <StoryEdit keep={true} /> : <Story readOnly={true} />;
+            (isEdit ? <EditArticle inline={true} /> : <ArticlePreview readOnly={true} hideMenu={true} inline={true} />) :
+            (isEdit ? <StoryEdit keep={true} inline={true} /> : <Story readOnly={true} inline={true} />);
         return (
             <div className="content-manage" ref={node => this.auditRef = node}>
-                <h2>内容管理</h2>
-                <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
-                    <TabPane tab="待审核" key="wait">
-                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
-                    </TabPane>
-                    <TabPane tab="已审核" key="passed">
-                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
-                    </TabPane>
-                    <TabPane tab="审核不通过" key="unpass">
-                        <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
-                    </TabPane>
-                </Tabs>
+                <div ref={node => this.contentRef = node}>
+                    <h2>内容管理</h2>
+                    <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
+                        <TabPane tab="待审核" key="wait">
+                            <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
+                        </TabPane>
+                        <TabPane tab="已审核" key="passed">
+                            <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
+                        </TabPane>
+                        <TabPane tab="审核不通过" key="unpass">
+                            <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
+                        </TabPane>
+                    </Tabs>
+                </div>
+                <div>
+                    <CheckArticle handleClickEdit={this.handleClickEdit} />
+                    {storyComp}
+                </div>
                 <Modal
                     className="story-preview-modal"
                     title="文章预览"
@@ -158,7 +220,18 @@ class Content extends Component {
         if (nowStationKey) {
             this.curPage = 1;
             this.filterType = 7;
-            getStoryList(this.filterType, nowStationKey, null, 'allSeries', sortType, sortOrder, this.curPage, this.perPage);
+            getStoryList(
+                this.filterType,
+                nowStationKey,
+                null,
+                'allSeries',
+                sortType,
+                sortOrder,
+                '',
+                '',
+                this.curPage,
+                this.perPage
+            );
         }
 
         // 监听滚动，查看更多

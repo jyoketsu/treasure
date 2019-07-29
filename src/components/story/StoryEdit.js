@@ -177,7 +177,7 @@ class StoryEdit extends Component {
                 }
             }
             prevStory.richContent = prevContent;
-            
+
             // 设置封面
             if (!prevStory.cover) {
                 prevStory.cover = images[0];
@@ -379,7 +379,7 @@ class StoryEdit extends Component {
     }
 
     render() {
-        const { seriesInfo, } = this.props;
+        const { seriesInfo, inline } = this.props;
         const { story = {}, selectedItemId, selectedItemIndex, musicAddress, } = this.state;
         const { cover, title = '', richContent = [], address, time } = story;
         let channelInfo = {};
@@ -411,7 +411,7 @@ class StoryEdit extends Component {
         );
 
         return (
-            <div className="app-content story-edit">
+            <div className={`app-content story-edit ${inline ? 'inline' : ''}`}>
                 <div className="story-edit-head-buttons">
                     <Button onClick={this.handleCancel}>取消</Button>
                     {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
@@ -552,11 +552,6 @@ class StoryEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
-        const { story } = this.props;
-        api.story.exitEdit(story._key);
-    }
-
     async componentDidUpdate(prevProps) {
         const { history, loading, flag, keep } = this.props;
         const { story } = this.state;
@@ -573,6 +568,26 @@ class StoryEdit extends Component {
                 history.goBack();
             }
         }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.story._key !== state.story._key) {
+            console.log('切换了故事');
+            return {
+                story: props.story,
+                selectedItemId: null,
+                selectedItemIndex: null,
+                musicPanelvisible: false,
+                musicAddress: props.story.backGroundMusic,
+            }
+        } else {
+            return null
+        }
+    }
+
+    componentWillUnmount() {
+        const { story } = this.props;
+        api.story.exitEdit(story._key);
     }
 }
 

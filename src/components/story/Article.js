@@ -3,7 +3,7 @@ import './Article.css'
 import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
-import { getStoryDetail, clearStoryDetail, } from '../../actions/app';
+import { getStoryDetail, } from '../../actions/app';
 
 const mapStateToProps = state => ({
     userId: state.auth.user ? state.auth.user._key : null,
@@ -19,14 +19,14 @@ class Article extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, readOnly, hideMenu } = this.props;
+        const { story, userId, nowStationKey, nowStation, readOnly, hideMenu, inline, } = this.props;
         const { userKey, title, creator = {}, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
 
         return (
             <div
-                className="app-content story-container article-display"
+                className={`app-content story-container article-display  ${inline ? 'inline' : ''}`}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
             >
                 <div className={`main-content story-content article-show ${hideMenu ? 'hide-menu' : ''}`}
@@ -75,13 +75,9 @@ class Article extends Component {
             getStoryDetail(storyKey);
         }
     }
-
-    componentWillUnmount() {
-        this.props.clearStoryDetail();
-    }
 }
 
 export default connect(
     mapStateToProps,
-    { getStoryDetail, clearStoryDetail, },
+    { getStoryDetail, },
 )(Article);

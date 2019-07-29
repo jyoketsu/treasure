@@ -52,7 +52,18 @@ class MemberStoryList extends Component {
             (top + document.body.clientHeight === document.body.scrollHeight)
         ) {
             this.curPage++;
-            getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+            getStoryList(
+                this.type,
+                nowStationKey,
+                this.userId,
+                'allSeries',
+                this.sortType,
+                this.sortOrder,
+                '',
+                '',
+                this.curPage,
+                this.perPage
+            );
         }
     }
 
@@ -63,7 +74,18 @@ class MemberStoryList extends Component {
         } = this.props;
 
         this.curPage++;
-        getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+        getStoryList(
+            this.type,
+            nowStationKey,
+            this.userId,
+            'allSeries',
+            this.sortType,
+            this.sortOrder,
+            '',
+            '',
+            this.curPage,
+            this.perPage
+        );
     }
 
     componentDidMount() {
@@ -73,7 +95,18 @@ class MemberStoryList extends Component {
             readyToRefresh();
             this.curPage = 1;
             sessionStorage.setItem('member-story-curpage', this.curPage);
-            getStoryList(this.type, nowStationKey, this.userId, 'allSeries', this.sortType, this.sortOrder, this.curPage, this.perPage);
+            getStoryList(
+                this.type,
+                nowStationKey,
+                this.userId,
+                'allSeries',
+                this.sortType,
+                this.sortOrder,
+                '',
+                '',
+                this.curPage,
+                this.perPage
+            );
         }
 
         // 监听滚动，查看更多

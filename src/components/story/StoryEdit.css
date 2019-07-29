@@ -1,3 +1,25 @@
+.story-edit.inline {
+    position: relative;
+    top: 0;
+}
+
+.story-edit.inline>.main-content,
+.story-edit.inline>.story-content,
+.story-edit.inline>.story-edit-head,
+.story-edit.inline>.story-edit-title {
+    width: unset;
+}
+
+.story-edit.inline>.story-edit-container {
+    width: unset;
+    grid-template-columns: repeat(2, 50%);
+}
+
+.story-edit.inline>.story-content>.drag-item-container,
+.story-edit.inline>.story-content>.item-preview {
+    width: 100%;
+}
+
 .story-edit-head {
     position: relative;
     width: 810px;
