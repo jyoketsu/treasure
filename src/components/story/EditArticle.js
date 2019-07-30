@@ -123,6 +123,9 @@ class EditArticle extends Component {
             story.cover = src[1];
             // 封面大小
             story.size = await util.common.getImageInfo(story.cover);
+        } else {
+            story.cover = null;
+            story.size = null;
         }
         // memo
         // 去除标签
@@ -230,7 +233,8 @@ class EditArticle extends Component {
                     >
                         {
                             seriesInfo.map((item, index) => (
-                                <Option key={index} value={item._key}>{item.name}</Option>
+                                (item.role < 5) || (item.allowPublicUpload) ?
+                                    <Option key={index} value={item._key}>{item.name}</Option> : null
                             ))
                         }
                     </Select>

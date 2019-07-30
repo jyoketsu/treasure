@@ -44,8 +44,15 @@ class Content extends Component {
     }
 
     switchVisible(key) {
-        // this.setState((prevState) => ({ visible: !prevState.visible }));
-        this.setState({ isEdit: false });
+        if (util.common.isMobile()) {
+            this.setState((prevState) => ({
+                visible: !prevState.visible,
+                isEdit: false
+            }));
+        } else {
+            this.setState({ isEdit: false });
+        }
+
         if (key) {
             this.props.clearStoryDetail();
             this.props.getStoryDetail(key);
@@ -70,7 +77,7 @@ class Content extends Component {
             sortType,
             sortOrder,
         } = this.props;
-
+        if (!this.contentRef) { return }
         let top = this.contentRef.scrollTop;
         if (
             nowStoryNumber < storyNumber &&
@@ -235,12 +242,16 @@ class Content extends Component {
         }
 
         // 监听滚动，查看更多
-        document.body.addEventListener('wheel', this.handleMouseWheel);
+        if (!util.common.isMobile()) {
+            document.body.addEventListener('wheel', this.handleMouseWheel);
+        }
     }
 
     componentWillUnmount() {
         // 移除滚动事件
-        document.body.removeEventListener('wheel', this.handleMouseWheel);
+        if (!util.common.isMobile()) {
+            document.body.removeEventListener('wheel', this.handleMouseWheel);
+        }
     }
 }
 

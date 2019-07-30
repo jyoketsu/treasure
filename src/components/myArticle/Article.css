@@ -34,3 +34,14 @@
 .story-preview-modal .app-content {
     position: unset;
 }
+
+@media screen and (max-width:768px) {
+    .member-story-list {
+        display: block;
+        flex: unset;
+    }
+
+    .member-story-list>div:last-child {
+        display: none;
+    }
+}

@@ -26,6 +26,7 @@ import {
     SEE_CHANNEL,
     SEE_PLUGIN,
     SORT_CHANNEL,
+    SORT_PLUGIN,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -91,7 +92,7 @@ const station = (state = defaultState, action) => {
         case EDIT_STATION:
             if (!action.error) {
                 let stationList = Object.assign([], state.stationList);
-                let nowStation =  JSON.parse(JSON.stringify(state.nowStation))
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation))
                 for (let i = 0; i < stationList.length; i++) {
                     if (stationList[i]._key === action.stationKey) {
                         nowStation = Object.assign(stationList[i], action.payload.result);
@@ -426,6 +427,25 @@ const station = (state = defaultState, action) => {
                         plugins[i].isSeePlugin = true;
                         break;
                     }
+                }
+                return {
+                    ...state,
+                    nowStation: nowStation,
+                };
+            } else {
+                return state;
+            }
+        case SORT_PLUGIN:
+            if (!action.error) {
+                let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+                let plugins = nowStation.pluginInfo;
+                const temp = plugins[action.channelIndex];
+                if (action.isUp) {
+                    plugins[action.channelIndex] = plugins[action.channelIndex - 1];
+                    plugins[action.channelIndex - 1] = temp;
+                } else {
+                    plugins[action.channelIndex] = plugins[action.channelIndex + 1];
+                    plugins[action.channelIndex + 1] = temp;
                 }
                 return {
                     ...state,

@@ -307,6 +307,7 @@ class StoryEdit extends Component {
             content: `确定要删除吗？`,
             okText: 'Yes',
             okType: 'danger',
+
             cancelText: 'No',
             onOk() {
                 that.deleteContent(index, metaType, e);
@@ -393,18 +394,40 @@ class StoryEdit extends Component {
         const { tag, allowPublicTag, statusTag, allowPublicStatus, role, } = channelInfo;
 
         let items = [];
-        for (let i = 0; i < richContent.length; i++) {
-            items.push({
-                content: (
-                    <EditItem
-                        index={i}
-                        content={richContent[i]}
-                        handleSelect={this.handleSelectItem}
-                        handleDelete={this.showDeleteContentConfirm}
-                        selectedId={selectedItemId}
-                    />)
-            });
+        if (!inline) {
+            for (let i = 0; i < richContent.length; i++) {
+                items.push({
+                    content: (
+                        <EditItem
+                            index={i}
+                            content={richContent[i]}
+                            handleSelect={this.handleSelectItem}
+                            handleDelete={this.showDeleteContentConfirm}
+                            selectedId={selectedItemId}
+                        />)
+                });
+            }
+        } else {
+            items =
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                }}>
+                    {
+                        richContent.map((item, index) => (
+                            <EditItem
+                                key={index}
+                                index={index}
+                                content={item}
+                                handleSelect={this.handleSelectItem}
+                                handleDelete={this.showDeleteContentConfirm}
+                                selectedId={selectedItemId}
+                            />
+                        ))
+                    }
+                </div>
         }
+
 
         let placeholder = (
             <div className="placeholderContent">拖放到这里</div>
@@ -431,7 +454,8 @@ class StoryEdit extends Component {
                         >
                             {
                                 seriesInfo.map((item, index) => (
-                                    <Option key={index} value={item._key}>{item.name}</Option>
+                                    (item.role < 5) || (item.allowPublicUpload) ?
+                                        <Option key={index} value={item._key}>{item.name}</Option> : null
                                 ))
                             }
                         </Select>
@@ -498,13 +522,16 @@ class StoryEdit extends Component {
                 />
                 <div className="main-content story-content story-edit-container">
                     <div className="drag-item-container">
-                        <DragSortableList
-                            items={items}
-                            dropBackTransitionDuration={0.3}
-                            onSort={this.onSort}
-                            type="grid"
-                            placeholder={placeholder}
-                        />
+                        {
+                            inline ? items :
+                                <DragSortableList
+                                    items={items}
+                                    dropBackTransitionDuration={0.3}
+                                    onSort={this.onSort}
+                                    type="grid"
+                                    placeholder={placeholder}
+                                />
+                        }
                     </div>
                     <ItemPreview
                         addContent={this.addContent}

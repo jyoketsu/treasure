@@ -34,7 +34,9 @@ const promiseMiddleware = store => next => action => {
                     if (res.statusCode !== "701") {
                         message.info(res.msg);
                     } else {
-                        window.location.href = `/account/login${window.location.search}`;
+                        message.info('登录过期！');
+                        window.location.reload();
+                        // window.location.href = `/account/login${window.location.search}`;
                     }
                     store.dispatch({ type: ASYNC_END });
                     store.dispatch(action);

@@ -4,6 +4,7 @@ import { Tab } from '../common/Common';
 import Article from './Article';
 import Coop from './Coop';
 import Check from './Check';
+import util from '../../services/Util';
 
 class MyArticle extends Component {
     constructor(props) {
@@ -27,12 +28,13 @@ class MyArticle extends Component {
     render() {
         const { match, } = this.props;
         const { currentRouteKey } = this.state;
+        const style = util.common.isMobile() ?
+            { minHeight: `${window.innerHeight - 70}px`, } :
+            { height: `${window.innerHeight - 70}px`, }
         return (
             <div
                 className="app-content subscribe-container"
-                style={{
-                    height: `${window.innerHeight - 70}px`,
-                }}
+                style={style}
             >
                 <Tab
                     currentKey={currentRouteKey}

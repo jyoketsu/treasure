@@ -593,6 +593,13 @@ const plugin = {
             pluginKey: pluginKey,
         });
     },
+    sortPlugin(stationKey, pluginKeys, ) {
+        return requests.patch(APIURL + '/star/setPluginOrder', {
+            token: token,
+            starKey: stationKey,
+            pluginOrder: pluginKeys,
+        });
+    },
 }
 
 export default {

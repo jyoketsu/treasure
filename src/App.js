@@ -30,12 +30,25 @@ const mapStateToProps = state => ({
 })
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      minHeight: `${window.innerHeight - 70}px`,
+    }
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  handleResize() {
+    this.setState({ minHeight: `${window.innerHeight - 70}px`, });
+  }
+
   render() {
     const { loading } = this.props;
+    const { minHeight } = this.state;
     return (
       <Router>
         <div className="app" style={{
-          minHeight: `${window.innerHeight}px`
+          minHeight: minHeight
         }}>
           <Header />
           <div className="route-container">
@@ -65,6 +78,14 @@ class App extends Component {
         </div>
       </Router>
     );
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 }
 

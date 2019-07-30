@@ -223,7 +223,7 @@ class MyFroalaEditor extends Component {
             'image.inserted': function ($img, response) {
                 // Do something here.
                 // this is the editor instance.
-                that.qiniuUpload(uptoken, $img[0], selectedFile);
+                that.qiniuUpload(uptoken, $img[0], selectedFile, false);
             },
             'video.beforeUpload': function (videos) {
                 // Return false if you want to stop the video upload.

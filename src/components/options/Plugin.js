@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Channel.css';
 import { connect } from 'react-redux';
 import { Table, Divider, Modal, Button, } from 'antd';
-import { cancelPlugin } from '../../actions/app';
+import { cancelPlugin, sortPlugin, } from '../../actions/app';
 const { Column } = Table;
 const confirm = Modal.confirm;
 
@@ -51,6 +51,16 @@ class Plugin extends Component {
         });
     }
 
+    handleSort(index, isUp) {
+        const { nowStation, nowStationKey, sortPlugin } = this.props;
+        let pluginInfo = nowStation ? nowStation.pluginInfo : [];
+        let keys = [];
+        for (let i = 0; i < pluginInfo.length; i++) {
+            keys.push(pluginInfo[i]._key);
+        }
+        sortPlugin(index, isUp, keys, nowStationKey);
+    }
+
     render() {
         const { nowStation } = this.props;
         let pluginInfo = nowStation ? nowStation.pluginInfo : [];
@@ -91,6 +101,21 @@ class Plugin extends Component {
                             </span>
                         )}
                     />
+                    <Column
+                        title="排序"
+                        render={(text, record, index) => (
+                            <div className="table-sort">
+                                <i
+                                    className={`sort-up ${index === 0 ? 'disabled' : ''}`}
+                                    onClick={this.handleSort.bind(this, index, true)}
+                                ></i>
+                                <i
+                                    className={`sort-down ${index === pluginInfo.length - 1 ? 'disabled' : ''}`}
+                                    onClick={this.handleSort.bind(this, index, false)}
+                                ></i>
+                            </div>
+                        )}
+                    />
                 </Table>
             </div>
         );
@@ -106,5 +131,5 @@ class Plugin extends Component {
 
 export default connect(
     mapStateToProps,
-    { cancelPlugin },
+    { cancelPlugin, sortPlugin, },
 )(Plugin);

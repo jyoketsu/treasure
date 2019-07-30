@@ -83,7 +83,7 @@ class Article extends Component {
             storyNumber,
         } = this.props;
         const { visible } = this.state;
-
+        if (!this.contentRef) { return }
         let top = this.contentRef.scrollTop;
         if (
             !visible &&
@@ -146,12 +146,16 @@ class Article extends Component {
         );
 
         // 监听滚动，查看更多
-        document.body.addEventListener('wheel', this.handleMouseWheel);
+        if (!util.common.isMobile()) {
+            document.body.addEventListener('wheel', this.handleMouseWheel);
+        }
     }
 
     componentWillUnmount() {
         // 移除滚动事件
-        document.body.removeEventListener('wheel', this.handleMouseWheel);
+        if (!util.common.isMobile()) {
+            document.body.removeEventListener('wheel', this.handleMouseWheel);
+        }
     }
 }
 

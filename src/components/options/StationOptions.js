@@ -26,8 +26,14 @@ class StationOptions extends Component {
         super(props);
         this.state = {
             showMenu: false,
+            minHeight: `${window.innerHeight - 70}px`,
         }
         this.handleTriggerClick = this.handleTriggerClick.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+    }
+
+    handleResize() {
+        this.setState({ minHeight: `${window.innerHeight - 70}px`, });
     }
 
     handleTriggerClick() {
@@ -38,13 +44,14 @@ class StationOptions extends Component {
 
     render() {
         const { match, location, nowStation, } = this.props;
+        const { minHeight } = this.state;
         const search = location.search;
         const pathname = location.pathname.split('/')[3];
         const isMobile = util.common.isMobile();
         return (
             <div className="app-content">
                 <div className="main-content station-options" style={{
-                    minHeight: `${window.innerHeight - 70}px`
+                    minHeight: minHeight
                 }}>
                     <ReactCSSTransitionGroup transitionName="sideMenu" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
                         {
@@ -102,7 +109,11 @@ class StationOptions extends Component {
                     </ReactCSSTransitionGroup>
                     <i className="menu-trigger" onClick={this.handleTriggerClick}></i>
                     <div className="options-content">
-                        <Route exact path={`${match.path}`} component={Station}></Route>
+                        {
+                            nowStation && nowStation.role < 3 ?
+                                <Route exact path={`${match.path}`} component={Station}></Route> :
+                                <Route exact path={`${match.path}`} component={Content}></Route>
+                        }
                         <Route path={`${match.path}/channel`} component={Channel}></Route>
                         <Route path={`${match.path}/plugin`} component={Plugin}></Route>
                         <Route path={`${match.path}/content`} component={Content}></Route>
@@ -120,6 +131,7 @@ class StationOptions extends Component {
     };
 
     componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
         const { nowStation, history, match } = this.props;
         if (!nowStation) {
             history.push(`/${match.params.id}`);
@@ -127,6 +139,7 @@ class StationOptions extends Component {
     }
 
     componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
         this.props.clearPluginList();
     }
 }

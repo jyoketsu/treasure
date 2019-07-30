@@ -290,6 +290,7 @@ export const CLEAR_PLUGIN_LIST = 'CLEAR_PLUGIN_LIST';
 export const CANCEL_PLUGIN = 'CANCEL_PLUGIN';
 export const SET_PLUGIN = 'SET_PLUGIN';
 export const SEE_PLUGIN = 'SEE_PLUGIN';
+export const SORT_PLUGIN = 'SORT_PLUGIN';
 
 export function createPlugin(stationKey, name, icon, url) {
     let request = api.plugin.createPlugin(stationKey, name, icon, url);
@@ -333,4 +334,17 @@ export function setPlugin(pluginKey, publish, question, answer, subscribePay, mo
 export function seePlugin(pluginKey) {
     let request = api.plugin.seePlugin(pluginKey);
     return { type: SEE_PLUGIN, pluginKey: pluginKey, payload: request }
+}
+
+export function sortPlugin(index, isUp, keys, nowStationKey, ) {
+    const temp = keys[index];
+    if (isUp) {
+        keys[index] = keys[index - 1];
+        keys[index - 1] = temp;
+    } else {
+        keys[index] = keys[index + 1];
+        keys[index + 1] = temp;
+    }
+    let request = api.plugin.sortPlugin(nowStationKey, keys);
+    return { type: SORT_PLUGIN, channelIndex: index, isUp: isUp, request: request }
 }
