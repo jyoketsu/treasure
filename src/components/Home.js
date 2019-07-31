@@ -77,6 +77,7 @@ class Home extends Component {
             let curPage = sessionStorage.getItem('home-curpage') ?
                 parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
             curPage++;
+            sessionStorage.setItem('home-curpage',curPage);
             if (nowStationKey === 'all') {
 
             } else {
