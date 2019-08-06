@@ -90,7 +90,7 @@ class MemberCard extends Component {
 
 class SearchMemberCard extends Component {
     render() {
-        const { groupKey, userKey, avatar, name, mobile, addGroupMember } = this.props;
+        const { groupKey, userKey, avatar, name, mobile, addGroupMember, disable } = this.props;
         return (
             <div className="member-card">
                 <div className="member-avatar-container">
@@ -103,10 +103,14 @@ class SearchMemberCard extends Component {
                 <div className="member-info">
                     <span className="member-name">{name || ''}</span>
                     <span className="member-name">{mobile || ''}</span>
-                    <span className="member-button" onClick={addGroupMember.bind(this, groupKey, [{
-                        userKey: userKey,
-                        role: 5
-                    }])}>添加</span>
+                    {
+                        disable ?
+                            <span>已添加</span> :
+                            <span className="member-button" onClick={addGroupMember.bind(this, groupKey, [{
+                                userKey: userKey,
+                                role: 5
+                            }])}>添加</span>
+                    }
                 </div>
             </div>
         );

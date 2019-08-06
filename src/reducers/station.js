@@ -95,14 +95,13 @@ const station = (state = defaultState, action) => {
                 let nowStation = JSON.parse(JSON.stringify(state.nowStation))
                 for (let i = 0; i < stationList.length; i++) {
                     if (stationList[i]._key === action.stationKey) {
-                        nowStation = Object.assign(stationList[i], action.payload.result);
-                        stationList[i] = nowStation;
+                        stationList[i] = Object.assign(stationList[i], action.payload.result);
                         break;
                     }
                 }
                 return {
                     ...state,
-                    nowStation: nowStation,
+                    nowStation: Object.assign(nowStation, action.payload.result),
                     stationList: stationList,
                 };
             } else {
@@ -304,7 +303,7 @@ const station = (state = defaultState, action) => {
             }
         case SUBSCRIBE:
             if (!action.error) {
-                message.success('订阅成功！');
+                message.success('修改订阅状态成功！');
                 let nowStation = Object.assign([], state.nowStation);
                 let seriesInfo = nowStation.seriesInfo;
                 for (let i = 0; i < seriesInfo.length; i++) {
@@ -346,7 +345,7 @@ const station = (state = defaultState, action) => {
             }
         case SUBSCRIBE_STATION:
             if (!action.error) {
-                message.success('订阅成功！');
+                message.success('修改订阅状态成功！');
                 let nowStation = Object.assign([], state.nowStation);
                 let seriesInfo = nowStation.seriesInfo;
                 for (let i = 0; i < seriesInfo.length; i++) {

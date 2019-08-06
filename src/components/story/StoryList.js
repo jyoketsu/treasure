@@ -83,7 +83,7 @@ class StoryList extends Component {
         return (
             <div className="story-list" ref='container'>
                 {
-                    showStyle === 2 && !isMobile ?
+                    children.length && showStyle === 2 && !isMobile ?
                         <Waterfall columnNum={columnNum} kernel={10}>{children}</Waterfall> :
                         children
                 }

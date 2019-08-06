@@ -60,18 +60,28 @@ class StationGroup extends Component {
                 />
                 <div className="member-search-result">
                     {
-                        searchUserList.map((user, index) => (
-                            <SearchMemberCard
-                                key={index}
-                                groupKey={groupKey}
-                                userKey={user._key}
-                                gender={user.gender}
-                                avatar={user.profile ? user.profile.avatar : ''}
-                                mobile={`${user.mobileArea} ${user.mobile}`}
-                                name={user.profile ? user.profile.nickName : ''}
-                                addGroupMember={addGroupMember}
-                            />
-                        ))
+                        searchUserList.map((user, index) => {
+                            let inList = false;
+                            for (let i = 0; i < userList.length; i++) {
+                                if (user._key === userList[i].userId) {
+                                    inList = true;
+                                    break;
+                                }
+                            }
+                            return (
+                                <SearchMemberCard
+                                    key={index}
+                                    groupKey={groupKey}
+                                    userKey={user._key}
+                                    gender={user.gender}
+                                    avatar={user.profile ? user.profile.avatar : ''}
+                                    mobile={`${user.mobileArea} ${user.mobile}`}
+                                    name={user.profile ? user.profile.nickName : ''}
+                                    addGroupMember={addGroupMember}
+                                    disable={inList}
+                                />
+                            )
+                        })
                     }
                 </div>
                 <h2>成员列表</h2>
