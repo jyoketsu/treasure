@@ -80,7 +80,7 @@ export const TRANSFER_STATION = 'TRANSFER_STATION';
 
 export function getStationList() {
     let request = api.station.getStationList();
-    return { type: GET_STATION_LIST, payload: request }
+    return { type: GET_STATION_LIST, payload: request, noLoading: true, }
 }
 
 export function createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
@@ -109,7 +109,7 @@ export function changeStation(key, domain) {
 
 export function getStationDetail(key) {
     let request = api.station.getStationDetail(key);
-    return { type: GET_STATION_DETAIL, stationKey: key, payload: request }
+    return { type: GET_STATION_DETAIL, stationKey: key, payload: request, noLoading: true, }
 }
 
 export function getStationDetailByDomain(domain) {

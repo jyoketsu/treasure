@@ -346,4 +346,8 @@
         height: 350px;
     }
 
+    .story-tool.sort-story {
+        display: none;
+    }
+
 }

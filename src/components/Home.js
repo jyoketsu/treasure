@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
+import LoginTip from './common/LoginTip';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
@@ -77,7 +78,7 @@ class Home extends Component {
             let curPage = sessionStorage.getItem('home-curpage') ?
                 parseInt(sessionStorage.getItem('home-curpage'), 10) : 1;
             curPage++;
-            sessionStorage.setItem('home-curpage',curPage);
+            sessionStorage.setItem('home-curpage', curPage);
             if (nowStationKey === 'all') {
 
             } else {
@@ -134,8 +135,8 @@ class Home extends Component {
         } = this.props;
         sessionStorage.setItem('home-curpage', 1);
         this.setState({
-            tag:undefined,
-            statusTag:undefined,
+            tag: undefined,
+            statusTag: undefined,
         });
         clearStoryList();
         getStoryList(
@@ -278,6 +279,9 @@ class Home extends Component {
                         <HomeSubscribe
                             getStoryList={getStoryList}
                         />
+                }
+                {
+                    user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null
                 }
             </div>
         );
@@ -690,11 +694,14 @@ class Station extends React.Component {
                             <i></i>
                         </div>
                     </Tooltip>
-                    <Tooltip title="筛选" placement="left">
-                        <div className="story-tool filter-story" onClick={switchFilterModal}>
-                            <i></i>
-                        </div>
-                    </Tooltip>
+                    {
+                        nowChannelKey !== 'allSeries' && (tagStr || statusStr) ?
+                            <Tooltip title="筛选" placement="left">
+                                <div className="story-tool filter-story" onClick={switchFilterModal}>
+                                    <i></i>
+                                </div>
+                            </Tooltip> : null
+                    }
                     <div className="multi-button">
                         <Tooltip title="投稿" placement="bottom">
                             <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
@@ -762,34 +769,38 @@ class Station extends React.Component {
                     onCancel={switchFilterModal}
                     width="320px"
                 >
-                    <Select
-                        value={nowTag}
-                        style={{ width: 200 }}
-                        placeholder="请选择分类"
-                        onChange={handleSetTag}
-                    >
-                        {
-                            tagStr ? (
-                                tagStr.split(' ').map((item, index) => (
-                                    <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
-                                ))
-                            ) : null
-                        }
-                    </Select>
-                    <Select
-                        value={nowStatusTag}
-                        style={{ width: 200 }}
-                        placeholder="请选择状态"
-                        onChange={handleSetStatus}
-                    >
-                        {
-                            statusStr?(
-                                statusStr.split(' ').map((item, index) => (
-                                    <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
-                                ))
-                            ):null
-                        }
-                    </Select>
+                    {
+                        tagStr ? (
+                            <Select
+                                value={nowTag}
+                                style={{ width: 200 }}
+                                placeholder="请选择分类"
+                                onChange={handleSetTag}
+                            >
+                                {
+                                    tagStr.split(' ').map((item, index) => (
+                                        <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
+                                    ))
+                                }
+                            </Select>
+                        ) : null
+                    }
+                    {
+                        statusStr ? (
+                            <Select
+                                value={nowStatusTag}
+                                style={{ width: 200 }}
+                                placeholder="请选择状态"
+                                onChange={handleSetStatus}
+                            >
+                                {
+                                    statusStr.split(' ').map((item, index) => (
+                                        <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
+                                    ))
+                                }
+                            </Select>
+                        ) : null
+                    }
                 </Modal>
                 <Modal
                     title="回答问题"

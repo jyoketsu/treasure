@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './Story.css';
+import LoginTip from '../common/LoginTip';
 import util from '../../services/Util';
 import api from '../../services/Api';
 import { connect } from 'react-redux';
 import { getStoryDetail, clearStoryDetail, updateExif, } from '../../actions/app';
+import lozad from 'lozad';
 
 const mapStateToProps = state => ({
+    user: state.auth.user,
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
     nowStation: state.station.nowStation,
@@ -43,13 +46,15 @@ class Story extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, readOnly, inline, } = this.props;
+        const { user, story, userId, nowStationKey, nowStation, readOnly, inline, } = this.props;
         const { userKey, title, creator = {}, richContent = [], address, memo, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
 
         return (
-            <div className={`app-content story-container ${inline ? 'inline' : ''}`}
+            <div
+                className={`app-content story-container ${inline ? 'inline' : ''}`}
+                style={{ top: user && user.isGuest && util.common.isMobile() ? '0' : '70px' }}
             >
                 {/* <div
                     className="story-head"
@@ -123,8 +128,8 @@ class Story extends Component {
                                         <div className="story-imageGroup">
                                             <div className="story-image-box">
                                                 <img
-                                                    className="story-image"
-                                                    src={`${url}?imageView2/2/w/1280/`}
+                                                    className="story-image lozad"
+                                                    data-src={`${url}?imageView2/2/w/1280/`}
                                                     alt="story"
                                                     onClick={this.handleClickImage.bind(this, url)}
                                                 />
@@ -149,6 +154,9 @@ class Story extends Component {
                         }) : null
                     }
                 </div>
+                {
+                    user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null
+                }
             </div>
         );
     }
@@ -166,6 +174,8 @@ class Story extends Component {
     }
 
     componentDidUpdate(prevPros) {
+        const observer = lozad();
+        observer.observe();
         const { story, updateExif } = this.props;
         // 获取到故事详情后
         if (!prevPros.story._key && story._key) {

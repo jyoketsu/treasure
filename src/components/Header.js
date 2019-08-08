@@ -69,20 +69,21 @@ class Header extends Component {
                     pathname === '/account/login' ||
                     pathname === '/account/register' ||
                     pathname === '/account/reset') ?
-                    'none' : 'flex'
+                    'none' :
+                    (user && user.isGuest && util.common.isMobile() ? 'none' : 'flex')
             }}>
                 <ul className="app-menu" ref={elem => this.nv = elem}>
                     {
                         logoSize ?
                             <li className={`menu-logo`} style={{
                                 backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
-                                width: `${Math.ceil(55 * (logoSize.width / logoSize.height))}px`
+                                width: `${Math.ceil(35 * (logoSize.width / logoSize.height))}px`
                             }}>
                                 <Link to={`/${stationDomain}`}></Link>
                             </li> :
                             <li className={`menu-logo`} style={{
                                 backgroundImage: `url(/image/background/logo.svg)`,
-                                width: '55px'
+                                width: '35px'
                             }}>
                                 <Link to={`/${stationDomain}`}></Link>
                             </li>

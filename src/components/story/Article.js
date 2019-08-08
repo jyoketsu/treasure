@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './Article.css'
+import LoginTip from '../common/LoginTip';
 import FroalaEditor from '../common/FroalaEditor';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
 import { getStoryDetail, } from '../../actions/app';
+import lozad from 'lozad';
 
 const mapStateToProps = state => ({
+    user: state.auth.user,
     userId: state.auth.user ? state.auth.user._key : null,
     story: state.story.story,
     nowStation: state.station.nowStation,
@@ -19,15 +22,22 @@ class Article extends Component {
     }
 
     render() {
-        const { story, userId, nowStationKey, nowStation, readOnly, hideMenu, inline, } = this.props;
+        const { user, story, userId, nowStationKey, nowStation, readOnly, hideMenu, inline, } = this.props;
         const { userKey, title, creator = {}, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
+
+        let str;
+        if (story && story.content) {
+            let regex = /<img src=/gi;
+            str = story.content.replace(regex, "<img class='lozad' data-src=");
+        }
 
         return (
             <div
                 className={`app-content story-container article-display  ${inline ? 'inline' : ''}`}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
+                style={{ top: user && user.isGuest && util.common.isMobile() ? '0' : '70px' }}
             >
                 <div className={`main-content story-content article-show ${hideMenu ? 'hide-menu' : ''}`}
                     style={{
@@ -54,10 +64,13 @@ class Article extends Component {
                         <FroalaEditor
                             previewMode={true}
                             hideMenu={hideMenu}
-                            data={story ? story.content || null : null}
+                            data={str}
                         />
                     </div>
                 </div>
+                {
+                    user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null
+                }
             </div>
         );
     }
@@ -74,6 +87,12 @@ class Article extends Component {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
             getStoryDetail(storyKey);
         }
+    }
+
+    componentDidUpdate() {
+        // lazy loads elements with default selector as '.lozad'
+        const observer = lozad();
+        observer.observe();
     }
 }
 
