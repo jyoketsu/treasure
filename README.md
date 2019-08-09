@@ -16,7 +16,7 @@ npm start
 ```
 ### 编译&发布
 ```
-npm run build
+npm run publish
 ```
 ### git提交代码
 ```
