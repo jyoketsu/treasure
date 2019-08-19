@@ -290,7 +290,7 @@ class MyFroalaEditor extends Component {
                                 <FroalaEditorView
                                     model={data} /> :
                                 <FroalaEditor
-                                    tag='textarea'
+                                    // tag='textarea'
                                     model={data}
                                     config={config}
                                     onModelChange={handleChange}
