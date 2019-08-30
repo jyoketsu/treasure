@@ -58,7 +58,7 @@ class Article extends Component {
                         </div>
                     </div>
                     {
-                        !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
+                        !readOnly && (userId === userKey || (role && role <= 3)) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <div className="editor-container" ref={node => this.editorRef = node}>
                         <FroalaEditor

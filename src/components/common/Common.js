@@ -52,7 +52,7 @@ class MemberCard extends Component {
         return (
             <div className={`member-card ${handleClick ? 'clickable' : ''}`} onClick={handleClick}>
                 {
-                    !disabled && userRole <= 2 && userRole < role ?
+                    !disabled && userRole && userRole <= 2 && userRole < role ?
                         < i className="deleteMember" onClick={handleDelete}></i> : null
                 }
                 <div className="member-avatar-container">
@@ -73,7 +73,7 @@ class MemberCard extends Component {
                                 style={{ width: 120 }}
                                 ref={node => this.select = node}
                                 onChange={this.handleChange}
-                                disabled={userRole <= 2 && userRole < role ? false : true}
+                                disabled={userRole && userRole <= 2 && userRole < role ? false : true}
                             >
                                 <Option value={1}>站长</Option>
                                 <Option value={2}>管理员</Option>
@@ -198,7 +198,7 @@ class StationCard extends Component {
 
     async componentDidMount() {
         const { station } = this.props;
-        const { seriesInfo } = station;
+        const { seriesInfo = [] } = station;
         let checkedChannels = [];
         for (let i = 0; i < seriesInfo.length; i++) {
             if (seriesInfo[i].isCareSeries) {

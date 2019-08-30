@@ -96,7 +96,7 @@ class Story extends Component {
                             </div> : null
                     }
                     {
-                        !readOnly && (userId === userKey || role <= 3) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
+                        !readOnly && (userId === userKey || (role && role <= 3)) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit}>编辑</span> : null
                     }
                     {
                         story.statusTag ? <span className="preview-status">{story.statusTag}</span> : null

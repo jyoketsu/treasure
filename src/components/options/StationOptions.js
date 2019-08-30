@@ -59,7 +59,7 @@ class StationOptions extends Component {
                                 <ClickOutside onClickOutside={this.handleTriggerClick}>
                                     <div className="options-menu">
                                         {
-                                            nowStation && nowStation.role <= 2 ? [
+                                            nowStation && nowStation.role && nowStation.role <= 2 ? [
                                                 <div key="station" className={!pathname ? 'active' : ''}>
                                                     <i style={{ backgroundImage: 'url(/image/icon/stationOptions/station-options.svg)' }}></i>
                                                     <Link
@@ -84,7 +84,7 @@ class StationOptions extends Component {
                                             ] : null
                                         }
                                         {
-                                            nowStation && nowStation.role <= 3 ? [
+                                            nowStation && nowStation.role && nowStation.role <= 3 ? [
                                                 <div className={pathname === 'content' ? 'active' : ''} key="content">
                                                     <i style={{ backgroundImage: 'url(/image/icon/stationOptions/article-manage.svg)' }}></i>
                                                     <Link
@@ -110,7 +110,7 @@ class StationOptions extends Component {
                     <i className="menu-trigger" onClick={this.handleTriggerClick}></i>
                     <div className="options-content">
                         {
-                            nowStation && nowStation.role < 3 ?
+                            nowStation && nowStation.role && nowStation.role < 3 ?
                                 <Route exact path={`${match.path}`} component={Station}></Route> :
                                 <Route exact path={`${match.path}`} component={Content}></Route>
                         }

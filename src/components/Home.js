@@ -825,7 +825,8 @@ class Station extends React.Component {
                         {
                             channelList.map((channel, index) => (
                                 channel.isSeeSeries &&
-                                    (channel.allowPublicUpload || (!channel.allowPublicUpload && channel.role < 5)) ?
+                                    (channel.allowPublicUpload
+                                        || (!channel.allowPublicUpload && channel.role && channel.role < 5)) ?
                                     <Option key={index} value={channel._key}>{channel.name}</Option> :
                                     <Option key={index} value={channel._key} disabled>{channel.name}</Option>
                             ))

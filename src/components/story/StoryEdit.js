@@ -454,7 +454,7 @@ class StoryEdit extends Component {
                         >
                             {
                                 seriesInfo.map((item, index) => (
-                                    (item.role < 5) || (item.allowPublicUpload) ?
+                                    (item.role && item.role < 5) || (item.allowPublicUpload) ?
                                         <Option key={index} value={item._key}>{item.name}</Option> : null
                                 ))
                             }
@@ -462,7 +462,7 @@ class StoryEdit extends Component {
                     </div>
                     <div className="left-bottom-buttons">
                         {
-                            tag && (allowPublicTag || (!allowPublicTag && role < 4)) ?
+                            tag && (allowPublicTag || (!allowPublicTag && role && role < 4)) ?
                                 <Select
                                     style={{ width: 120 }}
                                     placeholder="请选择标签"
@@ -479,7 +479,7 @@ class StoryEdit extends Component {
                     </div>
                     <div className="left-top-buttons">
                         {
-                            statusTag && (allowPublicStatus || (!allowPublicStatus && role < 4)) ?
+                            statusTag && (allowPublicStatus || (!allowPublicStatus && role && role < 4)) ?
                                 <Select
                                     style={{ width: 120 }}
                                     placeholder="请选择状态"
