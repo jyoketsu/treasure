@@ -117,12 +117,22 @@ class EditArticle extends Component {
         let imgReg = /<img.*?(?:>|\/>)/gi //匹配图片中的img标签
         let srcReg = /src=['"]?([^'"]*)['"]?/i // 匹配图片中的src
         let str = story.content;
+        if (str.indexOf('blob:http') !== -1) {
+            message.info('图片正在上传，请稍后');
+            return;
+        }
         let arr = str.match(imgReg)  //筛选出所有的img
         if (arr) {
             let src = arr[0].match(srcReg);
             story.cover = src[1];
             // 封面大小
-            story.size = await util.common.getImageInfo(story.cover);
+            const res = await util.common.getImageInfo(story.cover);
+            if (res) {
+                story.size = res;
+            } else {
+                story.cover = null;
+                story.size = null;
+            }
         } else {
             story.cover = null;
             story.size = null;

@@ -215,15 +215,10 @@ class MyFroalaEditor extends Component {
         const { typeArr, subs, top, } = this.state;
         const that = this;
         const events = {
-            'image.beforeUpload': function (images) {
-                // Do something here.
-                // this is the editor instance.
-                selectedFile = images[0];
-            },
-            'image.inserted': function ($img, response) {
-                // Do something here.
-                // this is the editor instance.
-                that.qiniuUpload(uptoken, $img[0], selectedFile, false);
+            'image.inserted': async function ($img, response) {
+                // get a file or blob from an blob url
+                let blob = await fetch($img[0].src).then(r => r.blob());
+                that.qiniuUpload(uptoken, $img[0], blob, false);
             },
             'video.beforeUpload': function (videos) {
                 // Return false if you want to stop the video upload.

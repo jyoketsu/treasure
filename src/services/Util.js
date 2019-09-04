@@ -236,6 +236,9 @@ const common = {
                     height: image.height,
                 });
             }
+            image.onerror = () => {
+                resolve(null);
+            }
         });
 
     },

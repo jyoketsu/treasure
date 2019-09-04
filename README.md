@@ -48,3 +48,8 @@ devtool: isEnvProduction
 ```
 devtool: false,
 ```
+
+### get a file or blob from an blob url
+```
+let blob = await fetch(blobUrl).then(r => r.blob());
+```
