@@ -1,0 +1,49 @@
+/* Subscribe---------------- */
+.subscribe-menu {
+    position: absolute;
+    top: 70px;
+    right: 90px;
+    z-index: 2;
+    width: 288px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.50);
+}
+
+.menu-title {
+    background: #F2F2F2;
+    color: #222222;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.menu-title>span {
+    font-weight: 800;
+}
+
+.subscribe-menu-item {
+    background: #FFFFFF;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.subscribe-menu-item>span {
+    font-size: 16px;
+    color: #555555;
+}
+
+.select-all {
+    font-size: 12px;
+    color: #666666;
+    font-weight: normal;
+}
+
+.select-all:hover {
+    cursor: pointer;
+}

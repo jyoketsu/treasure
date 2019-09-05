@@ -1,0 +1,29 @@
+.portal-home {
+    background-image: url(/image/background/mapbg.png);
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: auto;
+    padding-top: 233px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portal-home-body {
+    width: 1200px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: top;
+}
+
+/* portal-foot------ */
+.portal-foot {
+    width: 100%;
+    height: 50px;
+    background: #F6F6F6;
+    box-shadow: 0 -4px 10px #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

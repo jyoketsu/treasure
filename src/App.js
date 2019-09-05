@@ -21,38 +21,50 @@ import Subscribe from './components/subscribe/Subscribe';
 import MyArticle from './components/myArticle/MyArticle';
 import StoryEdit from './components/story/StoryEdit';
 import NotFound from './components/NotFound';
+import PortalHome from './components/portal/Portal';
+import PortalHeader from './components/portal/PortalHeader';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 const mapStateToProps = state => ({
   loading: state.common.loading,
+  nowStation: state.station.nowStation,
 })
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minHeight: `${window.innerHeight - 70}px`,
+      minHeight: `${window.innerHeight}px`,
     }
     this.handleResize = this.handleResize.bind(this);
   }
 
   handleResize() {
-    this.setState({ minHeight: `${window.innerHeight - 70}px`, });
+    this.setState({ minHeight: `${window.innerHeight}px`, });
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
     return (
       <Router>
         <div className="app" style={{
-          minHeight: minHeight
+          minHeight: minHeight,
+          background: nowStation && nowStation._key === '618474156'
+            ? `url(/image/background/bg.jpg)`
+            : '#434343',
         }}>
-          <Header />
+          {
+            nowStation && nowStation._key === '618474156' ? <PortalHeader /> : <Header />
+          }
           <div className="route-container">
-            <Route exact path="/:id" component={Home} />
+            {
+              nowStation && nowStation._key === '618474156'
+                ? <Route path="/:id" component={PortalHome} />
+                : <Route exact path="/:id" component={Home} />
+            }
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
             <Route path="/:id/editStation" component={EditStation} />

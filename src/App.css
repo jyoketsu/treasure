@@ -53,7 +53,8 @@
 
 .app {
     position: relative;
-    background: #434343;
+    background-repeat: no-repeat;
+    overflow: auto;
 }
 
 

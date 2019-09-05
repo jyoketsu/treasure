@@ -1,9 +1,11 @@
 .app-menu-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .app-menu {
+    width: 100%;
     list-style: none;
     padding: 0 25px;
     margin: unset;
@@ -120,104 +122,6 @@
 
 .ant-dropdown-menu>.ant-divider-horizontal {
     margin: 5px 0;
-}
-
-/* HeadMenu--------------- */
-.head-menu {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    z-index: 2;
-    width: 288px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #D9D9D9;
-    box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.50);
-    padding: 10px 15px;
-    max-height: 600px;
-    overflow: auto;
-}
-
-.head-menu-button {
-    display: grid;
-    grid-template-columns: repeat(4, 25%);
-    grid-template-rows: repeat(2, 50%);
-    justify-items: center;
-    align-items: center;
-    border-bottom: 1px solid #EEEEEE;
-}
-
-.head-menu-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: unset;
-}
-
-.menu-station-list {
-    display: flex;
-    flex-direction: column;
-    padding: 15px 0;
-}
-
-.menu-station-list>span {
-    font-size: 14px;
-    line-height: 34px;
-    color: #4A4A4A;
-}
-
-.menu-station-list>span:hover {
-    cursor: pointer;
-    color: #4A90E2;
-}
-
-/* Subscribe---------------- */
-.subscribe-menu {
-    position: absolute;
-    top: 70px;
-    right: 90px;
-    z-index: 2;
-    width: 288px;
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.50);
-}
-
-.menu-title {
-    background: #F2F2F2;
-    color: #222222;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-}
-
-.menu-title>span {
-    font-weight: 800;
-}
-
-.subscribe-menu-item {
-    background: #FFFFFF;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-}
-
-.subscribe-menu-item>span {
-    font-size: 16px;
-    color: #555555;
-}
-
-.select-all {
-    font-size: 12px;
-    color: #666666;
-    font-weight: normal;
-}
-
-.select-all:hover {
-    cursor: pointer;
 }
 
 @media screen and (max-width:768px) {

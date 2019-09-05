@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
 import './EditChannel.css';
 import util from '../../services/Util';
-import { Form, Input, Button, message, Select, Radio, Switch, Divider, Checkbox, } from 'antd';
+import UploadStationCover from '../common/UploadCover';
+import {
+    Form,
+    Input,
+    Button,
+    message,
+    Select,
+    Radio,
+    Switch,
+    Divider,
+    Checkbox,
+} from 'antd';
 import { connect } from 'react-redux';
 import { addChannel, editChannel, } from '../../actions/app';
 const Option = Select.Option;
@@ -85,19 +96,8 @@ const CustomizedForm = Form.create({
     },
 })(props => {
     const { getFieldDecorator } = props.form;
-    const formItemLayout = {
-        labelCol: {
-            xs: { span: 5 },
-            sm: { span: 5 },
-        },
-        wrapperCol: {
-            xs: { span: 19 },
-            sm: { span: 19 },
-        },
-    };
-
     return (
-        <Form {...formItemLayout} onSubmit={props.onSubmit}>
+        <Form onSubmit={props.onSubmit}>
             <Form.Item label="频道名">
                 {getFieldDecorator('name', {
                     rules: [{ required: true, message: '请输入微站名！' }],
@@ -230,6 +230,7 @@ const CustomizedForm = Form.create({
 class EditChannel extends Component {
     constructor(props) {
         super(props);
+        this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
         const { nowStation, location, } = this.props;
         let seriesInfo = nowStation ? nowStation.seriesInfo : [];
         let channelKey = util.common.getSearchParamValue(location.search, 'key');
@@ -242,6 +243,7 @@ class EditChannel extends Component {
         }
 
         this.state = {
+            logo: channelInfo ? channelInfo.logo : '',
             fields: {
                 key: {
                     value: channelInfo ? channelInfo._key : '',
@@ -306,10 +308,16 @@ class EditChannel extends Component {
         }));
     };
 
+    uploadAvatarCallback(imageUrl, columnName) {
+        this.setState({
+            [columnName]: imageUrl[0]
+        });
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault();
         const { addChannel, nowStationKey, editChannel } = this.props;
-        const { fields, } = this.state;
+        const { fields, logo } = this.state;
 
         if (fields.publish.value === 3) {
             if (!fields.question.value) {
@@ -322,28 +330,53 @@ class EditChannel extends Component {
             }
         }
 
-        this.form.validateFields((err, values) => {
+        this.form.validateFields(async (err, values) => {
             if (!err) {
                 // 验证通过
                 let extParams = {};
                 for (let key in fields) {
                     extParams[key] = fields[key].value;
                 }
+                if (!logo) {
+                    message.info('请上传logo！');
+                    console.log('请上传logo！');
+                    return;
+                }
+                const logoSize = await util.common.getImageInfo(logo);
+                extParams['logo'] = logo;
+                extParams['logoSize'] = logoSize;
+
                 if (fields.key.value) {
-                    editChannel(fields.key.value, fields.name.value, 1, extParams);
+                    editChannel(
+                        fields.key.value,
+                        fields.name.value,
+                        1,
+                        extParams
+                    );
                 } else {
-                    addChannel(nowStationKey, fields.name.value, 1, extParams);
+                    addChannel(
+                        nowStationKey,
+                        fields.name.value,
+                        1,
+                        extParams
+                    );
                 }
             }
         });
     }
 
     render() {
-        const { fields } = this.state;
+        const { fields, logo } = this.state;
 
         return (
             <div className="edit-channel">
                 <div className="channel-head">{fields.key.value ? '频道设置' : '创建频道'}</div>
+                <label className='ant-form-item-required form-label'>频道logo</label>
+                <UploadStationCover
+                    uploadAvatarCallback={this.uploadAvatarCallback}
+                    extParam={'logo'}
+                    coverUrl={logo}
+                />
                 <CustomizedForm
                     ref={node => this.form = node}
                     {...fields}

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import './Header.css';
+import './PortalHeader.css';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Link, withRouter } from "react-router-dom";
-// import TextMarquee from './common/TextMarquee';
-import util from '../services/Util';
-import TopMenu from './HeaderMenu';
-import SubscribeMenu from './HeaderSubscribe';
+import util from '../../services/Util';
+import TopMenu from '../HeaderMenu';
+import SubscribeMenu from '../HeaderSubscribe';
 import { connect } from 'react-redux';
 import {
     getUserInfo,
@@ -15,7 +14,7 @@ import {
     clearStoryList,
     getStationDetail,
     getStoryList,
-} from '../actions/app';
+} from '../../actions/app';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -26,12 +25,13 @@ const mapStateToProps = state => ({
     sortOrder: state.story.sortOrder,
 });
 
-class Header extends Component {
+class PortalHeader extends Component {
     constructor(props) {
         super(props);
         this.clearLogo = this.clearLogo.bind(this);
         this.switchMenu = this.switchMenu.bind(this);
         this.switchSubscribe = this.switchSubscribe.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.state = {
             logoSize: null,
             showMenu: false,
@@ -52,12 +52,19 @@ class Header extends Component {
         this.setState((prevState) => ({ showSubscribe: !prevState.showSubscribe }));
     }
 
+    handleClick() {
+        const { location, history } = this.props;
+        const pathname = location.pathname;
+        const stationDomain = pathname.split('/')[1];
+        history.push(`/${stationDomain}/catalog`);
+    }
+
     render() {
         const { location, nowStation, user, } = this.props;
         const { logoSize, showMenu, showSubscribe } = this.state;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
-        const isMobile = util.common.isMobile();
+        const channelList = nowStation ? nowStation.seriesInfo : [];
 
         return (
             <div className="app-menu-container" style={{
@@ -68,59 +75,66 @@ class Header extends Component {
                     'none' :
                     (user && user.isGuest && util.common.isMobile() ? 'none' : 'flex')
             }}>
-                <ul className="app-menu" ref={elem => this.nv = elem}>
+                <ul className="app-menu portal-menu" ref={elem => this.nv = elem}>
                     {
-                        logoSize ?
-                            <li className={`menu-logo`} style={{
-                                backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
-                                width: `${Math.ceil(35 * (logoSize.width / logoSize.height))}px`
-                            }}>
-                                <Link to={`/${stationDomain}`}></Link>
-                            </li> :
-                            <li className={`menu-logo`} style={{
-                                backgroundImage: `url(/image/background/logo.svg)`,
-                                width: '35px'
-                            }}>
-                                <Link to={`/${stationDomain}`}></Link>
-                            </li>
-                    }
-                    {
-                        !isMobile ? <li className="head-station-name"><Link to={`/${stationDomain}`}>{nowStation ? nowStation.name : ''}</Link></li> : null
+                        channelList.map((channel, index) => (
+                            <Channel
+                                key={index}
+                                name={channel.name}
+                                icon={channel.logo}
+                                onClick={this.handleClick}
+                            />
+                        ))
                     }
                     <li className="menu-space"></li>
-                    {
-                        user && !user.isGuest ?
+                    <div className="portal-head-right">
+                        <div className="portal-head-buttons">
+                            {
+                                user && !user.isGuest ?
+                                    <li
+                                        className={`head-icon portal-subscribe ${pathname === '/message' ? 'active' : ''}`}
+                                        onClick={this.switchSubscribe}
+                                    ></li>
+                                    : null
+                            }
+                            {
+                                user && !user.isGuest && nowStation && nowStation.role && nowStation.role <= 3 ?
+                                    <li
+                                        className={`head-icon portal-station-option-icon ${pathname === '/message' ? 'active' : ''}`}
+                                        onClick={() => this.props.history.push(`/${stationDomain}/stationOptions`)}
+                                    >
+                                    </li> : null
+                            }
                             <li
-                                className={`head-icon subscribe ${pathname === '/message' ? 'active' : ''}`}
-                                onClick={this.switchSubscribe}
+                                className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}
+                                style={{
+                                    backgroundImage: user && user.profile && user.profile.avatar ? `url(${user.profile.avatar})` : '/image/icon/me.svg',
+                                    borderRadius: user && user.profile && user.profile.avatar ? '25px' : 'unset',
+                                    width: user && user.profile && user.profile.avatar ? '35px' : '24px',
+                                    height: user && user.profile && user.profile.avatar ? '35px' : '24px',
+                                }}
+                                onClick={this.switchMenu}
                             ></li>
-                            : null
-                    }
-                    {
-                        user && !user.isGuest && nowStation && nowStation.role && nowStation.role <= 3 ?
-                            <li className={`head-icon station-option-icon ${pathname === '/message' ? 'active' : ''}`}>
-                                <Link to={`/${stationDomain}/stationOptions`}></Link>
-                            </li> : null
-                    }
-                    <li
-                        className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}
-                        style={{
-                            backgroundImage: user && user.profile && user.profile.avatar ? `url(${user.profile.avatar})` : '/image/icon/me.svg',
-                            borderRadius: user && user.profile && user.profile.avatar ? '25px' : 'unset',
-                            width: user && user.profile && user.profile.avatar ? '50px' : '24px',
-                            height: user && user.profile && user.profile.avatar ? '50px' : '24px',
-                        }}
-                        onClick={this.switchMenu}
-                    ></li>
+                        </div>
+                        <div className="portal-head-logo">
+                            {
+                                logoSize ?
+                                    <li className={`menu-logo`} style={{
+                                        backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
+                                        width: `${Math.ceil(55 * (logoSize.width / logoSize.height))}px`
+                                    }}>
+                                        <Link to={`/${stationDomain}`}></Link>
+                                    </li> :
+                                    <li className={`menu-logo`} style={{
+                                        backgroundImage: `url(/image/background/logo.svg)`,
+                                        width: '35px'
+                                    }}>
+                                        <Link to={`/${stationDomain}`}></Link>
+                                    </li>
+                            }
+                        </div>
+                    </div>
                 </ul>
-                {
-                    // isMobile ?
-                    //     <TextMarquee
-                    //         width={document.body.offsetWidth}
-                    //         text={"文字如果超出了宽度自动向左滚动文字如果超出了宽度自动向左滚动"}
-                    //         style={{ fontSize: '24px' }}
-                    //     /> : null
-                }
                 <ReactCSSTransitionGroup transitionName="myFade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
                     {showMenu ?
                         <TopMenu clearLogo={this.clearLogo} switchMenu={this.switchMenu} />
@@ -140,7 +154,8 @@ class Header extends Component {
             e.preventDefault();
         }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
 
-        const { nowStation,
+        const {
+            nowStation,
             history,
             getUserInfo,
             location,
@@ -285,6 +300,18 @@ class Header extends Component {
     }
 }
 
+class Channel extends Component {
+    render() {
+        const { name, icon, onClick } = this.props;
+        return (
+            <div className="portal-channel" onClick={onClick}>
+                <i style={{ backgroundImage: `url(${icon})` }}></i>
+                <span>{name}</span>
+            </div>
+        );
+    }
+}
+
 export default withRouter(connect(
     mapStateToProps,
     {
@@ -296,4 +323,4 @@ export default withRouter(connect(
         getStationDetail,
         getStoryList,
     }
-)(Header));
+)(PortalHeader));
