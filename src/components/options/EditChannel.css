@@ -1,0 +1,51 @@
+.set-tag-logo {
+    color: #1890ff;
+    width: 100px;
+    height: 40px;
+    display: block;
+}
+
+.set-tag-logo:hover {
+    cursor: pointer;
+}
+
+.tag-option-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 560px;
+}
+
+.tag-option-container {
+    flex: 1;
+    overflow: auto;
+    padding: 24px;
+}
+
+.tag-list-footer {
+    padding: 0 24px;
+    height: 53px;
+    border-top: 1px solid #e8e8e8;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.tag-option {
+    display: flex;
+    align-items: center;
+    height: 112px;
+    margin-bottom: 15px;
+}
+
+.tag-option-left {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 15px;
+}
+
+.tag-option-left>span {
+    font-size: 18px;
+}

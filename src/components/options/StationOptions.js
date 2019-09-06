@@ -26,14 +26,14 @@ class StationOptions extends Component {
         super(props);
         this.state = {
             showMenu: false,
-            minHeight: `${window.innerHeight - 70}px`,
+            minHeight: `${window.innerHeight}px`,
         }
         this.handleTriggerClick = this.handleTriggerClick.bind(this);
         this.handleResize = this.handleResize.bind(this);
     }
 
     handleResize() {
-        this.setState({ minHeight: `${window.innerHeight - 70}px`, });
+        this.setState({ minHeight: `${window.innerHeight}px`, });
     }
 
     handleTriggerClick() {
@@ -49,7 +49,7 @@ class StationOptions extends Component {
         const pathname = location.pathname.split('/')[3];
         const isMobile = util.common.isMobile();
         return (
-            <div className="app-content">
+            <div className="app-content" style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}>
                 <div className="main-content station-options" style={{
                     minHeight: minHeight
                 }}>

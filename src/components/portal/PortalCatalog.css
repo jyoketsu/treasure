@@ -31,3 +31,73 @@
 .portal-catalog-container {
     flex: 1;
 }
+
+/* CatalogCover------ */
+.catalog-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+}
+
+.catalog-cover {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    transition: transform .3s ease;
+}
+
+.catalog-name {
+    position: absolute;
+    bottom: 60px;
+    padding: 5px 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .5);
+    font-size: 15px;
+    opacity: 1;
+}
+
+.catalog-container:hover>.catalog-name {
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.catalog-shadow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    background: rgba(0, 0, 0, .5);
+    transition: opacity .3s ease;
+}
+
+.catalog-container:hover>.catalog-shadow {
+    opacity: 1;
+}
+
+.catalog-shadow-name {
+    font-size: 24px;
+    color: #fff;
+    margin-top: 130px;
+}
+
+.catalog-shadow-info {
+    font-size: 15px;
+    margin: 15px;
+}
+
+.catalog-shadow-button {
+    width: 140px;
+    height: 38px;
+    font-size: 15px;
+    border-radius: 5px;
+    background: #C5B4AA;
+    line-height: 38px;
+    color: #fff;
+    margin-top: 65px;
+}

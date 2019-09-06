@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './Portal.css';
-import { Link, Route, } from "react-router-dom";
+import { Route, } from "react-router-dom";
 import Catalog from './PortalCatalog';
+import Detail from './PortalDetail';
 import { connect } from 'react-redux';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
@@ -23,7 +24,6 @@ class Portal extends Component {
     render() {
         const { match, nowStation } = this.props;
         const { winHeight } = this.state;
-        console.log('${match.path}/catalog', `${match.path} / catalog`);
         return (
             <div className="portal-home" style={{ minHeight: `${winHeight}px` }}>
                 <div
@@ -33,7 +33,8 @@ class Portal extends Component {
                         backgroundImage: `url(${nowStation ? nowStation.cover : ''})`,
                     }}
                 >
-                    <Route path={`${match.path}/catalog`} component={Catalog}></Route>
+                    <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
+                    <Route path={`${match.path}/detail/:id`} component={Detail}></Route>
                 </div>
                 <PortalFooter name={nowStation ? nowStation.name : ''} />
             </div>

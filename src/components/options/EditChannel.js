@@ -12,6 +12,7 @@ import {
     Switch,
     Divider,
     Checkbox,
+    Modal,
 } from 'antd';
 import { connect } from 'react-redux';
 import { addChannel, editChannel, } from '../../actions/app';
@@ -95,6 +96,7 @@ const CustomizedForm = Form.create({
         };
     },
 })(props => {
+    const { switchModal } = props;
     const { getFieldDecorator } = props.form;
     return (
         <Form onSubmit={props.onSubmit}>
@@ -201,6 +203,9 @@ const CustomizedForm = Form.create({
                     initialValue: '',
                 })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
             </Form.Item>
+
+            <span className="set-tag-logo" onClick={switchModal}>标签进阶设定</span>
+
             <Form.Item label="允许公众设置">
                 {getFieldDecorator('allowPublicTag', { valuePropName: 'checked' })(<Switch />)}
             </Form.Item>
@@ -231,6 +236,8 @@ class EditChannel extends Component {
     constructor(props) {
         super(props);
         this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
+        this.switchModal = this.switchModal.bind(this);
+        this.handleSetTag = this.handleSetTag.bind(this);
         const { nowStation, location, } = this.props;
         let seriesInfo = nowStation ? nowStation.seriesInfo : [];
         let channelKey = util.common.getSearchParamValue(location.search, 'key');
@@ -243,6 +250,7 @@ class EditChannel extends Component {
         }
 
         this.state = {
+            showModal: false,
             logo: channelInfo ? channelInfo.logo : '',
             fields: {
                 key: {
@@ -300,6 +308,12 @@ class EditChannel extends Component {
                 }
             },
         }
+    }
+
+    switchModal() {
+        this.setState((prevState) => ({
+            showModal: !prevState.showModal
+        }));
     }
 
     handleFormChange = changedFields => {
@@ -365,9 +379,15 @@ class EditChannel extends Component {
         });
     }
 
-    render() {
-        const { fields, logo } = this.state;
+    handleSetTag(tag) {
+        this.setState(({ fields }) => ({
+            fields: { ...fields, ...{ tag: { value: tag } } },
+            showModal: false
+        }));
+    }
 
+    render() {
+        const { fields, logo, showModal } = this.state;
         return (
             <div className="edit-channel">
                 <div className="channel-head">{fields.key.value ? '频道设置' : '创建频道'}</div>
@@ -382,7 +402,20 @@ class EditChannel extends Component {
                     {...fields}
                     onChange={this.handleFormChange}
                     onSubmit={this.handleSubmit}
+                    switchModal={this.switchModal}
                 />
+                <Modal
+                    title="标签进阶设定"
+                    visible={showModal}
+                    onCancel={this.switchModal}
+                    footer={null}
+                    bodyStyle={{ padding: 'unset' }}
+                >
+                    <TagOptionList
+                        tag={fields.tag.value}
+                        onOk={this.handleSetTag}
+                    />
+                </Modal>
             </div>
         );
     };
@@ -401,3 +434,106 @@ export default connect(
     mapStateToProps,
     { addChannel, editChannel },
 )(Form.create({ name: 'create-station' })(EditChannel));
+
+class TagOptionList extends Component {
+    constructor(props) {
+        super(props);
+        const { tag = '' } = props;
+        const tagList = tag.split(' ');
+        let objList = [];
+        for (let i = 0; i < tagList.length; i++) {
+            if (util.common.isJSON(tagList[i])) {
+                objList.push(JSON.parse(tagList[i]));
+            } else {
+                objList.push({
+                    name: tagList[i],
+                    logo: null,
+                    info: null,
+                });
+            }
+        }
+        this.state = { objList: objList }
+        this.handleChange = this.handleChange.bind(this);
+        this.uploadCallback = this.uploadCallback.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleChange(name, info) {
+        let [...list] = this.state.objList;
+        for (let i = 0; i < list.length; i++) {
+            if (name === list[i].name) {
+                list[i].info = info;
+                break;
+            }
+        }
+        this.setState({ objList: list });
+    }
+
+    uploadCallback(url, name) {
+        let [...list] = this.state.objList;
+        for (let i = 0; i < list.length; i++) {
+            if (name === list[i].name) {
+                list[i].logo = url[0];
+                break;
+            }
+        }
+        this.setState({ objList: list });
+    }
+
+    handleClick() {
+        const { onOk } = this.props;
+        const { objList } = this.state;
+        let list = [];
+        for (let i = 0; i < objList.length; i++) {
+            list.push(JSON.stringify(objList[i]));
+        }
+        onOk(list.join(' '));
+    }
+
+    render() {
+        const { objList } = this.state;
+        return (
+            <div className="tag-option-list">
+                <div className="tag-option-container">
+                    {
+                        objList.map((tag, index) => (
+                            <TagOption
+                                key={index}
+                                tag={tag}
+                                onChange={this.handleChange}
+                                uploadCallback={this.uploadCallback}
+                            />
+                        ))
+                    }
+                </div>
+                <div className="tag-list-footer">
+                    <Button type="primary" onClick={this.handleClick}>确定</Button>
+                </div>
+            </div>
+        );
+    }
+}
+
+class TagOption extends Component {
+    render() {
+        const { tag, onChange, uploadCallback } = this.props;
+        return (
+            <div className="tag-option">
+                <div className="tag-option-left">
+                    <span>{tag.name}</span>
+                    <TextArea
+                        rows={3}
+                        value={tag.info}
+                        placeholder="请输入标签描述"
+                        onChange={(e) => onChange(tag.name, e.target.value)}
+                    />
+                </div>
+                <UploadStationCover
+                    uploadAvatarCallback={uploadCallback}
+                    extParam={tag.name}
+                    coverUrl={tag.logo}
+                />
+            </div>
+        );
+    }
+}

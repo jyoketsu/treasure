@@ -52,11 +52,11 @@ class PortalHeader extends Component {
         this.setState((prevState) => ({ showSubscribe: !prevState.showSubscribe }));
     }
 
-    handleClick() {
+    handleClick(channelKey) {
         const { location, history } = this.props;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
-        history.push(`/${stationDomain}/catalog`);
+        history.push(`/${stationDomain}/catalog/${channelKey}`);
     }
 
     render() {
@@ -71,7 +71,11 @@ class PortalHeader extends Component {
                 display: (
                     pathname === '/account/login' ||
                     pathname === '/account/register' ||
-                    pathname === '/account/reset') ?
+                    pathname === '/account/reset' ||
+                    pathname.indexOf('/stationOptions') !== -1 ||
+                    pathname.indexOf('/me') !== -1 ||
+                    pathname.indexOf('/subscribe') !== -1 ||
+                    pathname.indexOf('/myArticle') !== -1) ?
                     'none' :
                     (user && user.isGuest && util.common.isMobile() ? 'none' : 'flex')
             }}>
@@ -82,7 +86,7 @@ class PortalHeader extends Component {
                                 key={index}
                                 name={channel.name}
                                 icon={channel.logo}
-                                onClick={this.handleClick}
+                                onClick={() => this.handleClick(channel._key)}
                             />
                         ))
                     }
