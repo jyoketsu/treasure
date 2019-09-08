@@ -307,7 +307,7 @@ const common = {
     isJSON(str) {
         if (typeof str == 'string') {
             try {
-                var obj = JSON.parse(str);
+                JSON.parse(str);
                 if (str.indexOf('{') > -1) {
                     return true;
                 } else {

@@ -54,7 +54,10 @@ class Story extends Component {
         return (
             <div
                 className={`app-content story-container ${inline ? 'inline' : ''}`}
-                style={{ top: user && user.isGuest && util.common.isMobile() ? '0' : '70px' }}
+                style={{
+                    top: (user && user.isGuest && util.common.isMobile()) || inline ? '0' : '70px',
+                    backgroundColor: inline ? 'unset' : '#f5f5f5',
+                }}
             >
                 {/* <div
                     className="story-head"
@@ -64,7 +67,9 @@ class Story extends Component {
                 </div> */}
                 <div className="main-content story-content"
                     style={{
-                        minHeight: `${window.innerHeight - 70}px`
+                        minHeight: `${window.innerHeight - 70}px`,
+                        backgroundColor: inline ? 'unset' : 'white',
+                        boxShadow: inline ? 'unset' : '0 0 3px rgba(0, 0, 0, .1)'
                     }}
                 >
                     {/* <div className="story-avatar">

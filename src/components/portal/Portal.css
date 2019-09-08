@@ -10,10 +10,13 @@
 }
 
 .portal-home-body {
-    width: 1200px;
     background-repeat: no-repeat;
-    background-size: 100%;
     background-position: top;
+    width: 100%;
+    background-size: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* portal-foot------ */

@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
     user: state.auth.user,
     story: state.story.story,
     nowChannelKey: state.story.nowChannelKey,
+    nowStation: state.station.nowStation,
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
     loading: state.common.loading,
@@ -380,7 +381,7 @@ class StoryEdit extends Component {
     }
 
     render() {
-        const { seriesInfo, inline } = this.props;
+        const { nowStation, seriesInfo, inline } = this.props;
         const { story = {}, selectedItemId, selectedItemIndex, musicAddress, } = this.state;
         const { cover, title = '', richContent = [], address, time } = story;
         let channelInfo = {};
@@ -434,7 +435,12 @@ class StoryEdit extends Component {
         );
 
         return (
-            <div className={`app-content story-edit ${inline ? 'inline' : ''}`}>
+            <div
+                className={`app-content story-edit ${inline ? 'inline' : ''}`}
+                style={{
+                    top: nowStation && nowStation._key === '618474156' ? '0' : '70px',
+                }}
+            >
                 <div className="story-edit-head-buttons">
                     <Button onClick={this.handleCancel}>取消</Button>
                     {story._key ? <Button type="danger" onClick={this.showDeleteConfirm.bind(this, story._key)}>删除</Button> : null}
@@ -470,9 +476,13 @@ class StoryEdit extends Component {
                                     onChange={this.handleSetTag}
                                 >
                                     {
-                                        tag.split(' ').map((item, index) => (
-                                            <Option key={index} index={index} value={item}>{item}</Option>
-                                        ))
+                                        tag.split(' ').map((item, index) => {
+                                            let tagName = item;
+                                            if (util.common.isJSON(item)) {
+                                                tagName = JSON.parse(item).name;
+                                            }
+                                            return (<Option key={index} index={index} value={tagName}>{tagName}</Option>);
+                                        })
                                     }
                                 </Select> : null
                         }
@@ -520,7 +530,9 @@ class StoryEdit extends Component {
                     time={time}
                     handleInput={this.handleInput}
                 />
-                <div className="main-content story-content story-edit-container">
+                <div
+                    className="main-content story-content story-edit-container"
+                >
                     <div className="drag-item-container">
                         {
                             inline ? items :

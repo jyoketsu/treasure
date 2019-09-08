@@ -23,6 +23,11 @@
 
 .portal-head-logo {
     height: 70px;
+    margin-top: 15px;
+}
+
+.portal-head-logo>li:hover {
+    cursor: pointer;
 }
 
 .portal-station-option-icon {

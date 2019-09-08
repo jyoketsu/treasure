@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
         state.station.nowStation.seriesInfo : [],
     user: state.auth.user,
     story: state.story.story,
+    nowStation: state.station.nowStation,
     nowChannelKey: state.story.nowChannelKey,
     nowStationKey: state.station.nowStationKey,
     storyList: state.story.storyList,
@@ -187,7 +188,7 @@ class EditArticle extends Component {
     }
 
     render() {
-        const { seriesInfo, inline } = this.props;
+        const { nowStation, seriesInfo, inline } = this.props;
         const { story = {}, uptoken, } = this.state;
         let channelInfo = {};
         const nowChannelId = story.series ? story.series._key : util.common.getSearchParamValue(window.location.search, 'channel');
@@ -201,12 +202,13 @@ class EditArticle extends Component {
         return (
             <div
                 className={`app-content edit-story ${inline ? 'inline' : ''}`}
+                style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
             >
                 <div
                     className="main-content story-content edit-article"
                     style={{
-                        minHeight: `${window.innerHeight - 70}px`
+                        minHeight: `${window.innerHeight}px`
                     }}
                 >
                     <div className="editor-container" ref={node => this.editorRef = node}>
@@ -257,9 +259,13 @@ class EditArticle extends Component {
                                 onChange={this.handleSetTag}
                             >
                                 {
-                                    tag.split(' ').map((item, index) => (
-                                        <Option key={index} index={index} value={item}>{item}</Option>
-                                    ))
+                                    tag.split(' ').map((item, index) => {
+                                        let tagName = item;
+                                        if (util.common.isJSON(item)) {
+                                            tagName = JSON.parse(item).name;
+                                        }
+                                        return (<Option key={index} index={index} value={tagName}>{tagName}</Option>);
+                                    })
                                 }
                             </Select> : null
                     }

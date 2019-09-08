@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './PortalHeader.css';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
 import TopMenu from '../HeaderMenu';
 import SubscribeMenu from '../HeaderSubscribe';
@@ -60,7 +60,7 @@ class PortalHeader extends Component {
     }
 
     render() {
-        const { location, nowStation, user, } = this.props;
+        const { location, nowStation, user, history } = this.props;
         const { logoSize, showMenu, showSubscribe } = this.state;
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
@@ -75,7 +75,9 @@ class PortalHeader extends Component {
                     pathname.indexOf('/stationOptions') !== -1 ||
                     pathname.indexOf('/me') !== -1 ||
                     pathname.indexOf('/subscribe') !== -1 ||
-                    pathname.indexOf('/myArticle') !== -1) ?
+                    pathname.indexOf('/myArticle') !== -1||
+                    pathname.indexOf('/editStory') !== -1||
+                    pathname.indexOf('/editArticle') !== -1) ?
                     'none' :
                     (user && user.isGuest && util.common.isMobile() ? 'none' : 'flex')
             }}>
@@ -123,18 +125,22 @@ class PortalHeader extends Component {
                         <div className="portal-head-logo">
                             {
                                 logoSize ?
-                                    <li className={`menu-logo`} style={{
-                                        backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
-                                        width: `${Math.ceil(55 * (logoSize.width / logoSize.height))}px`
-                                    }}>
-                                        <Link to={`/${stationDomain}`}></Link>
-                                    </li> :
-                                    <li className={`menu-logo`} style={{
-                                        backgroundImage: `url(/image/background/logo.svg)`,
-                                        width: '35px'
-                                    }}>
-                                        <Link to={`/${stationDomain}`}></Link>
-                                    </li>
+                                    <li
+                                        className={`menu-logo`}
+                                        style={{
+                                            backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
+                                            width: `${Math.ceil(55 * (logoSize.width / logoSize.height))}px`
+                                        }}
+                                        onClick={() => history.push(`/${stationDomain}`)}
+                                    ></li> :
+                                    <li
+                                        className={`menu-logo`}
+                                        style={{
+                                            backgroundImage: `url(/image/background/logo.svg)`,
+                                            width: '35px'
+                                        }}
+                                        onClick={() => history.push(`/${stationDomain}`)}
+                                    ></li>
                             }
                         </div>
                     </div>

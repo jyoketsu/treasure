@@ -49,7 +49,10 @@ class StationOptions extends Component {
         const pathname = location.pathname.split('/')[3];
         const isMobile = util.common.isMobile();
         return (
-            <div className="app-content" style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}>
+            <div
+                className="app-content"
+                style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}
+            >
                 <div className="main-content station-options" style={{
                     minHeight: minHeight
                 }}>

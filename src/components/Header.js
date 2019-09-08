@@ -140,12 +140,17 @@ class Header extends Component {
             e.preventDefault();
         }, { passive: false }); //passive 参数不能省略，用来兼容ios和android
 
-        const { nowStation,
+        const {
+            nowStation,
+            nowStationKey,
             history,
             getUserInfo,
             location,
             getStationList,
+            getStoryList,
             changeStation,
+            sortType,
+            sortOrder,
         } = this.props;
         const SEARCH_STR = location.search;
         let token = null;
@@ -163,6 +168,23 @@ class Header extends Component {
             this.setState({
                 logoSize: size
             });
+        }
+
+        if (nowStation) {
+            this.curPage = 1;
+            getStoryList(
+                1,
+                nowStationKey,
+                null,
+                nowStation.showAll ? 'allSeries' : nowStation.seriesInfo[0]._key,
+                sortType,
+                sortOrder,
+                '',
+                '',
+                1,
+                this.perPage
+            );
+            sessionStorage.setItem('home-curpage', this.curPage);
         }
 
         // 监听路由变化

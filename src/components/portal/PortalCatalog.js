@@ -9,6 +9,23 @@ const mapStateToProps = state => ({
 });
 
 class Catalog extends Component {
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(tag) {
+        const { location, history, match } = this.props;
+        const pathname = location.pathname;
+        const stationDomain = pathname.split('/')[1];
+        const channelKey = match.params.id;
+        history.push({
+            pathname: `/${stationDomain}/detail/${channelKey}`,
+            state: { tagName: tag }
+        });
+    }
+
     render() {
         const { nowStation, match } = this.props;
         const channelList = nowStation ? nowStation.seriesInfo : [];
@@ -34,7 +51,11 @@ class Catalog extends Component {
                     <Carousel>
                         {
                             tagList.map((tagItem, index) => (
-                                <CatalogCover key={index} catalog={tagItem} />
+                                <CatalogCover
+                                    key={index}
+                                    catalog={tagItem}
+                                    onClick={this.handleClick}
+                                />
                             ))
                         }
                     </Carousel>
@@ -58,7 +79,7 @@ class CatalogCover extends React.Component {
     }
 
     render() {
-        const { catalog } = this.props;
+        const { catalog, onClick } = this.props;
         const { scale } = this.state;
         let obj;
         if (util.common.isJSON(catalog)) {
@@ -84,7 +105,10 @@ class CatalogCover extends React.Component {
                 <div className="catalog-shadow">
                     <div className="catalog-shadow-name">{obj.name}</div>
                     <div className="catalog-shadow-info">{obj.info}</div>
-                    <Button className="catalog-shadow-button">立即查看</Button>
+                    <Button
+                        className="catalog-shadow-button"
+                        onClick={() => onClick(obj.name)}
+                    >立即查看</Button>
                 </div>
             </div>
         )

@@ -89,15 +89,11 @@
 .operation-panel {
     position: fixed;
     bottom: 65px;
-    right: 5px;
+    right: 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
-}
-
-.operation-panel>div:hover {
-    cursor: pointer;
 }
 
 .sortType.active {
@@ -142,6 +138,10 @@
     background: #E2E2E2;
     border-radius: 4px;
     margin: 2px;
+}
+
+.story-tool:hover{
+    cursor: pointer;
 }
 
 .story-tool>i {

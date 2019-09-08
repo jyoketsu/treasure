@@ -3,6 +3,7 @@ import './Portal.css';
 import { Route, } from "react-router-dom";
 import Catalog from './PortalCatalog';
 import Detail from './PortalDetail';
+import AddButton from '../AddArticleButton';
 import { connect } from 'react-redux';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
@@ -22,19 +23,25 @@ class Portal extends Component {
     }
 
     render() {
-        const { match, nowStation } = this.props;
+        const { match, location, nowStation } = this.props;
         const { winHeight } = this.state;
+        const pathname = location.pathname;
         return (
             <div className="portal-home" style={{ minHeight: `${winHeight}px` }}>
                 <div
                     className="portal-home-body"
                     style={{
                         minHeight: `${winHeight - 233 - 50}px`,
-                        backgroundImage: `url(${nowStation ? nowStation.cover : ''})`,
+                        backgroundImage: pathname.split('/')[2]
+                            ? 'unset'
+                            : `url(${nowStation ? nowStation.cover : ''})`,
                     }}
                 >
                     <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
                     <Route path={`${match.path}/detail/:id`} component={Detail}></Route>
+                </div>
+                <div className="operation-panel">
+                    <AddButton />
                 </div>
                 <PortalFooter name={nowStation ? nowStation.name : ''} />
             </div>
