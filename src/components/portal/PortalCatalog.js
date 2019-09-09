@@ -39,7 +39,7 @@ class Catalog extends Component {
         }
 
         const { tag } = nowChannel;
-        let tagList = tag.split(' ');
+        let tagList = tag ? tag.split(' ') : [];
 
         return (
             <div className="portal-catalog">
@@ -48,17 +48,22 @@ class Catalog extends Component {
                     <span>{nowChannel.name}</span>
                 </div>
                 <div className="portal-catalog-container">
-                    <Carousel>
-                        {
-                            tagList.map((tagItem, index) => (
-                                <CatalogCover
-                                    key={index}
-                                    catalog={tagItem}
-                                    onClick={this.handleClick}
-                                />
-                            ))
-                        }
-                    </Carousel>
+                    {
+                        tagList.length ?
+                            <Carousel>
+                                {
+                                    tagList.map((tagItem, index) => (
+                                        <CatalogCover
+                                            key={index}
+                                            catalog={tagItem}
+                                            onClick={this.handleClick}
+                                        />
+                                    ))
+                                }
+                            </Carousel>
+                            : <div className="no-tag">暂无内容</div>
+                    }
+
                 </div>
             </div>
         );

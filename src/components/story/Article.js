@@ -37,7 +37,7 @@ class Article extends Component {
             <div
                 className={`app-content story-container article-display  ${inline ? 'inline' : ''}`}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
-                style={{ top: user && user.isGuest && util.common.isMobile() ? '0' : '70px' }}
+                style={{ top: (user && user.isGuest && util.common.isMobile()) || inline ? '0' : '70px' }}
             >
                 <div className={`main-content story-content article-show ${hideMenu ? 'hide-menu' : ''}`}
                     style={{
@@ -76,7 +76,7 @@ class Article extends Component {
     }
 
     componentDidMount() {
-        const { location, getStoryDetail, } = this.props;
+        const { location, getStoryDetail, story } = this.props;
         if (document.body.scrollTop !== 0) {
             document.body.scrollTop = 0;
         } else {
@@ -85,7 +85,14 @@ class Article extends Component {
 
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
-            getStoryDetail(storyKey);
+            if (storyKey) {
+                getStoryDetail(storyKey);
+            }
+        }
+
+        if (story) {
+            const observer = lozad();
+            observer.observe();
         }
     }
 

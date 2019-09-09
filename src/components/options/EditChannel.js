@@ -252,6 +252,7 @@ class EditChannel extends Component {
         this.state = {
             showModal: false,
             logo: channelInfo ? channelInfo.logo : '',
+            cover: channelInfo ? channelInfo.cover : '',
             fields: {
                 key: {
                     value: channelInfo ? channelInfo._key : '',
@@ -331,7 +332,7 @@ class EditChannel extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         const { addChannel, nowStationKey, editChannel } = this.props;
-        const { fields, logo } = this.state;
+        const { fields, logo, cover } = this.state;
 
         if (fields.publish.value === 3) {
             if (!fields.question.value) {
@@ -360,6 +361,15 @@ class EditChannel extends Component {
                 extParams['logo'] = logo;
                 extParams['logoSize'] = logoSize;
 
+                if (!cover) {
+                    message.info('请上传封面图！');
+                    console.log('请上传封面图！');
+                    return;
+                }
+                const coverSize = await util.common.getImageInfo(cover);
+                extParams['cover'] = cover;
+                extParams['coverSize'] = coverSize;
+
                 if (fields.key.value) {
                     editChannel(
                         fields.key.value,
@@ -387,7 +397,7 @@ class EditChannel extends Component {
     }
 
     render() {
-        const { fields, logo, showModal } = this.state;
+        const { fields, logo, cover, showModal } = this.state;
         return (
             <div className="edit-channel">
                 <div className="channel-head">{fields.key.value ? '频道设置' : '创建频道'}</div>
@@ -396,6 +406,12 @@ class EditChannel extends Component {
                     uploadAvatarCallback={this.uploadAvatarCallback}
                     extParam={'logo'}
                     coverUrl={logo}
+                />
+                <label className='ant-form-item-required form-label'>频道封面图</label>
+                <UploadStationCover
+                    uploadAvatarCallback={this.uploadAvatarCallback}
+                    extParam={'cover'}
+                    coverUrl={cover}
                 />
                 <CustomizedForm
                     ref={node => this.form = node}

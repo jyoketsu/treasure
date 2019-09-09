@@ -50,18 +50,19 @@ class App extends Component {
     const { minHeight } = this.state;
     return (
       <Router>
-        <div className="app" style={{
-          minHeight: minHeight,
-          background: nowStation && nowStation._key === '618474156'
-            ? `url(/image/background/bg.jpg)`
-            : '#434343',
-        }}>
+        <div className="app" style={{ minHeight: minHeight }}>
           {
-            nowStation && nowStation._key === '618474156' ? <PortalHeader /> : <Header />
+            nowStation && nowStation.style === 2 ? <PortalHeader /> : <Header />
           }
-          <div className="route-container">
+          <div
+            className="route-container"
+            style={{
+              background: nowStation && nowStation.style === 2
+                ? `url(/image/background/bg.jpg)`
+                : '#434343'
+            }}>
             {
-              nowStation && nowStation._key === '618474156'
+              nowStation && nowStation.style === 2
                 ? <Route path="/:id" component={PortalHome} />
                 : <Route exact path="/:id" component={Home} />
             }

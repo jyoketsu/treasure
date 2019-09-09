@@ -27,7 +27,7 @@
 <script type="text/javascript">
   var url = window.location.href;
   // 自动切换为https
-  if (url.indexOf("localhost") === -1 && url.indexOf("192.168") === -1 && url.indexOf("https") < 0) {
+  if (url.indexOf("localhost") === -1 && url.indexOf("192.168") === -1 && url.indexOf("127.0.0.1") === -1 && url.indexOf("https") < 0) {
     url = url.replace("http:", "https:");
     window.location.replace(url);
   }

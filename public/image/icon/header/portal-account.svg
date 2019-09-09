@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>我30x30 copy@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M8.64940112,12.0555286 C6.24865102,10.3913133 5.22452996,7.3488806 6.13024004,4.57166921 C7.03595012,1.79445783 9.65681555,-0.0592641253 12.5771167,0.0118330807 C15.4974179,0.0829302868 18.0249709,2.06199485 18.7944609,4.8799904 C19.563951,7.69798595 18.3929898,10.6869775 15.9140985,12.2323939 C20.6134237,13.8555868 23.9870864,18.3160613 23.9870864,23.5641646 C23.9870864,24.0206131 23.6170618,24.3906376 23.1606134,24.3906376 C22.704165,24.3906376 22.3341404,24.0206131 22.3341404,23.5641646 C22.3341404,17.8581953 17.7091977,13.2332526 12.0032284,13.2332526 C6.2972591,13.2332526 1.67231638,17.8581953 1.67231638,23.5641646 C1.67231638,24.0206131 1.30229183,24.3906376 0.845843414,24.3906376 C0.389395,24.3906376 0.0193704503,24.0206131 0.0193704503,23.5641646 C0.0193704503,18.1094431 3.66328975,13.5059887 8.64940112,12.0555286 Z M12.4164649,11.5803067 C15.1551554,11.5803067 17.3753027,9.36015941 17.3753027,6.62146893 C17.3753027,3.88277845 15.1551554,1.66263115 12.4164649,1.66263115 C9.67777441,1.66263115 7.45762711,3.88277845 7.45762711,6.62146893 C7.45762711,9.36015941 9.67777441,11.5803067 12.4164649,11.5803067 Z" id="path-1"></path>
+        <filter x="-29.2%" y="-20.5%" width="158.4%" height="157.4%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="网页版web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图" transform="translate(-477.000000, -1094.000000)" fill-rule="nonzero">
+            <g id="我-copy" transform="translate(480.000000, 1097.000000)">
+                <g id="形状">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#999999" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

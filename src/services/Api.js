@@ -275,7 +275,7 @@ const station = {
      * @param {String} cover 
      * @param {Object} size 
      */
-    createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
+    createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll, style) {
         return requests.post(APIURL + '/star/createStar', {
             token: token,
             name: name.trim(),
@@ -287,6 +287,8 @@ const station = {
             logo: logo,
             size: size,
             inheritedMode: inheritedMode,
+            showAll: showAll,
+            style: style,
         });
     },
 
@@ -297,7 +299,7 @@ const station = {
         });
     },
 
-    editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll) {
+    editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll, style) {
         return requests.patch(APIURL + '/star/setStarProperty', {
             token: token,
             starKey: key,
@@ -311,6 +313,7 @@ const station = {
             size: size,
             inheritedMode: inheritedMode,
             showAll: showAll,
+            style: style,
         });
     },
     getStationDetail(key) {

@@ -51,7 +51,7 @@ class StationOptions extends Component {
         return (
             <div
                 className="app-content"
-                style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}
+                style={{ top: nowStation && nowStation.style === 2 ? '0' : '70px' }}
             >
                 <div className="main-content station-options" style={{
                     minHeight: minHeight

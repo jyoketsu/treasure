@@ -54,7 +54,7 @@
 .app {
     position: relative;
     background-repeat: no-repeat;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 

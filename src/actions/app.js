@@ -83,8 +83,30 @@ export function getStationList() {
     return { type: GET_STATION_LIST, payload: request, noLoading: true, }
 }
 
-export function createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, ) {
-    let request = api.station.createStation(name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode);
+export function createStation(
+    name,
+    domain,
+    type,
+    memo,
+    isMainStar,
+    cover,
+    logo,
+    size,
+    inheritedMode,
+    showAll,
+    style) {
+    let request = api.station.createStation(
+        name,
+        domain,
+        type,
+        memo,
+        isMainStar,
+        cover,
+        logo,
+        size,
+        inheritedMode,
+        showAll,
+        style);
     return { type: CREATE_STATION, flag: 'createStation', payload: request }
 }
 
@@ -93,8 +115,32 @@ export function deleteStation(key) {
     return { type: DELETE_STATION, stationKey: key, payload: request }
 }
 
-export function editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll) {
-    let request = api.station.editStation(key, name, domain, type, memo, isMainStar, cover, logo, size, inheritedMode, showAll);
+export function editStation(
+    key,
+    name,
+    domain,
+    type,
+    memo,
+    isMainStar,
+    cover,
+    logo,
+    size,
+    inheritedMode,
+    showAll,
+    style) {
+    let request = api.station.editStation(
+        key,
+        name,
+        domain,
+        type,
+        memo,
+        isMainStar,
+        cover,
+        logo,
+        size,
+        inheritedMode,
+        showAll,
+        style);
     return { type: EDIT_STATION, stationKey: key, flag: 'editStation', payload: request }
 }
 
@@ -162,7 +208,8 @@ export function getStoryList(
     statusTag,
     curPage,
     perPage,
-    isRefresh) {
+    isRefresh,
+    isPagination) {
     let request = api.story.getStoryList(
         type,
         starKey,
@@ -186,6 +233,7 @@ export function getStoryList(
         isRefresh: isRefresh,
         tag: tag,
         statusTag: statusTag,
+        isPagination: isPagination,
     }
 }
 

@@ -438,7 +438,7 @@ class StoryEdit extends Component {
             <div
                 className={`app-content story-edit ${inline ? 'inline' : ''}`}
                 style={{
-                    top: nowStation && nowStation._key === '618474156' ? '0' : '70px',
+                    top: nowStation && nowStation.style === 2 ? '0' : '70px',
                 }}
             >
                 <div className="story-edit-head-buttons">
@@ -610,7 +610,9 @@ class StoryEdit extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.story._key !== state.story._key) {
+        let type = util.common.getSearchParamValue(props.location.search, 'type');
+
+        if (type !== 'new' && props.story._key !== state.story._key) {
             console.log('切换了故事');
             return {
                 story: props.story,

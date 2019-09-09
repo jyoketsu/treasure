@@ -42,6 +42,10 @@ const CustomizedForm = Form.create({
                 ...props.showAll,
                 value: props.showAll.value,
             }),
+            style: Form.createFormField({
+                ...props.style,
+                value: props.style.value,
+            }),
         };
     },
 })(props => {
@@ -72,6 +76,16 @@ const CustomizedForm = Form.create({
                         { max: 1000, message: '不能超过1000个字符！' }
                     ],
                 })(<TextArea rows={6} />)}
+            </Form.Item>
+            <Form.Item label="网站风格">
+                {getFieldDecorator('style', {
+                    rules: [{ required: true, message: '请选择网站风格！' }],
+                })(
+                    <Radio.Group>
+                        <Radio value={1}>普通网站</Radio>
+                        <Radio value={2}>门户网站</Radio>
+                    </Radio.Group>,
+                )}
             </Form.Item>
             <Form.Item label="管理模式">
                 {getFieldDecorator('inheritedMode', {
@@ -122,7 +136,10 @@ class StationBasicInfo extends Component {
                 },
                 showAll: {
                     value: stationInfo ? stationInfo.showAll : true,
-                }
+                },
+                style: {
+                    value: stationInfo ? stationInfo.style : 1,
+                },
             },
         }
         this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
@@ -166,6 +183,7 @@ class StationBasicInfo extends Component {
                         size,
                         fields.inheritedMode.value,
                         fields.showAll.value,
+                        fields.style.value,
                     );
                 } else {
                     createStation(
@@ -179,6 +197,7 @@ class StationBasicInfo extends Component {
                         size,
                         fields.inheritedMode.value,
                         fields.showAll.value,
+                        fields.style.value,
                     );
                 }
             }

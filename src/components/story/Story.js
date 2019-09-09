@@ -4,7 +4,7 @@ import LoginTip from '../common/LoginTip';
 import util from '../../services/Util';
 import api from '../../services/Api';
 import { connect } from 'react-redux';
-import { getStoryDetail, clearStoryDetail, updateExif, } from '../../actions/app';
+import { getStoryDetail, updateExif, } from '../../actions/app';
 import lozad from 'lozad';
 
 const mapStateToProps = state => ({
@@ -166,15 +166,17 @@ class Story extends Component {
         );
     }
 
-    componentWillMount() {
-        this.props.clearStoryDetail();
-    }
-
     componentDidMount() {
-        const { location, getStoryDetail } = this.props;
+        const { location, getStoryDetail, story, } = this.props;
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
-            getStoryDetail(storyKey);
+            if (storyKey) {
+                getStoryDetail(storyKey);
+            }
+        }
+        if (story) {
+            const observer = lozad();
+            observer.observe();
         }
     }
 
@@ -213,5 +215,5 @@ class Story extends Component {
 
 export default connect(
     mapStateToProps,
-    { getStoryDetail, clearStoryDetail, updateExif },
+    { getStoryDetail, updateExif },
 )(Story);

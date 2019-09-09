@@ -75,8 +75,8 @@ class PortalHeader extends Component {
                     pathname.indexOf('/stationOptions') !== -1 ||
                     pathname.indexOf('/me') !== -1 ||
                     pathname.indexOf('/subscribe') !== -1 ||
-                    pathname.indexOf('/myArticle') !== -1||
-                    pathname.indexOf('/editStory') !== -1||
+                    pathname.indexOf('/myArticle') !== -1 ||
+                    pathname.indexOf('/editStory') !== -1 ||
                     pathname.indexOf('/editArticle') !== -1) ?
                     'none' :
                     (user && user.isGuest && util.common.isMobile() ? 'none' : 'flex')
@@ -112,12 +112,10 @@ class PortalHeader extends Component {
                                     </li> : null
                             }
                             <li
-                                className={`head-icon me ${pathname === '/me' ? 'active' : ''}`}
+                                className={`head-icon me portal-me ${pathname === '/me' ? 'active' : ''}`}
                                 style={{
                                     backgroundImage: user && user.profile && user.profile.avatar ? `url(${user.profile.avatar})` : '/image/icon/me.svg',
                                     borderRadius: user && user.profile && user.profile.avatar ? '25px' : 'unset',
-                                    width: user && user.profile && user.profile.avatar ? '35px' : '24px',
-                                    height: user && user.profile && user.profile.avatar ? '35px' : '24px',
                                 }}
                                 onClick={this.switchMenu}
                             ></li>

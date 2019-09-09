@@ -142,7 +142,7 @@ class EditArticle extends Component {
         // 去除标签
         let sectionStr = str.replace(/<\/?.+?>/g, '');
         sectionStr = sectionStr.replace(/&nbsp;/g, '')
-        story.memo = sectionStr.substr(0, 100);
+        story.memo = sectionStr.substr(0, 200);
 
         // 文章标题（文章内容的第1行为标题）
         let title = util.common.getDomFirstChild(story.content);
@@ -202,7 +202,7 @@ class EditArticle extends Component {
         return (
             <div
                 className={`app-content edit-story ${inline ? 'inline' : ''}`}
-                style={{ top: nowStation && nowStation._key === '618474156' ? '0' : '70px' }}
+                style={{ top: nowStation && nowStation.style === 2 ? '0' : '70px' }}
                 ref={eidtStory => this.eidtStoryRef = eidtStory}
             >
                 <div

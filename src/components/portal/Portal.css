@@ -10,6 +10,7 @@
 }
 
 .portal-home-body {
+    position: relative;
     background-repeat: no-repeat;
     background-position: top;
     width: 100%;
@@ -19,12 +20,18 @@
     align-items: center;
 }
 
+.portal-plugin{
+    width: 1200px;
+    position: absolute;
+    top: 15px;
+}
+
 /* portal-foot------ */
 .portal-foot {
     width: 100%;
     height: 50px;
     background: #F6F6F6;
-    box-shadow: 0 -4px 10px #ccc;
+    border-top: 1px solid #DDD;
     display: flex;
     flex-direction: column;
     justify-content: center;

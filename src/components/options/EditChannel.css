@@ -16,9 +16,9 @@
 }
 
 .tag-option-container {
-    flex: 1;
     overflow: auto;
     padding: 24px;
+    height: 500px;
 }
 
 .tag-list-footer {

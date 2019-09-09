@@ -32,6 +32,14 @@
     flex: 1;
 }
 
+.no-tag{
+    height: 100%;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* CatalogCover------ */
 .catalog-container {
     position: relative;

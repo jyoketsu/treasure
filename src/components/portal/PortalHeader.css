@@ -39,15 +39,19 @@
     background-image: url(/image/icon/header/portal-subscribe.svg);
 }
 
+.portal-me {
+    background-image: url(/image/icon/header/portal-account.svg);
+}
+
 /* Channel--------- */
 .portal-channel {
-    width: 78px;
+    width: 98px;
     height: 104px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 55px;
+    margin-right: 35px;
 }
 
 .portal-channel:hover {
@@ -69,4 +73,11 @@
     color: #965D0C;
     font-size: 18px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.portal-channel:hover>span {
+    color: #BC760F
 }

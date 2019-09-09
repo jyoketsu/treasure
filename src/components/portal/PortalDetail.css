@@ -31,6 +31,15 @@
     background-image: url(/image/background/catalog-banner-container.png);
 }
 
+.channel-cover {
+    width: 491px;
+    height: 195px;
+    position: absolute;
+    top: 57px;
+    background-size: cover;
+    background-position: center;
+}
+
 .catalog-name-info {
     position: absolute;
     width: 190px;
@@ -59,12 +68,17 @@
 
 .channel-catalog-name>span {
     writing-mode: vertical-rl;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .channel-catalog-name>span:first-child {
     font-size: 32px;
-    margin: 0 35px;
+    margin: 0 30px;
     font-weight: 800;
+    width: 50px;
+    line-height: 50px;
 }
 
 .channel-catalog-name>span:last-child {
@@ -92,6 +106,10 @@
     font-size: 18px;
     text-align: center;
     line-height: 43px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 24px 0;
 }
 
 .catalog-item:hover {
