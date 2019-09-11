@@ -47,3 +47,14 @@
 .select-all:hover {
     cursor: pointer;
 }
+
+@media screen and (max-width:768px) {
+    .subscribe-menu {
+        width: 100%;
+        top: 0;
+        right: 0;
+        left: 0;
+        border: unset;
+        box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+    }
+}
