@@ -55,7 +55,9 @@ const station = (state = defaultState, action) => {
             if (!action.error) {
                 return {
                     ...state,
-                    stationList: action.payload.result,
+                    stationList: action.payload.result.sort((a, b) => {
+                        return b.starTime - a.starTime
+                    }),
                 };
             } else {
                 return state;

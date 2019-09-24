@@ -20,12 +20,6 @@
     align-items: center;
 }
 
-.portal-plugin{
-    width: 1200px;
-    position: absolute;
-    top: 15px;
-}
-
 /* portal-foot------ */
 .portal-foot {
     width: 100%;

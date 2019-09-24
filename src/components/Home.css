@@ -140,7 +140,7 @@
     margin: 2px;
 }
 
-.story-tool:hover{
+.story-tool:hover {
     cursor: pointer;
 }
 
@@ -181,7 +181,7 @@
 
 .add-article,
 .add-album {
-    background-color: #4A90E2;
+    background-color: #57BFE7;
 }
 
 .multi-button,

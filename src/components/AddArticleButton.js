@@ -129,7 +129,7 @@ class AddButton extends Component {
                     {this.state.showExtButton ? (
                         <ClickOutside onClickOutside={this.switchExtButton}>
                             <div className="ext-buttons">
-                                <Tooltip title="创建相册" placement="top">
+                                <Tooltip title="图文形式" placement="top">
                                     <div
                                         className="story-tool add-album"
                                         onClick={this.handleClickAdd.bind(this, nowChannel, 'album')}
@@ -137,7 +137,7 @@ class AddButton extends Component {
                                         <i></i>
                                     </div>
                                 </Tooltip>
-                                <Tooltip title="创建文章" placement="top">
+                                <Tooltip title="文章形式" placement="top">
                                     <div
                                         className="story-tool add-article"
                                         onClick={this.handleClickAdd.bind(this, nowChannel, 'article')}
