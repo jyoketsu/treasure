@@ -150,14 +150,14 @@ class AddButton extends Component {
                     ) : null}
                 </ReactCSSTransitionGroup>
                 <Modal
-                    title="请选择要发布的频道"
+                    title="请选择投稿主题"
                     visible={showSelectChannel}
                     onOk={this.handleSelectedChannel}
                     onCancel={this.switchChannelVisible}
                 >
                     <Select
                         style={{ width: '100%' }}
-                        placeholder="请选择频道"
+                        placeholder="请选择投稿主题"
                         onChange={this.handleSelectChannel}
                     >
                         {
