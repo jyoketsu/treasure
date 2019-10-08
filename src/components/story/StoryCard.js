@@ -2,26 +2,57 @@ import React, { Component } from 'react';
 import './StoryCard.css';
 import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
-import { Spin } from 'antd';
+import { Spin, Modal } from 'antd';
+import { connect } from 'react-redux';
+import { deleteStory } from '../../actions/app';
+const confirm = Modal.confirm;
+
+const mapStateToProps = state => ({
+    userKey: state.auth.user ? state.auth.user._key : '',
+    role: state.station.nowStation ? state.station.nowStation.role : null,
+});
 
 class Card extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.deletePage = this.deletePage.bind(this);
     }
 
     handleClick(key, type) {
         const { history, match } = this.props;
-        const path = type === 9 ? 'article' : 'story';
-        history.push({
-            pathname: `/${match.params.id}/${path}`,
-            search: `?key=${key}`
-        });
+        if (type === 12) {
+            const token = localStorage.getItem('TOKEN');
+            window.open(
+                `https://editor.qingtime.cn?token=${token}&key=${key}`,
+                '_blank');
+        } else {
+            const path = type === 9 ? 'article' : 'story';
+            history.push({
+                pathname: `/${match.params.id}/${path}`,
+                search: `?key=${key}`
+            });
+        }
     }
 
     handleLike(storyKey, e) {
         e.stopPropagation();
         this.props.like(storyKey);
+    }
+
+    deletePage(e) {
+        e.stopPropagation();
+        const { deleteStory, story } = this.props;
+        confirm({
+            title: '删除',
+            content: `确定要删除吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteStory(story._key);
+            },
+        });
     }
 
     render() {
@@ -46,7 +77,7 @@ class Card extends Component {
             backgroundSize: story.cover ? 'cover' : '30%',
             height: `${height - 80}px`,
         };
-        let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : null);
+        let storyType = story.type === 6 ? 'story' : (story.type === 9 ? 'article' : 'page');
         let status = '';
         let statusStyle = {};
         if (isMyStory && role && role > 2) {
@@ -82,8 +113,12 @@ class Card extends Component {
                     </div>
                 </div>
                 {
+                    story.type === 12 && (isMyStory || (role && role <= 3)) ?
+                        <span className="delete-page" onClick={this.deletePage}>删除</span> : null
+                }
+                {
                     // 图片数量
-                    story.type !== 9 ?
+                    story.type === 6 ?
                         <span className="picture-count">
                             <i className="picture-count-icon"></i>
                             <span>{story.pictureCount}</span>
@@ -138,6 +173,6 @@ class StoryLoading extends Component {
         </div>
     };
 }
-const StoryCard = withRouter(Card);
+const StoryCard = withRouter(connect(mapStateToProps, { deleteStory })(Card));
 
 export { StoryCard, StoryLoading };

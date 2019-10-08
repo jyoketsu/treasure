@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import './Home.css';
 import LoginTip from './common/LoginTip';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import StoryList from './story/StoryList';
 import HomeSubscribe from './HomeSubscribe';
 import util from '../services/Util';
 import { Modal, Tooltip, message, Input, Select } from 'antd';
 import { connect } from 'react-redux';
-import ClickOutside from './common/ClickOutside';
+import AddButton from './AddArticleButton';
 import {
     changeStation,
     getStoryList,
@@ -337,22 +336,15 @@ class Station extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showExtButton: false,
             xAxis: 0,
             questionVisible: false,
             question: '',
             answer: '',
-            showSelectChannel: false,
         }
-        this.handleClickAdd = this.handleClickAdd.bind(this);
-        this.switchExtButton = this.switchExtButton.bind(this);
         this.handleClickChannel = this.handleClickChannel.bind(this);
         this.switchPluginVisible = this.switchPluginVisible.bind(this);
         this.handleInputAnswer = this.handleInputAnswer.bind(this);
         this.handleAnswer = this.handleAnswer.bind(this);
-        this.switchChannelVisible = this.switchChannelVisible.bind(this);
-        this.handleSelectedChannel = this.handleSelectedChannel.bind(this);
-        this.handleSelectChannel = this.handleSelectChannel.bind(this);
     }
     /**
      * 回到顶部，动画效果
@@ -371,51 +363,6 @@ class Station extends React.Component {
                 clearInterval(scrollToptimer);
             }
         }, 30);
-    }
-
-    handleClickAdd(channel, type) {
-        const { history, user, nowChannelKey, match, content } = this.props;
-        const stationDomain = match.params.id;
-        if (user.isGuest) {
-            message.info('请先登录！');
-            return;
-        }
-        // if (!user.profile) {
-        //     message.info('请先完善个人信息！');
-        //     return;
-        // }
-        if (nowChannelKey === 'allSeries') {
-            this.contributeType = type;
-            this.switchChannelVisible();
-            return;
-        }
-        if (!channel.allowPublicUpload && !content.editRight) {
-            message.info('您没有权限发布到当前频道中！');
-            return;
-        }
-
-        switch (type) {
-            case 'album':
-                history.push({
-                    pathname: `/${stationDomain}/editStory`,
-                    search: '?type=new',
-                });
-                break;
-            case 'article':
-                history.push({
-                    pathname: `/${stationDomain}/editArticle`,
-                    search: '?type=new',
-                });
-                break;
-            default:
-                break;
-        }
-    }
-
-    switchExtButton() {
-        this.setState((prevState) => ({
-            showExtButton: !prevState.showExtButton
-        }));
     }
 
     handleClickChannel(index, key, answered) {
@@ -475,37 +422,6 @@ class Station extends React.Component {
         }));
     }
 
-    switchChannelVisible() {
-        this.setState((prevState) => ({
-            showSelectChannel: !prevState.showSelectChannel
-        }));
-    }
-
-    handleSelectedChannel() {
-        const { match, history } = this.props;
-        const stationDomain = match.params.id;
-        switch (this.contributeType) {
-            case 'album':
-                history.push({
-                    pathname: `/${stationDomain}/editStory`,
-                    search: `?type=new&channel=${this.channelKey}`,
-                });
-                break;
-            case 'article':
-                history.push({
-                    pathname: `/${stationDomain}/editArticle`,
-                    search: `?type=new&channel=${this.channelKey}`,
-                });
-                break;
-            default:
-                break;
-        }
-    }
-
-    handleSelectChannel(value) {
-        this.channelKey = value;
-    }
-
     handleInputAnswer(e) {
         this.setState({
             answer: e.target.value
@@ -562,7 +478,6 @@ class Station extends React.Component {
             questionVisible,
             question,
             answer,
-            showSelectChannel,
         } = this.state;
 
         const token = localStorage.getItem('TOKEN');
@@ -702,37 +617,9 @@ class Station extends React.Component {
                                 </div>
                             </Tooltip> : null
                     }
-                    <div className="multi-button">
-                        <Tooltip title="投稿" placement="bottom">
-                            <div className="story-tool add-story-multi" onClick={this.switchExtButton}>
-                                <i></i>
-                            </div>
-                        </Tooltip>
-                        <ReactCSSTransitionGroup transitionName="myFade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-                            {this.state.showExtButton ? (
-                                <ClickOutside onClickOutside={this.switchExtButton}>
-                                    <div className="ext-buttons">
-                                        <Tooltip title="图文形式" placement="top">
-                                            <div
-                                                className="story-tool add-album"
-                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'album')}
-                                            >
-                                                <i></i>
-                                            </div>
-                                        </Tooltip>
-                                        <Tooltip title="文章形式" placement="top">
-                                            <div
-                                                className="story-tool add-article"
-                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'article')}
-                                            >
-                                                <i></i>
-                                            </div>
-                                        </Tooltip>
-                                    </div>
-                                </ClickOutside>
-                            ) : null}
-                        </ReactCSSTransitionGroup>
-                    </div>
+                    {
+                        content._key ? <AddButton /> : null
+                    }
                 </div>
                 <Modal
                     title="排序"
@@ -810,28 +697,6 @@ class Station extends React.Component {
                 >
                     <p>{question}</p>
                     <Input placeholder="请输入答案" value={answer} onChange={this.handleInputAnswer} />
-                </Modal>
-                <Modal
-                    title="请选择投稿主题"
-                    visible={showSelectChannel}
-                    onOk={this.handleSelectedChannel}
-                    onCancel={this.switchChannelVisible}
-                >
-                    <Select
-                        style={{ width: '100%' }}
-                        placeholder="请选择投稿主题"
-                        onChange={this.handleSelectChannel}
-                    >
-                        {
-                            channelList.map((channel, index) => (
-                                channel.isSeeSeries &&
-                                    (channel.allowPublicUpload
-                                        || (!channel.allowPublicUpload && channel.role && channel.role < 5)) ?
-                                    <Option key={index} value={channel._key}>{channel.name}</Option> :
-                                    <Option key={index} value={channel._key} disabled>{channel.name}</Option>
-                            ))
-                        }
-                    </Select>
                 </Modal>
             </div>
         );

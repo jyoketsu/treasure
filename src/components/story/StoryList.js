@@ -46,7 +46,7 @@ class StoryList extends Component {
             let height;
             let size = story.size;
             if (!(size && size.height && size.width)) {
-                if (story.type === 9 && !story.cover) {
+                if (story.type !== 6 && !story.cover) {
                     height = 80;
                 } else {
                     height = 310;
@@ -58,11 +58,9 @@ class StoryList extends Component {
                 return (
                     <StoryCard
                         key={index}
-                        userKey={userKey}
                         story={story}
                         like={like}
                         showSetting={showSetting}
-                        role={role}
                         height={height}
                     />
                 )

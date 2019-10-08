@@ -179,6 +179,12 @@
     background-image: url(/image/icon/article.svg);
 }
 
+.add-page>i {
+    background-image: url(/image/icon/HTML.svg);
+    background-size: 60%;
+}
+
+.add-page,
 .add-article,
 .add-album {
     background-color: #57BFE7;

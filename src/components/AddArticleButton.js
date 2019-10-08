@@ -64,6 +64,12 @@ class AddButton extends Component {
                     search: '?type=new',
                 });
                 break;
+            case 'page':
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${nowChannelKey}`,
+                    '_blank');
+                break;
             default:
                 break;
         }
@@ -71,7 +77,7 @@ class AddButton extends Component {
     }
 
     handleSelectedChannel() {
-        const { match, history } = this.props;
+        const { match, history, nowStation } = this.props;
         const stationDomain = match.params.id;
         switch (this.contributeType) {
             case 'album':
@@ -85,6 +91,12 @@ class AddButton extends Component {
                     pathname: `/${stationDomain}/editArticle`,
                     search: `?type=new&channel=${this.channelKey}`,
                 });
+                break;
+            case 'page':
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${this.channelKey}`,
+                    '_blank');
                 break;
             default:
                 break;
@@ -145,6 +157,18 @@ class AddButton extends Component {
                                         <i></i>
                                     </div>
                                 </Tooltip>
+                                {
+                                    nowStation.role && nowStation.role <= 3 ? (
+                                        <Tooltip title="网页形式" placement="top">
+                                            <div
+                                                className="story-tool add-page"
+                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'page')}
+                                            >
+                                                <i></i>
+                                            </div>
+                                        </Tooltip>
+                                    ) : null
+                                }
                             </div>
                         </ClickOutside>
                     ) : null}
