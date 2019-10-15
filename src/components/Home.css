@@ -184,6 +184,12 @@
     background-size: 60%;
 }
 
+.add-link>i {
+    background-image: url(/image/icon/link.svg);
+    background-size: 60%;
+}
+
+.add-link,
 .add-page,
 .add-article,
 .add-album {

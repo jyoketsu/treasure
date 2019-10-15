@@ -159,14 +159,24 @@ class AddButton extends Component {
                                 </Tooltip>
                                 {
                                     nowStation.role && nowStation.role <= 3 ? (
-                                        <Tooltip title="网页形式" placement="top">
-                                            <div
-                                                className="story-tool add-page"
-                                                onClick={this.handleClickAdd.bind(this, nowChannel, 'page')}
-                                            >
-                                                <i></i>
-                                            </div>
-                                        </Tooltip>
+                                        [
+                                            <Tooltip key="add-page" title="网页形式" placement="top">
+                                                <div
+                                                    className="story-tool add-page"
+                                                    onClick={this.handleClickAdd.bind(this, nowChannel, 'page')}
+                                                >
+                                                    <i></i>
+                                                </div>
+                                            </Tooltip>,
+                                            <Tooltip key="add-link" title="链接形式" placement="top">
+                                                <div
+                                                    className="story-tool add-link"
+                                                    onClick={this.handleClickAdd.bind(this, nowChannel, 'page')}
+                                                >
+                                                    <i></i>
+                                                </div>
+                                            </Tooltip>
+                                        ]
                                     ) : null
                                 }
                             </div>
