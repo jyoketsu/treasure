@@ -19,7 +19,7 @@ class HomeSubscribe extends Component {
         if (tarStationName) {
             document.title = tarStationName;
         } else {
-            document.title = '时光宝库';
+            document.title = '当归';
         }
     }
 }

@@ -19,19 +19,32 @@ class Card extends Component {
         this.deletePage = this.deletePage.bind(this);
     }
 
-    handleClick(key, type) {
+    handleClick(story) {
+        const { key, type, openType, url } = story;
         const { history, match } = this.props;
-        if (type === 12) {
-            const token = localStorage.getItem('TOKEN');
-            window.open(
-                `https://editor.qingtime.cn?token=${token}&key=${key}`,
-                '_blank');
-        } else {
-            const path = type === 9 ? 'article' : 'story';
-            history.push({
-                pathname: `/${match.params.id}/${path}`,
-                search: `?key=${key}`
-            });
+        switch (type) {
+            case 12:
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&key=${key}`,
+                    '_blank');
+                break;
+            case 15:
+                if (openType === 1) {
+                    window.open(url, '_blank');
+                } else {
+                    window.location.href = url;
+                }
+                break;
+            default: {
+                const path = type === 9 ? 'article' : 'story';
+                history.push({
+                    pathname: `/${match.params.id}/${path}`,
+                    search: `?key=${key}`
+                });
+                break;
+            }
+
         }
     }
 
@@ -53,6 +66,11 @@ class Card extends Component {
                 deleteStory(story._key);
             },
         });
+    }
+
+    handleEditLink(e) {
+        e.stopPropagation();
+        alert('编辑');
     }
 
     render() {
@@ -93,7 +111,7 @@ class Card extends Component {
             <div
                 className={`story-card type-${storyType}`}
                 style={{ height: height }}
-                onClick={this.handleClick.bind(this, story._key, story.type)}
+                onClick={this.handleClick.bind(this, story)}
             >
                 <div
                     className="story-card-cover"
@@ -112,10 +130,6 @@ class Card extends Component {
                         <span style={statusStyle}>{status}</span>
                     </div>
                 </div>
-                {
-                    story.type === 12 && (isMyStory || (role && role <= 3)) ?
-                        <span className="delete-page" onClick={this.deletePage}>删除</span> : null
-                }
                 {
                     // 图片数量
                     story.type === 6 ?
@@ -158,9 +172,20 @@ class Card extends Component {
                         }
                     </div>
                 </div>
-                {
-                    story.statusTag ? <span className="cover-status">{story.statusTag}</span> : null
-                }
+                <div className="right-area">
+                    {
+                        story.statusTag ? <span className="cover-status">{story.statusTag}</span> : null
+                    }
+                    {
+                        (story.type === 15) && (isMyStory || (role && role <= 3)) ?
+                            <span className="card-link" onClick={this.handleEditLink}>编辑</span> : null
+                    }
+                    {
+                        (story.type === 12 || story.type === 15) && (isMyStory || (role && role <= 3)) ?
+                            <span className="card-link" onClick={this.deletePage}>删除</span> : null
+                    }
+                </div>
+
             </div>
         );
     }

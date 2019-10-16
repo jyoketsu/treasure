@@ -358,6 +358,7 @@
         height: 350px;
     }
 
+    .add-page,
     .story-tool.sort-story {
         display: none;
     }

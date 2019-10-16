@@ -11,6 +11,7 @@ import {
     AUDIT,
     READYTOREFRESH,
     MY_STATION_LATEST_STORY,
+    SWITCH_EDIT_LINK_VISIBLE,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -25,6 +26,7 @@ const defaultState = {
     statusTag: undefined,
     refresh: false,
     dynamicStoryList: [],
+    eidtLinkVisible: false,
 };
 
 const story = (state = defaultState, action) => {
@@ -197,6 +199,11 @@ const story = (state = defaultState, action) => {
                 };
             } else {
                 return state;
+            }
+        case SWITCH_EDIT_LINK_VISIBLE:
+            return {
+                ...state,
+                eidtLinkVisible: !state.eidtLinkVisible
             }
         default:
             return state;

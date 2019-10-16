@@ -130,6 +130,9 @@
     opacity: 0.01;
     transition: opacity 500ms;
 }
+.ant-form-item{
+    margin-bottom: 0;
+}
 
 @keyframes App-logo-spin {
     from {

@@ -68,7 +68,7 @@ class PortalFooter extends Component {
                         <span>{name}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <span>All Rights Reserved</span>
                 </span>
-                <span>{`Powered by 时光宝库`}</span>
+                <span>{`Powered by 当归`}</span>
             </div>
         );
     }

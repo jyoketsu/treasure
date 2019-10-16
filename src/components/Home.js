@@ -741,7 +741,7 @@ class HomeFooter extends React.Component {
                         ]
                 }
 
-                <span>{`Powered by 时光宝库`}</span>
+                <span>{`Powered by 当归`}</span>
             </div>
         );
     }

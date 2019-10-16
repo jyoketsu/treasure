@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Modal, Tooltip, message, Select } from 'antd';
 import { withRouter } from "react-router-dom";
+import { switchEditLinkVisible } from '../actions/app';
 import { connect } from 'react-redux';
 import ClickOutside from './common/ClickOutside';
 
@@ -12,7 +13,6 @@ const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
     nowChannelKey: state.story.nowChannelKey,
 });
-
 
 class AddButton extends Component {
 
@@ -35,13 +35,13 @@ class AddButton extends Component {
     }
 
     handleClickAdd(channel, type) {
-        const { history, user, nowChannelKey, match, nowStation } = this.props;
+        const { history, user, nowChannelKey, match, nowStation, switchEditLinkVisible } = this.props;
         const stationDomain = match.params.id;
         if (user.isGuest) {
             message.info('请先登录！');
             return;
         }
-        if (nowChannelKey === 'allSeries') {
+        if (type !== "link" && nowChannelKey === 'allSeries') {
             this.contributeType = type;
             this.switchChannelVisible();
             return;
@@ -70,6 +70,9 @@ class AddButton extends Component {
                     `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${nowChannelKey}`,
                     '_blank');
                 break;
+            case 'link':
+                switchEditLinkVisible();
+                break;
             default:
                 break;
         }
@@ -77,7 +80,7 @@ class AddButton extends Component {
     }
 
     handleSelectedChannel() {
-        const { match, history, nowStation } = this.props;
+        const { match, history, nowStation, switchEditLinkVisible } = this.props;
         const stationDomain = match.params.id;
         switch (this.contributeType) {
             case 'album':
@@ -97,6 +100,9 @@ class AddButton extends Component {
                 window.open(
                     `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${this.channelKey}`,
                     '_blank');
+                break;
+            case 'link':
+                switchEditLinkVisible();
                 break;
             default:
                 break;
@@ -171,7 +177,7 @@ class AddButton extends Component {
                                             <Tooltip key="add-link" title="链接形式" placement="top">
                                                 <div
                                                     className="story-tool add-link"
-                                                    onClick={this.handleClickAdd.bind(this, nowChannel, 'page')}
+                                                    onClick={this.handleClickAdd.bind(this, nowChannel, 'link')}
                                                 >
                                                     <i></i>
                                                 </div>
@@ -212,5 +218,5 @@ class AddButton extends Component {
 
 export default withRouter(connect(
     mapStateToProps,
-    {}
+    { switchEditLinkVisible }
 )(AddButton))

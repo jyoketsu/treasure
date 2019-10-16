@@ -4,6 +4,7 @@ import { StoryLoading, StoryCard } from './StoryCard';
 import util from '../../services/Util';
 import StoryEntry from './StoryEntry';
 import Waterfall from '../common/Waterfall';
+import StroyLink from './Link';
 import { connect } from 'react-redux';
 import { like } from '../../actions/app';
 
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
     storyNumber: state.story.storyNumber,
     flag: state.common.flag,
     role: state.station.nowStation ? state.station.nowStation.role : null,
+    eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class StoryList extends Component {
@@ -38,6 +40,7 @@ class StoryList extends Component {
             role,
             showMore,
             handleCoverClick,
+            eidtLinkVisible
         } = this.props;
         const { columnNum } = this.state;
         const isMobile = util.common.isMobile();;
@@ -101,6 +104,8 @@ class StoryList extends Component {
                         <div className="story-is-all">没有内容</div>
                         : null
                 }
+                {eidtLinkVisible ? <StroyLink /> : null}
+
             </div>
         );
     };

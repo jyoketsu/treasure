@@ -196,6 +196,7 @@ export const UPDATE_EXIF = 'UPDATE_EXIF';
 export const AUDIT = 'AUDIT';
 export const READYTOREFRESH = 'READYTOREFRESH';
 export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
+export const SWITCH_EDIT_LINK_VISIBLE = 'SWITCH_EDIT_LINK_VISIBLE';
 
 export function getStoryList(
     type,
@@ -286,6 +287,10 @@ export function auditStory(storyKey, groupKey, passOrNot) {
 export function myStationLatestStory(curPage) {
     let request = api.story.myStationLatestStory(curPage);
     return { type: MY_STATION_LATEST_STORY, curPage: curPage, noLoading: true, payload: request }
+}
+
+export function switchEditLinkVisible() {
+    return { type: SWITCH_EDIT_LINK_VISIBLE }
 }
 
 // 频道
