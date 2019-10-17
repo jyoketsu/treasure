@@ -197,6 +197,18 @@ export const AUDIT = 'AUDIT';
 export const READYTOREFRESH = 'READYTOREFRESH';
 export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
 export const SWITCH_EDIT_LINK_VISIBLE = 'SWITCH_EDIT_LINK_VISIBLE';
+export const APPLY_EDIT = 'APPLY_EDIT';
+export const EXIT_EDIT = 'EXIT_EDIT';
+
+export function applyEdit(storyKey, updateTime) {
+    let request = api.story.applyEdit(storyKey, updateTime);
+    return { type: APPLY_EDIT, noLoading: true, payload: request }
+}
+
+export function exitEdit(storyKey) {
+    let request = api.story.exitEdit(storyKey);
+    return { type: EXIT_EDIT, noLoading: true, payload: request }
+}
 
 export function getStoryList(
     type,

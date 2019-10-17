@@ -5,7 +5,6 @@ import util from '../../services/Util';
 import api from '../../services/Api';
 import { connect } from 'react-redux';
 import { getStoryDetail, updateExif, clearStoryDetail } from '../../actions/app';
-import lozad from 'lozad';
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -134,7 +133,7 @@ class Story extends Component {
                                             <div className="story-image-box">
                                                 <img
                                                     className="story-image lozad"
-                                                    data-src={`${url}?imageView2/2/w/1280/`}
+                                                    src={`${url}?imageView2/2/w/1280/`}
                                                     alt="story"
                                                     onClick={this.handleClickImage.bind(this, url)}
                                                 />
@@ -166,27 +165,17 @@ class Story extends Component {
         );
     }
 
-    componentWillMount() {
-        this.props.clearStoryDetail();
-    }
-
     componentDidMount() {
-        const { location, getStoryDetail, story, } = this.props;
+        const { location, getStoryDetail, } = this.props;
         if (location) {
             let storyKey = util.common.getSearchParamValue(location.search, 'key');
             if (storyKey) {
                 getStoryDetail(storyKey);
             }
         }
-        if (story) {
-            const observer = lozad();
-            observer.observe();
-        }
     }
 
     componentDidUpdate(prevPros) {
-        const observer = lozad();
-        observer.observe();
         const { story, updateExif } = this.props;
         // 获取到故事详情后
         if (!prevPros.story._key && story._key) {

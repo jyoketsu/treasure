@@ -21,6 +21,11 @@
 }
 
 
+.content-manage>div>iframe{
+    height: calc(100% - 80px);
+}
+
+
 @media screen and (max-width:768px) {
     .content-manage {
         display: block;

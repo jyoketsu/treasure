@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import util from '../../services/Util';
 import { connect } from 'react-redux';
-import { switchEditLinkVisible, addStory, } from '../../actions/app';
+import {
+    switchEditLinkVisible,
+    addStory,
+    modifyStory,
+    applyEdit,
+    exitEdit,
+} from '../../actions/app';
 import {
     Form,
     Input,
@@ -159,7 +165,6 @@ class LinkStory extends Component {
         super(props);
         const { story } = props;
         this.state = {
-            _key: story ? story._key : null,
             fields: {
                 title: {
                     value: story ? story.title : '',
@@ -191,22 +196,36 @@ class LinkStory extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { _key } = this.state;
-        const { addStory, user, nowStationKey, switchEditLinkVisible, } = this.props;
+        const {
+            user,
+            story,
+            nowStationKey,
+            addStory,
+            modifyStory,
+            switchEditLinkVisible,
+        } = this.props;
+
         this.form.validateFields(async (err, values) => {
             if (!err) {
-                let story = {
-                    userKey: user._key,
-                    type: 15,
-                    starKey: nowStationKey,
-                    title: values.title,
-                    url: values.url,
-                    openType: values.openType,
-                    series: values.series,
-                    tag: values.tag,
-                    statusTag: values.statusTag
+                // 新增
+                if (!story._key) {
+                    let story = {
+                        userKey: user._key,
+                        type: 15,
+                        starKey: nowStationKey,
+                        title: values.title,
+                        url: values.url,
+                        openType: values.openType,
+                        series: values.series,
+                        tag: values.tag,
+                        statusTag: values.statusTag
+                    }
+                    addStory(story);
+                } else {
+                    // 编辑
+                    modifyStory({ ...story, ...values, ...{ key: story._key } });
                 }
-                addStory(story);
+
                 switchEditLinkVisible();
             }
         });
@@ -233,9 +252,59 @@ class LinkStory extends Component {
             </div>
         );
     }
+
+    componentDidMount() {
+        const { story } = this.props;
+        if (story._key) {
+            applyEdit(story._key, story.updateTime);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        const { story: prevStory = {} } = prevProps;
+        const { story, applyEdit } = this.props;
+        if (prevStory._key !== story._key) {
+            applyEdit(story._key, story.updateTime);
+            this.setState({
+                fields: {
+                    title: {
+                        value: story ? story.title : '',
+                    },
+                    url: {
+                        value: story ? story.url : '',
+                    },
+                    openType: {
+                        value: story ? story.openType || 1 : 1,
+                    },
+                    series: {
+                        value: story && story.series ? story.series._key || '' : '',
+                    },
+                    tag: {
+                        value: story ? story.tag : '',
+                    },
+                    statusTag: {
+                        value: story ? story.statusTag : '',
+                    },
+                },
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        const { story, exitEdit } = this.props;
+        if (story._key) {
+            exitEdit(story._key);
+        }
+    }
 }
 
 export default connect(
     mapStateToProps,
-    { switchEditLinkVisible, addStory },
+    {
+        switchEditLinkVisible,
+        addStory,
+        modifyStory,
+        applyEdit,
+        exitEdit,
+    },
 )(LinkStory);

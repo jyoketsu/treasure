@@ -7,6 +7,7 @@ import util from '../services/Util';
 import { Modal, Tooltip, message, Input, Select } from 'antd';
 import { connect } from 'react-redux';
 import AddButton from './AddArticleButton';
+import StroyLink from './story/Link';
 import {
     changeStation,
     getStoryList,
@@ -32,6 +33,7 @@ const mapStateToProps = state => ({
     refresh: state.story.refresh,
     tag: state.story.tag,
     statusTag: state.story.statusTag,
+    eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class Home extends Component {
@@ -241,6 +243,7 @@ class Home extends Component {
             nowChannelKey,
             seePlugin,
             seeChannel,
+            eidtLinkVisible,
         } = this.props;
         const { showSort, showFilter, tag, statusTag, } = this.state;
 
@@ -282,6 +285,7 @@ class Home extends Component {
                 {
                     user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null
                 }
+                {eidtLinkVisible ? <StroyLink /> : null}
             </div>
         );
     };

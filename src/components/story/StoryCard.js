@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
 import { Spin, Modal } from 'antd';
 import { connect } from 'react-redux';
-import { deleteStory } from '../../actions/app';
+import { deleteStory, switchEditLinkVisible, getStoryDetail, } from '../../actions/app';
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
@@ -17,16 +17,17 @@ class Card extends Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.deletePage = this.deletePage.bind(this);
+        this.handleEditLink = this.handleEditLink.bind(this);
     }
 
     handleClick(story) {
-        const { key, type, openType, url } = story;
+        const { _key, type, openType, url } = story;
         const { history, match } = this.props;
         switch (type) {
             case 12:
                 const token = localStorage.getItem('TOKEN');
                 window.open(
-                    `https://editor.qingtime.cn?token=${token}&key=${key}`,
+                    `https://editor.qingtime.cn?token=${token}&key=${_key}`,
                     '_blank');
                 break;
             case 15:
@@ -40,7 +41,7 @@ class Card extends Component {
                 const path = type === 9 ? 'article' : 'story';
                 history.push({
                     pathname: `/${match.params.id}/${path}`,
-                    search: `?key=${key}`
+                    search: `?key=${_key}`
                 });
                 break;
             }
@@ -70,7 +71,9 @@ class Card extends Component {
 
     handleEditLink(e) {
         e.stopPropagation();
-        alert('编辑');
+        const { story, getStoryDetail, switchEditLinkVisible } = this.props;
+        getStoryDetail(story._key);
+        switchEditLinkVisible();
     }
 
     render() {
@@ -198,6 +201,10 @@ class StoryLoading extends Component {
         </div>
     };
 }
-const StoryCard = withRouter(connect(mapStateToProps, { deleteStory })(Card));
+const StoryCard = withRouter(
+    connect(
+        mapStateToProps,
+        { deleteStory, switchEditLinkVisible, getStoryDetail }
+    )(Card));
 
 export { StoryCard, StoryLoading };

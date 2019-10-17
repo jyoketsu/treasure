@@ -7,6 +7,7 @@ import Story from '../story/Story';
 import ArticlePreview from '../story/Article';
 import EditArticle from '../story/EditArticle';
 import StoryEdit from '../story/StoryEdit';
+import StroyLink from '../story/Link';
 import { connect } from 'react-redux';
 import {
     getStoryList,
@@ -14,6 +15,7 @@ import {
     clearStoryList,
     getStoryDetail,
     clearStoryDetail,
+    switchEditLinkVisible,
 } from '../../actions/app';
 import CheckArticle from '../common/CheckArticle';
 import util from '../../services/Util';
@@ -28,6 +30,8 @@ const mapStateToProps = state => ({
     storyNumber: state.story.storyNumber,
     storyType: state.story.story.type,
     nowStoryNumber: state.story.storyList.length,
+    story: state.story.story,
+    eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class Content extends Component {
@@ -60,9 +64,20 @@ class Content extends Component {
     }
 
     handleClickEdit() {
-        this.setState({
-            isEdit: true,
-        });
+        const { story, switchEditLinkVisible, } = this.props;
+        switch (story.type) {
+            case 6:
+            case 9:
+                this.setState({
+                    isEdit: true,
+                });
+                break;
+            case 12: break;
+            case 15:
+                switchEditLinkVisible();
+                break;
+            default: break;
+        }
     }
 
 
@@ -179,11 +194,39 @@ class Content extends Component {
     }
 
     render() {
-        const { storyType } = this.props;
+        const { storyType, story, eidtLinkVisible } = this.props;
         const { isEdit, visible, } = this.state;
-        const storyComp = storyType === 9 ?
-            (isEdit ? <EditArticle inline={true} /> : <ArticlePreview readOnly={true} hideMenu={true} inline={true} />) :
-            (isEdit ? <StoryEdit keep={true} inline={true} /> : <Story readOnly={true} inline={true} />);
+        let storyComp;
+        switch (storyType) {
+            case 6:
+                storyComp = (isEdit ? <StoryEdit keep={true} inline={true} /> : <Story readOnly={true} inline={true} />)
+                break;
+            case 9:
+                storyComp = (isEdit ? <EditArticle inline={true} /> : <ArticlePreview readOnly={true} hideMenu={true} inline={true} />)
+                break;
+            case 12: {
+                const token = localStorage.getItem('TOKEN');
+                storyComp =
+                    <iframe
+                        title={story.title}
+                        src={`https://editor.qingtime.cn?token=${token}&key=${story._key}`}
+                        frameBorder="0"
+                        width="100%"
+                    ></iframe>;
+                break;
+            }
+            case 15:
+                storyComp =
+                    <iframe
+                        title={story.title}
+                        src={story.url}
+                        frameBorder="0"
+                        width="100%"
+                    ></iframe>;
+                break;
+            default:
+                break;
+        }
         return (
             <div className="content-manage" ref={node => this.auditRef = node}>
                 <div ref={node => this.contentRef = node}>
@@ -216,6 +259,7 @@ class Content extends Component {
                     <CheckArticle handleClickEdit={this.handleClickEdit} />
                     {storyComp}
                 </Modal>
+                {eidtLinkVisible ? <StroyLink /> : null}
             </div>
         );
     };
@@ -263,5 +307,6 @@ export default withRouter(connect(
         clearStoryList,
         getStoryDetail,
         clearStoryDetail,
+        switchEditLinkVisible,
     },
 )(Content));

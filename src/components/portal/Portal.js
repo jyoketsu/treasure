@@ -4,9 +4,11 @@ import { Route, } from "react-router-dom";
 import Catalog from './PortalCatalog';
 import Detail from './PortalDetail';
 import AddButton from '../AddArticleButton';
+import StroyLink from '../story/Link';
 import { connect } from 'react-redux';
 const mapStateToProps = state => ({
     nowStation: state.station.nowStation,
+    eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class Portal extends Component {
@@ -23,7 +25,7 @@ class Portal extends Component {
     }
 
     render() {
-        const { match, location, nowStation, } = this.props;
+        const { match, location, nowStation, eidtLinkVisible } = this.props;
         const { winHeight } = this.state;
         const pathname = location.pathname;
         return (
@@ -40,10 +42,15 @@ class Portal extends Component {
                     <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
                     <Route path={`${match.path}/detail/:id`} component={Detail}></Route>
                 </div>
-                <div className="operation-panel">
-                    <AddButton />
-                </div>
+                {
+                    pathname.indexOf('/catalog/') !== -1 ?
+                        <div className="operation-panel">
+                            <AddButton />
+                        </div> : null
+                }
+
                 <PortalFooter name={nowStation ? nowStation.name : ''} />
+                {eidtLinkVisible && (pathname.indexOf('/catalog/') !== -1) ? <StroyLink /> : null}
             </div>
         );
     }

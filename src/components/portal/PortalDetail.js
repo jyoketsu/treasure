@@ -31,6 +31,7 @@ class PortalDetail extends Component {
             pathname: `/${stationDomain}/detail/${channelKey}`,
             state: { tagName: tag }
         });
+        this.jumpable = true;
     }
 
     getStoryList(tagName) {
@@ -86,12 +87,16 @@ class PortalDetail extends Component {
                 <div className="portal-detail-content">
                     <CatalogTitle title={tagName} />
                     {
-                        articleKey
-                            ? <PortalArticle id={articleKey} />
-                            : (
-                                storyList.length === 1
-                                    ? <PortalArticle id={storyList[0]._key} />
-                                    : <PortalArticleList />
+                        articleKey ?
+                            <PortalArticle id={articleKey} /> :
+                            (
+                                storyList.length === 1 ?
+                                    (
+                                        storyList[0].type === 12 ||
+                                            (storyList[0].type === 15 && storyList[0].openType === 1) ?
+                                            null : <PortalArticle id={storyList[0]._key} />
+                                    ) :
+                                    <PortalArticleList />
                             )
                     }
                 </div>
@@ -103,6 +108,26 @@ class PortalDetail extends Component {
         const { location } = this.props;
         const { tagName } = location.state;
         this.getStoryList(tagName);
+    }
+
+    componentDidUpdate(prevProps) {
+        const { storyList: prevStoryList } = prevProps;
+        const { storyList } = this.props;
+        if (
+            storyList.length === 1 &&
+            (storyList[0].type === 12 || storyList[0].type === 15) &&
+            (prevStoryList[0] && storyList[0]._key !== prevStoryList[0]._key)
+        ) {
+            this.jumpable = false;
+            if (storyList[0].type === 12) {
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
+                    '_blank');
+            } else {
+                window.open(storyList[0].url, '_blank');
+            }
+        }
     }
 }
 

@@ -10,13 +10,29 @@ const mapStateToProps = state => ({
 class PortalArticle extends Component {
     render() {
         const { story } = this.props;
-        const content = story
-            ? (story.type === 9
-                ? <Article readOnly={true} inline={true} />
-                : <Story readOnly={true} inline={true} />)
-            : null;
+        let content;
+        switch (story.type) {
+            case 6:
+                content = <Story readOnly={true} inline={true} />
+                break;
+            case 9:
+                content = <Article readOnly={true} inline={true} />
+                break;
+            case 15:
+                content =
+                    <iframe
+                        title={story.title}
+                        src={story.url}
+                        frameBorder="0"
+                        width="100%"
+                        height={document.body.clientHeight}
+                    ></iframe>;
+                break;
+            default:
+                break;
+        }
         return (
-            <div className="portal-article">
+            <div className={`portal-article ${story.type === 15 ? 'link' : ''}`}>
                 {content}
             </div>
         );
