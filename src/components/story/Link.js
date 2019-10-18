@@ -72,6 +72,21 @@ const CustomizedForm = Form.create({
     }
     const { tag, allowPublicTag, statusTag, allowPublicStatus, role } = channelInfo;
 
+    let tagList = tag ? tag.split(' ').map((item, index) => {
+        if (util.common.isJSON(item)) {
+            const itemObj = JSON.parse(item);
+            return {
+                id: itemObj.id,
+                name: itemObj.name
+            }
+        } else {
+            return {
+                id: item,
+                name: item
+            }
+        }
+    }) : null;
+
     const urlRe = new RegExp("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
     return (
         <Form>
@@ -117,7 +132,7 @@ const CustomizedForm = Form.create({
                 )}
             </Form.Item>
             {
-                tag && (allowPublicTag || (!allowPublicTag && role && role < 4)) ?
+                tagList && (allowPublicTag || (!allowPublicTag && role && role < 4)) ?
                     <Form.Item label="标签">
                         {getFieldDecorator('tag', {
                             rules: [
@@ -126,12 +141,8 @@ const CustomizedForm = Form.create({
                         })(
                             <Select>
                                 {
-                                    tag.split(' ').map((item, index) => {
-                                        let tagName = item;
-                                        if (util.common.isJSON(item)) {
-                                            tagName = JSON.parse(item).name;
-                                        }
-                                        return (<Option key={index} index={index} value={tagName}>{tagName}</Option>);
+                                    tagList.map((item, index) => {
+                                        return (<Option key={index} index={index} value={item.id}>{item.name}</Option>);
                                     })
                                 }
                             </Select>

@@ -496,6 +496,25 @@ class Station extends React.Component {
         }
         const { tag = '', statusTag = '', } = nowChannel || {};
         let tagStr = tag ? `全部 ${tag}` : tag;
+        let tagList = tag ? tag.split(' ').map((item, index) => {
+            if (util.common.isJSON(item)) {
+                const itemObj = JSON.parse(item);
+                return {
+                    id: itemObj.id,
+                    name: itemObj.name
+                }
+            } else {
+                return {
+                    id: item,
+                    name: item
+                }
+            }
+        }) : null;
+
+        if (tagList) {
+            tagList.unshift({ id: '', name: '全部' });
+        }
+
         let statusStr = statusTag ? `全部 ${statusTag}` : statusTag;
 
         let channelList = [];
@@ -661,7 +680,7 @@ class Station extends React.Component {
                     width="320px"
                 >
                     {
-                        tagStr ? (
+                        tagList ? (
                             <Select
                                 value={nowTag}
                                 style={{ width: 200 }}
@@ -669,8 +688,8 @@ class Station extends React.Component {
                                 onChange={handleSetTag}
                             >
                                 {
-                                    tagStr.split(' ').map((item, index) => (
-                                        <Option key={index} value={item === '全部' ? '' : item}>{item}</Option>
+                                    tagList.map((item, index) => (
+                                        <Option key={index} value={item.id}>{item.name}</Option>
                                     ))
                                 }
                             </Select>

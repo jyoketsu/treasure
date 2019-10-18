@@ -12,6 +12,7 @@ import {
     READYTOREFRESH,
     MY_STATION_LATEST_STORY,
     SWITCH_EDIT_LINK_VISIBLE,
+    PASS_ALL,
 } from '../actions/app';
 import { message, } from 'antd';
 
@@ -204,6 +205,15 @@ const story = (state = defaultState, action) => {
             return {
                 ...state,
                 eidtLinkVisible: !state.eidtLinkVisible
+            }
+        case PASS_ALL:
+            if (!action.error) {
+                return {
+                    ...state,
+                    storyList: [],
+                };
+            } else {
+                return state;
             }
         default:
             return state;

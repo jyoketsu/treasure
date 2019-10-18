@@ -49,3 +49,17 @@
 .tag-option-left>span {
     font-size: 18px;
 }
+
+.tag-action{
+    width:50px;
+    height: 112px;
+    font-size: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.tag-action>i:hover{
+    cursor: pointer;
+}

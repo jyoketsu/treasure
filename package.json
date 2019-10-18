@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "scp": "scp -r build/* root@139.155.124.76:/home/work/websites/baoku.qingtime.cn",
-    "upload": "react-scripts build && npm run scp"
+    "deploy": "react-scripts build && npm run scp"
   },
   "eslintConfig": {
     "extends": "react-app"

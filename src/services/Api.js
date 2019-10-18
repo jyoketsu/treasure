@@ -423,7 +423,11 @@ const story = {
     },
 
     addStory(story) {
-        return requests.post(APIURL + '/album', Object.assign(story, { token: token }));
+        return requests.post(APIURL + '/album', Object.assign(
+            story, {
+            token: token,
+            time: new Date().getTime()
+        }));
     },
     editStory(story) {
         return requests.patch(APIURL + '/album', Object.assign(story, { token: token }));
@@ -517,7 +521,18 @@ const story = {
             token: token,
             seriesKey: channelKey,
         });
-    }
+    },
+
+    /**
+     * 该微站所有频道待审核的相册一次审核通过
+     * @param {String} stationKey 微站key
+     */
+    passAll(stationKey) {
+        return requests.patch(APIURL + '/album/checkPassAll', {
+            token: token,
+            starKey: stationKey,
+        });
+    },
 }
 
 const plugin = {

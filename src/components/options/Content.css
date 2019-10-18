@@ -14,6 +14,7 @@
 .content-manage>div {
     overflow: auto;
     padding: 15px;
+    position: relative;
 }
 
 .content-manage .story-card-cover:hover {
@@ -23,6 +24,17 @@
 
 .content-manage>div>iframe{
     height: calc(100% - 80px);
+}
+
+.pass-all{
+    color: #40a9ff;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.pass-all:hover{
+    cursor: pointer;
 }
 
 

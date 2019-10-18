@@ -24,14 +24,35 @@ class PortalArticleList extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    viewArticle(id) {
+    viewArticle(story) {
         const { history, location, } = this.props;
         const { tagName } = location.state;
-        history.push({
-            pathname: location.pathname,
-            state: { tagName: tagName },
-            search: `?id=${id}`,
-        });
+        switch (story.type) {
+            case 6:
+            case 9:
+                history.push({
+                    pathname: location.pathname,
+                    state: { tagName: tagName },
+                    search: `?id=${story._key}`,
+                });
+                break;
+            case 12:
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&key=${story._key}`,
+                    '_blank');
+                break;
+            case 15:
+                if (story.openType === 1) {
+                    window.open(story.url, '_blank');
+                } else {
+                    window.location.href = story.url;
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     onChange = page => {
@@ -125,7 +146,7 @@ class ArticleItem extends Component {
                     onClick={() => onClick(article._key)}
                 >
                     <img
-                        src={article.cover}
+                        src={article.cover || 'https://www.sindsun.com/Uploads/Image/20180922/5e69376ddd7e59ad6306e93dd06fba08.png'}
                         style={{
                             transform: `scale(${scale})`
                         }}
@@ -134,7 +155,7 @@ class ArticleItem extends Component {
                 <div className="portal-article-name">
                     <h3>{article.title}</h3>
                     <span>{article.descript || article.memo}</span>
-                    <div onClick={() => onClick(article._key)}>查看更多</div>
+                    <div onClick={() => onClick(article)}>查看更多</div>
                 </div>
             </div>
         );

@@ -261,10 +261,12 @@ class EditArticle extends Component {
                                 {
                                     tag.split(' ').map((item, index) => {
                                         let tagName = item;
+                                        let tagValue = item;
                                         if (util.common.isJSON(item)) {
                                             tagName = JSON.parse(item).name;
+                                            tagValue = JSON.parse(item).id;
                                         }
-                                        return (<Option key={index} index={index} value={tagName}>{tagName}</Option>);
+                                        return (<Option key={index} index={index} value={tagValue}>{tagName}</Option>);
                                     })
                                 }
                             </Select> : null

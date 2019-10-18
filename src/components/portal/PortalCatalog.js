@@ -22,7 +22,7 @@ class Catalog extends Component {
         const channelKey = match.params.id;
         history.push({
             pathname: `/${stationDomain}/detail/${channelKey}`,
-            state: { tagName: tag }
+            state: { tagId: tag.id, tagName: tag.name }
         });
     }
 
@@ -90,7 +90,7 @@ class CatalogCover extends React.Component {
         if (util.common.isJSON(catalog)) {
             obj = JSON.parse(catalog);
         } else {
-            obj = { name: catalog }
+            obj = { id: catalog, name: catalog }
         }
 
         return (
@@ -112,7 +112,7 @@ class CatalogCover extends React.Component {
                     <div className="catalog-shadow-info">{obj.info}</div>
                     <Button
                         className="catalog-shadow-button"
-                        onClick={() => onClick(obj.name)}
+                        onClick={() => onClick(obj)}
                     >立即查看</Button>
                 </div>
             </div>

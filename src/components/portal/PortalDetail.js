@@ -26,15 +26,15 @@ class PortalDetail extends Component {
         const pathname = location.pathname;
         const stationDomain = pathname.split('/')[1];
         const channelKey = match.params.id;
-        this.getStoryList(tag);
+        this.getStoryList(tag.id);
         history.push({
             pathname: `/${stationDomain}/detail/${channelKey}`,
-            state: { tagName: tag }
+            state: { tagId: tag.id, tagName: tag.name }
         });
         this.jumpable = true;
     }
 
-    getStoryList(tagName) {
+    getStoryList(tagId) {
         const { nowStation, sortType, sortOrder, getStoryList, match, } = this.props;
         const channelkey = match.params.id;
         sessionStorage.setItem('portal-curpage', 1);
@@ -45,7 +45,7 @@ class PortalDetail extends Component {
             channelkey,
             sortType,
             sortOrder,
-            tagName,
+            tagId,
             '',
             1,
             this.perPage
@@ -54,7 +54,7 @@ class PortalDetail extends Component {
 
     render() {
         const { storyList, location, nowStation, match } = this.props;
-        const { tagName } = location.state;
+        const { tagId, tagName } = location.state;
         const channelList = nowStation ? nowStation.seriesInfo : [];
         const channelkey = match.params.id;
         const articleKey = util.common.getSearchParamValue(location.search, 'id');
@@ -76,6 +76,7 @@ class PortalDetail extends Component {
                             nowStation && nowStation.logo !== null
                                 ? nowStation.logo
                                 : '/image/background/logo.svg'}
+                        tagId={tagId}
                         tagName={tagName}
                         cover={nowChannel.cover}
                     />
@@ -106,8 +107,8 @@ class PortalDetail extends Component {
 
     componentDidMount() {
         const { location } = this.props;
-        const { tagName } = location.state;
-        this.getStoryList(tagName);
+        const { tagId } = location.state;
+        this.getStoryList(tagId);
     }
 
     componentDidUpdate(prevProps) {
@@ -188,12 +189,12 @@ class CatalogItem extends Component {
         if (util.common.isJSON(catalog)) {
             obj = JSON.parse(catalog);
         } else {
-            obj = { name: catalog }
+            obj = { id: catalog, name: catalog }
         }
         return (
             <div
                 className="catalog-item"
-                onClick={() => onClick(obj.name)}
+                onClick={() => onClick(obj)}
             >
                 {obj.name}
             </div>

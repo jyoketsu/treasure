@@ -16,10 +16,12 @@ import {
     getStoryDetail,
     clearStoryDetail,
     switchEditLinkVisible,
+    passAll,
 } from '../../actions/app';
 import CheckArticle from '../common/CheckArticle';
 import util from '../../services/Util';
 const { TabPane } = Tabs;
+const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
     waiting: state.common.waiting,
@@ -45,6 +47,7 @@ class Content extends Component {
         this.handleTabChange = this.handleTabChange.bind(this);
         this.switchVisible = this.switchVisible.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
+        this.confirmPassAll = this.confirmPassAll.bind(this);
     }
 
     switchVisible(key) {
@@ -193,6 +196,19 @@ class Content extends Component {
         }
     }
 
+    confirmPassAll() {
+        const { passAll, nowStationKey } = this.props;
+        confirm({
+            title: '全部通过',
+            content: `确定要全部通过吗？`,
+            okText: '通过',
+            cancelText: '取消',
+            onOk() {
+                passAll(nowStationKey);
+            },
+        });
+    }
+
     render() {
         const { storyType, story, eidtLinkVisible } = this.props;
         const { isEdit, visible, } = this.state;
@@ -231,6 +247,7 @@ class Content extends Component {
             <div className="content-manage" ref={node => this.auditRef = node}>
                 <div ref={node => this.contentRef = node}>
                     <h2>内容管理</h2>
+                    <span className="pass-all" onClick={this.confirmPassAll}>全部通过</span>
                     <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
                         <TabPane tab="待审核" key="wait">
                             <StoryList showMore={this.showMore} handleCoverClick={this.switchVisible} />
@@ -308,5 +325,6 @@ export default withRouter(connect(
         getStoryDetail,
         clearStoryDetail,
         switchEditLinkVisible,
+        passAll,
     },
 )(Content));

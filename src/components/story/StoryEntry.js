@@ -2,19 +2,72 @@ import React, { Component } from 'react';
 import './StoryEntry.css';
 import { withRouter } from "react-router-dom";
 import util from '../../services/Util';
+import { Modal } from 'antd';
+import { connect } from 'react-redux';
+import { deleteStory, switchEditLinkVisible, getStoryDetail, } from '../../actions/app';
+const confirm = Modal.confirm;
+
+const mapStateToProps = state => ({
+    userKey: state.auth.user ? state.auth.user._key : '',
+    role: state.station.nowStation ? state.station.nowStation.role : null,
+});
 
 class StoryEntry extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.deletePage = this.deletePage.bind(this);
+        this.handleEditLink = this.handleEditLink.bind(this);
     }
 
-    handleClick(key, type) {
+    handleClick(story) {
+        const { _key, type, openType, url } = story;
         const { history, match } = this.props;
-        const path = type === 9 ? 'article' : 'story';
-        history.push({
-            pathname: `/${match.params.id}/${path}`,
-            search: `?key=${key}`
+        switch (type) {
+            case 12:
+                const token = localStorage.getItem('TOKEN');
+                window.open(
+                    `https://editor.qingtime.cn?token=${token}&key=${_key}`,
+                    '_blank');
+                break;
+            case 15:
+                if (openType === 1) {
+                    window.open(url, '_blank');
+                } else {
+                    window.location.href = url;
+                }
+                break;
+            default: {
+                const path = type === 9 ? 'article' : 'story';
+                history.push({
+                    pathname: `/${match.params.id}/${path}`,
+                    search: `?key=${_key}`
+                });
+                break;
+            }
+
+        }
+    }
+
+    handleEditLink(e) {
+        e.stopPropagation();
+        const { story, getStoryDetail, switchEditLinkVisible } = this.props;
+        getStoryDetail(story._key);
+        switchEditLinkVisible();
+    }
+
+    deletePage(e) {
+        e.stopPropagation();
+        const { deleteStory, story } = this.props;
+        confirm({
+            title: '删除',
+            content: `确定要删除吗？`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteStory(story._key);
+            },
         });
     }
 
@@ -48,7 +101,7 @@ class StoryEntry extends Component {
                 className={`story-entry type-${storyType}`}
                 onClick={handleCoverClick ?
                     handleCoverClick.bind(this, story._key) :
-                    this.handleClick.bind(this, story._key, story.type)}>
+                    this.handleClick.bind(this, story)}>
                 <div
                     className="story-entry-cover"
                     style={coverStyle}
@@ -61,6 +114,14 @@ class StoryEntry extends Component {
                         </span>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <span className="story-card-time">{util.common.timestamp2DataStr(story.time || story.updateTime, 'yyyy-MM-dd')}</span>
+                            {
+                                (story.type === 15) && (isMyStory || (role && role <= 3)) ?
+                                    <span className="card-link" onClick={this.handleEditLink}>编辑</span> : null
+                            }
+                            {
+                                (story.type === 12 || story.type === 15) && (isMyStory || (role && role <= 3)) ?
+                                    <span className="card-link" onClick={this.deletePage}>删除</span> : null
+                            }
                         </div>
                     </div>
 
@@ -99,4 +160,8 @@ class StoryEntry extends Component {
     }
 }
 
-export default withRouter(StoryEntry);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        { deleteStory, switchEditLinkVisible, getStoryDetail }
+    )(StoryEntry));

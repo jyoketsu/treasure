@@ -13,6 +13,7 @@ import {
     Divider,
     Checkbox,
     Modal,
+    Icon,
 } from 'antd';
 import { connect } from 'react-redux';
 import { addChannel, editChannel, } from '../../actions/app';
@@ -98,6 +99,7 @@ const CustomizedForm = Form.create({
 })(props => {
     const { switchModal } = props;
     const { getFieldDecorator } = props.form;
+    const isAdvancedTag = util.common.isJSON(props.tag.value.split(' ')[0]);
     return (
         <Form onSubmit={props.onSubmit}>
             <Form.Item label="频道名">
@@ -198,12 +200,15 @@ const CustomizedForm = Form.create({
 
             <Divider />
 
-            <Form.Item label="分类标签">
-                {getFieldDecorator('tag', {
-                    initialValue: '',
-                })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
-            </Form.Item>
+            <div style={{ display: isAdvancedTag ? 'none' : 'block' }}>
+                <Form.Item label="分类标签">
+                    {getFieldDecorator('tag', {
+                        initialValue: '',
+                    })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
+                </Form.Item>
+            </div>
 
+            {isAdvancedTag ? <span style={{ lineHeight: '40px' }}>分类标签：</span> : null}
             <span className="set-tag-logo" onClick={switchModal}>标签进阶设定</span>
 
             <Form.Item label="允许公众设置">
@@ -352,23 +357,28 @@ class EditChannel extends Component {
                 for (let key in fields) {
                     extParams[key] = fields[key].value;
                 }
-                if (!logo) {
-                    message.info('请上传logo！');
-                    console.log('请上传logo！');
-                    return;
+                // if (!logo) {
+                //     message.info('请上传logo！');
+                //     console.log('请上传logo！');
+                //     return;
+                // }
+                if (logo) {
+                    const logoSize = await util.common.getImageInfo(logo);
+                    extParams['logo'] = logo;
+                    extParams['logoSize'] = logoSize;
                 }
-                const logoSize = await util.common.getImageInfo(logo);
-                extParams['logo'] = logo;
-                extParams['logoSize'] = logoSize;
 
-                if (!cover) {
-                    message.info('请上传封面图！');
-                    console.log('请上传封面图！');
-                    return;
+                // if (!cover) {
+                //     message.info('请上传封面图！');
+                //     console.log('请上传封面图！');
+                //     return;
+                // }
+
+                if (cover) {
+                    const coverSize = await util.common.getImageInfo(cover);
+                    extParams['cover'] = cover;
+                    extParams['coverSize'] = coverSize;
                 }
-                const coverSize = await util.common.getImageInfo(cover);
-                extParams['cover'] = cover;
-                extParams['coverSize'] = coverSize;
 
                 if (fields.key.value) {
                     editChannel(
@@ -427,10 +437,12 @@ class EditChannel extends Component {
                     footer={null}
                     bodyStyle={{ padding: 'unset' }}
                 >
-                    <TagOptionList
-                        tag={fields.tag.value}
-                        onOk={this.handleSetTag}
-                    />
+                    {showModal ?
+                        <TagOptionList
+                            tag={fields.tag.value}
+                            onOk={this.handleSetTag}
+                        /> : null}
+
                 </Modal>
             </div>
         );
@@ -462,6 +474,7 @@ class TagOptionList extends Component {
                 objList.push(JSON.parse(tagList[i]));
             } else {
                 objList.push({
+                    id: util.common.guid(),
                     name: tagList[i],
                     logo: null,
                     info: null,
@@ -472,23 +485,25 @@ class TagOptionList extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.uploadCallback = this.uploadCallback.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.removeItem = this.removeItem.bind(this);
     }
 
-    handleChange(name, info) {
+    handleChange(id, value, fieldName) {
         let [...list] = this.state.objList;
         for (let i = 0; i < list.length; i++) {
-            if (name === list[i].name) {
-                list[i].info = info;
+            if (id === list[i].id) {
+                list[i][fieldName] = value;
                 break;
             }
         }
         this.setState({ objList: list });
     }
 
-    uploadCallback(url, name) {
+    uploadCallback(url, id) {
         let [...list] = this.state.objList;
         for (let i = 0; i < list.length; i++) {
-            if (name === list[i].name) {
+            if (id === list[i].id) {
                 list[i].logo = url[0];
                 break;
             }
@@ -506,6 +521,23 @@ class TagOptionList extends Component {
         onOk(list.join(' '));
     }
 
+    addItem(index) {
+        let [...list] = this.state.objList;
+        list.splice(index + 1, 0, {
+            id: util.common.guid(),
+            name: '',
+            logo: null,
+            info: null,
+        });
+        this.setState({ objList: list });
+    }
+
+    removeItem(index) {
+        let [...list] = this.state.objList;
+        list.splice(index, 1);
+        this.setState({ objList: list });
+    }
+
     render() {
         const { objList } = this.state;
         return (
@@ -515,9 +547,12 @@ class TagOptionList extends Component {
                         objList.map((tag, index) => (
                             <TagOption
                                 key={index}
+                                index={index}
                                 tag={tag}
                                 onChange={this.handleChange}
                                 uploadCallback={this.uploadCallback}
+                                addItem={this.addItem}
+                                removeItem={this.removeItem}
                             />
                         ))
                     }
@@ -532,23 +567,33 @@ class TagOptionList extends Component {
 
 class TagOption extends Component {
     render() {
-        const { tag, onChange, uploadCallback } = this.props;
+        const { index, tag, onChange, uploadCallback, addItem, removeItem, } = this.props;
         return (
             <div className="tag-option">
                 <div className="tag-option-left">
-                    <span>{tag.name}</span>
+                    <Input
+                        name="name"
+                        value={tag.name}
+                        placeholder="请输入标签名"
+                        onChange={(e) => onChange(tag.id, e.target.value, e.target.name)}
+                    />
                     <TextArea
+                        name="info"
                         rows={3}
                         value={tag.info}
                         placeholder="请输入标签描述"
-                        onChange={(e) => onChange(tag.name, e.target.value)}
+                        onChange={(e) => onChange(tag.id, e.target.value, e.target.name)}
                     />
                 </div>
                 <UploadStationCover
                     uploadAvatarCallback={uploadCallback}
-                    extParam={tag.name}
+                    extParam={tag.id}
                     coverUrl={tag.logo}
                 />
+                <div className="tag-action">
+                    <Icon type="plus" style={{ color: 'rgba(0,0,0,.25)' }} onClick={() => addItem(index)} />
+                    <Icon type="delete" style={{ color: '#ff7875' }} onClick={() => removeItem(index)} />
+                </div>
             </div>
         );
     }

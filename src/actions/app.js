@@ -199,6 +199,7 @@ export const MY_STATION_LATEST_STORY = 'MY_STATION_LATEST_STORY';
 export const SWITCH_EDIT_LINK_VISIBLE = 'SWITCH_EDIT_LINK_VISIBLE';
 export const APPLY_EDIT = 'APPLY_EDIT';
 export const EXIT_EDIT = 'EXIT_EDIT';
+export const PASS_ALL = 'PASS_ALL';
 
 export function applyEdit(storyKey, updateTime) {
     let request = api.story.applyEdit(storyKey, updateTime);
@@ -303,6 +304,11 @@ export function myStationLatestStory(curPage) {
 
 export function switchEditLinkVisible() {
     return { type: SWITCH_EDIT_LINK_VISIBLE }
+}
+
+export function passAll(stationKey) {
+    let request = api.story.passAll(stationKey);
+    return { type: PASS_ALL, payload: request }
 }
 
 // 频道
