@@ -145,7 +145,13 @@ class Story extends Component {
                                 }
                                 case 'video':
                                     result =
-                                        <video className="story-video" src={url} controls="controls">
+                                        <video
+                                            className="story-video"
+                                            src={url}
+                                            controls="controls"
+                                            autoplay="autoplay"
+                                            loop="loop"
+                                        >
                                             Your browser does not support the video tag.</video>
                                     break;
                                 default: break;
