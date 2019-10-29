@@ -48,6 +48,7 @@ class Register extends Component {
                     code: values.code,
                     lo: 13,
                     la: 14,
+                    appHigh: 26,
                 });
             }
         });

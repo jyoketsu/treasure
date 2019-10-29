@@ -1,223 +1,234 @@
 import {
-    GET_STORY_LIST,
-    CLEAR_STORY_LIST,
-    ADD_STORY,
-    MODIFY_STORY,
-    DELETE_STORY,
-    GET_STORY_DETAIL,
-    CLEAR_STORY_DETAIL,
-    LIKE_STORY,
-    UPDATE_EXIF,
-    AUDIT,
-    READYTOREFRESH,
-    MY_STATION_LATEST_STORY,
-    SWITCH_EDIT_LINK_VISIBLE,
-    PASS_ALL,
-} from '../actions/app';
-import { message, } from 'antd';
+  GET_STORY_LIST,
+  CLEAR_STORY_LIST,
+  ADD_STORY,
+  MODIFY_STORY,
+  DELETE_STORY,
+  GET_STORY_DETAIL,
+  CLEAR_STORY_DETAIL,
+  LIKE_STORY,
+  UPDATE_EXIF,
+  AUDIT,
+  READYTOREFRESH,
+  MY_STATION_LATEST_STORY,
+  SWITCH_EDIT_LINK_VISIBLE,
+  PASS_ALL,
+  SET_STATUS_TAG
+} from "../actions/app";
+import { message } from "antd";
 
 const defaultState = {
-    storyList: [],
-    storyNumber: 0,
-    story: {},
-    sortType: 1,
-    sortOrder: 1,
-    nowChannelKey: 'allSeries',
-    tag: undefined,
-    statusTag: undefined,
-    refresh: false,
-    dynamicStoryList: [],
-    eidtLinkVisible: false,
+  storyList: [],
+  storyNumber: 0,
+  story: {},
+  sortType: 1,
+  sortOrder: 1,
+  nowChannelKey: "allSeries",
+  tag: undefined,
+  statusTag: undefined,
+  refresh: false,
+  dynamicStoryList: [],
+  eidtLinkVisible: false
 };
 
 const story = (state = defaultState, action) => {
-    switch (action.type) {
-        case GET_STORY_LIST:
-            if (!action.error) {
-                let storyList = [];
-                if (action.curPage === 1 || action.isPagination) {
-                    storyList = action.payload.result;
-                } else {
-                    storyList = JSON.parse(JSON.stringify(state.storyList));
-                    storyList = storyList.concat(action.payload.result)
-                }
-                if (action.isRefresh) {
-                    return {
-                        ...state,
-                        storyList: storyList,
-                        storyNumber: action.payload.totalNumber,
-                        sortType: action.sortType,
-                        sortOrder: action.sortOrder,
-                        nowChannelKey: action.channelKey,
-                        refresh: false,
-                        tag: action.tag,
-                        statusTag: action.statusTag,
-                    };
-                } else {
-                    return {
-                        ...state,
-                        storyList: storyList,
-                        storyNumber: action.payload.totalNumber,
-                        sortType: action.sortType,
-                        sortOrder: action.sortOrder,
-                        nowChannelKey: action.channelKey,
-                        tag: action.tag,
-                        statusTag: action.statusTag,
-                    };
-                }
+  switch (action.type) {
+    case GET_STORY_LIST:
+      if (!action.error) {
+        let storyList = [];
+        if (action.curPage === 1 || action.isPagination) {
+          storyList = action.payload.result;
+        } else {
+          storyList = JSON.parse(JSON.stringify(state.storyList));
+          storyList = storyList.concat(action.payload.result);
+        }
+        if (action.isRefresh) {
+          return {
+            ...state,
+            storyList: storyList,
+            storyNumber: action.payload.totalNumber,
+            sortType: action.sortType,
+            sortOrder: action.sortOrder,
+            nowChannelKey: action.channelKey,
+            refresh: false,
+            tag: action.tag,
+            statusTag: action.statusTag
+          };
+        } else {
+          return {
+            ...state,
+            storyList: storyList,
+            storyNumber: action.payload.totalNumber,
+            sortType: action.sortType,
+            sortOrder: action.sortOrder,
+            nowChannelKey: action.channelKey,
+            tag: action.tag,
+            statusTag: action.statusTag
+          };
+        }
+      } else {
+        return state;
+      }
+    case READYTOREFRESH:
+      return {
+        ...state,
+        storyList: [],
+        refresh: true
+      };
+    case CLEAR_STORY_LIST:
+      return {
+        ...state,
+        storyNumber: 0,
+        storyList: []
+      };
 
+    case ADD_STORY:
+      if (!action.error) {
+        let storyList = Object.assign([], state.storyList);
+        storyList.unshift(action.payload.result);
+        return {
+          ...state,
+          storyList: storyList
+        };
+      } else {
+        return state;
+      }
+    case MODIFY_STORY:
+      if (!action.error) {
+        let storyList = Object.assign([], state.storyList);
+        for (let i = 0; i < storyList.length; i++) {
+          if (storyList[i]._key === action.payload.result._key) {
+            storyList[i] = action.payload.result;
+            break;
+          }
+        }
+        return {
+          ...state,
+          storyList: storyList
+        };
+      } else {
+        return state;
+      }
+    case DELETE_STORY:
+      if (!action.error) {
+        let storyList = Object.assign([], state.storyList);
+        for (let i = 0; i < storyList.length; i++) {
+          if (storyList[i]._key === action.storyKey) {
+            storyList.splice(i, 1);
+            break;
+          }
+        }
+        return {
+          ...state,
+          storyList: storyList
+        };
+      } else {
+        return state;
+      }
+    case GET_STORY_DETAIL:
+      if (!action.error) {
+        return {
+          ...state,
+          story: action.payload.result
+        };
+      } else {
+        return state;
+      }
+    case CLEAR_STORY_DETAIL:
+      return {
+        ...state,
+        story: {}
+      };
+    case UPDATE_EXIF:
+      return {
+        ...state,
+        story: action.story
+      };
+    case LIKE_STORY:
+      if (!action.error) {
+        let storyList = Object.assign([], state.storyList);
+        for (let i = 0; i < storyList.length; i++) {
+          let story = storyList[i];
+          if (story._key === action.storyKey) {
+            if (story.islike) {
+              story.islike = 0;
+              story.likeNumber = story.likeNumber - 1;
             } else {
-                return state;
+              story.islike = 1;
+              story.likeNumber = story.likeNumber + 1;
             }
-        case READYTOREFRESH:
-            return {
-                ...state,
-                storyList: [],
-                refresh: true,
-            }
-        case CLEAR_STORY_LIST:
-            return {
-                ...state,
-                storyNumber: 0,
-                storyList: [],
-            }
-
-        case ADD_STORY:
-            if (!action.error) {
-                let storyList = Object.assign([], state.storyList);
-                storyList.unshift(action.payload.result);
-                return {
-                    ...state,
-                    storyList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case MODIFY_STORY:
-            if (!action.error) {
-                let storyList = Object.assign([], state.storyList);
-                for (let i = 0; i < storyList.length; i++) {
-                    if (storyList[i]._key === action.payload.result._key) {
-                        storyList[i] = action.payload.result;
-                        break;
-                    }
-                }
-                return {
-                    ...state,
-                    storyList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case DELETE_STORY:
-            if (!action.error) {
-                let storyList = Object.assign([], state.storyList);
-                for (let i = 0; i < storyList.length; i++) {
-                    if (storyList[i]._key === action.storyKey) {
-                        storyList.splice(i, 1);
-                        break;
-                    }
-                }
-                return {
-                    ...state,
-                    storyList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case GET_STORY_DETAIL:
-            if (!action.error) {
-                return {
-                    ...state,
-                    story: action.payload.result,
-                };
-            } else {
-                return state;
-            }
-        case CLEAR_STORY_DETAIL:
-            return {
-                ...state,
-                story: {}
-            }
-        case UPDATE_EXIF:
-            return {
-                ...state,
-                story: action.story,
-            }
-        case LIKE_STORY:
-            if (!action.error) {
-                let storyList = Object.assign([], state.storyList);
-                for (let i = 0; i < storyList.length; i++) {
-                    let story = storyList[i];
-                    if (story._key === action.storyKey) {
-                        if (story.islike) {
-                            story.islike = 0;
-                            story.likeNumber = story.likeNumber - 1;
-                        } else {
-                            story.islike = 1;
-                            story.likeNumber = story.likeNumber + 1;
-                        }
-                        break;
-                    }
-                }
-                return {
-                    ...state,
-                    storyList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case AUDIT:
-            if (!action.error) {
-                message.success("操作成功！");
-                let storyList = Object.assign([], state.storyList);
-                for (let i = 0; i < storyList.length; i++) {
-                    let story = storyList[i];
-                    if (story._key === action.storyKey) {
-                        storyList.splice(i, 1);
-                        break;
-                    }
-                }
-                return {
-                    ...state,
-                    storyList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case MY_STATION_LATEST_STORY:
-            if (!action.error) {
-                let storyList = [];
-                if (action.curPage === 1) {
-                    storyList = action.payload.result;
-                } else {
-                    storyList = JSON.parse(JSON.stringify(state.dynamicStoryList));
-                    storyList = storyList.concat(action.payload.result)
-                }
-                return {
-                    ...state,
-                    dynamicStoryList: storyList,
-                };
-            } else {
-                return state;
-            }
-        case SWITCH_EDIT_LINK_VISIBLE:
-            return {
-                ...state,
-                eidtLinkVisible: !state.eidtLinkVisible
-            }
-        case PASS_ALL:
-            if (!action.error) {
-                return {
-                    ...state,
-                    storyList: [],
-                };
-            } else {
-                return state;
-            }
-        default:
-            return state;
-    }
+            break;
+          }
+        }
+        return {
+          ...state,
+          storyList: storyList
+        };
+      } else {
+        return state;
+      }
+    case AUDIT:
+      if (!action.error) {
+        message.success("操作成功！");
+        let storyList = Object.assign([], state.storyList);
+        for (let i = 0; i < storyList.length; i++) {
+          let story = storyList[i];
+          if (story._key === action.storyKey) {
+            storyList.splice(i, 1);
+            break;
+          }
+        }
+        return {
+          ...state,
+          storyList: storyList
+        };
+      } else {
+        return state;
+      }
+    case MY_STATION_LATEST_STORY:
+      if (!action.error) {
+        let storyList = [];
+        if (action.curPage === 1) {
+          storyList = action.payload.result;
+        } else {
+          storyList = JSON.parse(JSON.stringify(state.dynamicStoryList));
+          storyList = storyList.concat(action.payload.result);
+        }
+        return {
+          ...state,
+          dynamicStoryList: storyList
+        };
+      } else {
+        return state;
+      }
+    case SWITCH_EDIT_LINK_VISIBLE:
+      return {
+        ...state,
+        eidtLinkVisible: !state.eidtLinkVisible
+      };
+    case PASS_ALL:
+      if (!action.error) {
+        return {
+          ...state,
+          storyList: []
+        };
+      } else {
+        return state;
+      }
+    case SET_STATUS_TAG:
+      if (!action.error) {
+        let story = Object.assign([], state.story);
+        story.statusTag = action.statusTag;
+        return {
+          ...state,
+          story: story
+        };
+      } else {
+        return state;
+      }
+    default:
+      return state;
+  }
 };
 
 export default story;

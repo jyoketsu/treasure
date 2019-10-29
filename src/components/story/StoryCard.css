@@ -1,13 +1,11 @@
 .story-card {
-    position: relative;
-    width: 290px;
-    height: 310px;
-    /* border: 1px solid gainsboro; */
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, .04), 0 1px 6px 0 rgba(0, 0, 0, .03);
-    background: #FFFFFF;
-    border-radius: 4px;
-    /* margin: 0 10px; */
-    transition: all .2s ease-in;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.04), 0 1px 6px 0 rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  border-radius: 4px;
+  transition: all 0.2s ease-in;
 }
 
 .story-card:hover {
@@ -17,166 +15,166 @@
 }
 
 .story-card-cover {
-    position: relative;
-    width: 100%;
-    height: 230px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 4px 4px 0 0;
+  position: relative;
+  width: 100%;
+  height: 230px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 4px 4px 0 0;
 }
 
 .story-card-mask {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 4px 4px 0 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px 4px 0 0;
 }
 
 .story-card-icon:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .story-card-title {
-    position: relative;
-    width: 100%;
-    height: 30px;
-    font-size: 14px;
-    line-height: 40px;
-    padding: 0 12px;
-    display: flex;
-    justify-content: space-between;
+  position: relative;
+  width: 100%;
+  height: 30px;
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 12px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.story-card-title>.story-card-title-span {
-    flex: 1;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.story-card-title > .story-card-title-span {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .story-card-info {
-    width: 100%;
-    height: 50px;
-    padding: 0 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
+  width: 100%;
+  height: 50px;
+  padding: 0 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
 }
 
-.story-card-info>div {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
+.story-card-info > div {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.story-card-info>div:first-child {
-    flex: 1;
+.story-card-info > div:first-child {
+  flex: 1;
 }
 
 .story-card-avatar {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    border-radius: 15px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-right: 6px;
-    background-color: bisque;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 15px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 6px;
+  background-color: bisque;
 }
 
 .story-card-name {
-    margin-right: 6px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  margin-right: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.story-card-info>div>.story-card-name {
-    flex: 1;
+.story-card-info > div > .story-card-name {
+  flex: 1;
 }
 
 .story-card-record {
-    float: right;
-    margin-left: 10px;
+  float: right;
+  margin-left: 10px;
 }
 
-.story-card-record>.story-card-icon {
-    position: relative;
-    top: 2px;
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    margin-right: 5px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+.story-card-record > .story-card-icon {
+  position: relative;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-right: 5px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .picture-count {
-    position: absolute;
-    bottom: 90px;
-    right: 12px;
-    color: #FFFFFF;
+  position: absolute;
+  bottom: 90px;
+  right: 12px;
+  color: #ffffff;
 }
 
 .picture-count-icon {
-    position: relative;
-    top: 1px;
-    width: 22px;
-    height: 22px;
-    display: inline-block;
-    margin-right: 5px;
-    background-image: url(/image/icon/image.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  position: relative;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  margin-right: 5px;
+  background-image: url(/image/icon/image.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.picture-count>span {
-    position: relative;
-    top: -5px;
+.picture-count > span {
+  position: relative;
+  top: -5px;
 }
 
 .story-loading {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    height: 80px;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 80px;
+  align-items: center;
 }
 
 .cover-status {
-    color: #FFFFFF;
-    padding: 0 8px;
-    background-color: rgba(0, 0, 0, .3);
-    border-radius: 8px;
-    min-width: 50px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    margin: 0 5px;
+  color: #ffffff;
+  padding: 0 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  min-width: 50px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  margin: 0 5px;
 }
 
 .card-link {
-    color: #4A90E2;
-    margin: 0 5px;
+  color: #4a90e2;
+  margin: 0 5px;
 }
-.right-area{
-    position: absolute;
-    top: 5px;
-    right: 12px;
+.right-area {
+  position: absolute;
+  top: 5px;
+  right: 12px;
 }
 
-@media screen and (max-width:768px) {
-    .story-card {
-        width: 100%;
-        margin: 10px 0;
-    }
+@media screen and (max-width: 768px) {
+  .story-card {
+    width: 100%;
+    margin: 10px 0;
+  }
 }

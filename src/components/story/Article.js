@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
     story: state.story.story,
     nowStation: state.station.nowStation,
     nowStationKey: state.station.nowStationKey,
+    loading: state.common.loading,
 });
 
 class Article extends Component {
@@ -22,7 +23,17 @@ class Article extends Component {
     }
 
     render() {
-        const { user, story, userId, nowStationKey, nowStation, readOnly, hideMenu, inline, } = this.props;
+        const {
+            user,
+            story,
+            userId,
+            nowStationKey,
+            nowStation,
+            readOnly,
+            hideMenu,
+            inline,
+            loading
+        } = this.props;
         const { userKey, title, creator = {}, } = story;
         const role = nowStation ? nowStation.role : 8;
         let avatar = creator.avatar ? `${creator.avatar}?imageView2/1/w/160/h/160` : '/image/icon/avatar.svg';
@@ -61,11 +72,14 @@ class Article extends Component {
                         !readOnly && (userId === userKey || (role && role <= 3)) && nowStationKey !== 'all' ? <span className="to-edit-story" onClick={this.handleToEdit.bind(this)}>编辑</span> : null
                     }
                     <div className="editor-container" ref={node => this.editorRef = node}>
-                        <FroalaEditor
-                            previewMode={true}
-                            hideMenu={hideMenu}
-                            data={str}
-                        />
+                        {
+                            !loading ?
+                                <FroalaEditor
+                                    previewMode={true}
+                                    hideMenu={hideMenu}
+                                    data={str}
+                                /> : null
+                        }
                     </div>
                 </div>
                 {

@@ -13,10 +13,9 @@
 .story-list {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     align-items: center;
-    padding: 15px;
     min-height: 410px;
+    margin-top: 15px;
 }
 
 @media screen and (max-width:768px) {

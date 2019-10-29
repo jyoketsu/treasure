@@ -113,14 +113,14 @@ class Card extends Component {
         return (
             <div
                 className={`story-card type-${storyType}`}
-                style={{ height: height }}
+                // style={{ height: height }}
                 onClick={this.handleClick.bind(this, story)}
             >
                 <div
                     className="story-card-cover"
                     style={coverStyle}
                 >
-                    <div className="story-card-mask" style={{ height: `${height - 80}px`, }}></div>
+                    <div className="story-card-mask" style={{ height: `${height - 85}px`, }}></div>
                 </div>
                 <div className="story-card-title">
                     {

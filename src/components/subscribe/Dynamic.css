@@ -1,104 +1,105 @@
 .subscribe-dynamic {
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .station-dynamic {
-    width: 350px;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
-    transition: transform .2s;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s;
 }
 
 .station-dynamic:hover {
-    transform: scale(1.03, 1.03);
-    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+  transform: scale(1.03, 1.03);
+  box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
 }
 
 .more-dynamic {
-    width: 100%;
-    font-size: 13px;
-    color: #ABABAB;
-    margin: 15px 0;
-    text-align: center;
+  width: 100%;
+  font-size: 13px;
+  color: #ababab;
+  margin: 15px 0;
+  text-align: center;
 }
 
 .station-dynamic-header {
-    background: #EEEEEE;
-    height: 40px;
-    padding: 0 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background: #eeeeee;
+  height: 40px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .station-dynamic-name {
-    font-size: 15px;
-    color: #000000;
+  font-size: 15px;
+  color: #000000;
 }
 
 .station-dynamic-logo:hover,
 .station-dynamic-name:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dynamic-time {
-    font-size: 13px;
-    color: #ABABAB;
+  font-size: 13px;
+  color: #ababab;
 }
 
-.station-dynamic-header>div {
-    display: flex;
-    align-items: center;
+.station-dynamic-header > div {
+  display: flex;
+  align-items: center;
 }
 
 .station-dynamic-logo {
-    width: 26px;
-    height: 26px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-right: 15px;
+  width: 26px;
+  height: 26px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 15px;
 }
 
 .station-dynamic-story-list {
-    background: #FFFFFF;
+  background: #ffffff;
 }
 
 .station-dynamic-story {
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 15px;
-    border-bottom: 1px solid #EEEEEE;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .station-dynamic-story:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .station-dynamic-story:last-child {
-    border: unset;
+  border: unset;
 }
 
-.station-dynamic-story>span {
-    flex: 1;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
+.station-dynamic-story > span {
+  flex: 1;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
 }
 
-.station-dynamic-story>i {
-    width: 55px;
-    height: 55px;
-    background-size: cover;
-    background-position: center;
+.station-dynamic-story > i {
+  width: 55px;
+  height: 55px;
+  background-size: cover;
+  background-position: center;
 }
 
-@media screen and (max-width:768px) {
-    .station-dynamic {
-        width: 100%;
-    }
+@media screen and (max-width: 768px) {
+  .station-dynamic {
+    width: 100%;
+  }
 }
