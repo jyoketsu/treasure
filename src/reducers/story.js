@@ -13,7 +13,8 @@ import {
   MY_STATION_LATEST_STORY,
   SWITCH_EDIT_LINK_VISIBLE,
   PASS_ALL,
-  SET_STATUS_TAG
+  SET_STATUS_TAG,
+  SET_STATISTICS_STATUS_TAG
 } from "../actions/app";
 import { message } from "antd";
 
@@ -28,7 +29,8 @@ const defaultState = {
   statusTag: undefined,
   refresh: false,
   dynamicStoryList: [],
-  eidtLinkVisible: false
+  eidtLinkVisible: false,
+  statusTagStats: []
 };
 
 const story = (state = defaultState, action) => {
@@ -218,10 +220,40 @@ const story = (state = defaultState, action) => {
     case SET_STATUS_TAG:
       if (!action.error) {
         let story = Object.assign([], state.story);
+        let statusTagStats = Object.assign([], state.statusTagStats);
+        let storyList = Object.assign([], state.storyList);
+
+        for (let i = 0; i < storyList.length; i++) {
+          if (storyList[i]._key === action.storyKey) {
+            storyList[i].statusTag = action.statusTag;
+            break;
+          }
+        }
+
+        const prevTag = story.statusTag;
+        for (let i = 0; i < statusTagStats.length; i++) {
+          if (statusTagStats[i].statusTag === prevTag) {
+            statusTagStats[i].length--;
+          }
+          if (statusTagStats[i].statusTag === action.statusTag) {
+            statusTagStats[i].length++;
+          }
+        }
         story.statusTag = action.statusTag;
         return {
           ...state,
-          story: story
+          story: story,
+          storyList: storyList,
+          statusTagStats: statusTagStats
+        };
+      } else {
+        return state;
+      }
+    case SET_STATISTICS_STATUS_TAG:
+      if (!action.error && action.payload.result.length) {
+        return {
+          ...state,
+          statusTagStats: action.payload.result
         };
       } else {
         return state;

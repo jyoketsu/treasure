@@ -9,7 +9,8 @@ import {
   getStoryDetail,
   updateExif,
   clearStoryDetail,
-  setStatusTag
+  setStatusTag,
+  statisticsStatusTag
 } from "../../actions/app";
 
 const mapStateToProps = state => ({
@@ -21,7 +22,9 @@ const mapStateToProps = state => ({
   channelInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
-  loading: state.common.loading
+  loading: state.common.loading,
+  nowChannelKey: state.story.nowChannelKey,
+  statusTagStats: state.story.statusTagStats
 });
 
 class Story extends Component {
@@ -64,7 +67,8 @@ class Story extends Component {
       inline,
       loading,
       channelInfo,
-      setStatusTag
+      setStatusTag,
+      statusTagStats
     } = this.props;
     const {
       userKey,
@@ -92,7 +96,12 @@ class Story extends Component {
       }
     }
 
-    const { statusTag, allowPublicStatus } = nowChannel;
+    const { statusTag, allowPublicStatus, showSetting } = nowChannel;
+    const showAuthor = showSetting
+      ? showSetting.indexOf("author") === -1
+        ? false
+        : true
+      : true;
 
     return (
       <div
@@ -126,14 +135,25 @@ class Story extends Component {
                       alignItems: "center"
                     }}
                   >
-                    <i
-                      className="story-head-avatar"
-                      style={{
-                        backgroundImage: `url('${avatar ||
-                          "/image/icon/avatar.svg"}')`
-                      }}
-                    ></i>
-                    <div className="story-card-name">{creator.name}</div>
+                    {showAuthor
+                      ? [
+                          <i
+                            key="story-head-avatar"
+                            className="story-head-avatar"
+                            style={{
+                              backgroundImage: `url('${avatar ||
+                                "/image/icon/avatar.svg"}')`
+                            }}
+                          ></i>,
+                          <div
+                            key="story-card-name"
+                            className="story-card-name"
+                          >
+                            {creator.name || creator.mobile}
+                          </div>
+                        ]
+                      : null}
+
                     <div className="story-card-time">
                       {util.common.timestamp2DataStr(
                         story.updateTime,
@@ -229,7 +249,6 @@ class Story extends Component {
                           className="story-video"
                           src={url}
                           controls="controls"
-                          autoplay="autoplay"
                           loop="loop"
                         >
                           Your browser does not support the video tag.
@@ -246,13 +265,15 @@ class Story extends Component {
                   );
                 })
               : null}
-            {statusTag &&
+            {!inline &&
+            statusTag &&
             (allowPublicStatus || (!allowPublicStatus && role && role < 4)) ? (
               <StatusTagRadio
                 storyKey={story._key}
                 statusTag={statusTag}
                 status={story.statusTag}
                 setStatusTag={setStatusTag}
+                stats={statusTagStats}
               />
             ) : null}
           </div>
@@ -273,9 +294,17 @@ class Story extends Component {
   }
 
   componentDidUpdate(prevPros) {
-    const { story, updateExif } = this.props;
+    const {
+      story,
+      updateExif,
+      channelInfo,
+      statisticsStatusTag,
+      nowStationKey,
+      nowChannelKey
+    } = this.props;
+    const prevStoryKey = prevPros.story ? prevPros.story._key : null;
     // 获取到故事详情后
-    if (!prevPros.story._key && story._key) {
+    if (prevStoryKey !== story._key) {
       let richContent = story.richContent;
       const promises = [];
       for (let i = 0; i < richContent.length; i++) {
@@ -300,18 +329,42 @@ class Story extends Component {
         .catch(function(reason) {
           // ...
         });
+
+      const nowChannelId = story.series
+        ? story.series._key
+        : util.common.getSearchParamValue(window.location.search, "channel");
+
+      let nowChannel = {};
+
+      for (let i = 0; i < channelInfo.length; i++) {
+        if (channelInfo[i]._key === nowChannelId) {
+          nowChannel = channelInfo[i];
+          break;
+        }
+      }
+      statisticsStatusTag(
+        nowStationKey,
+        nowChannelKey === "allSeries" ? "" : nowChannelKey,
+        nowChannel.statusTag
+      );
     }
   }
 }
 
 export default connect(
   mapStateToProps,
-  { getStoryDetail, updateExif, clearStoryDetail, setStatusTag }
+  {
+    getStoryDetail,
+    updateExif,
+    clearStoryDetail,
+    setStatusTag,
+    statisticsStatusTag
+  }
 )(Story);
 
 class StatusTagRadio extends Component {
   render() {
-    const { statusTag, status, setStatusTag, storyKey } = this.props;
+    const { statusTag, status, setStatusTag, storyKey, stats } = this.props;
     const radioStyle = {
       display: "block",
       height: "30px",
@@ -328,11 +381,22 @@ class StatusTagRadio extends Component {
           </Radio>
           {statusTag.split(" ").map((item, index) => (
             <Radio key={index} style={radioStyle} value={item}>
-              {item}
+              {this.getStats(item, stats)
+                ? `${item}（${this.getStats(item, stats)}）`
+                : item}
             </Radio>
           ))}
         </Radio.Group>
       </div>
     );
+  }
+
+  getStats(tag, stats) {
+    for (let i = 0; i < stats.length; i++) {
+      const nowStats = stats[i];
+      if (nowStats.statusTag === tag) {
+        return nowStats.length;
+      }
+    }
   }
 }

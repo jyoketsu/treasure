@@ -41,8 +41,8 @@ export function searchUser(keyword) {
   return { type: SEARCH_USER, payload: request };
 }
 
-export function groupMember(groupId) {
-  let request = api.auth.groupMember(groupId);
+export function groupMember(groupId, stationKey) {
+  let request = api.auth.groupMember(groupId, stationKey);
   return { type: GET_GROUP_MEMBER, payload: request };
 }
 
@@ -225,6 +225,7 @@ export const APPLY_EDIT = "APPLY_EDIT";
 export const EXIT_EDIT = "EXIT_EDIT";
 export const PASS_ALL = "PASS_ALL";
 export const SET_STATUS_TAG = "SET_STATUS_TAG";
+export const SET_STATISTICS_STATUS_TAG = "SET_STATISTICS_STATUS_TAG";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -365,6 +366,19 @@ export function setStatusTag(key, statusTag) {
     payload: request,
     storyKey: key,
     statusTag: statusTag
+  };
+}
+
+export function statisticsStatusTag(stationKey, channelKey, statusTag) {
+  let request = api.story.statisticsStatusTag(
+    stationKey,
+    channelKey,
+    statusTag
+  );
+  return {
+    type: SET_STATISTICS_STATUS_TAG,
+    payload: request,
+    noLoading: true
   };
 }
 

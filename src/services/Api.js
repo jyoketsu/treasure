@@ -1,9 +1,9 @@
 import api from "./Util";
-// const AUTH_URL = "https://baokudata.qingtime.cn/sgbh";
-const AUTH_URL = 'http://192.168.1.249:8529/_db/TimeBox/my_sgbh';
+const AUTH_URL = "https://baokudata.qingtime.cn/sgbh";
+// const AUTH_URL = "http://192.168.1.249:8529/_db/TimeBox/my_sgbh";
 
-// const APIURL = "https://kintime.qingtime.cn/sgbh";
-const APIURL = 'http://192.168.1.249:8529/_db/kintime/my_sgbh';
+const APIURL = "https://kintime.qingtime.cn/sgbh";
+// const APIURL = "http://192.168.1.249:8529/_db/kintime/my_sgbh";
 
 let token = "FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667";
 
@@ -224,10 +224,11 @@ const auth = {
    * 获取群特定成员信息
    * @param {String} groupId
    */
-  groupMember(groupId) {
+  groupMember(groupId, stationKey) {
     return requests.get(APIURL + "/groupmember", {
       token: token,
-      groupId: groupId
+      groupId: groupId,
+      starKey: stationKey
     });
   },
   addGroupMember(groupId, targetUidList) {
@@ -561,10 +562,29 @@ const story = {
       starKey: stationKey
     });
   },
+  /**
+   * 设定故事的状态标签
+   * @param {String} key 故事key
+   * @param {String} statusTag
+   */
   updateStatusTag(key, statusTag) {
     return requests.patch(APIURL + "/album/updateStatusTag", {
       token: token,
       albumKey: key,
+      statusTag: statusTag
+    });
+  },
+
+  /**
+   * 统计状态标签个数
+   * @param {String} stationKey
+   * @param {String} channelKey
+   */
+  statisticsStatusTag(stationKey, channelKey, statusTag) {
+    return requests.get(APIURL + "/album/statisticsStatusTag", {
+      token: token,
+      starKey: stationKey,
+      seriesKey: channelKey,
       statusTag: statusTag
     });
   }
