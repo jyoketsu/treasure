@@ -8,6 +8,7 @@ import {
   applyEdit,
   exitEdit
 } from "../../actions/app";
+import UploadStationCover from "../common/UploadCover";
 import { Form, Input, Radio, Select, Modal } from "antd";
 const Option = Select.Option;
 
@@ -180,6 +181,7 @@ class LinkStory extends Component {
     super(props);
     const { story } = props;
     this.state = {
+      cover: story ? story.cover : "",
       fields: {
         title: {
           value: story ? story.title : ""
@@ -201,6 +203,7 @@ class LinkStory extends Component {
         }
       }
     };
+    this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
   }
 
   handleFormChange = changedFields => {
@@ -220,6 +223,8 @@ class LinkStory extends Component {
       switchEditLinkVisible
     } = this.props;
 
+    const { cover } = this.state;
+
     this.form.validateFields(async (err, values) => {
       if (!err) {
         // 新增
@@ -228,6 +233,7 @@ class LinkStory extends Component {
             userKey: user._key,
             type: 15,
             starKey: nowStationKey,
+            cover: cover,
             title: values.title,
             url: values.url,
             openType: values.openType,
@@ -238,7 +244,11 @@ class LinkStory extends Component {
           addStory(story);
         } else {
           // 编辑
-          modifyStory({ ...story, ...values, ...{ key: story._key } });
+          modifyStory({
+            ...story,
+            ...values,
+            ...{ key: story._key, cover: cover }
+          });
         }
 
         switchEditLinkVisible();
@@ -246,8 +256,14 @@ class LinkStory extends Component {
     });
   };
 
+  uploadAvatarCallback(imageUrl, columnName) {
+    this.setState({
+      [columnName]: imageUrl[0]
+    });
+  }
+
   render() {
-    const { fields } = this.state;
+    const { cover, fields } = this.state;
     const { switchEditLinkVisible, seriesInfo } = this.props;
     return (
       <div className="link-story">
@@ -257,6 +273,14 @@ class LinkStory extends Component {
           onOk={this.handleSubmit}
           onCancel={switchEditLinkVisible}
         >
+          <label className="ant-form-item-required form-label">
+            链接封面：
+          </label>
+          <UploadStationCover
+            uploadAvatarCallback={this.uploadAvatarCallback}
+            extParam={"cover"}
+            coverUrl={cover}
+          />
           <CustomizedForm
             ref={node => (this.form = node)}
             {...fields}
@@ -281,6 +305,7 @@ class LinkStory extends Component {
     if (prevStory._key !== story._key) {
       applyEdit(story._key, story.updateTime);
       this.setState({
+        cover: story ? story.cover : "",
         fields: {
           title: {
             value: story ? story.title : ""

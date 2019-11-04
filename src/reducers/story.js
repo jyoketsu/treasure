@@ -86,8 +86,13 @@ const story = (state = defaultState, action) => {
 
     case ADD_STORY:
       if (!action.error) {
+        const addedStory = action.payload.result;
         let storyList = Object.assign([], state.storyList);
-        storyList.unshift(action.payload.result);
+
+        if (!state.tag || state.tag === addedStory.tag) {
+          storyList.unshift(addedStory);
+        }
+
         return {
           ...state,
           storyList: storyList

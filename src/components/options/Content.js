@@ -7,7 +7,6 @@ import Story from '../story/Story';
 import ArticlePreview from '../story/Article';
 import EditArticle from '../story/EditArticle';
 import StoryEdit from '../story/StoryEdit';
-import StroyLink from '../story/Link';
 import { connect } from 'react-redux';
 import {
     getStoryList,
@@ -33,7 +32,6 @@ const mapStateToProps = state => ({
     storyType: state.story.story.type,
     nowStoryNumber: state.story.storyList.length,
     story: state.story.story,
-    eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class Content extends Component {
@@ -210,7 +208,7 @@ class Content extends Component {
     }
 
     render() {
-        const { storyType, story, eidtLinkVisible } = this.props;
+        const { storyType, story } = this.props;
         const { isEdit, visible, } = this.state;
         let storyComp;
         switch (storyType) {
@@ -276,7 +274,6 @@ class Content extends Component {
                     <CheckArticle handleClickEdit={this.handleClickEdit} />
                     {storyComp}
                 </Modal>
-                {eidtLinkVisible ? <StroyLink /> : null}
             </div>
         );
     };
