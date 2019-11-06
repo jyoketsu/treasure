@@ -256,6 +256,12 @@ const auth = {
 };
 
 const station = {
+  getStationName(url) {
+    return requests.get(APIURL + "/star/siteName", {
+      url: url
+    });
+  },
+
   // 获取微站列表
   getStationList() {
     // return requests.get(APIURL + '/star/careAndMyList', {
