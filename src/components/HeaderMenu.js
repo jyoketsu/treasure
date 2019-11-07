@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { IconWithText } from "./common/Common";
 import ClickOutside from "./common/ClickOutside";
 import { Modal, message } from "antd";
+import { HOST_NAME } from "../global";
 import { connect } from "react-redux";
 import { logout, changeStation, clearStoryList } from "../actions/app";
 const confirm = Modal.confirm;
@@ -74,16 +75,13 @@ class HeadMenu extends Component {
 
     const hostName = window.location.hostname;
     // 切换站点
-    if (
-      (hostName === "baoku.qingtime.cn" || hostName === "localhost") &&
-      !url
-    ) {
+    if ((hostName === HOST_NAME || hostName === "localhost") && !url) {
       changeStation(key);
       history.push(`/${domain}`);
       if (clearLogo) clearLogo();
     } else {
       window.open(
-        `${url ? url : "https://baoku.qingtime.cn"}/${domain}`,
+        `${url ? `http://${url}` : `https://${HOST_NAME}/${domain}`}`,
         "_blank"
       );
     }
@@ -92,7 +90,10 @@ class HeadMenu extends Component {
   render() {
     const { user, stationList, switchMenu } = this.props;
     return (
-      <div className="head-menu">
+      <div
+        className="head-menu"
+        style={{ maxHeight: `${document.body.offsetHeight - 70}px` }}
+      >
         <ClickOutside onClickOutside={switchMenu}>
           {user && !user.isGuest ? (
             <div className="head-menu-button">

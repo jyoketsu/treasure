@@ -1,10 +1,5 @@
 import api from "./Util";
-const AUTH_URL = "https://baokudata.qingtime.cn/sgbh";
-// const AUTH_URL = "http://192.168.1.249:8529/_db/TimeBox/my_sgbh";
-
-const APIURL = "https://kintime.qingtime.cn/sgbh";
-// const APIURL = "http://192.168.1.249:8529/_db/kintime/my_sgbh";
-
+import { AUTH_URL, APIURL } from "../global";
 let token = "FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667";
 
 const requests = {
@@ -282,6 +277,7 @@ const station = {
   createStation(
     name,
     domain,
+    url,
     type,
     memo,
     isMainStar,
@@ -296,6 +292,7 @@ const station = {
       token: token,
       name: name.trim(),
       domain: domain,
+      url: url,
       type: type,
       memo: memo,
       isMainStar: isMainStar,
@@ -319,6 +316,7 @@ const station = {
     key,
     name,
     domain,
+    url,
     type,
     memo,
     isMainStar,
@@ -334,6 +332,7 @@ const station = {
       starKey: key,
       name: name.trim(),
       domain: domain,
+      url: url,
       type: type,
       memo: memo,
       isMainStar: isMainStar,

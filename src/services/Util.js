@@ -1,4 +1,5 @@
 import api from "../services/Api";
+import { HOST_NAME } from "../global";
 
 const common = {
   timestamp2DataStr(timestap, format) {
@@ -424,7 +425,7 @@ const operation = {
     const stationDomain = window.location.pathname.split("/")[1];
 
     if (user && !nowStationKey && !changed) {
-      if (hostName === "baoku.qingtime.cn" || hostName === "localhost") {
+      if (hostName === HOST_NAME || hostName === "localhost") {
         // 指定了要显示的微站
         if (stationDomain && stationDomain !== "account") {
           changeStation(null, stationDomain);

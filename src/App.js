@@ -1,48 +1,49 @@
-import React, { Component } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, } from "react-router-dom";
-import { Spin } from 'antd';
-import { connect } from 'react-redux';
-import Header from './components/Header';
-import Home from './components/Home';
-import Message from './components/Message';
-import Me from './components/User/Me';
-import EditStation from './components/User/EditStation';
-import Login from './components/Login';
-import Register from './components/Register';
-import ResetPassword from './components/ResetPassword';
-import Story from './components/story/Story';
+import React, { Component } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Spin } from "antd";
+import { connect } from "react-redux";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import Message from "./components/Message";
+import Me from "./components/User/Me";
+import EditStation from "./components/User/EditStation";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import ResetPassword from "./components/ResetPassword";
+import Story from "./components/story/Story";
 // import EditStory from './components/story/EditStory';
-import Contribute from './components/story/Contribute';
-import StationOptions from './components/options/StationOptions';
-import EditArticle from './components/story/EditArticle';
-import Article from './components/story/Article';
-import Subscribe from './components/subscribe/Subscribe';
-import MyArticle from './components/myArticle/MyArticle';
-import StoryEdit from './components/story/StoryEdit';
-import NotFound from './components/NotFound';
-import PortalHome from './components/portal/Portal';
-import PortalHeader from './components/portal/PortalHeader';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
-moment.locale('zh-cn');
+import Contribute from "./components/story/Contribute";
+import StationOptions from "./components/options/StationOptions";
+import EditArticle from "./components/story/EditArticle";
+import Article from "./components/story/Article";
+import Subscribe from "./components/subscribe/Subscribe";
+import MyArticle from "./components/myArticle/MyArticle";
+import StoryEdit from "./components/story/StoryEdit";
+import NotFound from "./components/NotFound";
+import PortalHome from "./components/portal/Portal";
+import PortalHeader from "./components/portal/PortalHeader";
+import { HOST_NAME } from "./global";
+import moment from "moment";
+import "moment/locale/zh-cn";
+moment.locale("zh-cn");
 
 const mapStateToProps = state => ({
   loading: state.common.loading,
-  nowStation: state.station.nowStation,
-})
+  nowStation: state.station.nowStation
+});
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minHeight: `${window.innerHeight}px`,
-    }
+      minHeight: `${window.innerHeight}px`
+    };
     this.handleResize = this.handleResize.bind(this);
   }
 
   handleResize() {
-    this.setState({ minHeight: `${window.innerHeight}px`, });
+    this.setState({ minHeight: `${window.innerHeight}px` });
   }
 
   render() {
@@ -51,21 +52,21 @@ class App extends Component {
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
-          {
-            nowStation && nowStation.style === 2 ? <PortalHeader /> : <Header />
-          }
+          {nowStation && nowStation.style === 2 ? <PortalHeader /> : <Header />}
           <div
             className="route-container"
             style={{
-              background: nowStation && nowStation.style === 2
-                ? `url(/image/background/bg.jpg)`
-                : '#434343'
-            }}>
-            {
-              nowStation && nowStation.style === 2
-                ? <Route path="/:id" component={PortalHome} />
-                : <Route exact path="/:id" component={Home} />
-            }
+              background:
+                nowStation && nowStation.style === 2
+                  ? `url(/image/background/bg.jpg)`
+                  : "#434343"
+            }}
+          >
+            {nowStation && nowStation.style === 2 ? (
+              <Route path="/:id" component={PortalHome} />
+            ) : (
+              <Route exact path="/:id" component={Home} />
+            )}
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
             <Route path="/:id/editStation" component={EditStation} />
@@ -73,7 +74,10 @@ class App extends Component {
             {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
             <Route path="/:id/editStory" component={StoryEdit}></Route>
             <Route path="/:id/contribute" component={Contribute}></Route>
-            <Route path="/:id/stationOptions" component={StationOptions}></Route>
+            <Route
+              path="/:id/stationOptions"
+              component={StationOptions}
+            ></Route>
             <Route path="/:id/article" component={Article}></Route>
             <Route path="/:id/editArticle" component={EditArticle} />
             <Route path="/account/login" component={Login} />
@@ -93,16 +97,25 @@ class App extends Component {
     );
   }
 
+  componentWillMount() {
+    var url = window.location.href;
+    // 自动切换为https
+    if (url.indexOf(HOST_NAME) !== -1 && url.indexOf("https") < 0) {
+      url = url.replace("http:", "https:");
+      window.location.replace(url);
+    }
+  }
+
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  {}
 )(App);

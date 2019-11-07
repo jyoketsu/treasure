@@ -86,6 +86,7 @@ export function getStationList() {
 export function createStation(
   name,
   domain,
+  url,
   type,
   memo,
   isMainStar,
@@ -99,6 +100,7 @@ export function createStation(
   let request = api.station.createStation(
     name,
     domain,
+    url,
     type,
     memo,
     isMainStar,
@@ -121,6 +123,7 @@ export function editStation(
   key,
   name,
   domain,
+  url,
   type,
   memo,
   isMainStar,
@@ -135,6 +138,7 @@ export function editStation(
     key,
     name,
     domain,
+    url,
     type,
     memo,
     isMainStar,

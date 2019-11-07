@@ -6,6 +6,7 @@ import { Link, withRouter } from "react-router-dom";
 import util from "../services/Util";
 import TopMenu from "./HeaderMenu";
 import SubscribeMenu from "./HeaderSubscribe";
+import { HOST_NAME } from "../global";
 import { connect } from "react-redux";
 import {
   getUserInfo,
@@ -248,7 +249,7 @@ class Header extends Component {
       // 点击了浏览器前进，后退按钮
       if (action === "POP") {
         const nowDomain =
-          window.location.hostname === "baoku.qingtime.cn"
+          window.location.hostname === HOST_NAME
             ? route.pathname.split("/")[1]
             : sessionStorage.getItem("DOMAIN");
         const prevDomain = sessionStorage.getItem("DOMAIN");

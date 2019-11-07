@@ -15,6 +15,7 @@ import {
   getStationDetail,
   getStoryList
 } from "../../actions/app";
+import { HOST_NAME } from "../../global";
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -240,7 +241,7 @@ class PortalHeader extends Component {
       // 点击了浏览器前进，后退按钮
       if (action === "POP") {
         const nowDomain =
-          window.location.hostname === "baoku.qingtime.cn"
+          window.location.hostname === HOST_NAME
             ? route.pathname.split("/")[1]
             : sessionStorage.getItem("DOMAIN");
         const prevDomain = sessionStorage.getItem("DOMAIN");
