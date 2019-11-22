@@ -1,41 +1,44 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 /* 滚动轴美化 竖轴 */
 .scrollbar::-webkit-scrollbar-track {
-    width: 4px;
-    border-radius: 4px;
-    background-color: #DEDEDE;
+  width: 4px;
+  border-radius: 4px;
+  background-color: #dedede;
 }
 
 .scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-    background-color: #DEDEDE;
+  width: 4px;
+  height: 4px;
+  background-color: #dedede;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-    width: 4px;
-    border-radius: 4px;
-    background: #5CAC06;
+  width: 4px;
+  border-radius: 4px;
+  background: #5cac06;
 }
 
 .scrollbar::-webkit-scrollbar-corner {
-    width: 4px;
-    background-color: #5CAC06;
+  width: 4px;
+  background-color: #5cac06;
 }
 
 /* 触摸滚动 */
 * {
-    -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 }
 
 :focus {
-    outline: 0 !important;
+  outline: 0 !important;
 }
 
 *:not(input):not(textarea) {
-    user-select: none;
-    outline: none;
+  user-select: none;
+  outline: none;
+}
+.ant-modal-confirm-content > div > p {
+  user-select: text;
 }
 
 /* #root,
@@ -47,110 +50,109 @@
 } */
 
 .App {
-    text-align: center;
-    box-sizing: border-box;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .app {
-    position: relative;
-    background-repeat: no-repeat;
-    /* overflow: auto; */
+  position: relative;
+  background-repeat: no-repeat;
+  /* overflow: auto; */
 }
 
-
 .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 40vmin;
-    pointer-events: none;
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
 }
 
 .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-link {
-    color: #61dafb;
+  color: #61dafb;
 }
 
 .app-content {
-    background-color: #f5f5f5;
-    position: absolute;
-    width: 100%;
-    top: 70px;
+  background-color: #f5f5f5;
+  position: absolute;
+  width: 100%;
+  top: 70px;
 }
 
 .loading-mask {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
 
 .main-content {
-    position: relative;
-    width: 960px;
+  position: relative;
+  width: 960px;
 }
 
 .route-container {
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
 }
 
 /* 淡入淡出动画--------------------------------------------------------- */
 
 .myFade-enter {
-    opacity: 0.01;
+  opacity: 0.01;
 }
 
 .myFade-enter.myFade-enter-active {
-    opacity: 1;
-    transition: opacity 500ms;
+  opacity: 1;
+  transition: opacity 500ms;
 }
 
 .myFade-leave {
-    opacity: 1;
+  opacity: 1;
 }
 
 .myFade-leave.myFade-leave-active {
-    opacity: 0.01;
-    transition: opacity 500ms;
+  opacity: 0.01;
+  transition: opacity 500ms;
 }
-.ant-form-item{
-    margin-bottom: 0;
+.ant-form-item {
+  margin-bottom: 0;
 }
 
 @keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-@media screen and (max-width:768px) {
-    .main-content {
-        width: 100%;
-        padding: 0 15px;
-    }
+@media screen and (max-width: 768px) {
+  .main-content {
+    width: 100%;
+    padding: 0 15px;
+  }
 
-    *:not(input):not(textarea) {
-        user-select: unset;
-    }
+  *:not(input):not(textarea) {
+    user-select: unset;
+  }
 }

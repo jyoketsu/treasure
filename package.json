@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "scp": "scp -r build/* root@139.155.124.76:/home/work/websites/treasure/build",
+    "scp": "scp -r build/* root@132.232.47.47:/home/work/websites/treasure/build",
     "deploy": "react-scripts build && npm run scp"
   },
   "eslintConfig": {

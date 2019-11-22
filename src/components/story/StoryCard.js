@@ -246,10 +246,11 @@ class StoryLoading extends Component {
   }
 }
 const StoryCard = withRouter(
-  connect(
-    mapStateToProps,
-    { deleteStory, switchEditLinkVisible, getStoryDetail }
-  )(Card)
+  connect(mapStateToProps, {
+    deleteStory,
+    switchEditLinkVisible,
+    getStoryDetail
+  })(Card)
 );
 
 export { StoryCard, StoryLoading };

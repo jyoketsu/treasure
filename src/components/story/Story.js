@@ -3,7 +3,7 @@ import "./Story.css";
 import LoginTip from "../common/LoginTip";
 import util from "../../services/Util";
 import api from "../../services/Api";
-import { Radio } from "antd";
+import { Radio, Modal } from "antd";
 import { connect } from "react-redux";
 import {
   getStoryDetail,
@@ -148,6 +148,22 @@ class Story extends Component {
                           <div
                             key="story-card-name"
                             className="story-card-name"
+                            onClick={async () => {
+                              const res = await util.operation.getUserInfoByKey(
+                                story.userKey
+                              );
+                              Modal.info({
+                                title: "用户信息",
+                                content: (
+                                  <div>
+                                    {res.map((item, index) => (
+                                      <p key={index}>{item}</p>
+                                    ))}
+                                  </div>
+                                ),
+                                onOk() {}
+                              });
+                            }}
                           >
                             {creator.name || creator.mobile}
                           </div>
@@ -351,16 +367,13 @@ class Story extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    getStoryDetail,
-    updateExif,
-    clearStoryDetail,
-    setStatusTag,
-    statisticsStatusTag
-  }
-)(Story);
+export default connect(mapStateToProps, {
+  getStoryDetail,
+  updateExif,
+  clearStoryDetail,
+  setStatusTag,
+  statisticsStatusTag
+})(Story);
 
 class StatusTagRadio extends Component {
   render() {

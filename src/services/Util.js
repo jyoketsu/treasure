@@ -468,6 +468,24 @@ const operation = {
         }
       }
     }
+  },
+  async getUserInfoByKey(userKey) {
+    const res = await api.auth.getUserInfoByKey(userKey);
+    if (res.statusCode === "200") {
+      return [
+        `手机：${res.result.mobileArea} ${res.result.mobile}`,
+        `姓名：${res.result.profile.trueName ||
+          res.result.profile.nickName ||
+          "--"}`,
+        `性别：${res.result.profile.gender ? "女" : "男"}`,
+        `邮箱：${res.result.profile.email || "--"}`,
+        `相机：${res.result.profile.camera || "-"} ${res.result.profile
+          .cameraModel || "-"}`,
+        `地区：${
+          res.result.profile.region ? res.result.profile.region.join("-") : "--"
+        }`
+      ];
+    }
   }
 };
 

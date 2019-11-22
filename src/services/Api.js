@@ -247,6 +247,12 @@ const auth = {
       targetUKey: targetUKey,
       role: role
     });
+  },
+  getUserInfoByKey(key) {
+    return requests.get(AUTH_URL + "/account/targetUserInfo", {
+      token: token,
+      key: key
+    });
   }
 };
 

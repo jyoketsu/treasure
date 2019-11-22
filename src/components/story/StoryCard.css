@@ -9,9 +9,9 @@
 }
 
 .story-card:hover {
-    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
-    transform: translate(0, -3px);
-    cursor: pointer;
+  box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+  transform: translate(0, -3px);
+  cursor: pointer;
 }
 
 .story-card-cover {
@@ -94,6 +94,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.story-card-name:hover {
+  cursor: pointer;
 }
 
 .story-card-info > div > .story-card-name {
