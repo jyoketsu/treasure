@@ -39,6 +39,7 @@ class Portal extends Component {
         >
           <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
           <Route path={`${match.path}/detail/:id`} component={Detail}></Route>
+          <div className="portal-home-footer"></div>
         </div>
         {
           // pathname.indexOf('/catalog/') !== -1 ?
@@ -65,22 +66,14 @@ class Portal extends Component {
 
 class PortalFooter extends Component {
   render() {
-    const { name } = this.props;
+    // const { name } = this.props;
     return (
       <div className="portal-foot">
-        <span>
-          <span>版权所有</span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span>2019-2029</span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span>{name}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span>All Rights Reserved</span>
-        </span>
-        <span>{`Powered by 当归`}</span>
+        <span>版权所有@2013-2019 qingtime，Inc 。保留所有权利。</span>
+        <span>hello@qingtime.com</span>
       </div>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Portal);
+export default connect(mapStateToProps, {})(Portal);

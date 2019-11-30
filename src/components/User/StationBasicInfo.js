@@ -55,6 +55,7 @@ const CustomizedForm = Form.create({
   }
 })(props => {
   const { getFieldDecorator } = props.form;
+  const customBk = props.config.customBk;
   return (
     <Form onSubmit={props.onSubmit}>
       <Form.Item label="站名">
@@ -100,6 +101,97 @@ const CustomizedForm = Form.create({
           </Radio.Group>
         )}
       </Form.Item>
+      {props.style.value === 2 ? (
+        <div className="custom-config">
+          <div className="config-fields">
+            <div className="bk-item">
+              <label className="form-label">#1：</label>
+              <UploadStationCover
+                uploadAvatarCallback={props.handleUploadBk}
+                extParam={"one"}
+                coverUrl={customBk.one ? customBk.one.url : ""}
+              />
+              <div className="bk-type">
+                <label className="form-label">背景类型：</label>
+                <Radio.Group
+                  onChange={e =>
+                    props.handleBkTypeChange("one", e.target.value)
+                  }
+                  value={customBk.one ? customBk.one.type || 1 : 1}
+                >
+                  <Radio value={1}>大张</Radio>
+                  <Radio value={2}>纹理</Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            <div className="bk-item">
+              <label className="form-label">#2：</label>
+              <UploadStationCover
+                uploadAvatarCallback={props.handleUploadBk}
+                extParam={"two"}
+                coverUrl={customBk.two ? customBk.two.url : ""}
+              />
+              <div className="bk-type">
+                <label className="form-label">背景类型：</label>
+                <Radio.Group
+                  onChange={e =>
+                    props.handleBkTypeChange("two", e.target.value)
+                  }
+                  value={customBk.two ? customBk.two.type || 1 : 1}
+                >
+                  <Radio value={1}>大张</Radio>
+                  <Radio value={2}>纹理</Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            <div className="bk-item">
+              <label className="form-label">#3：</label>
+              <UploadStationCover
+                uploadAvatarCallback={props.handleUploadBk}
+                extParam={"three"}
+                coverUrl={customBk.three ? customBk.three.url : ""}
+              />
+              <div className="bk-type">
+                <label className="form-label">背景类型：</label>
+                <Radio.Group
+                  onChange={e =>
+                    props.handleBkTypeChange("three", e.target.value)
+                  }
+                  value={customBk.three ? customBk.three.type || 1 : 1}
+                >
+                  <Radio value={1}>大张</Radio>
+                  <Radio value={2}>纹理</Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            <div className="bk-item">
+              <label className="form-label">#4：</label>
+              <UploadStationCover
+                uploadAvatarCallback={props.handleUploadBk}
+                extParam={"four"}
+                coverUrl={customBk.four ? customBk.four.url : ""}
+              />
+              <div className="bk-type">
+                <label className="form-label">背景类型：</label>
+                <Radio.Group
+                  onChange={e =>
+                    props.handleBkTypeChange("four", e.target.value)
+                  }
+                  value={customBk.four ? customBk.four.type || 1 : 1}
+                >
+                  <Radio value={1}>大张</Radio>
+                  <Radio value={2}>纹理</Radio>
+                </Radio.Group>
+              </div>
+            </div>
+          </div>
+          <div className="config-preview">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      ) : null}
+
       <Form.Item label="管理模式">
         {getFieldDecorator("inheritedMode", {
           rules: [{ required: true, message: "请选择管理模式！" }]
@@ -134,6 +226,9 @@ class StationBasicInfo extends Component {
       size: stationInfo ? stationInfo.size : "",
       type: stationInfo ? stationInfo.type : "",
       isMainStar: stationInfo ? stationInfo.isMainStar : "",
+      config: stationInfo
+        ? stationInfo.config || { customBk: {} }
+        : { customBk: {} },
       fields: {
         name: {
           value: stationInfo ? stationInfo.name : ""
@@ -159,11 +254,41 @@ class StationBasicInfo extends Component {
       }
     };
     this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
+    this.uploadConfigImageCallback = this.uploadConfigImageCallback.bind(this);
+    this.handleBkTypeChange = this.handleBkTypeChange.bind(this);
   }
 
   uploadAvatarCallback(imageUrl, columnName) {
     this.setState({
       [columnName]: imageUrl[0]
+    });
+  }
+
+  uploadConfigImageCallback(imageUrl, columnName) {
+    this.setState(prevState => {
+      let customBk = prevState.config.customBk;
+      let bk = customBk[columnName] || { type: 1 };
+      bk = { ...bk, ...{ url: imageUrl[0] } };
+
+      customBk = {
+        ...customBk,
+        ...{ [columnName]: bk }
+      };
+      return { config: { ...prevState.config, ...{ customBk: customBk } } };
+    });
+  }
+
+  handleBkTypeChange(columnName, value) {
+    this.setState(prevState => {
+      let customBk = prevState.config.customBk;
+      let bk = customBk[columnName] || {};
+      bk = { ...bk, ...{ type: value } };
+
+      customBk = {
+        ...customBk,
+        ...{ [columnName]: bk }
+      };
+      return { config: { ...prevState.config, ...{ customBk: customBk } } };
     });
   }
 
@@ -176,7 +301,15 @@ class StationBasicInfo extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { editStation, createStation } = this.props;
-    const { fields, starKey, type, isMainStar, cover, logo } = this.state;
+    const {
+      fields,
+      starKey,
+      type,
+      isMainStar,
+      cover,
+      logo,
+      config
+    } = this.state;
 
     this.form.validateFields(async (err, values) => {
       if (!err) {
@@ -200,7 +333,8 @@ class StationBasicInfo extends Component {
             size,
             fields.inheritedMode.value,
             fields.showAll.value,
-            fields.style.value
+            fields.style.value,
+            config
           );
         } else {
           createStation(
@@ -215,7 +349,8 @@ class StationBasicInfo extends Component {
             size,
             fields.inheritedMode.value,
             fields.showAll.value,
-            fields.style.value
+            fields.style.value,
+            config
           );
         }
       }
@@ -223,7 +358,7 @@ class StationBasicInfo extends Component {
   };
 
   render() {
-    const { cover, logo, fields } = this.state;
+    const { cover, logo, config, fields } = this.state;
 
     return (
       <div>
@@ -246,8 +381,11 @@ class StationBasicInfo extends Component {
         <CustomizedForm
           ref={node => (this.form = node)}
           {...fields}
+          config={config}
           onChange={this.handleFormChange}
           onSubmit={this.handleSubmit}
+          handleUploadBk={this.uploadConfigImageCallback}
+          handleBkTypeChange={this.handleBkTypeChange}
         />
       </div>
     );
@@ -268,8 +406,7 @@ class StationBasicInfo extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { editStation, createStation }
-  )(Form.create({ name: "create-station" })(StationBasicInfo))
+  connect(mapStateToProps, { editStation, createStation })(
+    Form.create({ name: "create-station" })(StationBasicInfo)
+  )
 );

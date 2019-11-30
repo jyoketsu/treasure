@@ -118,7 +118,7 @@ class Card extends Component {
     let coverStyle = {
       backgroundImage: `url('${coverUrl}')`,
       backgroundSize: story.cover ? "cover" : "30%",
-      height: `${height - 80}px`
+      height: `${height - 85}px`
     };
     let storyType =
       story.type === 6 ? "story" : story.type === 9 ? "article" : "page";

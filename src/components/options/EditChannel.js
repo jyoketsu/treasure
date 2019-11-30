@@ -147,7 +147,10 @@ const CustomizedForm = Form.create({
       </Form.Item>
 
       <Form.Item label="显示设置">
-        {getFieldDecorator("showSetting", {})(
+        {getFieldDecorator(
+          "showSetting",
+          {}
+        )(
           <Checkbox.Group style={{ width: "100%" }}>
             <Checkbox value="author">显示作者</Checkbox>
             <Checkbox value="title">显示标题</Checkbox>
@@ -463,16 +466,15 @@ class EditChannel extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { addChannel, editChannel }
-)(Form.create({ name: "create-station" })(EditChannel));
+export default connect(mapStateToProps, { addChannel, editChannel })(
+  Form.create({ name: "create-station" })(EditChannel)
+);
 
 class TagOptionList extends Component {
   constructor(props) {
     super(props);
     const { tag = "" } = props;
-    const tagList = tag.split(" ");
+    const tagList = tag ? tag.split(" ") : [];
     let objList = [];
     for (let i = 0; i < tagList.length; i++) {
       if (util.common.isJSON(tagList[i])) {

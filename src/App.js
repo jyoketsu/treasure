@@ -49,6 +49,14 @@ class App extends Component {
   render() {
     const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
+    const customBk =
+      nowStation &&
+      nowStation.config &&
+      nowStation.config.customBk &&
+      nowStation.config.customBk.one
+        ? `url(${nowStation.config.customBk.one.url})`
+        : null;
+    const noRepeat = customBk && nowStation.config.customBk.one.type === 1;
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
@@ -58,8 +66,17 @@ class App extends Component {
             style={{
               background:
                 nowStation && nowStation.style === 2
-                  ? `url(/image/background/bg.jpg)`
-                  : "#434343"
+                  ? customBk
+                    ? customBk
+                    : `url(/image/background/bg.jpg)`
+                  : "#434343",
+              backgroundRepeat:
+                nowStation && nowStation.style === 2
+                  ? noRepeat
+                    ? "no-repeat"
+                    : "repeat"
+                  : "unset",
+              backgroundSize: noRepeat ? "100%" : "unset"
             }}
           >
             {nowStation && nowStation.style === 2 ? (
@@ -115,7 +132,4 @@ class App extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {}
-)(App);
+export default connect(mapStateToProps, {})(App);

@@ -1,8 +1,41 @@
 .form-label {
-    margin-top: 15px;
-    display: block;
+  margin-top: 15px;
+  display: block;
 }
 
 .form-label:first-child {
-    margin-top: unset;
+  margin-top: unset;
+}
+.custom-config {
+  margin: 10px;
+  display: flex;
+}
+.custom-config > div {
+  flex: 1;
+}
+.bk-item {
+  display: flex;
+  margin: 5px 0;
+}
+.bk-type {
+  margin-left: 5px;
+}
+.bk-type > label {
+  margin-bottom: 5px;
+}
+.config-preview {
+  display: flex;
+  flex-direction: column;
+}
+.config-preview > div {
+  flex: 1;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+}
+.config-preview > div:first-child {
+  background-image: url(/image/background/sample-home.png);
+}
+.config-preview > div:last-child {
+  background-image: url(/image/background/sample-child.png);
 }

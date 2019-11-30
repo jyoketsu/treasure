@@ -95,7 +95,8 @@ export function createStation(
   size,
   inheritedMode,
   showAll,
-  style
+  style,
+  config
 ) {
   let request = api.station.createStation(
     name,
@@ -109,7 +110,8 @@ export function createStation(
     size,
     inheritedMode,
     showAll,
-    style
+    style,
+    config
   );
   return { type: CREATE_STATION, flag: "createStation", payload: request };
 }
@@ -132,7 +134,8 @@ export function editStation(
   size,
   inheritedMode,
   showAll,
-  style
+  style,
+  config
 ) {
   let request = api.station.editStation(
     key,
@@ -147,7 +150,8 @@ export function editStation(
     size,
     inheritedMode,
     showAll,
-    style
+    style,
+    config
   );
   return {
     type: EDIT_STATION,

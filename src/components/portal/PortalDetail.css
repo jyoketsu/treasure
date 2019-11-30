@@ -11,7 +11,9 @@
     z-index: 999;
     width: 100%;
     height: 330px;
-    background-image: url(/image/background/hbg.png);
+    /* background-image: url(/image/background/hbg.png); */
+    background-size: cover;
+    background-position: left;
     min-width: 1200px;
     display: flex;
     justify-content: space-between;
@@ -26,9 +28,10 @@
 
 .catalog-banner {
     position: relative;
-    width: 728px;
+    /* width: 728px; */
+    width: 800px;
     height: 292px;
-    background-image: url(/image/background/catalog-banner-container.png);
+    /* background-image: url(/image/background/catalog-banner-container.png); */
 }
 
 .channel-cover {
@@ -79,10 +82,12 @@
     font-weight: 800;
     width: 50px;
     line-height: 50px;
+    color: #FFFFFF;
 }
 
 .channel-catalog-name>span:last-child {
-    color: #965D0C;
+    /* color: #965D0C; */
+    color: #FFFFFF;
     font-size: 16px;
 }
 
@@ -101,7 +106,9 @@
     padding-top: 1px;
     width: 43px;
     height: 147px;
-    background: url(/image/background/list.png) no-repeat top center;
+    /* background: url(/image/background/list.png) no-repeat top center; */
+    background: url(/image/background/tag.png) no-repeat top center;
+    background-size: contain;
     writing-mode: vertical-rl;
     font-size: 18px;
     text-align: center;

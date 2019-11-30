@@ -292,7 +292,8 @@ const station = {
     size,
     inheritedMode,
     showAll,
-    style
+    style,
+    config
   ) {
     return requests.post(APIURL + "/star/createStar", {
       token: token,
@@ -307,7 +308,8 @@ const station = {
       size: size,
       inheritedMode: inheritedMode,
       showAll: showAll,
-      style: style
+      style: style,
+      config: config
     });
   },
 
@@ -331,7 +333,8 @@ const station = {
     size,
     inheritedMode,
     showAll,
-    style
+    style,
+    config
   ) {
     return requests.patch(APIURL + "/star/setStarProperty", {
       token: token,
@@ -347,7 +350,8 @@ const station = {
       size: size,
       inheritedMode: inheritedMode,
       showAll: showAll,
-      style: style
+      style: style,
+      config: config
     });
   },
   getStationDetail(key) {

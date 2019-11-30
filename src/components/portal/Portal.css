@@ -1,38 +1,49 @@
 .portal-home {
-    background-image: url(/image/background/mapbg.png);
-    background-repeat: no-repeat;
-    background-position: top right;
-    background-size: auto;
-    padding-top: 233px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-image: url(/image/background/mapbg.png);
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: auto;
+  padding-top: 233px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .portal-home-body {
-    position: relative;
-    background-repeat: no-repeat;
-    background-position: top;
+  max-width: 1200px;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: top;
+  width: 100%;
+  /* background-size: 1200px; */
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.portal-home-footer{
+    position: absolute;
     width: 100%;
-    background-size: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 130px;
+    bottom: 0;
 }
 
 /* portal-foot------ */
 .portal-foot {
-    width: 100%;
-    height: 50px;
-    background: #F6F6F6;
-    border-top: 1px solid #DDD;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 50px;
+  /* background: #F6F6F6;
+    border-top: 1px solid #DDD; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #9399a0;
 }
-.portal-article.link{
-    position: absolute;
-    left: 0;
-    right: 0;
+.portal-article.link {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
