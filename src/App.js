@@ -24,6 +24,7 @@ import NotFound from "./components/NotFound";
 import PortalHome from "./components/portal/Portal";
 import PortalHeader from "./components/portal/PortalHeader";
 import { HOST_NAME } from "./global";
+import util from "./services/Util";
 import moment from "moment";
 import "moment/locale/zh-cn";
 moment.locale("zh-cn");
@@ -68,12 +69,13 @@ class App extends Component {
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
-          {nowStation && nowStation.style === 2 ? <PortalHeader /> : <Header />}
-          <div
-            className="route-container"
-            
-          >
-            {nowStation && nowStation.style === 2 ? (
+          {!util.common.isMobile() && nowStation && nowStation.style === 2 ? (
+            <PortalHeader />
+          ) : (
+            <Header />
+          )}
+          <div className="route-container">
+            {!util.common.isMobile() && nowStation && nowStation.style === 2 ? (
               <Route path="/:id" component={PortalHome} />
             ) : (
               <Route exact path="/:id" component={Home} />

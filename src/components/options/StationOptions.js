@@ -28,7 +28,7 @@ class StationOptions extends Component {
     this.state = {
       showMenu: false,
       minHeight: `${
-        nowStation && nowStation.style === 2
+        !util.common.isMobile && nowStation && nowStation.style === 2
           ? window.innerHeight
           : window.innerHeight - 70
       }px`
@@ -41,7 +41,7 @@ class StationOptions extends Component {
     const { nowStation } = this.props;
     this.setState({
       minHeight: `${
-        nowStation && nowStation.style === 2
+        !util.common.isMobile && nowStation && nowStation.style === 2
           ? window.innerHeight
           : window.innerHeight - 70
       }px`
@@ -64,7 +64,9 @@ class StationOptions extends Component {
     return (
       <div
         className="app-content"
-        style={{ top: nowStation && nowStation.style === 2 ? "0" : "70px" }}
+        style={{
+          top: !isMobile && nowStation && nowStation.style === 2 ? "0" : "70px"
+        }}
       >
         <div
           className="main-content station-options"
