@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import Catalog from "./PortalCatalog";
 import Detail from "./PortalDetail";
 import AddButton from "../AddArticleButton";
+import util from "../../services/Util";
 import { connect } from "react-redux";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation
@@ -26,8 +27,49 @@ class Portal extends Component {
     const { match, location, nowStation } = this.props;
     const { winHeight } = this.state;
     const pathname = location.pathname;
+    // 自定义背景
+    const customBk =
+      nowStation &&
+      nowStation.config &&
+      nowStation.config.customBk &&
+      nowStation.config.customBk.one
+        ? util.operation.isPortalDetail(window.location.pathname)
+          ? `url(${nowStation.config.customBk.three.url})`
+          : `url(${nowStation.config.customBk.one.url})`
+        : null;
+    // 自定义背景是否重复
+    const noRepeat =
+      customBk &&
+      (util.operation.isPortalDetail(window.location.pathname)
+        ? nowStation.config.customBk.three.type === 1
+        : nowStation.config.customBk.one.type === 1);
+    const customFootBk =
+      nowStation &&
+      nowStation.config &&
+      nowStation.config.customBk &&
+      nowStation.config.customBk.one
+        ? `url(${nowStation.config.customBk.two.url})`
+        : null;
     return (
-      <div className="portal-home" style={{ minHeight: `${winHeight}px` }}>
+      <div
+        className="portal-home"
+        style={{
+          minHeight: `${winHeight}px`,
+          background:
+            nowStation && nowStation.style === 2
+              ? customBk
+                ? customBk
+                : `url(/image/background/bg.jpg)`
+              : "#434343",
+          backgroundRepeat:
+            nowStation && nowStation.style === 2
+              ? noRepeat
+                ? "no-repeat"
+                : "repeat-x"
+              : "unset",
+          backgroundSize: noRepeat ? "100%" : "unset"
+        }}
+      >
         <div
           className="portal-home-body"
           style={{
@@ -39,7 +81,12 @@ class Portal extends Component {
         >
           <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
           <Route path={`${match.path}/detail/:id`} component={Detail}></Route>
-          <div className="portal-home-footer"></div>
+          {!util.operation.hidePortalHeader(pathname) ? (
+            <div
+              className="portal-home-footer"
+              style={{ backgroundImage: customFootBk ? customFootBk : "unset" }}
+            ></div>
+          ) : null}
         </div>
         {
           // pathname.indexOf('/catalog/') !== -1 ?

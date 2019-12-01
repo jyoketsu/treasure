@@ -1,85 +1,111 @@
 .portal-menu {
-    width: 1200px;
-    height: 233px;
-    background-color: rgba(0, 0, 0, 0);
-    align-items: flex-start;
-    /* padding-top: 35px; */
-    padding-top: 75px;
+  width: 1200px;
+  height: 233px;
+  background-color: rgba(0, 0, 0, 0);
+  align-items: flex-start;
+  /* padding-top: 35px; */
+  padding-top: 55px;
 }
 
 .portal-head-right {
-    width: 420px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+  width: 420px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .portal-head-buttons,
 .portal-head-logo {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .portal-head-logo {
-    height: 70px;
-    margin-top: 15px;
+  height: 70px;
+  margin-top: 5px;
 }
 
-.portal-head-logo>li:hover {
-    cursor: pointer;
+.portal-head-logo > li:hover {
+  cursor: pointer;
 }
 
 .portal-station-option-icon {
-    background-image: url(/image/icon/header/portal-station-option-icon.svg);
-    width: 32px;
+  background-image: url(/image/icon/header/portal-station-option-icon.svg);
+  width: 32px;
 }
 
 .portal-subscribe {
-    background-image: url(/image/icon/header/portal-subscribe.svg);
+  background-image: url(/image/icon/header/portal-subscribe.svg);
 }
 
 .portal-me {
-    background-image: url(/image/icon/header/portal-account.svg);
+  background-image: url(/image/icon/header/portal-account.svg);
 }
 
 /* Channel--------- */
 .portal-channel {
-    width: 98px;
-    height: 104px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-right: 35px;
+  position: relative;
+  width: 98px;
+  height: 104px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 35px;
 }
 
 .portal-channel:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.portal-channel>i {
-    width: 78px;
-    height: 78px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+.portal-channel > i {
+  width: 78px;
+  height: 78px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.portal-channel>span {
-    width: 100%;
-    height: 26px;
-    line-height: 26px;
-    /* color: #965D0C; */
-    color: #FFFFFF;
-    font-size: 18px;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.portal-channel > span {
+  width: 100%;
+  height: 26px;
+  line-height: 26px;
+  /* color: #965D0C; */
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 10px;
 }
 
-.portal-channel:hover>span {
-    color: #BC760F
+.portal-channel:hover > span {
+  color: #bc760f;
+}
+.portal-channel-list {
+  position: absolute;
+  top: 115px;
+  color: #FFFFFF;
+  display: flex;
+  opacity: 0;
+  transition: ease-in opacity 0.3s;
+}
+.portal-channel:hover > .portal-channel-list {
+  opacity: 1;
+}
+.portal-channel-list > div {
+  /* height: 200px; */
+  writing-mode: vertical-rl;
+  font-size: 14px;
+  line-height: 26px;
+  border-right: 1px solid;
+}
+.portal-channel-list > div:last-child {
+  border: unset;
+}
+.portal-channel-list > div:hover {
+  cursor: pointer;
 }

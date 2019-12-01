@@ -49,35 +49,29 @@ class App extends Component {
   render() {
     const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
-    const customBk =
-      nowStation &&
-      nowStation.config &&
-      nowStation.config.customBk &&
-      nowStation.config.customBk.one
-        ? `url(${nowStation.config.customBk.one.url})`
-        : null;
-    const noRepeat = customBk && nowStation.config.customBk.one.type === 1;
+    // // 自定义背景
+    // const customBk =
+    //   nowStation &&
+    //   nowStation.config &&
+    //   nowStation.config.customBk &&
+    //   nowStation.config.customBk.one
+    //     ? util.operation.isPortalDetail(window.location.pathname)
+    //       ? `url(${nowStation.config.customBk.three.url})`
+    //       : `url(${nowStation.config.customBk.one.url})`
+    //     : null;
+    // // 自定义背景是否重复
+    // const noRepeat =
+    //   customBk &&
+    //   (util.operation.isPortalDetail(window.location.pathname)
+    //     ? nowStation.config.customBk.three.type === 1
+    //     : nowStation.config.customBk.one.type === 1);
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
           {nowStation && nowStation.style === 2 ? <PortalHeader /> : <Header />}
           <div
             className="route-container"
-            style={{
-              background:
-                nowStation && nowStation.style === 2
-                  ? customBk
-                    ? customBk
-                    : `url(/image/background/bg.jpg)`
-                  : "#434343",
-              backgroundRepeat:
-                nowStation && nowStation.style === 2
-                  ? noRepeat
-                    ? "no-repeat"
-                    : "repeat"
-                  : "unset",
-              backgroundSize: noRepeat ? "100%" : "unset"
-            }}
+            
           >
             {nowStation && nowStation.style === 2 ? (
               <Route path="/:id" component={PortalHome} />

@@ -82,7 +82,8 @@ class Header extends Component {
               ? "none"
               : user && user.isGuest && util.common.isMobile()
               ? "none"
-              : "flex"
+              : "flex",
+          backgroundImage: nowStation ? `url(${nowStation.cover})` : "unset"
         }}
       >
         <ul className="app-menu" ref={elem => (this.nv = elem)}>
@@ -353,16 +354,13 @@ class Header extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      getUserInfo,
-      logout,
-      changeStation,
-      getStationList,
-      clearStoryList,
-      getStationDetail,
-      getStoryList
-    }
-  )(Header)
+  connect(mapStateToProps, {
+    getUserInfo,
+    logout,
+    changeStation,
+    getStationList,
+    clearStoryList,
+    getStationDetail,
+    getStoryList
+  })(Header)
 );

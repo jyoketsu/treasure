@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
   storyListLength: state.story.storyList.length,
   refresh: state.story.refresh,
   tag: state.story.tag,
-  statusTag: state.story.statusTag,
+  statusTag: state.story.statusTag
 });
 
 class Home extends Component {
@@ -233,7 +233,7 @@ class Home extends Component {
       sortOrder,
       nowChannelKey,
       seePlugin,
-      seeChannel,
+      seeChannel
     } = this.props;
     const { showSort, showFilter, tag, statusTag } = this.state;
 
@@ -621,7 +621,9 @@ class Station extends React.Component {
                   )}
                   title={`${serie.name}（${serie.albumCount}）`}
                 >
-                  {`${serie.name}（${serie.albumCount}）`}
+                  {`${serie.name}${
+                    serie.albumCount ? "(" + serie.albumCount + ")" : ""
+                  }`}
                 </div>
               ))}
             </div>
@@ -794,13 +796,10 @@ class HomeFooter extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    changeStation,
-    getStoryList,
-    clearStoryList,
-    seePlugin,
-    seeChannel
-  }
-)(Home);
+export default connect(mapStateToProps, {
+  changeStation,
+  getStoryList,
+  clearStoryList,
+  seePlugin,
+  seeChannel
+})(Home);

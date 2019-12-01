@@ -82,28 +82,23 @@ class PortalHeader extends Component {
       <div
         className="app-menu-container"
         style={{
-          display:
-            pathname === "/account/login" ||
-            pathname === "/account/register" ||
-            pathname === "/account/reset" ||
-            pathname.indexOf("/stationOptions") !== -1 ||
-            pathname.indexOf("/me") !== -1 ||
-            pathname.indexOf("/subscribe") !== -1 ||
-            pathname.indexOf("/myArticle") !== -1 ||
-            pathname.indexOf("/editStory") !== -1 ||
-            pathname.indexOf("/editArticle") !== -1
-              ? "none"
-              : user && user.isGuest && util.common.isMobile()
-              ? "none"
-              : "flex"
+          display: util.operation.hidePortalHeader(pathname)
+            ? "none"
+            : user && user.isGuest && util.common.isMobile()
+            ? "none"
+            : "flex"
         }}
       >
         <ul className="app-menu portal-menu" ref={elem => (this.nv = elem)}>
           {channelList.map((channel, index) => (
             <Channel
               key={index}
+              channelKey={channel._key}
               name={channel.name}
               icon={channel.logo}
+              tag={channel.tag}
+              location={location}
+              history={history}
               onClick={() => this.handleClick(channel._key)}
             />
           ))}
@@ -346,27 +341,69 @@ class PortalHeader extends Component {
 
 class Channel extends Component {
   render() {
-    const { name, icon, onClick } = this.props;
+    const { channelKey, name, icon, tag, onClick } = this.props;
+    let tagList = tag ? tag.split(" ") : [];
+
     return (
-      <div className="portal-channel" onClick={onClick}>
-        <i style={{ backgroundImage: `url(${icon})` }}></i>
-        <span>{name}</span>
+      <div className="portal-channel">
+        <i style={{ backgroundImage: `url(${icon})` }} onClick={onClick}></i>
+        <span
+          style={{
+            color: util.operation.isPortalDetail(window.location.pathname)
+              ? "#24374A"
+              : "#FFFFFF"
+          }}
+          onClick={onClick}
+        >
+          {name}
+        </span>
+        <div
+          className="portal-channel-list"
+          style={{
+            color: util.operation.isPortalDetail(window.location.pathname)
+              ? "#24374A"
+              : "#FFFFFF"
+          }}
+        >
+          {tagList.map((catalog, index) => {
+            let obj;
+            if (util.common.isJSON(catalog)) {
+              obj = JSON.parse(catalog);
+            } else {
+              obj = { id: catalog, name: catalog };
+            }
+            return (
+              <div
+                key={index}
+                onClick={this.handleClick.bind(this, obj, channelKey)}
+              >
+                {obj.name}
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
+  }
+  handleClick(tag, channelKey) {
+    const { location, history } = this.props;
+    const pathname = location.pathname;
+    const stationDomain = pathname.split("/")[1];
+    history.push({
+      pathname: `/${stationDomain}/detail/${channelKey}`,
+      state: { tagId: tag.id, tagName: tag.name }
+    });
   }
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      getUserInfo,
-      logout,
-      changeStation,
-      getStationList,
-      clearStoryList,
-      getStationDetail,
-      getStoryList
-    }
-  )(PortalHeader)
+  connect(mapStateToProps, {
+    getUserInfo,
+    logout,
+    changeStation,
+    getStationList,
+    clearStoryList,
+    getStationDetail,
+    getStoryList
+  })(PortalHeader)
 );

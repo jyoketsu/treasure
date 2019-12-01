@@ -486,6 +486,31 @@ const operation = {
         }`
       ];
     }
+  },
+
+  /**
+   * 是否显示门户型网站头部
+   * @param {String} pathname
+   */
+  hidePortalHeader(pathname) {
+    return (
+      pathname === "/account/login" ||
+      pathname === "/account/register" ||
+      pathname === "/account/reset" ||
+      pathname.indexOf("/stationOptions") !== -1 ||
+      pathname.indexOf("/me") !== -1 ||
+      pathname.indexOf("/subscribe") !== -1 ||
+      pathname.indexOf("/myArticle") !== -1 ||
+      pathname.indexOf("/editStory") !== -1 ||
+      pathname.indexOf("/editArticle") !== -1
+    );
+  },
+  /**
+   * 是否是门户类网站详情页
+   * @param {String} pathname
+   */
+  isPortalDetail(pathname) {
+    return pathname.split("/")[2] === "detail";
   }
 };
 

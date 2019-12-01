@@ -506,20 +506,22 @@ class StoryEdit extends Component {
           }}
         >
           <div className="top-right-buttons">
-            <Select
-              style={{ width: 120 }}
-              placeholder="请选择频道"
-              value={nowChannelId}
-              onChange={this.handleSelectChannel}
-            >
-              {seriesInfo.map((item, index) =>
-                (item.role && item.role < 5) || item.allowPublicUpload ? (
-                  <Option key={index} value={item._key}>
-                    {item.name}
-                  </Option>
-                ) : null
-              )}
-            </Select>
+            {seriesInfo.length ? (
+              <Select
+                style={{ width: 120 }}
+                placeholder="请选择频道"
+                value={nowChannelId}
+                onChange={this.handleSelectChannel}
+              >
+                {seriesInfo.map((item, index) =>
+                  (item.role && item.role < 5) || item.allowPublicUpload ? (
+                    <Option key={index} value={item._key}>
+                      {item.name}
+                    </Option>
+                  ) : null
+                )}
+              </Select>
+            ) : null}
           </div>
           <div className="left-bottom-buttons">
             {tag &&
@@ -555,7 +557,9 @@ class StoryEdit extends Component {
                 value={story.statusTag}
                 onChange={this.handleSetStatus}
               >
-                <Option key="none" index="" value="">无</Option>
+                <Option key="none" index="" value="">
+                  无
+                </Option>
                 {statusTag.split(" ").map((item, index) => (
                   <Option key={index} index={index} value={item}>
                     {item}
@@ -907,8 +911,5 @@ class ItemPreview extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { addStory, modifyStory, deleteStory }
-  )(StoryEdit)
+  connect(mapStateToProps, { addStory, modifyStory, deleteStory })(StoryEdit)
 );

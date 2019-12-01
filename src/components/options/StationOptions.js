@@ -55,11 +55,12 @@ class StationOptions extends Component {
   }
 
   render() {
-    const { match, location, nowStation } = this.props;
+    const { match, location, nowStation, history } = this.props;
     const { minHeight } = this.state;
     const search = location.search;
     const pathname = location.pathname.split("/")[3];
     const isMobile = util.common.isMobile();
+    const stationDomain = location.pathname.split("/")[1];
     return (
       <div
         className="app-content"
@@ -177,6 +178,10 @@ class StationOptions extends Component {
             ) : null}
           </ReactCSSTransitionGroup>
           <i className="menu-trigger" onClick={this.handleTriggerClick}></i>
+          <i
+            className="back-home"
+            onClick={() => history.push(`/${stationDomain}`)}
+          ></i>
           <div className="options-content">
             {nowStation && nowStation.role && nowStation.role < 3 ? (
               <Route exact path={`${match.path}`} component={Station}></Route>
@@ -234,7 +239,4 @@ class StationOptions extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { clearPluginList }
-)(StationOptions);
+export default connect(mapStateToProps, { clearPluginList })(StationOptions);
