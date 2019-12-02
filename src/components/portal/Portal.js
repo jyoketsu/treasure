@@ -47,7 +47,7 @@ class Portal extends Component {
       nowStation &&
       nowStation.config &&
       nowStation.config.customBk &&
-      nowStation.config.customBk.one
+      nowStation.config.customBk.two
         ? `url(${nowStation.config.customBk.two.url})`
         : null;
     return (
