@@ -50,35 +50,16 @@ class App extends Component {
   render() {
     const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
-    // // 自定义背景
-    // const customBk =
-    //   nowStation &&
-    //   nowStation.config &&
-    //   nowStation.config.customBk &&
-    //   nowStation.config.customBk.one
-    //     ? util.operation.isPortalDetail(window.location.pathname)
-    //       ? `url(${nowStation.config.customBk.three.url})`
-    //       : `url(${nowStation.config.customBk.one.url})`
-    //     : null;
-    // // 自定义背景是否重复
-    // const noRepeat =
-    //   customBk &&
-    //   (util.operation.isPortalDetail(window.location.pathname)
-    //     ? nowStation.config.customBk.three.type === 1
-    //     : nowStation.config.customBk.one.type === 1);
+
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
-          {!util.common.isMobile() && nowStation && nowStation.style === 2 ? (
-            <PortalHeader />
-          ) : (
-            <Header />
-          )}
+          <AppHeader nowStation={nowStation} />
           <div className="route-container">
             {!util.common.isMobile() && nowStation && nowStation.style === 2 ? (
-              <Route path="/:id" component={PortalHome} />
+              <Route path="/:id/home" component={PortalHome} />
             ) : (
-              <Route exact path="/:id" component={Home} />
+              <Route path="/:id/home" component={Home} />
             )}
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
@@ -117,6 +98,9 @@ class App extends Component {
       url = url.replace("http:", "https:");
       window.location.replace(url);
     }
+    if (!window.location.pathname.split("/")[2]) {
+      window.location.href = `${window.location.href}/home`;
+    }
   }
 
   componentDidMount() {
@@ -125,6 +109,24 @@ class App extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+  }
+}
+
+class AppHeader extends Component {
+  render() {
+    const { nowStation } = this.props;
+    return (
+      <div>
+        {!window.location.pathname.includes("stationOptions") &&
+        !util.common.isMobile() &&
+        nowStation &&
+        nowStation.style === 2 ? (
+          <PortalHeader />
+        ) : (
+          <Header />
+        )}
+      </div>
+    );
   }
 }
 

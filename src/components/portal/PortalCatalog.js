@@ -20,7 +20,7 @@ class Catalog extends Component {
     const stationDomain = pathname.split("/")[1];
     const channelKey = match.params.id;
     history.push({
-      pathname: `/${stationDomain}/detail/${channelKey}`,
+      pathname: `/${stationDomain}/home/detail/${channelKey}`,
       state: { tagId: tag.id, tagName: tag.name }
     });
   }

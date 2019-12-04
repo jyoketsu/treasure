@@ -77,11 +77,11 @@ class HeadMenu extends Component {
     // 切换站点
     if ((hostName === HOST_NAME || hostName === "localhost") && !url) {
       changeStation(key);
-      history.push(`/${domain}`);
+      history.push(`/${domain}/home`);
       if (clearLogo) clearLogo();
     } else {
       window.open(
-        `${url ? `http://${url}` : `https://${HOST_NAME}/${domain}`}`,
+        `${url ? `http://${url}` : `https://${HOST_NAME}/${domain}/home`}`,
         "_blank"
       );
     }
@@ -172,8 +172,5 @@ class HeadMenu extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps2,
-    { clearStoryList, logout, changeStation }
-  )(HeadMenu)
+  connect(mapStateToProps2, { clearStoryList, logout, changeStation })(HeadMenu)
 );

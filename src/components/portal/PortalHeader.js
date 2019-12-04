@@ -59,7 +59,7 @@ class PortalHeader extends Component {
     const { location, history } = this.props;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
-    history.push(`/${stationDomain}/catalog/${channelKey}`);
+    history.push(`/${stationDomain}/home/catalog/${channelKey}`);
   }
 
   changeStation(key, domain) {
@@ -158,7 +158,7 @@ class PortalHeader extends Component {
                       55 * (logoSize.width / logoSize.height)
                     )}px`
                   }}
-                  onClick={() => history.push(`/${stationDomain}`)}
+                  onClick={() => history.push(`/${stationDomain}/home`)}
                 ></li>
               ) : (
                 <li
@@ -167,7 +167,7 @@ class PortalHeader extends Component {
                     backgroundImage: `url(/image/background/logo.svg)`,
                     width: "35px"
                   }}
-                  onClick={() => history.push(`/${stationDomain}`)}
+                  onClick={() => history.push(`/${stationDomain}/home`)}
                 ></li>
               )}
             </div>
@@ -390,7 +390,7 @@ class Channel extends Component {
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
     history.push({
-      pathname: `/${stationDomain}/detail/${channelKey}`,
+      pathname: `/${stationDomain}/home/detail/${channelKey}`,
       state: { tagId: tag.id, tagName: tag.name }
     });
   }

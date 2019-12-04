@@ -510,7 +510,7 @@ const operation = {
    * @param {String} pathname
    */
   isPortalDetail(pathname) {
-    return pathname.split("/")[2] === "detail";
+    return pathname.split("/")[3] === "detail";
   }
 };
 

@@ -209,7 +209,7 @@ class StationCard extends Component {
   handleClick(key, domain) {
     const { history, changeStation } = this.props;
     changeStation(key);
-    history.push(`/${domain}`);
+    history.push(`/${domain}/home`);
   }
 
   render() {

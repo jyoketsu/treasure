@@ -55,18 +55,17 @@ class StationOptions extends Component {
   }
 
   render() {
-    const { match, location, nowStation, history } = this.props;
+    const { match, location, nowStation } = this.props;
     const { minHeight } = this.state;
     const search = location.search;
     const pathname = location.pathname.split("/")[3];
     const isMobile = util.common.isMobile();
-    const stationDomain = location.pathname.split("/")[1];
     return (
       <div
         className="app-content"
-        style={{
-          top: !isMobile && nowStation && nowStation.style === 2 ? "0" : "70px"
-        }}
+        // style={{
+        //   top: !isMobile && nowStation && nowStation.style === 2 ? "0" : "70px"
+        // }}
       >
         <div
           className="main-content station-options"
@@ -180,10 +179,6 @@ class StationOptions extends Component {
             ) : null}
           </ReactCSSTransitionGroup>
           <i className="menu-trigger" onClick={this.handleTriggerClick}></i>
-          <i
-            className="back-home"
-            onClick={() => history.push(`/${stationDomain}`)}
-          ></i>
           <div className="options-content">
             {nowStation && nowStation.role && nowStation.role < 3 ? (
               <Route exact path={`${match.path}`} component={Station}></Route>
@@ -231,7 +226,7 @@ class StationOptions extends Component {
     window.addEventListener("resize", this.handleResize);
     const { nowStation, history, match } = this.props;
     if (!nowStation) {
-      history.push(`/${match.params.id}`);
+      history.push(`/${match.params.id}/home`);
     }
   }
 

@@ -30,7 +30,7 @@ class LoginTip extends Component {
                             backgroundImage: `url(${nowStation && nowStation.logo !== null ? nowStation.logo : '/image/background/logo.svg'})`,
                             width: `${Math.ceil(35 * (logoSize.width / logoSize.height))}px`
                         }}>
-                            <Link to={`/${stationDomain}`}></Link>
+                            <Link to={`/${stationDomain}/home`}></Link>
                         </i> : null
                 }
                 {/* <span>{nowStation ? nowStation.name : ''}</span> */}

@@ -71,6 +71,23 @@ class Header extends Component {
     const stationDomain = pathname.split("/")[1];
     const isMobile = util.common.isMobile();
 
+    // 自定义背景
+    const customBk =
+      nowStation &&
+      nowStation.config &&
+      nowStation.config.customBk &&
+      nowStation.config.customBk.one
+        ? util.operation.isPortalDetail(window.location.pathname)
+          ? `url(${nowStation.config.customBk.three.url})`
+          : `url(${nowStation.config.customBk.one.url})`
+        : null;
+    // 自定义背景是否重复
+    const noRepeat =
+      customBk &&
+      (util.operation.isPortalDetail(window.location.pathname)
+        ? nowStation.config.customBk.three.type === 1
+        : nowStation.config.customBk.one.type === 1);
+
     return (
       <div
         className="app-menu-container"
@@ -83,7 +100,18 @@ class Header extends Component {
               : user && user.isGuest && util.common.isMobile()
               ? "none"
               : "flex",
-          backgroundImage: nowStation ? `url(${nowStation.cover})` : "unset"
+          background:
+            nowStation && nowStation.style === 2
+              ? customBk
+                ? customBk
+                : `url(${nowStation ? nowStation.cover : "unset"})`
+              : `url(${nowStation ? nowStation.cover : "unset"})`,
+          backgroundRepeat:
+            nowStation && nowStation.style === 2
+              ? noRepeat
+                ? "no-repeat"
+                : "repeat-x"
+              : "unset"
         }}
       >
         <ul className="app-menu" ref={elem => (this.nv = elem)}>
@@ -99,7 +127,7 @@ class Header extends Component {
                 width: `${Math.ceil(35 * (logoSize.width / logoSize.height))}px`
               }}
             >
-              <Link to={`/${stationDomain}`}></Link>
+              <Link to={`/${stationDomain}/home`}></Link>
             </li>
           ) : (
             <li
@@ -109,7 +137,7 @@ class Header extends Component {
                 width: "35px"
               }}
             >
-              <Link to={`/${stationDomain}`}></Link>
+              <Link to={`/${stationDomain}/home`}></Link>
             </li>
           )}
           {!isMobile ? (

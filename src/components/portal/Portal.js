@@ -74,7 +74,7 @@ class Portal extends Component {
           className="portal-home-body"
           style={{
             minHeight: `${winHeight - 233 - 50}px`,
-            backgroundImage: pathname.split("/")[2]
+            backgroundImage: pathname.split("/")[3]
               ? "unset"
               : `url(${nowStation ? nowStation.cover : ""})`
           }}
@@ -89,10 +89,6 @@ class Portal extends Component {
           ) : null}
         </div>
         {
-          // pathname.indexOf('/catalog/') !== -1 ?
-          //     <div className="operation-panel">
-          //         <AddButton />
-          //     </div> : null
           <div className="operation-panel">
             <AddButton />
           </div>

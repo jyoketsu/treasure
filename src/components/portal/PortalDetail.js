@@ -28,7 +28,7 @@ class PortalDetail extends Component {
     const channelKey = match.params.id;
     this.getStoryList(tag.id);
     history.push({
-      pathname: `/${stationDomain}/detail/${channelKey}`,
+      pathname: `/${stationDomain}/home/detail/${channelKey}`,
       state: { tagId: tag.id, tagName: tag.name }
     });
     this.jumpable = true;
