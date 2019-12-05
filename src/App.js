@@ -98,7 +98,11 @@ class App extends Component {
       url = url.replace("http:", "https:");
       window.location.replace(url);
     }
-    if (!window.location.pathname.split("/")[2]) {
+
+    if (
+      window.location.pathname !== "/" &&
+      !window.location.pathname.split("/")[2]
+    ) {
       window.location.href = `${window.location.href}/home`;
     }
   }

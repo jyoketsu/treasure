@@ -249,7 +249,7 @@ class Register extends Component {
           ? JSON.parse(sessionStorage.getItem("STATION_INFO"))
           : null;
         if (nowStation) {
-          nextProps.history.push(`/${nowStation.domain}`);
+          nextProps.history.push(`/${nowStation.domain}/home`);
         }
       } else {
         const token = localStorage.getItem("TOKEN");
