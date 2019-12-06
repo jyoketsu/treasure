@@ -363,7 +363,7 @@ const station = {
   getStationDetailByDomain(domain) {
     return requests.get(APIURL + "/star/starDetailByDomain", {
       token: token,
-      domain: domain
+      domain: domain.toLowerCase()
     });
   },
   getStationKey(domain) {
@@ -412,6 +412,12 @@ const station = {
       starKey: stationKey,
       transferContent: transferContent,
       targetUKey: targetUKey
+    });
+  },
+  cloneStation(stationKey) {
+    return requests.post(APIURL + "/star/cloneStar", {
+      token: token,
+      sourceStarKey: stationKey
     });
   }
 };

@@ -77,6 +77,7 @@ export const SEARCH_STATION = "SEARCH_STATION";
 export const SUBSCRIBE = "SUBSCRIBE";
 export const SUBSCRIBE_STATION = "SUBSCRIBE_STATION";
 export const TRANSFER_STATION = "TRANSFER_STATION";
+export const CLONE_STATION = "CLONE_STATION";
 
 export function getStationList() {
   let request = api.station.getStationList();
@@ -213,6 +214,11 @@ export function subscribeStation(stationKey, checked) {
 export function transferStation(stationKey, targetUKey) {
   let request = api.station.transfer(1, stationKey, null, targetUKey);
   return { type: TRANSFER_STATION, stationKey: stationKey, payload: request };
+}
+
+export function cloneStation(stationKey) {
+  let request = api.station.cloneStation(stationKey);
+  return { type: CLONE_STATION, payload: request };
 }
 
 // story

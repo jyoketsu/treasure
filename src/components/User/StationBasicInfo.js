@@ -323,7 +323,7 @@ class StationBasicInfo extends Component {
           editStation(
             starKey,
             fields.name.value,
-            fields.domain.value,
+            fields.domain.value.toLowerCase(),
             fields.url.value,
             type,
             fields.memo.value,
@@ -339,7 +339,7 @@ class StationBasicInfo extends Component {
         } else {
           createStation(
             fields.name.value,
-            fields.domain.value,
+            fields.domain.value.toLowerCase(),
             fields.url.value,
             1,
             fields.memo.value,

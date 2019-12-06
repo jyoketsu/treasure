@@ -100,7 +100,7 @@ class Header extends Component {
               : user && user.isGuest && util.common.isMobile()
               ? "none"
               : "flex",
-          background:
+          backgroundImage:
             nowStation && nowStation.style === 2
               ? customBk
                 ? customBk
@@ -142,7 +142,7 @@ class Header extends Component {
           )}
           {!isMobile ? (
             <li className="head-station-name">
-              <Link to={`/${stationDomain}`}>
+              <Link to={`/${stationDomain}/home`}>
                 {nowStation ? nowStation.name : ""}
               </Link>
             </li>

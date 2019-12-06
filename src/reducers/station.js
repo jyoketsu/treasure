@@ -27,7 +27,8 @@ import {
   SEE_CHANNEL,
   SEE_PLUGIN,
   SORT_CHANNEL,
-  SORT_PLUGIN
+  SORT_PLUGIN,
+  CLONE_STATION
 } from "../actions/app";
 import { message } from "antd";
 
@@ -465,6 +466,13 @@ const station = (state = defaultState, action) => {
           ...state,
           nowStation: nowStation
         };
+      } else {
+        return state;
+      }
+    case CLONE_STATION:
+      if (!action.error) {
+        message.success("站点克隆成功，请刷新页面后查看");
+        return state;
       } else {
         return state;
       }
