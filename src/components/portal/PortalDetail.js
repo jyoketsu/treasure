@@ -85,6 +85,7 @@ class PortalDetail extends Component {
             cover={nowChannel.cover}
           />
           <CatalogList
+            currentTagId={tagId}
             tagList={tagList}
             onClickCatalog={this.handleClickCatalog}
           />
@@ -94,10 +95,7 @@ class PortalDetail extends Component {
           {articleKey ? (
             <PortalArticle id={articleKey} />
           ) : storyList.length === 1 ? (
-            storyList[0].type === 12 ||
-            (storyList[0].type === 15 && storyList[0].openType === 1) ? null : (
-              <PortalArticle id={storyList[0]._key} />
-            )
+            <PortalArticle id={storyList[0]._key} />
           ) : (
             <PortalArticleList />
           )}
@@ -142,19 +140,15 @@ class CatalogBanner extends Component {
     const {
       channelName,
       stationLogo,
-      tagName
-      // cover
     } = this.props;
     return (
       <div className="catalog-banner">
         <div
           className="channel-cover"
-          // style={{ backgroundImage: `url(${cover})` }}
         ></div>
         <div className="catalog-name-info">
           <div className="channel-catalog-name">
             <span>{channelName}</span>
-            <span>{tagName}</span>
           </div>
           <div
             className="channel-station-logo"
@@ -170,11 +164,16 @@ class CatalogBanner extends Component {
 
 class CatalogList extends Component {
   render() {
-    const { tagList, onClickCatalog } = this.props;
+    const { tagList, currentTagId, onClickCatalog } = this.props;
     return (
       <div className="catalog-list">
         {tagList.map((catalog, index) => (
-          <CatalogItem key={index} catalog={catalog} onClick={onClickCatalog} />
+          <CatalogItem
+            key={index}
+            currentTagId={currentTagId}
+            catalog={catalog}
+            onClick={onClickCatalog}
+          />
         ))}
       </div>
     );
@@ -183,7 +182,7 @@ class CatalogList extends Component {
 
 class CatalogItem extends Component {
   render() {
-    const { catalog, onClick } = this.props;
+    const { currentTagId, catalog, onClick } = this.props;
     let obj;
     if (util.common.isJSON(catalog)) {
       obj = JSON.parse(catalog);
@@ -191,7 +190,10 @@ class CatalogItem extends Component {
       obj = { id: catalog, name: catalog };
     }
     return (
-      <div className="catalog-item" onClick={() => onClick(obj)}>
+      <div
+        className={`catalog-item ${currentTagId === obj.id ? "active" : ""}`}
+        onClick={() => onClick(obj)}
+      >
         {obj.name}
       </div>
     );

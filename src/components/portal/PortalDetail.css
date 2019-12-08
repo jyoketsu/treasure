@@ -1,126 +1,121 @@
 .portal-detail {
-    width: 100%;
-    font: 14px/150% "微软雅黑", Hiragino Sans GB, "黑体", Arial, Helvetica, sans-serif;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5f5f5;
+  width: 100%;
+  font: 14px/150% "微软雅黑", Hiragino Sans GB, "黑体", Arial, Helvetica,
+    sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5f5;
 }
 
 .portal-detail-head {
-    z-index: 999;
-    width: 100%;
-    height: 330px;
-    /* background-image: url(/image/background/hbg.png); */
-    background-size: cover;
-    background-position: left;
-    min-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  z-index: 999;
+  width: 100%;
+  height: 330px;
+  /* background-image: url(/image/background/hbg.png); */
+  background-size: cover;
+  background-position: left;
+  min-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .portal-detail-content {
-    width: 1200px;
+  width: 1200px;
 }
 
 /* CatalogBanner------------- */
 
 .catalog-banner {
-    position: relative;
-    /* width: 728px; */
-    width: 800px;
-    height: 292px;
-    /* background-image: url(/image/background/catalog-banner-container.png); */
+  position: relative;
+  width: 750px;
+  height: 292px;
 }
 
 .channel-cover {
-    width: 491px;
-    height: 195px;
-    position: absolute;
-    top: 57px;
-    background-size: cover;
-    background-position: center;
+  width: 491px;
+  height: 195px;
+  position: absolute;
+  top: 57px;
+  background-size: cover;
+  background-position: center;
 }
 
 .catalog-name-info {
-    position: absolute;
-    width: 190px;
-    height: 100%;
-    top: 0;
-    right: 0;
+  position: absolute;
+  width: 190px;
+  height: 100%;
+  top: 0;
+  right: 0;
 }
 
 .channel-catalog-name {
-    height: 70%;
+  height: 70%;
 }
 
 .channel-station-logo {
-    height: 30%;
-    background-size: 70%;
-    background-repeat: no-repeat;
-    background-position: center;
+  height: 30%;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .channel-catalog-name {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  padding-top: 40px;
 }
 
-.channel-catalog-name>span {
-    writing-mode: vertical-rl;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.channel-catalog-name>span:first-child {
-    font-size: 32px;
-    margin: 0 30px;
-    font-weight: 800;
-    width: 50px;
-    line-height: 50px;
-    color: #FFFFFF;
-}
-
-.channel-catalog-name>span:last-child {
-    /* color: #965D0C; */
-    color: #FFFFFF;
-    font-size: 16px;
+.channel-catalog-name > span {
+  writing-mode: vertical-rl;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 32px;
+  margin: 0 30px;
+  font-weight: 800;
+  width: 50px;
+  line-height: 50px;
+  color: #ffffff;
 }
 
 /* catalog-list------ */
 .catalog-list {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding-left: 35px;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 35px;
 }
 
 .catalog-item {
-    float: left;
-    margin-right: 20px;
-    padding-top: 1px;
-    width: 43px;
-    height: 147px;
-    /* background: url(/image/background/list.png) no-repeat top center; */
-    background: url(/image/background/tag.png) no-repeat top center;
-    background-size: contain;
-    writing-mode: vertical-rl;
-    font-size: 18px;
-    text-align: center;
-    line-height: 43px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 24px 0;
+  float: left;
+  margin-right: 20px;
+  padding-top: 1px;
+  width: 43px;
+  height: 147px;
+  background-image: url(/image/background/tag.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  writing-mode: vertical-rl;
+  font-size: 18px;
+  text-align: center;
+  line-height: 43px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 24px 0;
+}
+
+.catalog-item.active {
+  background-image: url(/image/background/tag-active.png);
+  font-weight: bold;
 }
 
 .catalog-item:hover {
-    cursor: pointer;
-    color: #965D0C;
+  cursor: pointer;
+  color: #965d0c;
 }
