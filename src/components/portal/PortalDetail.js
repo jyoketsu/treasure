@@ -110,27 +110,27 @@ class PortalDetail extends Component {
     this.getStoryList(tagId);
   }
 
-  componentDidUpdate(prevProps) {
-    const { storyList: prevStoryList } = prevProps;
-    const { storyList } = this.props;
-    if (
-      storyList.length === 1 &&
-      (storyList[0].type === 12 || storyList[0].type === 15) &&
-      prevStoryList[0] &&
-      storyList[0]._key !== prevStoryList[0]._key
-    ) {
-      this.jumpable = false;
-      if (storyList[0].type === 12) {
-        const token = localStorage.getItem("TOKEN");
-        window.open(
-          `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
-          "_blank"
-        );
-      } else {
-        window.open(storyList[0].url, "_blank");
-      }
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   const { storyList: prevStoryList } = prevProps;
+  //   const { storyList } = this.props;
+  //   if (
+  //     storyList.length === 1 &&
+  //     (storyList[0].type === 12 || storyList[0].type === 15) &&
+  //     prevStoryList[0] &&
+  //     storyList[0]._key !== prevStoryList[0]._key
+  //   ) {
+  //     this.jumpable = false;
+  //     if (storyList[0].type === 12) {
+  //       const token = localStorage.getItem("TOKEN");
+  //       window.open(
+  //         `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
+  //         "_blank"
+  //       );
+  //     } else {
+  //       window.open(storyList[0].url, "_blank");
+  //     }
+  //   }
+  // }
 }
 
 export default connect(mapStateToProps, { getStoryList })(PortalDetail);

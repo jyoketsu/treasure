@@ -29,6 +29,9 @@
   z-index: 999;
   pointer-events: none;
 }
+.portal-article {
+  position: relative;
+}
 
 /* portal-foot------ */
 .portal-foot {

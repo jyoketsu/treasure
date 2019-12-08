@@ -178,7 +178,7 @@ class Story extends Component {
                     </div>
                   </div>
                 </div>
-                {story.tag ? <div>标签：{story.tag}</div> : null}
+                {/* {story.tag ? <div>标签：{story.tag}</div> : null} */}
                 {address ? (
                   <div className="story-head-address">{address}</div>
                 ) : null}

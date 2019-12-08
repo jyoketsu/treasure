@@ -3,7 +3,7 @@ import StroyLink from "./story/Link";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Modal, Tooltip, message, Select } from "antd";
 import { withRouter } from "react-router-dom";
-import { switchEditLinkVisible } from "../actions/app";
+import { switchEditLinkVisible, clearStoryDetail } from "../actions/app";
 import { connect } from "react-redux";
 import ClickOutside from "./common/ClickOutside";
 
@@ -42,7 +42,8 @@ class AddButton extends Component {
       nowChannelKey,
       match,
       nowStation,
-      switchEditLinkVisible
+      switchEditLinkVisible,
+      clearStoryDetail
     } = this.props;
     const stationDomain = match.params.id;
     if (user.isGuest) {
@@ -80,6 +81,10 @@ class AddButton extends Component {
         );
         break;
       case "link":
+        history.push({
+          pathname: `/${stationDomain}/home`,
+        });
+        clearStoryDetail();
         switchEditLinkVisible();
         break;
       default:
@@ -255,8 +260,7 @@ class AddButton extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { switchEditLinkVisible }
-  )(AddButton)
+  connect(mapStateToProps, { switchEditLinkVisible, clearStoryDetail })(
+    AddButton
+  )
 );
