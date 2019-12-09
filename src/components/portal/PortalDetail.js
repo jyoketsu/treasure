@@ -5,7 +5,11 @@ import CatalogTitle from "./CatalogTitle";
 import PortalArticle from "./PortalArticle";
 import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";
-import { getStoryList } from "../../actions/app";
+import {
+  getStoryList,
+  clearStoryDetail,
+  clearStoryList
+} from "../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation,
   storyList: state.story.storyList,
@@ -91,7 +95,7 @@ class PortalDetail extends Component {
           />
         </div>
         <div className="portal-detail-content">
-          <CatalogTitle title={tagName} />
+          {/* <CatalogTitle title={tagName} /> */}
           {articleKey ? (
             <PortalArticle id={articleKey} />
           ) : storyList.length === 1 ? (
@@ -110,42 +114,55 @@ class PortalDetail extends Component {
     this.getStoryList(tagId);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const { storyList: prevStoryList } = prevProps;
-  //   const { storyList } = this.props;
-  //   if (
-  //     storyList.length === 1 &&
-  //     (storyList[0].type === 12 || storyList[0].type === 15) &&
-  //     prevStoryList[0] &&
-  //     storyList[0]._key !== prevStoryList[0]._key
-  //   ) {
-  //     this.jumpable = false;
-  //     if (storyList[0].type === 12) {
-  //       const token = localStorage.getItem("TOKEN");
-  //       window.open(
-  //         `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
-  //         "_blank"
-  //       );
-  //     } else {
-  //       window.open(storyList[0].url, "_blank");
-  //     }
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    const { storyList: prevStoryList } = prevProps;
+    const { storyList, nowStation } = this.props;
+    const prevStoryKey = prevStoryList[0] ? prevStoryList[0]._key : "";
+    if (
+      storyList.length === 1 &&
+      (storyList[0].type === 12 || storyList[0].type === 15) &&
+      storyList[0]._key !== prevStoryKey
+    ) {
+      this.jumpable = false;
+      if (storyList[0].type === 12) {
+        const token = localStorage.getItem("TOKEN");
+        window.open(
+          `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
+          "_blank"
+        );
+      } else if (storyList[0].type === 15 && storyList[0].openType === 1) {
+        const token = localStorage.getItem("TOKEN");
+        let url = storyList[0].url;
+        if (
+          storyList[0].url.includes("puku.qingtime.cn") ||
+          storyList[0].url.includes("bless.qingtime.cn") ||
+          storyList[0].url.includes("exp.qingtime.cn")
+        ) {
+          url = `${storyList[0].url}/${nowStation.domain}?token=${token}`;
+        }
+        window.open(url, "_blank");
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearStoryDetail();
+    this.props.clearStoryList();
+  }
 }
 
-export default connect(mapStateToProps, { getStoryList })(PortalDetail);
+export default connect(mapStateToProps, {
+  getStoryList,
+  clearStoryDetail,
+  clearStoryList
+})(PortalDetail);
 
 class CatalogBanner extends Component {
   render() {
-    const {
-      channelName,
-      stationLogo,
-    } = this.props;
+    const { channelName, stationLogo } = this.props;
     return (
       <div className="catalog-banner">
-        <div
-          className="channel-cover"
-        ></div>
+        <div className="channel-cover"></div>
         <div className="catalog-name-info">
           <div className="channel-catalog-name">
             <span>{channelName}</span>

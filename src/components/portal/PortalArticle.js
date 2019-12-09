@@ -17,6 +17,7 @@ class PortalArticle extends Component {
     const { userId, story, nowStationKey, nowStation } = this.props;
     const { userKey } = story;
     const role = nowStation ? nowStation.role : 8;
+    const token = localStorage.getItem("TOKEN");
     let content;
     switch (story.type) {
       case 6:
@@ -29,7 +30,13 @@ class PortalArticle extends Component {
         content = (
           <iframe
             title={story.title}
-            src={story.url}
+            src={
+              story.url.includes("puku.qingtime.cn") ||
+              story.url.includes("bless.qingtime.cn") ||
+              story.url.includes("exp.qingtime.cn")
+                ? `${story.url}/${nowStation.domain}?token=${token}`
+                : story.url
+            }
             frameBorder="0"
             width="100%"
             height={document.body.clientHeight}
