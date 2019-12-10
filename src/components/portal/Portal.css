@@ -47,8 +47,10 @@
   font-size: 14px;
   color: #9399a0;
 }
+.portal-article {
+  width: 810px;
+  margin: 25px auto;
+}
 .portal-article.link {
-  position: absolute;
-  left: 0;
-  right: 0;
+  width: 100%;
 }

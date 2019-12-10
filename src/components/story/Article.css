@@ -16,7 +16,7 @@
 .article-show {
     padding: 5px 5px 25px 5px;
     width: 100%;
-    min-width: 1200px;
+    /* min-width: 1200px; */
     background-color: #fafafa;
     display: flex;
     flex-direction: column;

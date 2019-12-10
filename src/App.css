@@ -41,14 +41,6 @@
   user-select: text;
 }
 
-/* #root,
-.app,
-.route-container,
-.app-content,
-.main-content {
-    height: 100%;
-} */
-
 .App {
   text-align: center;
   box-sizing: border-box;
@@ -112,6 +104,7 @@
   top: 0;
   z-index: 1;
   width: 100%;
+  background-color: #f5f5f5;
 }
 
 /* 淡入淡出动画--------------------------------------------------------- */

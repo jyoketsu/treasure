@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./PortalDetail.css";
 import util from "../../services/Util";
-import CatalogTitle from "./CatalogTitle";
 import PortalArticle from "./PortalArticle";
 import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";

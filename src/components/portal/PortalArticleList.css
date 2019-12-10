@@ -6,10 +6,6 @@
   display: flex;
 }
 
-.portal-article-item:first-child {
-  border-top: 1px solid #ccc;
-}
-
 .portal-article-cover {
   margin-right: 40px;
   width: 450px;
