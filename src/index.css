@@ -5,8 +5,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: auto;
   /* font-family: 'Open Sans', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif; */
-  font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", Meiryo, Osaka,
-    "MS PGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", sans-serif !important;
+  font-family: "PingFangSC-Medium", "Microsoft YaHei", "WenQuanYi Micro Hei",
+    Meiryo, Osaka, "MS PGothic", "ヒラギノ角ゴ Pro W3",
+    "Hiragino Kaku Gothic Pro", sans-serif !important;
   color: #686868;
 }
 

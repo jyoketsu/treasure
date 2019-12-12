@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Story from "../story/Story";
-import Article from "../story/Article";
+import Story from "../../story/Story";
+import Article from "../../story/Article";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { getStoryDetail, switchEditLinkVisible } from "../../actions/app";
+import { getStoryDetail, switchEditLinkVisible } from "../../../actions/app";
 const mapStateToProps = state => ({
   user: state.auth.user,
   userId: state.auth.user ? state.auth.user._key : null,
@@ -27,21 +27,23 @@ class PortalArticle extends Component {
         content = <Article readOnly={true} inline={true} />;
         break;
       case 15:
-        content = (
-          <iframe
-            title={story.title}
-            src={
-              story.url.includes("puku.qingtime.cn") ||
-              story.url.includes("bless.qingtime.cn") ||
-              story.url.includes("exp.qingtime.cn")
-                ? `${story.url}/${nowStation.domain}?token=${token}`
-                : story.url
-            }
-            frameBorder="0"
-            width="100%"
-            height={document.body.clientHeight}
-          ></iframe>
-        );
+        if (story.openType === 2) {
+          content = (
+            <iframe
+              title={story.title}
+              src={
+                story.url.includes("puku.qingtime.cn") ||
+                story.url.includes("bless.qingtime.cn") ||
+                story.url.includes("exp.qingtime.cn")
+                  ? `${story.url}/${nowStation.domain}?token=${token}`
+                  : story.url
+              }
+              frameBorder="0"
+              width="100%"
+              height={document.body.clientHeight}
+            ></iframe>
+          );
+        }
         break;
       default:
         break;

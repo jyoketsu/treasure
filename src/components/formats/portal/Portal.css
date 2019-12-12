@@ -2,7 +2,7 @@
   background-repeat: no-repeat;
   background-position: top right;
   background-size: auto;
-  padding-top: 233px;
+  /* padding-top: 233px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +17,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 .portal-home-footer {
   position: absolute;
@@ -53,4 +54,14 @@
 }
 .portal-article.link {
   width: 100%;
+}
+.catalog-title-edit {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #1890ff;
+}
+.catalog-title-edit:hover {
+  cursor: pointer;
+  color: #40a9ff;
 }

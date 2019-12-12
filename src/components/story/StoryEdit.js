@@ -409,7 +409,7 @@ class StoryEdit extends Component {
   }
 
   render() {
-    const { nowStation, seriesInfo, inline } = this.props;
+    const { seriesInfo, inline } = this.props;
     const {
       story = {},
       selectedItemId,
@@ -475,12 +475,7 @@ class StoryEdit extends Component {
     let placeholder = <div className="placeholderContent">拖放到这里</div>;
 
     return (
-      <div
-        className={`app-content story-edit ${inline ? "inline" : ""}`}
-        style={{
-          top: nowStation && nowStation.style === 2 ? "0" : "70px"
-        }}
-      >
+      <div className={`app-content story-edit ${inline ? "inline" : ""}`}>
         <div className="story-edit-head-buttons">
           <Button onClick={this.handleCancel}>取消</Button>
           {story._key ? (

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "./Portal.css";
 import { Route } from "react-router-dom";
+import Header from "./PortalHeader";
 import Catalog from "./PortalCatalog";
 import Detail from "./PortalDetail";
-import AddButton from "../AddArticleButton";
-import util from "../../services/Util";
+import AddButton from "../../AddArticleButton";
+import util from "../../../services/Util";
 import { connect } from "react-redux";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation
@@ -70,10 +71,10 @@ class Portal extends Component {
           backgroundSize: noRepeat ? "100%" : "unset"
         }}
       >
+        <Header />
         <div
           className="portal-home-body"
           style={{
-            minHeight: `${winHeight - 233 - 50}px`,
             backgroundImage: pathname.split("/")[3]
               ? "unset"
               : `url(${nowStation ? nowStation.cover : ""})`

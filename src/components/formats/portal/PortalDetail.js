@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./PortalDetail.css";
-import util from "../../services/Util";
+import util from "../../../services/Util";
 import PortalArticle from "./PortalArticle";
 import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";
@@ -8,7 +8,7 @@ import {
   getStoryList,
   clearStoryDetail,
   clearStoryList
-} from "../../actions/app";
+} from "../../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation,
   storyList: state.story.storyList,
@@ -108,9 +108,11 @@ class PortalDetail extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, storyList } = this.props;
     const { tagId } = location.state;
-    this.getStoryList(tagId);
+    if (!storyList.length) {
+      this.getStoryList(tagId);
+    }
   }
 
   componentDidUpdate(prevProps) {

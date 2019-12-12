@@ -18,17 +18,21 @@ export const ADD_GROUP_MEMBER = "ADD_GROUP_MEMBER";
 export const SET_MEMBER_ROLE = "SET_MEMBER_ROLE";
 export const REMOVE_GROUP_MEMBER = "REMOVE_GROUP_MEMBER";
 
-export function logout(history) {
-  history.push(`/account/login${window.location.search}`);
-  return { type: LOGOUT };
+export function logout(dispatch) {
+  // history.push(`/account/login${window.location.search}`);
+  if (dispatch) {
+    dispatch({ type: LOGOUT });
+  } else {
+    return { type: LOGOUT };
+  }
 }
 
-export function getUserInfo(token, history) {
+export function getUserInfo(token) {
   if (token) {
     api.setToken(token);
   }
   let request = api.auth.getUserFullInfo();
-  return { type: GET_USER_INFO, history: history, payload: request };
+  return { type: GET_USER_INFO, payload: request };
 }
 
 export function editAccount(profile) {

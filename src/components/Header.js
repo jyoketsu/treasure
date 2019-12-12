@@ -6,25 +6,12 @@ import { Link, withRouter } from "react-router-dom";
 import util from "../services/Util";
 import TopMenu from "./HeaderMenu";
 import SubscribeMenu from "./HeaderSubscribe";
-import { HOST_NAME } from "../global";
 import { connect } from "react-redux";
-import {
-  getUserInfo,
-  logout,
-  changeStation,
-  getStationList,
-  clearStoryList,
-  getStationDetail,
-  getStoryList
-} from "../actions/app";
+import { changeStation } from "../actions/app";
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  stationList: state.station.stationList,
-  nowStationKey: state.station.nowStationKey,
-  nowStation: state.station.nowStation,
-  sortType: state.story.sortType,
-  sortOrder: state.story.sortOrder
+  nowStation: state.station.nowStation
 });
 
 class Header extends Component {
@@ -71,23 +58,6 @@ class Header extends Component {
     const stationDomain = pathname.split("/")[1];
     const isMobile = util.common.isMobile();
 
-    // 自定义背景
-    const customBk =
-      nowStation &&
-      nowStation.config &&
-      nowStation.config.customBk &&
-      nowStation.config.customBk.one
-        ? util.operation.isPortalDetail(window.location.pathname)
-          ? `url(${nowStation.config.customBk.three.url})`
-          : `url(${nowStation.config.customBk.one.url})`
-        : null;
-    // 自定义背景是否重复
-    const noRepeat =
-      customBk &&
-      (util.operation.isPortalDetail(window.location.pathname)
-        ? nowStation.config.customBk.three.type === 1
-        : nowStation.config.customBk.one.type === 1);
-
     return (
       <div
         className="app-menu-container"
@@ -99,19 +69,7 @@ class Header extends Component {
               ? "none"
               : user && user.isGuest && util.common.isMobile()
               ? "none"
-              : "flex",
-          backgroundImage:
-            nowStation && nowStation.style === 2
-              ? customBk
-                ? customBk
-                : `url(${nowStation ? nowStation.cover : "unset"})`
-              : `url(${nowStation ? nowStation.cover : "unset"})`,
-          backgroundRepeat:
-            nowStation && nowStation.style === 2
-              ? noRepeat
-                ? "no-repeat"
-                : "repeat-x"
-              : "unset"
+              : "flex"
         }}
       >
         <ul className="app-menu" ref={elem => (this.nv = elem)}>
@@ -220,28 +178,7 @@ class Header extends Component {
       { passive: false }
     ); //passive 参数不能省略，用来兼容ios和android
 
-    const {
-      nowStation,
-      nowStationKey,
-      history,
-      getUserInfo,
-      location,
-      getStationList,
-      getStoryList,
-      changeStation,
-      sortType,
-      sortOrder
-    } = this.props;
-    const SEARCH_STR = location.search;
-    let token = null;
-    let query_token = null;
-    if (SEARCH_STR) {
-      query_token = util.common.getSearchParamValue(location.search, "token");
-    }
-    token = query_token ? query_token : window.localStorage.getItem("TOKEN");
-    // 获取用户信息
-    getUserInfo(token, history);
-    getStationList();
+    const { nowStation } = this.props;
     // 获取logo大小
     if (nowStation) {
       let size = await util.common.getImageInfo(nowStation.logo);
@@ -249,120 +186,11 @@ class Header extends Component {
         logoSize: size
       });
     }
-
-    if (nowStation) {
-      this.curPage = 1;
-      getStoryList(
-        1,
-        nowStationKey,
-        null,
-        nowStation.showAll ? "allSeries" : nowStation.seriesInfo[0]._key,
-        sortType,
-        sortOrder,
-        "",
-        "",
-        1,
-        this.perPage
-      );
-      sessionStorage.setItem("home-curpage", this.curPage);
-    }
-
-    // 监听路由变化
-    const that = this;
-    this.props.history.listen((route, action) => {
-      if (route.pathname === "/account/login") {
-        that.gettedList = false;
-        that.changed = false;
-      }
-
-      // 点击了浏览器前进，后退按钮
-      if (action === "POP") {
-        const nowDomain =
-          window.location.hostname === HOST_NAME
-            ? route.pathname.split("/")[1]
-            : sessionStorage.getItem("DOMAIN");
-        const prevDomain = sessionStorage.getItem("DOMAIN");
-        if (nowDomain !== prevDomain) {
-          console.log("换站了");
-          changeStation(null, nowDomain);
-        }
-      }
-    });
   }
 
   async componentDidUpdate(prevProps) {
-    const {
-      user,
-      history,
-      stationList,
-      nowStationKey,
-      nowStation,
-      getStationList,
-      getStationDetail,
-      getStoryList,
-      clearStoryList,
-      sortType,
-      sortOrder
-    } = this.props;
+    const { nowStation } = this.props;
     const { nowStation: prevStation } = prevProps;
-
-    // 显示初始微站
-    util.operation.initStation(
-      user,
-      stationList,
-      nowStationKey,
-      this.changed,
-      history,
-      this.changeStation,
-      this.setFlag
-    );
-
-    //  用户登录后获取站点列表
-    if (
-      ((prevProps.user && prevProps.user.isGuest) || !prevProps.user) &&
-      user &&
-      !user.isGuest &&
-      stationList.length === 0 &&
-      !this.gettedList
-    ) {
-      this.gettedList = true;
-      getStationList();
-    }
-
-    // 切换微站时重新获取故事
-    if (
-      nowStationKey !== prevProps.nowStationKey ||
-      (prevProps.user && prevProps.user.isGuest && !user.isGuest)
-    ) {
-      clearStoryList();
-      if (nowStationKey !== "notFound") {
-        getStationDetail(nowStationKey);
-      } else {
-        history.push("/station/notFound");
-      }
-    }
-
-    if (
-      (nowStation &&
-        ((prevStation && nowStation._key !== prevStation._key) ||
-          !prevStation)) ||
-      (nowStation && prevProps.user && prevProps.user.isGuest && !user.isGuest)
-    ) {
-      this.curPage = 1;
-      getStoryList(
-        1,
-        nowStationKey,
-        null,
-        nowStation.showAll ? "allSeries" : nowStation.seriesInfo[0]._key,
-        sortType,
-        sortOrder,
-        "",
-        "",
-        1,
-        this.perPage
-      );
-      sessionStorage.setItem("home-curpage", this.curPage);
-    }
 
     // 切换了微站后，获取logo大小
     if (
@@ -383,12 +211,6 @@ class Header extends Component {
 
 export default withRouter(
   connect(mapStateToProps, {
-    getUserInfo,
-    logout,
-    changeStation,
-    getStationList,
-    clearStoryList,
-    getStationDetail,
-    getStoryList
+    changeStation
   })(Header)
 );

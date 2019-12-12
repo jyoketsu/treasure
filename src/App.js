@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Spin } from "antd";
 import { connect } from "react-redux";
-import Header from "./components/Header";
+import Init from "./components/Init";
 import Home from "./components/Home";
 import Message from "./components/Message";
 import Me from "./components/User/Me";
@@ -21,8 +21,8 @@ import Subscribe from "./components/subscribe/Subscribe";
 import MyArticle from "./components/myArticle/MyArticle";
 import StoryEdit from "./components/story/StoryEdit";
 import NotFound from "./components/NotFound";
-import PortalHome from "./components/portal/Portal";
-import PortalHeader from "./components/portal/PortalHeader";
+import PortalHome from "./components/formats/portal/Portal";
+import Village from "./components/formats/village/Village";
 import { HOST_NAME } from "./global";
 import util from "./services/Util";
 import moment from "moment";
@@ -50,17 +50,37 @@ class App extends Component {
   render() {
     const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
+    // 站点类型
+    const stationType = nowStation ? nowStation.style : "";
+    // 主页
+    let home;
+    switch (stationType) {
+      // 普通站
+      case 1:
+        home = <Route path="/:id/home" component={Home} />;
+        break;
+      // 门户站
+      case 2:
+        if (!util.common.isMobile()) {
+          home = <Route path="/:id/home" component={PortalHome} />;
+        } else {
+          home = <Route path="/:id/home" component={Home} />;
+        }
+        break;
+      case 3:
+        home = <Route path="/:id/home" component={Village} />;
+        break;
+      default:
+        home = <Route path="/:id/home" component={Home} />;
+        break;
+    }
 
     return (
       <Router>
         <div className="app" style={{ minHeight: minHeight }}>
-          <AppHeader nowStation={nowStation} />
+          <Init />
           <div className="route-container">
-            {!util.common.isMobile() && nowStation && nowStation.style === 2 ? (
-              <Route path="/:id/home" component={PortalHome} />
-            ) : (
-              <Route path="/:id/home" component={Home} />
-            )}
+            {home}
             <Route path="/:id/message" component={Message} />
             <Route path="/:id/me" component={Me} />
             <Route path="/:id/editStation" component={EditStation} />
@@ -113,24 +133,6 @@ class App extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
-  }
-}
-
-class AppHeader extends Component {
-  render() {
-    const { nowStation } = this.props;
-    return (
-      <div>
-        {!window.location.pathname.includes("stationOptions") &&
-        !util.common.isMobile() &&
-        nowStation &&
-        nowStation.style === 2 ? (
-          <PortalHeader />
-        ) : (
-          <Header />
-        )}
-      </div>
-    );
   }
 }
 

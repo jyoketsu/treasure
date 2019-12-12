@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./PortalCatalog.css";
 import Carousel from "react_carousel_comp_xujie";
-import util from "../../services/Util";
+import util from "../../../services/Util";
 import { Button } from "antd";
 import { connect } from "react-redux";
 const mapStateToProps = state => ({

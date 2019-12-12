@@ -107,10 +107,6 @@ class Story extends Component {
       <div
         className={`app-content story-container ${inline ? "inline" : ""}`}
         style={{
-          top:
-            (user && user.isGuest && util.common.isMobile()) || inline
-              ? "0"
-              : "70px",
           backgroundColor: inline ? "unset" : "#f5f5f5"
         }}
       >

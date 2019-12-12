@@ -1,0 +1,15 @@
+.village {
+  height: 100%;
+  background: #ffffff;
+}
+.village-banner {
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+}
+@media screen and (max-width: 768px) {
+  .village-banner {
+    height: 120px;
+  }
+}

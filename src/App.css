@@ -77,7 +77,6 @@
 .app-content {
   position: absolute;
   width: 100%;
-  top: 70px;
   background-color: #f5f5f5;
 }
 
@@ -143,7 +142,6 @@
 @media screen and (max-width: 768px) {
   .main-content {
     width: 100%;
-    padding: 0 15px;
   }
 
   *:not(input):not(textarea) {

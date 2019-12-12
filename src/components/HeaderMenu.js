@@ -92,7 +92,7 @@ class HeadMenu extends Component {
     return (
       <div
         className="head-menu"
-        style={{ maxHeight: `${document.body.offsetHeight - 70}px` }}
+        style={{ maxHeight: `${document.body.offsetHeight}px` }}
       >
         <ClickOutside onClickOutside={switchMenu}>
           {user && !user.isGuest ? (

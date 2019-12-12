@@ -5,6 +5,7 @@
   align-items: flex-start;
   /* padding-top: 35px; */
   padding-top: 55px;
+  z-index: 999;
 }
 
 .portal-head-right {

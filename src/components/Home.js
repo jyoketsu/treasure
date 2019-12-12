@@ -7,6 +7,7 @@ import util from "../services/Util";
 import { Modal, Tooltip, message, Input, Select } from "antd";
 import { connect } from "react-redux";
 import AddButton from "./AddArticleButton";
+import Header from "./Header";
 import {
   changeStation,
   getStoryList,
@@ -239,6 +240,7 @@ class Home extends Component {
 
     return (
       <div className="app-content homepage">
+        <Header />
         {nowStationKey !== "all" ? (
           <Station
             user={user}
@@ -291,10 +293,11 @@ class Home extends Component {
       sortType,
       sortOrder,
       getStoryList,
-      refresh
+      refresh,
+      storyListLength
     } = this.props;
 
-    if (refresh && nowStation) {
+    if ((refresh && nowStation) || (!storyListLength && nowStation)) {
       getStoryList(
         1,
         nowStationKey,
@@ -309,6 +312,42 @@ class Home extends Component {
         true
       );
       sessionStorage.setItem("home-curpage", 1);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      user,
+      nowStationKey,
+      nowStation,
+      getStoryList,
+      sortType,
+      sortOrder
+    } = this.props;
+    const { nowStation: prevStation } = prevProps;
+    const prevStationKey = prevStation ? prevStation._key : "";
+
+    if (
+      // 切换站点
+      (nowStation && nowStation._key !== prevStationKey) ||
+      // 用户由游客-->登录后
+      (nowStation && prevProps.user && prevProps.user.isGuest && !user.isGuest)
+    ) {
+      // 获取故事
+      this.curPage = 1;
+      getStoryList(
+        1,
+        nowStationKey,
+        null,
+        nowStation.showAll ? "allSeries" : nowStation.seriesInfo[0]._key,
+        sortType,
+        sortOrder,
+        "",
+        "",
+        1,
+        this.perPage
+      );
+      sessionStorage.setItem("home-curpage", this.curPage);
     }
   }
 
@@ -743,30 +782,6 @@ class Station extends React.Component {
         </Modal>
       </div>
     );
-  }
-
-  componentDidUpdate(prevProps) {
-    const { content = {} } = this.props;
-    const {
-      content: prevContent = {},
-      nowStationKey: prevStationKey
-    } = prevProps;
-
-    // 切换微站
-    if (content._key !== prevContent._key) {
-      sessionStorage.setItem("DOMAIN", content.domain);
-      let tarStationName = util.common.getSearchParamValue(
-        window.location.search,
-        "station"
-      );
-      if (!tarStationName) {
-        document.title = content.name ? content.name : "时光宝库";
-      }
-    }
-    // 从订阅切换到微站
-    if (prevStationKey === "all") {
-      alert("从订阅切换到微站");
-    }
   }
 }
 

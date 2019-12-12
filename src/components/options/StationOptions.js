@@ -16,6 +16,7 @@ import CreatePlugin from "./CreatePlugin";
 import PluginOptions from "./PluginOptions";
 import PluginSystem from "./PluginSystem";
 import MemberStoryList from "./MemberStoryList";
+import Header from "../Header";
 import { clearPluginList } from "./../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation
@@ -24,27 +25,17 @@ const mapStateToProps = state => ({
 class StationOptions extends Component {
   constructor(props) {
     super(props);
-    const { nowStation } = props;
     this.state = {
       showMenu: false,
-      minHeight: `${
-        !util.common.isMobile && nowStation && nowStation.style === 2
-          ? window.innerHeight
-          : window.innerHeight - 70
-      }px`
+      minHeight: `${window.innerHeight}px`
     };
     this.handleTriggerClick = this.handleTriggerClick.bind(this);
     this.handleResize = this.handleResize.bind(this);
   }
 
   handleResize() {
-    const { nowStation } = this.props;
     this.setState({
-      minHeight: `${
-        !util.common.isMobile && nowStation && nowStation.style === 2
-          ? window.innerHeight
-          : window.innerHeight - 70
-      }px`
+      minHeight: `${window.innerHeight}px`
     });
   }
 
@@ -61,16 +52,17 @@ class StationOptions extends Component {
     const pathname = location.pathname.split("/")[3];
     const isMobile = util.common.isMobile();
     return (
-      <div
-        className="app-content"
-        // style={{
-        //   top: !isMobile && nowStation && nowStation.style === 2 ? "0" : "70px"
-        // }}
-      >
+      <div className="app-content">
+        <Header />
         <div
           className="main-content station-options"
           style={{
-            minHeight: minHeight
+            minHeight: minHeight,
+            backgroundImage: `url(${
+              nowStation && nowStation.cover
+                ? nowStation.cover
+                : "/image/background/banner.png"
+            })`
           }}
         >
           <ReactCSSTransitionGroup

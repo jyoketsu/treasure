@@ -2,20 +2,11 @@ import React, { Component } from "react";
 import "./PortalHeader.css";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { withRouter } from "react-router-dom";
-import util from "../../services/Util";
-import TopMenu from "../HeaderMenu";
-import SubscribeMenu from "../HeaderSubscribe";
+import util from "../../../services/Util";
+import TopMenu from "../../HeaderMenu";
+import SubscribeMenu from "../../HeaderSubscribe";
+import Header from "../../Header";
 import { connect } from "react-redux";
-import {
-  getUserInfo,
-  logout,
-  changeStation,
-  getStationList,
-  clearStoryList,
-  getStationDetail,
-  getStoryList
-} from "../../actions/app";
-import { HOST_NAME } from "../../global";
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -33,8 +24,6 @@ class PortalHeader extends Component {
     this.switchMenu = this.switchMenu.bind(this);
     this.switchSubscribe = this.switchSubscribe.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.changeStation = this.changeStation.bind(this);
-    this.setFlag = this.setFlag.bind(this);
     this.state = {
       logoSize: null,
       showMenu: false,
@@ -62,15 +51,6 @@ class PortalHeader extends Component {
     history.push(`/${stationDomain}/home/catalog/${channelKey}`);
   }
 
-  changeStation(key, domain) {
-    this.changed = true;
-    this.props.changeStation(key, domain);
-  }
-
-  setFlag() {
-    this.changed = true;
-  }
-
   render() {
     const { location, nowStation, user, history } = this.props;
     const { logoSize, showMenu, showSubscribe } = this.state;
@@ -78,7 +58,7 @@ class PortalHeader extends Component {
     const stationDomain = pathname.split("/")[1];
     const channelList = nowStation ? nowStation.seriesInfo : [];
 
-    return (
+    return !window.location.pathname.includes("stationOptions") ? (
       <div
         className="app-menu-container"
         style={{
@@ -186,6 +166,8 @@ class PortalHeader extends Component {
           ) : null}
         </ReactCSSTransitionGroup>
       </div>
+    ) : (
+      <Header />
     );
   }
 
@@ -199,24 +181,8 @@ class PortalHeader extends Component {
       { passive: false }
     ); //passive 参数不能省略，用来兼容ios和android
 
-    const {
-      nowStation,
-      history,
-      getUserInfo,
-      location,
-      getStationList,
-      changeStation
-    } = this.props;
-    const SEARCH_STR = location.search;
-    let token = null;
-    let query_token = null;
-    if (SEARCH_STR) {
-      query_token = util.common.getSearchParamValue(location.search, "token");
-    }
-    token = query_token ? query_token : window.localStorage.getItem("TOKEN");
-    // 获取用户信息
-    getUserInfo(token, history);
-    getStationList();
+    const { nowStation } = this.props;
+
     // 获取logo大小
     if (nowStation) {
       let size = await util.common.getImageInfo(nowStation.logo);
@@ -224,103 +190,11 @@ class PortalHeader extends Component {
         logoSize: size
       });
     }
-
-    // 监听路由变化
-    const that = this;
-    this.props.history.listen((route, action) => {
-      if (route.pathname === "/account/login") {
-        that.gettedList = false;
-        that.changed = false;
-      }
-
-      // 点击了浏览器前进，后退按钮
-      if (action === "POP") {
-        const nowDomain =
-          window.location.hostname === HOST_NAME
-            ? route.pathname.split("/")[1]
-            : sessionStorage.getItem("DOMAIN");
-        const prevDomain = sessionStorage.getItem("DOMAIN");
-        if (nowDomain !== prevDomain) {
-          console.log("换站了");
-          changeStation(null, nowDomain);
-        }
-      }
-    });
   }
 
   async componentDidUpdate(prevProps) {
-    const {
-      user,
-      history,
-      stationList,
-      nowStationKey,
-      nowStation,
-      getStationList,
-      getStationDetail,
-      getStoryList,
-      clearStoryList,
-      sortType,
-      sortOrder
-    } = this.props;
+    const { nowStation } = this.props;
     const { nowStation: prevStation } = prevProps;
-
-    // 显示初始微站
-    util.operation.initStation(
-      user,
-      stationList,
-      nowStationKey,
-      this.changed,
-      history,
-      this.changeStation,
-      this.setFlag
-    );
-
-    //  用户登录后获取站点列表
-    if (
-      ((prevProps.user && prevProps.user.isGuest) || !prevProps.user) &&
-      user &&
-      !user.isGuest &&
-      stationList.length === 0 &&
-      !this.gettedList
-    ) {
-      this.gettedList = true;
-      getStationList();
-    }
-
-    // 切换微站时重新获取故事
-    if (
-      nowStationKey !== prevProps.nowStationKey ||
-      (prevProps.user && prevProps.user.isGuest && !user.isGuest)
-    ) {
-      clearStoryList();
-      if (nowStationKey !== "notFound") {
-        getStationDetail(nowStationKey);
-      } else {
-        history.push("/station/notFound");
-      }
-    }
-
-    if (
-      (nowStation &&
-        ((prevStation && nowStation._key !== prevStation._key) ||
-          !prevStation)) ||
-      (nowStation && prevProps.user && prevProps.user.isGuest && !user.isGuest)
-    ) {
-      this.curPage = 1;
-      getStoryList(
-        1,
-        nowStationKey,
-        null,
-        nowStation.showAll ? "allSeries" : nowStation.seriesInfo[0]._key,
-        sortType,
-        sortOrder,
-        "",
-        "",
-        1,
-        this.perPage
-      );
-      sessionStorage.setItem("home-curpage", this.curPage);
-    }
 
     // 切换了微站后，获取logo大小
     if (
@@ -396,14 +270,4 @@ class Channel extends Component {
   }
 }
 
-export default withRouter(
-  connect(mapStateToProps, {
-    getUserInfo,
-    logout,
-    changeStation,
-    getStationList,
-    clearStoryList,
-    getStationDetail,
-    getStoryList
-  })(PortalHeader)
-);
+export default withRouter(connect(mapStateToProps, {})(PortalHeader));

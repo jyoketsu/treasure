@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./PortalArticleList.css";
 import { withRouter } from "react-router-dom";
-import { StoryLoading } from "../story/StoryCard";
+import { StoryLoading } from "../../story/StoryCard";
 import { Pagination } from "antd";
 import { connect } from "react-redux";
-import { getStoryList } from "../../actions/app";
+import { getStoryList } from "../../../actions/app";
 const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,

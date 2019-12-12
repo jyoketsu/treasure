@@ -199,7 +199,7 @@ class EditArticle extends Component {
   }
 
   render() {
-    const { nowStation, seriesInfo, inline } = this.props;
+    const { seriesInfo, inline } = this.props;
     const { story = {}, uptoken } = this.state;
     let channelInfo = {};
     const nowChannelId = story.series
@@ -221,7 +221,6 @@ class EditArticle extends Component {
     return (
       <div
         className={`app-content edit-story ${inline ? "inline" : ""}`}
-        style={{ top: nowStation && nowStation.style === 2 ? "0" : "70px" }}
         ref={eidtStory => (this.eidtStoryRef = eidtStory)}
       >
         <div
@@ -369,8 +368,7 @@ class EditArticle extends Component {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { addStory, modifyStory, deleteStory }
-  )(Form.create({ name: "create-station" })(EditArticle))
+  connect(mapStateToProps, { addStory, modifyStory, deleteStory })(
+    Form.create({ name: "create-station" })(EditArticle)
+  )
 );

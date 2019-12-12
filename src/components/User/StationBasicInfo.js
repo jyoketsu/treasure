@@ -98,6 +98,7 @@ const CustomizedForm = Form.create({
           <Radio.Group>
             <Radio value={1}>普通网站</Radio>
             <Radio value={2}>门户网站</Radio>
+            <Radio value={3}>乡村网站</Radio>
           </Radio.Group>
         )}
       </Form.Item>
