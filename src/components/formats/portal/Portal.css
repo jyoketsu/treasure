@@ -48,6 +48,9 @@
   font-size: 14px;
   color: #9399a0;
 }
+.portal-foot a {
+  color: #9399a0;
+}
 .portal-article {
   width: 810px;
   margin: 25px auto;
@@ -57,11 +60,26 @@
 }
 .catalog-title-edit {
   position: absolute;
-  top: 15px;
+  top: 5px;
   right: 35px;
   color: #1890ff;
 }
 .catalog-title-edit:hover {
   cursor: pointer;
   color: #40a9ff;
+}
+@media screen and (max-width: 768px) {
+  .portal-home-body {
+    background-size: 95%;
+    background-position: center;
+  }
+  .portal-foot {
+    font-size: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+  .portal-article {
+    width: 100%;
+  }
 }

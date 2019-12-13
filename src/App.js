@@ -24,7 +24,6 @@ import NotFound from "./components/NotFound";
 import PortalHome from "./components/formats/portal/Portal";
 import Village from "./components/formats/village/Village";
 import { HOST_NAME } from "./global";
-import util from "./services/Util";
 import moment from "moment";
 import "moment/locale/zh-cn";
 moment.locale("zh-cn");
@@ -61,11 +60,7 @@ class App extends Component {
         break;
       // 门户站
       case 2:
-        if (!util.common.isMobile()) {
-          home = <Route path="/:id/home" component={PortalHome} />;
-        } else {
-          home = <Route path="/:id/home" component={Home} />;
-        }
+        home = <Route path="/:id/home" component={PortalHome} />;
         break;
       case 3:
         home = <Route path="/:id/home" component={Village} />;

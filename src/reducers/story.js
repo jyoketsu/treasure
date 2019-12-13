@@ -14,7 +14,8 @@ import {
   SWITCH_EDIT_LINK_VISIBLE,
   PASS_ALL,
   SET_STATUS_TAG,
-  SET_STATISTICS_STATUS_TAG
+  SET_STATISTICS_STATUS_TAG,
+  SET_CHANNEL_KEY
 } from "../actions/app";
 import { message } from "antd";
 
@@ -263,6 +264,11 @@ const story = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case SET_CHANNEL_KEY:
+      return {
+        ...state,
+        nowChannelKey: action.channelKey
+      };
     default:
       return state;
   }

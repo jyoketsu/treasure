@@ -62,7 +62,17 @@ class Article extends Component {
           }}
         >
           <div className="story-head-title" style={{ border: "unset" }}>
-            <div className="story-title">{title}</div>
+            <div
+              className="story-title"
+              onClick={() =>
+                window.open(
+                  `${window.location.protocol}//${window.location.host}/${nowStation.domain}/article?key=${story._key}`,
+                  "_blank"
+                )
+              }
+            >
+              {title}
+            </div>
             <div className="story-head-info">
               <div className="story-head-other">
                 <div>频道：{story.series ? story.series.name : ""}</div>

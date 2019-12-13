@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import {
   getStoryDetail,
   updateExif,
-  clearStoryDetail,
   setStatusTag,
   statisticsStatusTag
 } from "../../actions/app";
@@ -366,7 +365,6 @@ class Story extends Component {
 export default connect(mapStateToProps, {
   getStoryDetail,
   updateExif,
-  clearStoryDetail,
   setStatusTag,
   statisticsStatusTag
 })(Story);

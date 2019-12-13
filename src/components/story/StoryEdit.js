@@ -662,14 +662,12 @@ class StoryEdit extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { history, loading, flag, keep } = this.props;
+    const { nowStation, history, loading, flag, keep } = this.props;
     const { story } = this.state;
     if (!loading && prevProps.loading && !keep) {
       if (story._key) {
         if (flag === "deleteStory") {
-          const pathname = window.location.pathname;
-          const stationDomain = pathname.split("/")[1];
-          history.push(`/${stationDomain}`);
+          window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
         } else {
           history.goBack();
         }

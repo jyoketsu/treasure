@@ -185,6 +185,9 @@
   display: block;
   font-weight: 800;
 }
+.story-title:hover {
+  cursor: pointer;
+}
 
 .story-image,
 .story-video {

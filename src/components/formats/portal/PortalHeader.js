@@ -7,6 +7,7 @@ import TopMenu from "../../HeaderMenu";
 import SubscribeMenu from "../../HeaderSubscribe";
 import Header from "../../Header";
 import { connect } from "react-redux";
+import { setChannelKey } from "../../../actions/app";
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -45,10 +46,11 @@ class PortalHeader extends Component {
   }
 
   handleClick(channelKey) {
-    const { location, history } = this.props;
+    const { location, history, setChannelKey } = this.props;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
     history.push(`/${stationDomain}/home/catalog/${channelKey}`);
+    setChannelKey(channelKey);
   }
 
   render() {
@@ -62,26 +64,24 @@ class PortalHeader extends Component {
       <div
         className="app-menu-container"
         style={{
-          display: util.operation.hidePortalHeader(pathname)
-            ? "none"
-            : user && user.isGuest && util.common.isMobile()
-            ? "none"
-            : "flex"
+          display: util.operation.hidePortalHeader(pathname) ? "none" : "flex"
         }}
       >
         <ul className="app-menu portal-menu" ref={elem => (this.nv = elem)}>
-          {channelList.map((channel, index) => (
-            <Channel
-              key={index}
-              channelKey={channel._key}
-              name={channel.name}
-              icon={channel.logo}
-              tag={channel.tag}
-              location={location}
-              history={history}
-              onClick={() => this.handleClick(channel._key)}
-            />
-          ))}
+          <div className="portal-head-left">
+            {channelList.map((channel, index) => (
+              <Channel
+                key={index}
+                channelKey={channel._key}
+                name={channel.name}
+                icon={channel.logo}
+                tag={channel.tag}
+                location={location}
+                history={history}
+                onClick={() => this.handleClick(channel._key)}
+              />
+            ))}
+          </div>
           <li className="menu-space"></li>
           <div className="portal-head-right">
             <div className="portal-head-buttons">
@@ -270,4 +270,6 @@ class Channel extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {})(PortalHeader));
+export default withRouter(
+  connect(mapStateToProps, { setChannelKey })(PortalHeader)
+);

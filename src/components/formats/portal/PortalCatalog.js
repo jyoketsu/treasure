@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./PortalCatalog.css";
 import Carousel from "react_carousel_comp_xujie";
 import util from "../../../services/Util";
+import PortalCatalogMobile from "./PortalCatalogMobile";
 import { Button } from "antd";
 import { connect } from "react-redux";
 const mapStateToProps = state => ({
@@ -48,15 +49,19 @@ class Catalog extends Component {
         </div>
         <div className="portal-catalog-container">
           {tagList.length ? (
-            <Carousel>
-              {tagList.map((tagItem, index) => (
-                <CatalogCover
-                  key={index}
-                  catalog={tagItem}
-                  onClick={this.handleClick}
-                />
-              ))}
-            </Carousel>
+            !util.common.isMobile() ? (
+              <Carousel>
+                {tagList.map((tagItem, index) => (
+                  <CatalogCover
+                    key={index}
+                    catalog={tagItem}
+                    onClick={this.handleClick}
+                  />
+                ))}
+              </Carousel>
+            ) : (
+              <PortalCatalogMobile tagList={tagList} />
+            )
           ) : (
             <div className="no-tag">暂无内容</div>
           )}

@@ -244,6 +244,7 @@ export const EXIT_EDIT = "EXIT_EDIT";
 export const PASS_ALL = "PASS_ALL";
 export const SET_STATUS_TAG = "SET_STATUS_TAG";
 export const SET_STATISTICS_STATUS_TAG = "SET_STATISTICS_STATUS_TAG";
+export const SET_CHANNEL_KEY = "SET_CHANNEL_KEY";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -398,6 +399,10 @@ export function statisticsStatusTag(stationKey, channelKey, statusTag) {
     payload: request,
     noLoading: true
   };
+}
+
+export function setChannelKey(channelKey) {
+  return { type: SET_CHANNEL_KEY, channelKey: channelKey };
 }
 
 // 频道

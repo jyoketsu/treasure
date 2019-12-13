@@ -7,6 +7,10 @@
   padding-top: 55px;
   z-index: 999;
 }
+.portal-head-left {
+  display: flex;
+  justify-content: center;
+}
 
 .portal-head-right {
   width: 420px;
@@ -54,7 +58,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 35px;
+  margin-right: 15px;
 }
 
 .portal-channel:hover {
@@ -63,7 +67,7 @@
 
 .portal-channel > i {
   width: 78px;
-  height: 78px;
+  height: 80px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -89,7 +93,7 @@
 .portal-channel-list {
   position: absolute;
   top: 115px;
-  color: #FFFFFF;
+  color: #ffffff;
   display: flex;
   opacity: 0;
   transition: ease-in opacity 0.3s;
@@ -109,4 +113,70 @@
 }
 .portal-channel-list > div:hover {
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .portal-menu {
+    width: 100%;
+    height: unset;
+    flex-direction: column-reverse;
+    padding: unset;
+    justify-content: center;
+    align-items: center;
+  }
+  .portal-home > .app-menu-container {
+    width: 100%;
+  }
+  .portal-head-left {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 400px;
+  }
+  .portal-channel {
+    width: 80px;
+    margin: 10px;
+  }
+  .portal-channel > span {
+    font-size: 14px;
+  }
+  .portal-head-logo > .menu-logo {
+    height: 35px !important;
+  }
+  .portal-head-right {
+    width: 100%;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .portal-head-buttons {
+    margin-right: 15px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .portal-head-left {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 360px;
+  }
+  .portal-channel {
+    width: 70px;
+    margin: 10px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .portal-head-left {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 320px;
+  }
+  .portal-channel {
+    width: 60px;
+    margin: 10px;
+  }
+  .portal-channel > i{
+    width: 50px;
+    height: 52px;
+  }
 }

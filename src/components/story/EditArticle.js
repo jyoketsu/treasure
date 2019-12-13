@@ -349,14 +349,12 @@ class EditArticle extends Component {
       this.scrollDown = false;
       this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
     }
-    const { history, loading, flag } = this.props;
+    const { nowStation, history, loading, flag } = this.props;
     const { story } = this.state;
     if (!loading && prevProps.loading) {
       if (story._key) {
         if (flag === "deleteStory") {
-          const pathname = window.location.pathname;
-          const stationDomain = pathname.split("/")[1];
-          history.push(`/${stationDomain}`);
+          window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
         } else {
           history.goBack();
         }

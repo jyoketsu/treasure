@@ -21,12 +21,12 @@ class HeadMenu extends Component {
   }
 
   showConfirm() {
-    const { logout, history } = this.props;
+    const { logout } = this.props;
     confirm({
       title: "退出",
       content: "确定要退出吗？",
       onOk() {
-        logout(history);
+        logout();
       },
       onCancel() {
         console.log("Cancel");
@@ -80,8 +80,13 @@ class HeadMenu extends Component {
       history.push(`/${domain}/home`);
       if (clearLogo) clearLogo();
     } else {
+      const token = localStorage.getItem("TOKEN");
       window.open(
-        `${url ? `http://${url}` : `https://${HOST_NAME}/${domain}/home`}`,
+        `${
+          url
+            ? `http://${url}?token=${token}`
+            : `https://${HOST_NAME}/${domain}/home`
+        }`,
         "_blank"
       );
     }

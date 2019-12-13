@@ -24,7 +24,7 @@ class PortalArticle extends Component {
         content = <Story readOnly={true} inline={true} />;
         break;
       case 9:
-        content = <Article readOnly={true} inline={true} />;
+        content = <Article readOnly={true} inline={true} hideMenu={true} />;
         break;
       case 15:
         if (story.openType === 2) {

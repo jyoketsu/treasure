@@ -29,7 +29,13 @@ const auth = (state = defaultState, action) => {
     case LOGOUT:
       return {
         ...state,
-        user: { isGuest: true }
+        user: {
+          _key: "593335993",
+          right: 0,
+          status: 1,
+          profile: { nickName: "游客" },
+          isGuest: true
+        }
       };
     case REGISTER:
       if (!action.error) {

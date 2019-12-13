@@ -1,111 +1,131 @@
 .portal-catalog {
-    position: relative;
-    padding: 15px 20px;
-    width: 1200px;
-    height: 450px;
-    background: #fff;
-    box-shadow: 0 0 10px #bbb;
-    display: flex;
+  position: relative;
+  padding: 15px 20px;
+  width: 1200px;
+  height: 450px;
+  background: #fff;
+  box-shadow: 0 0 10px #bbb;
+  display: flex;
 }
 
 .portal-title {
-    width: 130px;
-    height: 100%;
-    background-color: #f1f1f1;
-    display: flex;
+  width: 130px;
+  height: 100%;
+  background-color: #f1f1f1;
+  display: flex;
 }
 
-.portal-title>div {
-    width: 20px;
-    height: 100%;
-    background-color: #434343;
+.portal-title > div {
+  width: 20px;
+  height: 100%;
+  background-color: #434343;
 }
 
-.portal-title>span {
-    color: grey;
-    font-size: 25px;
-    writing-mode: vertical-rl;
-    padding-top: 20px;
+.portal-title > span {
+  color: grey;
+  font-size: 25px;
+  writing-mode: vertical-rl;
+  padding-top: 20px;
 }
 
 .portal-catalog-container {
-    flex: 1;
+  flex: 1;
 }
 
-.no-tag{
-    height: 100%;
-    font-size: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.no-tag {
+  height: 100%;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* CatalogCover------ */
 .catalog-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    color: #fff;
-    text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
 }
 
 .catalog-cover {
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    transition: transform .3s ease;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.3s ease;
 }
 
 .catalog-name {
-    position: absolute;
-    bottom: 60px;
-    padding: 5px 0;
-    width: 100%;
-    background: rgba(0, 0, 0, .5);
-    font-size: 15px;
-    opacity: 1;
+  position: absolute;
+  bottom: 60px;
+  padding: 5px 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 15px;
+  opacity: 1;
 }
 
-.catalog-container:hover>.catalog-name {
-    opacity: 0;
-    transition: opacity .3s ease;
+.catalog-container:hover > .catalog-name {
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .catalog-shadow {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0;
-    background: rgba(0, 0, 0, .5);
-    transition: opacity .3s ease;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 }
 
-.catalog-container:hover>.catalog-shadow {
-    opacity: 1;
+.catalog-container:hover > .catalog-shadow {
+  opacity: 1;
 }
 
 .catalog-shadow-name {
-    font-size: 24px;
-    color: #fff;
-    margin-top: 130px;
+  font-size: 24px;
+  color: #fff;
+  margin-top: 130px;
 }
 
 .catalog-shadow-info {
-    font-size: 15px;
-    margin: 15px;
+  font-size: 15px;
+  margin: 15px;
 }
 
 .catalog-shadow-button {
-    width: 140px;
-    height: 38px;
-    font-size: 15px;
-    border-radius: 5px;
-    background: #C5B4AA;
-    line-height: 38px;
-    color: #fff;
-    margin-top: 65px;
+  width: 140px;
+  height: 38px;
+  font-size: 15px;
+  border-radius: 5px;
+  background: #c5b4aa;
+  line-height: 38px;
+  color: #fff;
+  margin-top: 65px;
+}
+@media screen and (max-width: 768px) {
+  .portal-catalog {
+    width: 100%;
+    height: unset;
+    flex-direction: column;
+  }
+  .portal-title {
+    width: 100%;
+    height: 50px;
+  }
+  .portal-title > span {
+    writing-mode: unset;
+    line-height: 50px;
+    padding: unset;
+    margin: auto;
+  }
+  .portal-title > div {
+    display: none;
+  }
 }

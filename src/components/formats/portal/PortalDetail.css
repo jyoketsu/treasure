@@ -118,3 +118,18 @@
   cursor: pointer;
   color: #965d0c;
 }
+
+@media screen and (max-width: 768px) {
+  .portal-detail-head {
+    min-width: unset;
+  }
+  .channel-cover {
+    display: none;
+  }
+  .catalog-banner{
+    width: 100px;
+  }
+  .catalog-name-info {
+    width: 100px;
+  }
+}

@@ -461,7 +461,9 @@ const operation = {
         const res = await api.station.getStationName(hostName);
         if (res.msg === "OK") {
           const prevDomain = res.name;
-          history.push("/offical/home");
+          history.push({
+            pathname: "/offical/home"
+          });
           changeStation(null, prevDomain);
         } else {
           // window.location.replace("https://www.qingtime.cn/");

@@ -6,7 +6,6 @@ import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";
 import {
   getStoryList,
-  clearStoryDetail,
   clearStoryList
 } from "../../../actions/app";
 const mapStateToProps = state => ({
@@ -147,14 +146,12 @@ class PortalDetail extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearStoryDetail();
     this.props.clearStoryList();
   }
 }
 
 export default connect(mapStateToProps, {
   getStoryList,
-  clearStoryDetail,
   clearStoryList
 })(PortalDetail);
 

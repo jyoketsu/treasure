@@ -68,7 +68,7 @@ class Portal extends Component {
                 ? "no-repeat"
                 : "repeat-x"
               : "unset",
-          backgroundSize: noRepeat ? "100%" : "unset"
+          backgroundSize: noRepeat ? "cover" : "unset"
         }}
       >
         <Header />
@@ -113,7 +113,16 @@ class PortalFooter extends Component {
     // const { name } = this.props;
     return (
       <div className="portal-foot">
-        <span>版权所有@2013-2019 qingtime，Inc 。保留所有权利。</span>
+        <span>
+          江苏时光信息科技有限公司 Qingtime All Rights Reserved&nbsp;&nbsp;
+          <a
+            href="http://www.beian.miit.gov.cn"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            苏ICP备15006448号
+          </a>
+        </span>
         <span>hello@qingtime.com</span>
       </div>
     );

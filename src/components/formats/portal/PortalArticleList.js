@@ -150,10 +150,7 @@ class ArticleItem extends Component {
           onClick={() => onClick(article)}
         >
           <img
-            src={
-              article.cover ||
-              "https://www.sindsun.com/Uploads/Image/20180922/5e69376ddd7e59ad6306e93dd06fba08.png"
-            }
+            src={article.cover || "/image/background/Bitmap@1x.png"}
             style={{
               transform: `scale(${scale})`
             }}

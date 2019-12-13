@@ -55,7 +55,7 @@ class AddButton extends Component {
       this.switchChannelVisible();
       return;
     }
-    if (!channel.allowPublicUpload && !nowStation.editRight) {
+    if (!channel.allowPublicUpload && nowStation.role > 4) {
       message.info("您没有权限发布到当前频道中！");
       return;
     }
@@ -82,7 +82,7 @@ class AddButton extends Component {
         break;
       case "link":
         history.push({
-          pathname: `/${stationDomain}/home`,
+          pathname: `/${stationDomain}/home`
         });
         clearStoryDetail();
         switchEditLinkVisible();

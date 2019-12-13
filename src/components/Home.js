@@ -558,7 +558,7 @@ class Station extends React.Component {
           className="station-cover"
           style={{
             backgroundImage: `url(${
-              content.cover ? content.cover : "/image/background/banner.png"
+              content.cover ? content.cover : ""
             })`
           }}
         ></div>
