@@ -49,5 +49,7 @@
 }
 
 @media screen and (max-width: 375px) {
-
+  .village-channels {
+    width: 300px;
+  }
 }

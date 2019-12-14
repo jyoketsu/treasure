@@ -1,15 +1,25 @@
 .village {
+  position: relative;
   height: 100%;
   background: #ffffff;
 }
+.village-head-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
 .village-banner {
   width: 100%;
-  height: 250px;
+  height: 350px;
   background-size: cover;
   background-position: center;
 }
+.village-content {
+  max-width: 810px;
+  margin: auto;
+}
 @media screen and (max-width: 768px) {
   .village-banner {
-    height: 120px;
+    height: 250px;
   }
 }

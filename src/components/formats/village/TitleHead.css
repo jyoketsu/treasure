@@ -1,0 +1,31 @@
+.village-title-head {
+  height: 38px;
+  color: #24374a;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  padding: 0 15px;
+}
+.village-title-head > div {
+  display: flex;
+  align-items: center;
+}
+.village-title-head > div > i {
+  width: 30px;
+  height: 30px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+}
+.village-title-head > i {
+  width: 30px;
+  height: 30px;
+  background-image: url(/image/icon/village/right-arrow.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.village-title-head > i:hover {
+  cursor: pointer;
+}

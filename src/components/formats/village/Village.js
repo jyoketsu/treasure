@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Village.css";
-import { Link } from "react-router-dom";
-import Header from "./Header";
+// import Header from "./Header";
+import Header from "../../Header";
 import Channels from "./Channels";
+import News from "./News";
+import Fans from "./Fans";
+import Rank from "./Rank";
 import { useSelector } from "react-redux";
 
-function Village() {
+export default function Village() {
   const nowStation = useSelector(state => state.station.nowStation);
-  const user = useSelector(state => state.auth.user);
   const [minHeight, setMinHeight] = useState(window.innerHeight);
 
   useEffect(() => {
@@ -30,24 +32,27 @@ function Village() {
         minHeight: `${minHeight}px`
       }}
     >
-      <Header />
-      <div
-        className="village-banner"
-        style={{
-          backgroundImage: `url(${nowStation ? nowStation.cover : ""})`
-        }}
-      >
-        {user &&
-        !user.isGuest &&
-        nowStation &&
-        nowStation.role &&
-        nowStation.role <= 3 ? (
-          <Link to={`/${nowStation.domain}/stationOptions`}>设定</Link>
-        ) : null}
+      <div className="village-head-wrapper">
+        <Header />
       </div>
-      <Channels />
+      <Banner nowStation={nowStation} />
+      <div className="village-content">
+        <Channels />
+        <News />
+        <Fans />
+        <Rank />
+      </div>
     </div>
   );
 }
 
-export default Village;
+function Banner({ nowStation }) {
+  return (
+    <div
+      className="village-banner"
+      style={{
+        backgroundImage: `url(${nowStation ? nowStation.cover : ""})`
+      }}
+    ></div>
+  );
+}

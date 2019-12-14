@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Spin } from "antd";
+import { Spin, Skeleton } from "antd";
 import { connect } from "react-redux";
 import Init from "./components/Init";
 import Home from "./components/Home";
@@ -50,7 +50,7 @@ class App extends Component {
     const { loading, nowStation } = this.props;
     const { minHeight } = this.state;
     // 站点类型
-    const stationType = nowStation ? nowStation.style : "";
+    const stationType = nowStation ? nowStation.style || 1 : "";
     // 主页
     let home;
     switch (stationType) {
@@ -66,7 +66,7 @@ class App extends Component {
         home = <Route path="/:id/home" component={Village} />;
         break;
       default:
-        home = <Route path="/:id/home" component={Home} />;
+        home = <Route path="/:id/home" component={LoadStation} />;
         break;
     }
 
@@ -129,6 +129,15 @@ class App extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
   }
+}
+
+function LoadStation() {
+  return (
+    <div className="load-station">
+      <Skeleton title paragraph={{ rows: 4 }} active />
+      <Skeleton title paragraph={{ rows: 4 }} active />
+    </div>
+  );
 }
 
 export default connect(mapStateToProps, {})(App);
