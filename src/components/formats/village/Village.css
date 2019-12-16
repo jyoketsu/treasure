@@ -18,6 +18,9 @@
   max-width: 810px;
   margin: auto;
 }
+.village-content > div {
+  margin-top: 15px;
+}
 @media screen and (max-width: 768px) {
   .village-banner {
     height: 250px;

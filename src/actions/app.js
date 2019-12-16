@@ -32,7 +32,7 @@ export function getUserInfo(token) {
     api.setToken(token);
   }
   let request = api.auth.getUserFullInfo();
-  return { type: GET_USER_INFO, payload: request };
+  return { type: GET_USER_INFO, payload: request, noLoading: true };
 }
 
 export function editAccount(profile) {
@@ -45,9 +45,13 @@ export function searchUser(keyword) {
   return { type: SEARCH_USER, payload: request };
 }
 
-export function groupMember(groupId, stationKey) {
+export function groupMember(groupId, stationKey, dispatch) {
   let request = api.auth.groupMember(groupId, stationKey);
-  return { type: GET_GROUP_MEMBER, payload: request };
+  if (dispatch) {
+    dispatch({ type: GET_GROUP_MEMBER, payload: request, noLoading: true });
+  } else {
+    return { type: GET_GROUP_MEMBER, payload: request, noLoading: true };
+  }
 }
 
 export function clearGroupMember() {
@@ -82,6 +86,9 @@ export const SUBSCRIBE = "SUBSCRIBE";
 export const SUBSCRIBE_STATION = "SUBSCRIBE_STATION";
 export const TRANSFER_STATION = "TRANSFER_STATION";
 export const CLONE_STATION = "CLONE_STATION";
+export const GET_SUB_STATION_LIST = "GET_SUB_STATION_LIST";
+export const ADD_SUB_SITE = "ADD_SUB_SITE";
+export const REMOVE_SUB_SITE = "REMOVE_SUB_SITE";
 
 export function getStationList() {
   let request = api.station.getStationList();
@@ -190,9 +197,13 @@ export function getStationDetailByDomain(domain) {
   return { type: GET_STATION_DETAIL_DOMAIN, domain: domain, payload: request };
 }
 
-export function searchStation(keyword, curPage, perPage) {
+export function searchStation(keyword, curPage, perPage, dispatch) {
   let request = api.station.searchStation(keyword, curPage, perPage);
-  return { type: SEARCH_STATION, payload: request };
+  if (dispatch) {
+    dispatch({ type: SEARCH_STATION, payload: request });
+  } else {
+    return { type: SEARCH_STATION, payload: request };
+  }
 }
 
 export function subscribe(channelKeys, stationKey, keys) {
@@ -223,6 +234,39 @@ export function transferStation(stationKey, targetUKey) {
 export function cloneStation(stationKey) {
   let request = api.station.cloneStation(stationKey);
   return { type: CLONE_STATION, payload: request };
+}
+
+export function getSubStationList(dispatch) {
+  let request = api.station.getStationList();
+  if (dispatch) {
+    dispatch({ type: GET_SUB_STATION_LIST, payload: request, noLoading: true });
+  } else {
+    return { type: GET_SUB_STATION_LIST, payload: request, noLoading: true };
+  }
+}
+
+export function addSubSite(station, dispatch) {
+  const dispatchBody = {
+    type: ADD_SUB_SITE,
+    payload: station
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
+}
+
+export function removeSubSite(stationKey, dispatch) {
+  const dispatchBody = {
+    type: REMOVE_SUB_SITE,
+    stationKey: stationKey
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
 // story
@@ -268,7 +312,8 @@ export function getStoryList(
   curPage,
   perPage,
   isRefresh,
-  isPagination
+  isPagination,
+  dispatch
 ) {
   let request = api.story.getStoryList(
     type,
@@ -282,7 +327,7 @@ export function getStoryList(
     curPage,
     perPage
   );
-  return {
+  const dispatchBody = {
     type: GET_STORY_LIST,
     curPage: curPage,
     sortType: sortType,
@@ -295,6 +340,11 @@ export function getStoryList(
     statusTag: statusTag,
     isPagination: isPagination
   };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
 export function readyToRefresh() {

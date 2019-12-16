@@ -4,8 +4,10 @@ import "./Village.css";
 import Header from "../../Header";
 import Channels from "./Channels";
 import News from "./News";
+import Visitors from "./Visitors";
 import Fans from "./Fans";
 import Rank from "./Rank";
+import AddButton from "../../AddArticleButton";
 import { useSelector } from "react-redux";
 
 export default function Village() {
@@ -39,8 +41,12 @@ export default function Village() {
       <div className="village-content">
         <Channels />
         <News />
+        <Visitors />
         <Fans />
         <Rank />
+        <div className="operation-panel">
+          <AddButton />
+        </div>
       </div>
     </div>
   );

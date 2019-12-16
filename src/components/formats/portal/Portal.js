@@ -89,11 +89,9 @@ class Portal extends Component {
             ></div>
           ) : null}
         </div>
-        {
-          <div className="operation-panel">
-            <AddButton />
-          </div>
-        }
+        <div className="operation-panel">
+          <AddButton />
+        </div>
         <PortalFooter name={nowStation ? nowStation.name : ""} />
       </div>
     );

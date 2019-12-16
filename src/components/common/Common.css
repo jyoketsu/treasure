@@ -1,130 +1,134 @@
 .member-card {
-    position: relative;
-    width: 265px;
-    height: 97px;
-    background: #FFFFFF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-    margin-right: 11px;
+  position: relative;
+  width: 265px;
+  height: 97px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-right: 11px;
 }
 
 .member-card.clickable:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .deleteMember {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 18px;
-    height: 18px;
-    display: block;
-    background-image: url(/image/icon/story/delete-item.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 18px;
+  height: 18px;
+  display: block;
+  background-image: url(/image/icon/story/delete-item.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .deleteMember:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .member-avatar {
-    display: block;
-    width: 60px;
-    height: 60px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 30px;
-    margin: auto;
+  display: block;
+  width: 60px;
+  height: 60px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 30px;
+  margin: auto;
 }
 
 .member-info {
-    display: flex;
-    flex-direction: column;
-
-    padding: 0 25px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 25px;
 }
 
 .member-name {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .member-button {
-    color: #1890ff;
+  color: #1890ff;
 }
 
 .member-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* IconWithText */
 .icon-with-text {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
 }
 
 .icon-with-text:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.icon-with-text>i {
-    width: 30px;
-    height: 30px;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+.icon-with-text > i {
+  width: 30px;
+  height: 30px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.icon-with-text>span {
-    color: #666666;
-    font-size: 16px;
+.icon-with-text > span {
+  color: #666666;
+  font-size: 16px;
 }
 
 .router-tabs {
-    height: 56px;
-    font-size: 16px;
-    line-height: 46px;
-    overflow: auto;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    /* 火狐 隐藏滚动条 */
-    overflow: -moz-scrollbars-none;
+  height: 56px;
+  font-size: 16px;
+  line-height: 46px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* 火狐 隐藏滚动条 */
+  overflow: -moz-scrollbars-none;
 }
 
 /* chrome 隐藏滚动条 */
 .router-tabs::-webkit-scrollbar {
-    width: 0 !important
+  width: 0 !important;
 }
 
 .tab-item {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 18px;
-    color: #7B8492;
-    display: inline;
-    margin-right: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 18px;
+  color: #7b8492;
+  display: inline;
+  margin-right: 15px;
 }
 
 .tab-item:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .tab-item.selected {
-    border-bottom: 3px solid #E60012;
+  border-bottom: 3px solid #e60012;
 }
 
-@media screen and (max-width:768px) {
-    .member-card {
-        width: 100%;
-    }
+@media screen and (max-width: 768px) {
+  .member-card {
+    width: 100%;
+  }
 }

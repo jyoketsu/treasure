@@ -24,8 +24,10 @@ class MySites extends Component {
                             <StationCard
                                 key={index}
                                 station={station}
-                                history={history}
-                                changeStation={changeStation}
+                                onClick={() => {
+                                    changeStation(station._key);
+                                    history.push(`/${station.domain}/home`);
+                                  }}
                             />
                         ))
                     }

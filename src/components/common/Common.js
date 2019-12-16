@@ -206,14 +206,8 @@ class StationCard extends Component {
     };
   }
 
-  handleClick(key, domain) {
-    const { history, changeStation } = this.props;
-    changeStation(key);
-    history.push(`/${domain}/home`);
-  }
-
   render() {
-    const { station } = this.props;
+    const { type, station, onClick } = this.props;
     const { logoSize } = this.state;
     let roleNmae;
     switch (station.role) {
@@ -236,10 +230,21 @@ class StationCard extends Component {
         roleNmae = "游客";
         break;
     }
+    let action;
+    switch (type) {
+      case "add":
+        action = "添加";
+        break;
+      case "list":
+        action = "删除";
+        break;
+      default:
+        break;
+    }
     return (
       <div
         className={`station-card role${station.role ? station.role : ""}`}
-        onClick={this.handleClick.bind(this, station._key, station.domain)}
+        onClick={() => onClick()}
       >
         <span className="card-station-role">{roleNmae}</span>
         <div className="card-station-title">

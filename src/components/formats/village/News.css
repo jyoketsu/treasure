@@ -1,0 +1,30 @@
+.village-news-list {
+  padding: 0 15px;
+}
+.news-item {
+  border-bottom: 1px solid #eeeeee;
+}
+.news-item:last-child {
+  border-bottom: unset;
+}
+.news-item-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: #24374a;
+  height: 35px;
+  line-height: 35px;
+}
+.news-item-title:hover {
+  cursor: pointer;
+}
+.news-item-content {
+  color: #8091a0;
+  margin-bottom: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

@@ -48,12 +48,11 @@ class MemberList extends Component {
 
   componentDidMount() {
     const { nowStation, groupMember, groupKey, clearStoryList } = this.props;
-    groupMember(groupKey, nowStation._key);
+    groupMember(groupKey, (nowStation && nowStation._key) || "");
     clearStoryList();
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { groupMember, clearStoryList }
-)(MemberList);
+export default connect(mapStateToProps, { groupMember, clearStoryList })(
+  MemberList
+);

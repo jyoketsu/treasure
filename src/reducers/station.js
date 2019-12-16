@@ -28,7 +28,8 @@ import {
   SEE_PLUGIN,
   SORT_CHANNEL,
   SORT_PLUGIN,
-  CLONE_STATION
+  CLONE_STATION,
+  GET_SUB_STATION_LIST
 } from "../actions/app";
 import { message } from "antd";
 
@@ -40,7 +41,8 @@ const defaultState = {
   searchUserList: [],
   userList: [],
   matchedStationList: [],
-  matchedNumber: 0
+  matchedNumber: 0,
+  subStationList: []
 };
 
 const station = (state = defaultState, action) => {
@@ -122,12 +124,14 @@ const station = (state = defaultState, action) => {
         if (action.stationKey) {
           return {
             ...state,
-            nowStationKey: action.stationKey
+            nowStationKey: action.stationKey,
+            nowStation: null
           };
         } else {
           return {
             ...state,
-            nowStationKey: action.payload.result
+            nowStationKey: action.payload.result,
+            nowStation: null
           };
         }
       } else {
@@ -473,6 +477,15 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         message.success("站点克隆成功，请刷新页面后查看");
         return state;
+      } else {
+        return state;
+      }
+    case GET_SUB_STATION_LIST:
+      if (!action.error) {
+        return {
+          ...state,
+          subStationList: action.payload.result
+        };
       } else {
         return state;
       }

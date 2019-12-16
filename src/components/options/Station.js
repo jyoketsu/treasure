@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Station.css";
 import StationBasicInfo from "../User/StationBasicInfo";
 import StationGroup from "../User/StationGroup";
+import SubSite from "../User/SubSite";
 import { Tabs, Modal } from "antd";
 
 import { connect } from "react-redux";
@@ -29,6 +30,9 @@ class Station extends Component {
           </TabPane>
           <TabPane tab="成员" key="group">
             <StationGroup />
+          </TabPane>
+          <TabPane tab="子站点" key="subStation">
+            <SubSite />
           </TabPane>
         </Tabs>
       </div>
