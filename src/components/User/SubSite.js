@@ -1,9 +1,14 @@
 import React, { useEffect } from "react";
 // import "./SubSite.css";
 import { StationCard } from "../common/Common";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { searchStation, getSubStationList } from "../../actions/app";
+import {
+  searchStation,
+  getSubStationList,
+  addSubSite,
+  removeSubSite
+} from "../../actions/app";
 
 export default function SubSite() {
   const Search = Input.Search;
@@ -26,14 +31,27 @@ export default function SubSite() {
         style={{ width: 200 }}
       />
       <div className="member-search-result">
-        {matchedStationList.map((station, index) => (
-          <StationCard
-            key={index}
-            type="add"
-            station={station}
-            onClick={() => alert(station.name)}
-          />
-        ))}
+        {matchedStationList.map((station, index) => {
+          let inList = false;
+          for (let i = 0; i < subStationList.length; i++) {
+            if (station._key === subStationList[i]._key) {
+              inList = true;
+              break;
+            }
+          }
+          return (
+            <StationCard
+              key={index}
+              type={inList ? "added" : "add"}
+              station={station}
+              onClick={() =>
+                inList
+                  ? message.info("已经存在该站，不能重复添加！")
+                  : addSubSite(station, dispatch)
+              }
+            />
+          );
+        })}
       </div>
       <h2>子站列表</h2>
       <div className="member-search-result">
@@ -42,7 +60,7 @@ export default function SubSite() {
             key={index}
             type="list"
             station={station}
-            onClick={() => alert(station.name)}
+            onClick={() => removeSubSite(station._key, dispatch)}
           />
         ))}
       </div>

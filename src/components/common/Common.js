@@ -230,13 +230,16 @@ class StationCard extends Component {
         roleNmae = "游客";
         break;
     }
-    let action;
+    let action = null;
     switch (type) {
       case "add":
-        action = "添加";
+        action = <div className="station-card-action">添加</div>;
+        break;
+      case "added":
+        action = <div className="station-card-action">已添加</div>;
         break;
       case "list":
-        action = "删除";
+        action = <div className="station-card-action">删除</div>;
         break;
       default:
         break;
@@ -261,6 +264,7 @@ class StationCard extends Component {
           ></i>
           <span className="card-station-name">{station.name}</span>
         </div>
+        {action}
       </div>
     );
   }
@@ -286,7 +290,7 @@ class StationCard extends Component {
   componentDidUpdate(prevProps) {
     const { station } = this.props;
     if (prevProps.station._key !== station._key) {
-      const { seriesInfo } = station;
+      const { seriesInfo = [] } = station;
       let checkedChannels = [];
       for (let i = 0; i < seriesInfo.length; i++) {
         if (seriesInfo[i].isCareSeries) {

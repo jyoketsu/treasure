@@ -29,7 +29,9 @@ import {
   SORT_CHANNEL,
   SORT_PLUGIN,
   CLONE_STATION,
-  GET_SUB_STATION_LIST
+  GET_SUB_STATION_LIST,
+  ADD_SUB_SITE,
+  REMOVE_SUB_SITE
 } from "../actions/app";
 import { message } from "antd";
 
@@ -485,6 +487,33 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           subStationList: action.payload.result
+        };
+      } else {
+        return state;
+      }
+    case ADD_SUB_SITE:
+      if (!action.error) {
+        let subStationList = JSON.parse(JSON.stringify(state.subStationList));
+        subStationList.push(action.payload);
+        return {
+          ...state,
+          subStationList: subStationList
+        };
+      } else {
+        return state;
+      }
+    case REMOVE_SUB_SITE:
+      if (!action.error) {
+        let subStationList = JSON.parse(JSON.stringify(state.subStationList));
+        for (let i = 0; i < subStationList.length; i++) {
+          if (subStationList[i]._key === action.stationKey) {
+            subStationList.splice(i, 1);
+            break;
+          }
+        }
+        return {
+          ...state,
+          subStationList: subStationList
         };
       } else {
         return state;
