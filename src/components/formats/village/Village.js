@@ -7,16 +7,20 @@ import News from "./News";
 import Visitors from "./Visitors";
 import Fans from "./Fans";
 import Rank from "./Rank";
+import StoryList from "./StoryList";
 import AddButton from "../../AddArticleButton";
+import {
+  BrowserRouter as Router,
+  Route,
+  useRouteMatch
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Village() {
-  const nowStation = useSelector(state => state.station.nowStation);
   const [minHeight, setMinHeight] = useState(window.innerHeight);
+  const match = useRouteMatch();
 
   useEffect(() => {
-    console.log("Village-----useEffect");
-
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -34,6 +38,23 @@ export default function Village() {
         minHeight: `${minHeight}px`
       }}
     >
+      <Router>
+        <div>
+          <Route exact path={`${match.path}`} component={Home} />
+          <Route
+            path={`${match.path}/stories/:channelKey`}
+            component={StoryList}
+          />
+        </div>
+      </Router>
+    </div>
+  );
+}
+
+function Home() {
+  const nowStation = useSelector(state => state.station.nowStation);
+  return (
+    <div>
       <div className="village-head-wrapper">
         <Header />
       </div>

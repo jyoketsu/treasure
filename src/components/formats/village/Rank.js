@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Rank.css";
-import util from "../../../services/Util";
 import TitleHead from "./TitleHead";
+import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { getSubStationList } from "../../../actions/app";
+import { getSubStationList, changeStation } from "../../../actions/app";
 
 export default function Rank() {
   const subStationList = useSelector(state => state.station.subStationList);
@@ -18,7 +18,7 @@ export default function Rank() {
       <TitleHead icon="/image/icon/village/sitemap.svg" text="子站点" />
       <div className="village-sub-site-list">
         {subStationList.map((station, index) => (
-          <SubSite station={station} />
+          <SubSite key={index} station={station} />
         ))}
         {subStationList.length === 0 ? (
           <div className="no-sub-site">暂无子站点</div>
@@ -29,28 +29,27 @@ export default function Rank() {
 }
 
 function SubSite({ station }) {
-  const [logoSize, setLogoSize] = useState(null);
-  useEffect(() => {
-    async function getLogoInfo() {
-      const logoSize = await util.common.getImageInfo(station.logo);
-      setLogoSize(logoSize);
-    }
-    getLogoInfo();
-  }, [station]);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  function toStation(station) {
+    history.push(`/${station.domain}/home`);
+    changeStation(station._key, station.domain, dispatch);
+  }
   return (
     <div className="sub-site-wrapper">
-      <i
-        style={{
-          backgroundImage: `url(${
-            station.logo ? station.logo : "/image/background/logo.svg"
-          })`,
-          // width: logoSize
-          //   ? `${Math.ceil(68 * (logoSize.width / logoSize.height))}px`
-          //   : "68px"
-        }}
-      ></i>
+      <div className="sub-site-list-logo">
+        <i
+          style={{
+            backgroundImage: `url(${
+              station.logo ? station.logo : "/image/background/logo.svg"
+            })`
+          }}
+        ></i>
+      </div>
       <div className="sub-site-info">
-        <div className="sub-site-name">{station.name}</div>
+        <div className="sub-site-name" onClick={() => toStation(station)}>
+          {station.name}
+        </div>
         <div className="sub-site-stat-wrapper">
           <div className="sub-site-stat">
             <span>投稿数</span>

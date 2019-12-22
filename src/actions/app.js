@@ -173,12 +173,18 @@ export function editStation(
   };
 }
 
-export function changeStation(key, domain) {
+export function changeStation(key, domain, dispatch) {
+  let dispatchBody;
   if (domain) {
     let request = api.station.getStationKey(domain);
-    return { type: CHANGE_STATION, payload: request };
+    dispatchBody = { type: CHANGE_STATION, payload: request };
   } else {
-    return { type: CHANGE_STATION, stationKey: key };
+    dispatchBody = { type: CHANGE_STATION, stationKey: key };
+  }
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
   }
 }
 
