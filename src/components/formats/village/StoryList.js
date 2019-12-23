@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./StoryList.css";
 import moment from "moment";
 import { Spin } from "antd";
+import useStoryClick from "../../common/useStoryClick";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getStoryList } from "../../../actions/app";
@@ -115,6 +116,7 @@ function Loading(params) {
 }
 
 function Story({ story }) {
+  const click = useStoryClick();
   return (
     <div className="village-story-cover">
       <div className="user-info">
@@ -134,6 +136,7 @@ function Story({ story }) {
           backgroundImage: `url(${story.cover}?imageView2/2/w/900)`,
           display: story.cover ? "block" : "none"
         }}
+        onClick={() => click(story)}
       ></div>
       <div className="foot">
         <div className="story-action">
@@ -151,7 +154,9 @@ function Story({ story }) {
             ></i>
           </div>
         </div>
-        <div className="story-title">{story.title}</div>
+        <div className="story-title" onClick={() => click(story)}>
+          {story.title}
+        </div>
       </div>
     </div>
   );

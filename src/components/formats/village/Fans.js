@@ -10,7 +10,9 @@ export default function Fans() {
   const userList = useSelector(state => state.station.userList);
 
   useEffect(() => {
-    groupMember(nowStation.fansGroupKey, nowStation._key, dispatch);
+    if (nowStation) {
+      groupMember(nowStation.fansGroupKey, nowStation._key, dispatch);
+    }
   }, [nowStation, dispatch]);
 
   return (

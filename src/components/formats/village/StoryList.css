@@ -61,6 +61,9 @@
   padding-bottom: 100%;
   background-size: cover;
 }
+.village-story-cover > .cover:hover {
+  cursor: pointer;
+}
 .village-story-cover > .foot {
   padding: 0 15px;
   display: flex;

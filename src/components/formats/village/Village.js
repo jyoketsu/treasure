@@ -9,11 +9,7 @@ import Fans from "./Fans";
 import Rank from "./Rank";
 import StoryList from "./StoryList";
 import AddButton from "../../AddArticleButton";
-import {
-  BrowserRouter as Router,
-  Route,
-  useRouteMatch
-} from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Village() {
@@ -38,16 +34,13 @@ export default function Village() {
         minHeight: `${minHeight}px`
       }}
     >
-      {/* <Home /> */}
-      <Router>
-        <div>
-          <Route exact path={`${match.path}`} component={Home} />
-          <Route
-            path={`${match.path}/stories/:channelKey`}
-            component={StoryList}
-          />
-        </div>
-      </Router>
+      <div>
+        <Route exact path={`${match.path}`} component={Home} />
+        <Route
+          path={`${match.path}/stories/:channelKey`}
+          component={StoryList}
+        />
+      </div>
     </div>
   );
 }
@@ -67,7 +60,7 @@ function Home() {
         <Fans />
         <Rank />
         <div className="operation-panel">
-          <AddButton />
+          {nowStation ? <AddButton /> : null}
         </div>
       </div>
     </div>

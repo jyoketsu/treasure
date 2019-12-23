@@ -138,7 +138,7 @@ class AddButton extends Component {
   render() {
     const { nowChannel = {}, nowStation, eidtLinkVisible } = this.props;
     const { showSelectChannel } = this.state;
-    const { isCareStar, seriesInfo = [] } = nowStation;
+    const { isCareStar = 0, seriesInfo = [] } = nowStation;
 
     let channelList = [];
     if (isCareStar) {
