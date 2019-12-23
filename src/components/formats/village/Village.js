@@ -38,6 +38,7 @@ export default function Village() {
         minHeight: `${minHeight}px`
       }}
     >
+      {/* <Home /> */}
       <Router>
         <div>
           <Route exact path={`${match.path}`} component={Home} />

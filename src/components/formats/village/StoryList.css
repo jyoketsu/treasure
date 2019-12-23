@@ -1,6 +1,30 @@
 .village-story-list {
   max-width: 600px;
   margin: auto;
+  padding: 80px 0 25px 0;
+}
+.village-stories-head {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 45px;
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6e6e6;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+}
+.village-stories-head > i {
+  width: 30px;
+  height: 30px;
+  background-image: url(/image/icon/village/back.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.village-stories-head > i:hover {
+  cursor: pointer;
 }
 .village-story-cover {
   display: flex;
@@ -8,6 +32,9 @@
   border: 1px solid #e6e6e6;
   background-color: #ffffff;
   margin-bottom: 25px;
+}
+.village-story-cover:last-child {
+  margin-bottom: unset;
 }
 .village-story-cover > .user-info {
   height: 60px;
@@ -70,7 +97,14 @@
 .village-story-cover > .foot > .story-action > div > i:hover {
   cursor: pointer;
 }
+.village-story-list > .show-more {
+  text-align: center;
+  line-height: 40px;
+}
 @media screen and (max-width: 768px) {
+  .village-stories-head {
+    margin-bottom: unset;
+  }
   .village-story-cover {
     border: unset;
     border-bottom: 1px solid #e6e6e6;

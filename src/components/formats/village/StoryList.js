@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import "./StoryList.css";
 import moment from "moment";
-import { useRouteMatch } from "react-router-dom";
+import { Spin } from "antd";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getStoryList } from "../../../actions/app";
 
@@ -10,9 +11,11 @@ export default function StoryList() {
   const match = useRouteMatch();
   const nowStation = useSelector(state => state.station.nowStation);
   const storyList = useSelector(state => state.story.storyList);
+  const storyNumber = useSelector(state => state.story.storyNumber);
   const sortType = useSelector(state => state.story.sortType);
   const sortOrder = useSelector(state => state.story.sortOrder);
   const tag = useSelector(state => state.story.tag);
+  const waiting = useSelector(state => state.common.waiting);
   const statusTag = useSelector(state => state.story.statusTag);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,12 +35,81 @@ export default function StoryList() {
       dispatch
     );
   }, [nowStation, match, sortType, sortOrder, tag, statusTag, dispatch]);
+
+  useEffect(() => {
+    function handleMouseWheel() {
+      let top = document.body.scrollTop || document.documentElement.scrollTop;
+      if (
+        storyList.length < storyNumber &&
+        !waiting &&
+        top + document.body.clientHeight === document.body.scrollHeight
+      ) {
+        let curPage = sessionStorage.getItem("home-curpage")
+          ? parseInt(sessionStorage.getItem("home-curpage"), 10)
+          : 1;
+        curPage++;
+        getStoryList(
+          1,
+          nowStation._key,
+          null,
+          match.params.channelKey,
+          sortType,
+          sortOrder,
+          tag,
+          statusTag,
+          curPage,
+          perPage,
+          false,
+          false,
+          dispatch
+        );
+      }
+    }
+    document.body.addEventListener("wheel", handleMouseWheel);
+    return () => {
+      document.body.removeEventListener("wheel", handleMouseWheel);
+    };
+  }, [
+    storyList,
+    storyNumber,
+    waiting,
+    nowStation,
+    match,
+    sortType,
+    sortOrder,
+    tag,
+    statusTag,
+    dispatch
+  ]);
   return (
     <div className="village-story-list">
-      <div className="header">头部</div>
+      <Head />
       {storyList.map((story, index) => (
         <Story key={index} story={story} />
       ))}
+      {waiting ? (
+        <Loading />
+      ) : (
+        <div className="show-more">
+          {storyList.length < storyNumber ? "查看更多" : "到底了"}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Head() {
+  const history = useHistory();
+  return (
+    <div className="village-stories-head">
+      <i className="back" onClick={() => history.goBack()}></i>
+    </div>
+  );
+}
+function Loading(params) {
+  return (
+    <div className="story-loading">
+      <Spin size="large" />
     </div>
   );
 }
@@ -58,7 +130,10 @@ function Story({ story }) {
       </div>
       <div
         className="cover"
-        style={{ backgroundImage: `url(${story.cover}?imageView2/2/w/900)` }}
+        style={{
+          backgroundImage: `url(${story.cover}?imageView2/2/w/900)`,
+          display: story.cover ? "block" : "none"
+        }}
       ></div>
       <div className="foot">
         <div className="story-action">

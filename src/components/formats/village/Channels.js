@@ -1,7 +1,8 @@
 import React from "react";
 import "./Channels.css";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearStoryList, clearStoryDetail } from "../../../actions/app";
 
 export default function Channels() {
   const nowStation = useSelector(state => state.station.nowStation);
@@ -17,11 +18,12 @@ export default function Channels() {
 }
 
 function Channel({ channel }) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const nowStation = useSelector(state => state.station.nowStation);
   function toChannel(channelKey) {
-    // console.log("-------------" + match.path);
-
+    clearStoryList(dispatch);
+    clearStoryDetail(dispatch);
     history.push(`/${nowStation.domain}/home/stories/${channelKey}`);
   }
   return (

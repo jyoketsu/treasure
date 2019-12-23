@@ -357,8 +357,12 @@ export function readyToRefresh() {
   return { type: READYTOREFRESH };
 }
 
-export function clearStoryList() {
-  return { type: CLEAR_STORY_LIST };
+export function clearStoryList(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_STORY_LIST });
+  } else {
+    return { type: CLEAR_STORY_LIST };
+  }
 }
 
 export function addStory(story) {
@@ -371,8 +375,12 @@ export function getStoryDetail(storyKey) {
   return { type: GET_STORY_DETAIL, payload: request };
 }
 
-export function clearStoryDetail() {
-  return { type: CLEAR_STORY_DETAIL };
+export function clearStoryDetail(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_STORY_DETAIL });
+  } else {
+    return { type: CLEAR_STORY_DETAIL };
+  }
 }
 
 export function modifyStory(story) {
