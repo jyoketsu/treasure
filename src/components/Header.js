@@ -67,8 +67,6 @@ class Header extends Component {
             pathname === "/account/register" ||
             pathname === "/account/reset"
               ? "none"
-              : user && user.isGuest && util.common.isMobile()
-              ? "none"
               : "flex"
         }}
       >

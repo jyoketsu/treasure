@@ -242,8 +242,8 @@ export function cloneStation(stationKey) {
   return { type: CLONE_STATION, payload: request };
 }
 
-export function getSubStationList(dispatch) {
-  let request = api.station.getStationList();
+export function getSubStationList(stationKey, dispatch) {
+  let request = api.station.getSubStationList(stationKey);
   if (dispatch) {
     dispatch({ type: GET_SUB_STATION_LIST, payload: request, noLoading: true });
   } else {
@@ -251,10 +251,12 @@ export function getSubStationList(dispatch) {
   }
 }
 
-export function addSubSite(station, dispatch) {
+export function addSubSite(stationKey, subStation, dispatch) {
+  let request = api.station.addSubSite(stationKey, subStation._key);
   const dispatchBody = {
     type: ADD_SUB_SITE,
-    payload: station
+    payload: request,
+    subStation: subStation
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -263,10 +265,12 @@ export function addSubSite(station, dispatch) {
   }
 }
 
-export function removeSubSite(stationKey, dispatch) {
+export function removeSubSite(stationKey, subStation, dispatch) {
+  let request = api.station.deleteSubSite(stationKey, subStation._key);
   const dispatchBody = {
     type: REMOVE_SUB_SITE,
-    stationKey: stationKey
+    payload: request,
+    subStationKey: subStation._key
   };
   if (dispatch) {
     dispatch(dispatchBody);

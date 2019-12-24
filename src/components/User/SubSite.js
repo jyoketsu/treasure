@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 // import "./SubSite.css";
 import { StationCard } from "../common/Common";
-import { Input, message } from "antd";
+import { Input, message, Modal } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import {
   searchStation,
@@ -11,16 +11,28 @@ import {
 } from "../../actions/app";
 
 export default function SubSite() {
+  const confirm = Modal.confirm;
   const Search = Input.Search;
   const dispatch = useDispatch();
   const matchedStationList = useSelector(
     state => state.station.matchedStationList
   );
   const subStationList = useSelector(state => state.station.subStationList);
+  const nowStation = useSelector(state => state.station.nowStation);
 
   useEffect(() => {
     getSubStationList(dispatch);
   }, [dispatch]);
+
+  function showConfirm(station) {
+    confirm({
+      title: "删除子站",
+      content: "确定要删除子站吗？",
+      onOk() {
+        removeSubSite(nowStation._key, station, dispatch);
+      }
+    });
+  }
 
   return (
     <div className="sub-site">
@@ -47,7 +59,7 @@ export default function SubSite() {
               onClick={() =>
                 inList
                   ? message.info("已经存在该站，不能重复添加！")
-                  : addSubSite(station, dispatch)
+                  : addSubSite(nowStation._key, station, dispatch)
               }
             />
           );
@@ -60,7 +72,7 @@ export default function SubSite() {
             key={index}
             type="list"
             station={station}
-            onClick={() => removeSubSite(station._key, dispatch)}
+            onClick={() => showConfirm(station)}
           />
         ))}
       </div>

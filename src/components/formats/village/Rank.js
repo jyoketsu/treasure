@@ -7,11 +7,12 @@ import { getSubStationList, changeStation } from "../../../actions/app";
 
 export default function Rank() {
   const subStationList = useSelector(state => state.station.subStationList);
+  const nowStation = useSelector(state => state.station.nowStation);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getSubStationList(dispatch);
-  }, [dispatch]);
+    getSubStationList(nowStation._key, dispatch);
+  }, [nowStation, dispatch]);
 
   return (
     <div className="village-sub-sites">
@@ -53,11 +54,11 @@ function SubSite({ station }) {
         <div className="sub-site-stat-wrapper">
           <div className="sub-site-stat">
             <span>投稿数</span>
-            <span>11</span>
+            <span>{station.albumNumber}</span>
           </div>
           <div className="sub-site-stat">
             <span>粉丝数</span>
-            <span>11</span>
+            <span>{station.fansNumber}</span>
           </div>
         </div>
       </div>

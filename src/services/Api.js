@@ -419,6 +419,29 @@ const station = {
       token: token,
       sourceStarKey: stationKey
     });
+  },
+  // 获取子站列表
+  getSubStationList(stationKey) {
+    return requests.get(APIURL + "/star/subStarList", {
+      token: token,
+      starKey: stationKey
+    });
+  },
+  // 添加子站
+  addSubSite(stationKey, subStationKey) {
+    return requests.post(APIURL + "/star/addSubStar", {
+      token: token,
+      starKey: stationKey,
+      subStarKey: subStationKey
+    });
+  },
+  // 删除子站
+  deleteSubSite(stationKey, subStationKey) {
+    return requests.post(APIURL + "/star/deleteSubStar", {
+      token: token,
+      starKey: stationKey,
+      subStarKey: subStationKey
+    });
   }
 };
 

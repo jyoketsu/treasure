@@ -338,7 +338,7 @@ class Story extends Component {
           updateExif(JSON.parse(JSON.stringify(story)));
         })
         .catch(function(reason) {
-          // ...
+          console.log(reason);
         });
 
       const nowChannelId = story.series

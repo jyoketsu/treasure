@@ -494,7 +494,7 @@ const station = (state = defaultState, action) => {
     case ADD_SUB_SITE:
       if (!action.error) {
         let subStationList = JSON.parse(JSON.stringify(state.subStationList));
-        subStationList.push(action.payload);
+        subStationList.push(action.subStation);
         return {
           ...state,
           subStationList: subStationList
@@ -506,7 +506,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         let subStationList = JSON.parse(JSON.stringify(state.subStationList));
         for (let i = 0; i < subStationList.length; i++) {
-          if (subStationList[i]._key === action.stationKey) {
+          if (subStationList[i]._key === action.subStationKey) {
             subStationList.splice(i, 1);
             break;
           }
