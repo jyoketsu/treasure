@@ -32,6 +32,9 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+.sub-site-wrapper > .sub-site-list-logo > i:hover {
+  cursor: pointer;
+}
 .sub-site-info,
 .sub-site-stat {
   display: flex;

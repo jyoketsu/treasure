@@ -12,7 +12,6 @@ const { Option } = Select;
 const mapStateToProps = state => ({
   user: state.auth.user,
   nowStation: state.station.nowStation,
-  nowChannelKey: state.story.nowChannelKey,
   eidtLinkVisible: state.story.eidtLinkVisible
 });
 
@@ -39,7 +38,6 @@ class AddButton extends Component {
     const {
       history,
       user,
-      nowChannelKey,
       match,
       nowStation,
       switchEditLinkVisible,
@@ -50,7 +48,7 @@ class AddButton extends Component {
       message.info("请先登录！");
       return;
     }
-    if (type !== "link" && nowChannelKey === "allSeries") {
+    if (type !== "link") {
       this.contributeType = type;
       this.switchChannelVisible();
       return;
@@ -76,7 +74,7 @@ class AddButton extends Component {
       case "page":
         const token = localStorage.getItem("TOKEN");
         window.open(
-          `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${nowChannelKey}`,
+          `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${this.channelKey}`,
           "_blank"
         );
         break;
@@ -156,7 +154,7 @@ class AddButton extends Component {
         <Tooltip title="投稿" placement="bottom">
           <div
             className="story-tool add-story-multi"
-            onClick={this.switchExtButton}
+            onClick={this.switchChannelVisible}
           >
             <i></i>
           </div>
@@ -228,6 +226,8 @@ class AddButton extends Component {
         <Modal
           title="请选择投稿主题"
           visible={showSelectChannel}
+          okText="下一步"
+          cancelText="取消"
           onOk={this.handleSelectedChannel}
           onCancel={this.switchChannelVisible}
         >

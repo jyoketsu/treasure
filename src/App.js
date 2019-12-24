@@ -20,6 +20,7 @@ import Article from "./components/story/Article";
 import Subscribe from "./components/subscribe/Subscribe";
 import MyArticle from "./components/myArticle/MyArticle";
 import StoryEdit from "./components/story/StoryEdit";
+import Create from "./components/story/Create";
 import NotFound from "./components/NotFound";
 import PortalHome from "./components/formats/portal/Portal";
 import Village from "./components/formats/village/Village";
@@ -91,6 +92,7 @@ export default function App() {
           <Route path="/:id/editStation" component={EditStation} />
           <Route path="/:id/story" component={Story} />
           {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
+          <Route path="/:id/create" component={Create}></Route>
           <Route path="/:id/editStory" component={StoryEdit}></Route>
           <Route path="/:id/contribute" component={Contribute}></Route>
           <Route path="/:id/stationOptions" component={StationOptions}></Route>

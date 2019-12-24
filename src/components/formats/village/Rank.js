@@ -45,6 +45,7 @@ function SubSite({ station }) {
               station.logo ? station.logo : "/image/background/logo.svg"
             })`
           }}
+          onClick={() => toStation(station)}
         ></i>
       </div>
       <div className="sub-site-info">
