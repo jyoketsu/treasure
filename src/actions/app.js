@@ -369,9 +369,13 @@ export function clearStoryList(dispatch) {
   }
 }
 
-export function addStory(story) {
+export function addStory(story, dispatch) {
   let request = api.story.addStory(story);
-  return { type: ADD_STORY, payload: request };
+  if (dispatch) {
+    dispatch({ type: ADD_STORY, payload: request });
+  } else {
+    return { type: ADD_STORY, payload: request };
+  }
 }
 
 export function getStoryDetail(storyKey) {

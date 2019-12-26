@@ -91,6 +91,7 @@ class AddButton extends Component {
     this.switchExtButton();
   }
 
+  // 点击选择频道下一步按钮
   handleSelectedChannel() {
     const { match, history, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = match.params.id;
@@ -118,6 +119,7 @@ class AddButton extends Component {
         switchEditLinkVisible();
         break;
       default:
+        history.push(`/${stationDomain}/create/${this.channelKey}`);
         break;
     }
     this.switchChannelVisible();

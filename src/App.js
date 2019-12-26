@@ -92,7 +92,7 @@ export default function App() {
           <Route path="/:id/editStation" component={EditStation} />
           <Route path="/:id/story" component={Story} />
           {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
-          <Route path="/:id/create" component={Create}></Route>
+          <Route path="/:id/create/:channelKey" component={Create}></Route>
           <Route path="/:id/editStory" component={StoryEdit}></Route>
           <Route path="/:id/contribute" component={Contribute}></Route>
           <Route path="/:id/stationOptions" component={StationOptions}></Route>
