@@ -7,15 +7,20 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 45px;
+  right: 0;
   width: 100%;
+  height: 45px;
+}
+.village-stories-head > div {
+  width: 100%;
+  height: 100%;
   background-color: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   padding-left: 15px;
   display: flex;
   align-items: center;
 }
-.village-stories-head > i {
+.village-stories-head > div > i {
   width: 30px;
   height: 30px;
   background-image: url(/image/icon/village/back.svg);
@@ -23,7 +28,7 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-.village-stories-head > i:hover {
+.village-stories-head > div > i:hover {
   cursor: pointer;
 }
 .village-story-cover {
@@ -60,6 +65,7 @@
   width: 100%;
   padding-bottom: 100%;
   background-size: cover;
+  background-position: center;
 }
 .village-story-cover > .cover:hover {
   cursor: pointer;

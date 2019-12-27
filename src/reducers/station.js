@@ -31,7 +31,8 @@ import {
   CLONE_STATION,
   GET_SUB_STATION_LIST,
   ADD_SUB_SITE,
-  REMOVE_SUB_SITE
+  REMOVE_SUB_SITE,
+  GET_LATEST_VISITOR
 } from "../actions/app";
 import { message } from "antd";
 
@@ -44,7 +45,8 @@ const defaultState = {
   userList: [],
   matchedStationList: [],
   matchedNumber: 0,
-  subStationList: []
+  subStationList: [],
+  latestVisitors: []
 };
 
 const station = (state = defaultState, action) => {
@@ -514,6 +516,15 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           subStationList: subStationList
+        };
+      } else {
+        return state;
+      }
+    case GET_LATEST_VISITOR:
+      if (!action.error) {
+        return {
+          ...state,
+          latestVisitors: action.payload.result
         };
       } else {
         return state;

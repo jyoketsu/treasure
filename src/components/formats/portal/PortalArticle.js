@@ -4,6 +4,7 @@ import Article from "../../story/Article";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getStoryDetail, switchEditLinkVisible } from "../../../actions/app";
+import Util from "../../../services/Util";
 const mapStateToProps = state => ({
   user: state.auth.user,
   userId: state.auth.user ? state.auth.user._key : null,
@@ -27,7 +28,7 @@ class PortalArticle extends Component {
         content = <Article readOnly={true} inline={true} hideMenu={true} />;
         break;
       case 15:
-        if (story.openType === 2) {
+        if (story.openType === 2 || Util.common.isMobile()) {
           content = (
             <iframe
               title={story.title}
@@ -82,10 +83,15 @@ class PortalArticle extends Component {
     switch (type) {
       case 12:
         const token = localStorage.getItem("TOKEN");
-        window.open(
-          `https://editor.qingtime.cn?token=${token}&key=${_key}`,
-          "_blank"
-        );
+        if (!Util.common.isMobile()) {
+          window.open(
+            `https://editor.qingtime.cn?token=${token}&key=${_key}`,
+            "_blank"
+          );
+        } else {
+          window.location.href = `https://editor.qingtime.cn?token=${token}&key=${_key}`;
+        }
+
         break;
       case 15:
         switchEditLinkVisible();

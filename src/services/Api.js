@@ -442,6 +442,15 @@ const station = {
       starKey: stationKey,
       subStarKey: subStationKey
     });
+  },
+  // 最近访问用户
+  latestVisitUsers(stationKey) {
+    return requests.get(APIURL + "/star/latestVisitUserList", {
+      token: token,
+      starKey: stationKey,
+      curPage: 1,
+      perPage: 100
+    });
   }
 };
 

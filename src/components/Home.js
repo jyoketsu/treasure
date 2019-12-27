@@ -557,9 +557,7 @@ class Station extends React.Component {
         <div
           className="station-cover"
           style={{
-            backgroundImage: `url(${
-              content.cover ? content.cover : ""
-            })`
+            backgroundImage: `url(${content.cover ? content.cover : ""})`
           }}
         ></div>
         <div className="main-content station-home-page">
@@ -660,9 +658,7 @@ class Station extends React.Component {
                   )}
                   title={`${serie.name}（${serie.albumCount}）`}
                 >
-                  {`${serie.name}${
-                    serie.albumCount ? "(" + serie.albumCount + ")" : ""
-                  }`}
+                  {serie.name}
                 </div>
               ))}
             </div>

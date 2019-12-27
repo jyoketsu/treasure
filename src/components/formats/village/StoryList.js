@@ -5,7 +5,7 @@ import { Spin } from "antd";
 import useStoryClick from "../../common/useStoryClick";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getStoryList } from "../../../actions/app";
+import { getStoryList,like } from "../../../actions/app";
 
 export default function StoryList() {
   const perPage = 20;
@@ -103,7 +103,9 @@ function Head() {
   const history = useHistory();
   return (
     <div className="village-stories-head">
-      <i className="back" onClick={() => history.goBack()}></i>
+      <div>
+        <i className="back" onClick={() => history.goBack()}></i>
+      </div>
     </div>
   );
 }
@@ -116,6 +118,7 @@ function Loading(params) {
 }
 
 function Story({ story }) {
+  const dispatch = useDispatch();
   const click = useStoryClick();
   return (
     <div className="village-story-cover">
@@ -144,7 +147,12 @@ function Story({ story }) {
           <div>
             <i
               className="like"
-              style={{ backgroundImage: "url(/image/icon/village/like.svg)" }}
+              style={{
+                backgroundImage: story.islike
+                  ? "url(/image/icon/village/liked.svg)"
+                  : "url(/image/icon/village/like.svg)"
+              }}
+              onClick={()=>like(story._key,dispatch)}
             ></i>
             <i
               className="comment"

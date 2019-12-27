@@ -87,6 +87,7 @@ const story = (state = defaultState, action) => {
 
     case ADD_STORY:
       if (!action.error) {
+        message.success("发布成功！");
         const addedStory = action.payload.result;
         let storyList = Object.assign([], state.storyList);
 

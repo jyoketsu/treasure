@@ -271,7 +271,7 @@ class LinkStory extends Component {
           title="设定链接"
           visible={true}
           onOk={this.handleSubmit}
-          onCancel={switchEditLinkVisible}
+          onCancel={() => switchEditLinkVisible(null)}
         >
           <label className="ant-form-item-required form-label">
             链接封面：
@@ -338,13 +338,10 @@ class LinkStory extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    switchEditLinkVisible,
-    addStory,
-    modifyStory,
-    applyEdit,
-    exitEdit
-  }
-)(LinkStory);
+export default connect(mapStateToProps, {
+  switchEditLinkVisible,
+  addStory,
+  modifyStory,
+  applyEdit,
+  exitEdit
+})(LinkStory);

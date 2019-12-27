@@ -7,14 +7,22 @@ import Visitors from "./Visitors";
 import Fans from "./Fans";
 import Rank from "./Rank";
 import StoryList from "./StoryList";
+import Invite from "./Invite";
+import Checkin from "./Checkin";
 import AddButton from "../../AddArticleButton";
 import util from "../../../services/Util";
-import { Route, useRouteMatch, useHistory } from "react-router-dom";
+import {
+  Route,
+  useRouteMatch,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Village() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
   const match = useRouteMatch();
+  const location = useLocation();
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -40,6 +48,11 @@ export default function Village() {
           path={`${match.path}/stories/:channelKey`}
           component={StoryList}
         />
+        <Route path={`${match.path}/invite`} component={Invite} />
+        <Route path={`${match.path}/checkin`} component={Checkin} />
+        {util.common.isMobile() && !location.pathname.includes("/stories") ? (
+          <FootNavi />
+        ) : null}
       </div>
     </div>
   );
@@ -62,7 +75,6 @@ function Home() {
         <div className="operation-panel">
           {nowStation && !util.common.isMobile() ? <AddButton /> : null}
         </div>
-        {util.common.isMobile() ? <FootNavi /> : null}
       </div>
     </div>
   );
@@ -80,7 +92,7 @@ function Banner({ nowStation }) {
 }
 
 function FootNavi() {
-  const match = useRouteMatch();
+  const location = useLocation();
   const history = useHistory();
   const nowStation = useSelector(state => state.station.nowStation);
   return (
@@ -88,15 +100,31 @@ function FootNavi() {
       <i
         style={{
           backgroundImage:
-            match.path === "/:id/home"
+            location.pathname === `/${nowStation.domain}/home`
               ? "url(/image/icon/village/home-fill.svg)"
               : "url(/image/icon/village/home.svg)"
         }}
-        onClick={() => history.push(`/${match.path}`)}
+        onClick={() => history.push(`/${nowStation.domain}/home`)}
       ></i>
-      <i style={{ backgroundImage: "url(/image/icon/village/invite.svg)" }}></i>
+      <i
+        style={{
+          backgroundImage:
+            location.pathname === `/${nowStation.domain}/home/invite`
+              ? "url(/image/icon/village/invite-fill.svg)"
+              : "url(/image/icon/village/invite.svg)"
+        }}
+        onClick={() => history.push(`/${nowStation.domain}/home/invite`)}
+      ></i>
       <AddButton />
-      <i style={{ backgroundImage: "url(/image/icon/village/sign.svg)" }}></i>
+      <i
+        style={{
+          backgroundImage:
+            location.pathname === `/${nowStation.domain}/home/checkin`
+              ? "url(/image/icon/village/sign-fill.svg)"
+              : "url(/image/icon/village/sign.svg)"
+        }}
+        onClick={() => history.push(`/${nowStation.domain}/home/checkin`)}
+      ></i>
       <i
         style={{ backgroundImage: "url(/image/icon/village/people.svg)" }}
         onClick={() => history.push(`/${nowStation.domain}/me`)}

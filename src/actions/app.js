@@ -279,6 +279,16 @@ export function removeSubSite(stationKey, subStation, dispatch) {
   }
 }
 
+export const GET_LATEST_VISITOR = "GET_LATEST_VISITOR";
+export function getLatestVisitors(stationKey, dispatch) {
+  let request = api.station.latestVisitUsers(stationKey);
+  if (dispatch) {
+    dispatch({ type: GET_LATEST_VISITOR, payload: request });
+  } else {
+    return { type: GET_LATEST_VISITOR, payload: request };
+  }
+}
+
 // story
 export const GET_STORY_LIST = "GET_STORY_LIST";
 export const CLEAR_STORY_LIST = "CLEAR_STORY_LIST";
@@ -406,14 +416,19 @@ export function deleteStory(storyKey) {
   };
 }
 
-export function like(storyKey) {
+export function like(storyKey, dispatch) {
   let request = api.story.like(storyKey);
-  return {
+  const dispatchBody = {
     type: LIKE_STORY,
     storyKey: storyKey,
     noLoading: true,
     payload: request
   };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
 export function updateExif(story) {
@@ -441,8 +456,12 @@ export function myStationLatestStory(curPage) {
   };
 }
 
-export function switchEditLinkVisible() {
-  return { type: SWITCH_EDIT_LINK_VISIBLE };
+export function switchEditLinkVisible(dispatch) {
+  if (dispatch) {
+    dispatch({ type: SWITCH_EDIT_LINK_VISIBLE });
+  } else {
+    return { type: SWITCH_EDIT_LINK_VISIBLE };
+  }
 }
 
 export function passAll(stationKey) {

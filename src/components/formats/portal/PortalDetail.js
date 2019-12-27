@@ -4,10 +4,7 @@ import util from "../../../services/Util";
 import PortalArticle from "./PortalArticle";
 import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";
-import {
-  getStoryList,
-  clearStoryList
-} from "../../../actions/app";
+import { getStoryList, clearStoryList } from "../../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation,
   storyList: state.story.storyList,
@@ -126,11 +123,19 @@ class PortalDetail extends Component {
       this.jumpable = false;
       if (storyList[0].type === 12) {
         const token = localStorage.getItem("TOKEN");
-        window.open(
-          `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
-          "_blank"
-        );
-      } else if (storyList[0].type === 15 && storyList[0].openType === 1) {
+        if (!util.common.isMobile()) {
+          window.open(
+            `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
+            "_blank"
+          );
+        } else {
+          window.location.href = `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`;
+        }
+      } else if (
+        storyList[0].type === 15 &&
+        storyList[0].openType === 1 &&
+        !util.common.isMobile()
+      ) {
         const token = localStorage.getItem("TOKEN");
         let url = storyList[0].url;
         if (

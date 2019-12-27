@@ -93,6 +93,9 @@ class AddButton extends Component {
 
   // 点击选择频道下一步按钮
   handleSelectedChannel() {
+    if (!this.channelKey) {
+      return message.info("请选择投稿主题！");
+    }
     const { match, history, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = match.params.id;
     switch (this.contributeType) {
@@ -114,6 +117,7 @@ class AddButton extends Component {
           `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${this.channelKey}`,
           "_blank"
         );
+
         break;
       case "link":
         switchEditLinkVisible();
@@ -126,6 +130,12 @@ class AddButton extends Component {
   }
 
   switchChannelVisible() {
+    const { user, history } = this.props;
+    if (user.isGuest) {
+      message.info("请先登录！");
+      history.push("/account/login");
+      return;
+    }
     this.setState(prevState => ({
       showSelectChannel: !prevState.showSelectChannel
     }));

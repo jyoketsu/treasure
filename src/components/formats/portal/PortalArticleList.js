@@ -5,6 +5,7 @@ import { StoryLoading } from "../../story/StoryCard";
 import { Pagination } from "antd";
 import { connect } from "react-redux";
 import { getStoryList } from "../../../actions/app";
+import Util from "../../../services/Util";
 const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
@@ -38,13 +39,17 @@ class PortalArticleList extends Component {
         break;
       case 12:
         const token = localStorage.getItem("TOKEN");
-        window.open(
-          `https://editor.qingtime.cn?token=${token}&key=${story._key}`,
-          "_blank"
-        );
+        if (!Util.common.isMobile()) {
+          window.open(
+            `https://editor.qingtime.cn?token=${token}&key=${story._key}`,
+            "_blank"
+          );
+        } else {
+          window.location.href = `https://editor.qingtime.cn?token=${token}&key=${story._key}`;
+        }
         break;
       case 15:
-        if (story.openType === 1) {
+        if (story.openType === 1 && !Util.common.isMobile()) {
           window.open(story.url, "_blank");
         } else {
           window.location.href = story.url;

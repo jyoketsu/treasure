@@ -11,6 +11,7 @@ export default function useStoryClick() {
           `https://editor.qingtime.cn?token=${token}&key=${_key}`,
           "_blank"
         );
+
         break;
       case 15:
         if (openType === 1) {

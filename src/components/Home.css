@@ -241,7 +241,7 @@
 }
 
 .channel-item {
-  width: 130px;
+  width: 80px;
   overflow: hidden;
   white-space: nowrap;
   -o-text-overflow: ellipsis;

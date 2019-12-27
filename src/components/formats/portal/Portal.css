@@ -53,14 +53,14 @@
 }
 .portal-article {
   width: 810px;
-  margin: 25px auto;
+  margin: 35px auto;
 }
 .portal-article.link {
   width: 100%;
 }
 .catalog-title-edit {
   position: absolute;
-  top: 5px;
+  top: -26px;
   right: 35px;
   color: #1890ff;
 }
