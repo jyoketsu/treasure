@@ -13,7 +13,10 @@ export default function Visitors() {
   return (
     <div className="village-visitors">
       <TitleHead icon="/image/icon/village/eye.svg" text="最近访问" />
-      <div className="latest-visitors" style={{ display: "flex" }}>
+      <div
+        className="latest-visitors"
+        style={{ display: "flex", overflow: "hidden" }}
+      >
         {latestVisitors.map((user, index) => (
           <User key={index} user={user} />
         ))}
@@ -31,7 +34,8 @@ function User({ user }) {
         height: "100px",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        flexShrink: "0"
       }}
     >
       <i
