@@ -478,7 +478,15 @@ class TagOptionList extends Component {
     let objList = [];
     for (let i = 0; i < tagList.length; i++) {
       if (util.common.isJSON(tagList[i])) {
-        objList.push(JSON.parse(tagList[i]));
+        let obj = JSON.parse(tagList[i]);
+
+        // 如果是老数据没有id，添加id属性
+        if (!obj.id) {
+          console.log("如果是老数据没有id，添加id属性");
+          obj.id = util.common.guid();
+        }
+
+        objList.push(obj);
       } else {
         objList.push({
           id: util.common.guid(),

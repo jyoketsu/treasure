@@ -34,14 +34,16 @@ class Portal extends Component {
       nowStation.config &&
       nowStation.config.customBk &&
       nowStation.config.customBk.one
-        ? util.operation.isPortalDetail(window.location.pathname)
+        ? util.operation.isPortalDetail(window.location.pathname) &&
+          nowStation.config.customBk.three
           ? `url(${nowStation.config.customBk.three.url})`
           : `url(${nowStation.config.customBk.one.url})`
         : null;
     // 自定义背景是否重复
     const noRepeat =
       customBk &&
-      (util.operation.isPortalDetail(window.location.pathname)
+      (util.operation.isPortalDetail(window.location.pathname) &&
+      nowStation.config.customBk.three
         ? nowStation.config.customBk.three.type === 1
         : nowStation.config.customBk.one.type === 1);
     const customFootBk =
