@@ -3,37 +3,28 @@ import "./News.css";
 import TitleHead from "./TitleHead";
 import useStoryClick from "../../common/useStoryClick";
 import { useSelector, useDispatch } from "react-redux";
-import { getStoryList } from "../../../actions/app";
+import { getHomeStories } from "../../../actions/app";
 
 export default function News() {
   const dispatch = useDispatch();
   const nowStation = useSelector(state => state.station.nowStation);
-  const storyList = useSelector(state => state.story.storyList);
+  const homeStories = useSelector(state => state.story.homeStories);
   const storyClick = useStoryClick();
-  // 站点频道
-  const seriesInfo = nowStation ? nowStation.seriesInfo : [];
-  // 新闻频道key（将第1个频道作为新闻频道）
-  const newsChannelKey = seriesInfo[0] ? seriesInfo[0]._key : "";
 
   useEffect(() => {
     if (nowStation) {
-      getStoryList(
-        1,
-        nowStation._key,
-        null,
-        newsChannelKey,
-        1,
-        1,
-        "",
-        "",
-        1,
-        30,
-        false,
-        false,
-        dispatch
-      );
+      // 站点频道
+      const seriesInfo = nowStation ? nowStation.seriesInfo : [];
+      let channelKeys = [];
+
+      for (let i = 0; i < seriesInfo.length; i++) {
+        if (seriesInfo[i].inHome) {
+          channelKeys.push(seriesInfo[i]._key);
+        }
+      }
+      getHomeStories(nowStation._key, channelKeys, dispatch);
     }
-  }, [nowStation, newsChannelKey, dispatch]);
+  }, [nowStation, dispatch]);
 
   function handleClick(story) {
     storyClick(story);
@@ -41,20 +32,43 @@ export default function News() {
 
   return (
     <div className="village-news">
-      <TitleHead
-        icon="/image/icon/village/volume-up-outline.svg"
-        text={seriesInfo[0] ? seriesInfo[0].name : ""}
-      />
-      <div className="village-news-list">
-        {storyList.map((story, index) => (
-          <NewsItem
-            key={index}
-            news={story}
-            showContent={index === 0 ? true : false}
-            onClick={handleClick}
+      {homeStories.map((result, index) => (
+        <NewsSection
+          key={index}
+          channelName={
+            result.statusCode === "200" && result.result[0]
+              ? result.result[0].series.name
+              : ""
+          }
+          storyList={result.statusCode === "200" ? result.result : []}
+          onClick={handleClick}
+        />
+      ))}
+    </div>
+  );
+}
+
+function NewsSection({ channelName, storyList, onClick }) {
+  return (
+    <div>
+      {storyList.length ? (
+        <div>
+          <TitleHead
+            icon="/image/icon/village/volume-up-outline.svg"
+            text={channelName}
           />
-        ))}
-      </div>
+          <div className="village-news-list">
+            {storyList.map((story, index) => (
+              <NewsItem
+                key={index}
+                news={story}
+                showContent={index === 0 ? true : false}
+                onClick={onClick}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

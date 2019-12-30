@@ -15,7 +15,8 @@ import {
   PASS_ALL,
   SET_STATUS_TAG,
   SET_STATISTICS_STATUS_TAG,
-  SET_CHANNEL_KEY
+  SET_CHANNEL_KEY,
+  GET_HOME_STORIES
 } from "../actions/app";
 import { message } from "antd";
 
@@ -31,7 +32,9 @@ const defaultState = {
   refresh: false,
   dynamicStoryList: [],
   eidtLinkVisible: false,
-  statusTagStats: []
+  statusTagStats: [],
+  // 乡村版式，显示在首页的频道故事列表
+  homeStories: []
 };
 
 const story = (state = defaultState, action) => {
@@ -269,6 +272,11 @@ const story = (state = defaultState, action) => {
       return {
         ...state,
         nowChannelKey: action.channelKey
+      };
+    case GET_HOME_STORIES:
+      return {
+        ...state,
+        homeStories: action.results
       };
     default:
       return state;

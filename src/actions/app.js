@@ -309,6 +309,7 @@ export const PASS_ALL = "PASS_ALL";
 export const SET_STATUS_TAG = "SET_STATUS_TAG";
 export const SET_STATISTICS_STATUS_TAG = "SET_STATISTICS_STATUS_TAG";
 export const SET_CHANNEL_KEY = "SET_CHANNEL_KEY";
+export const GET_HOME_STORIES = "GET_HOME_STORIES";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -494,6 +495,16 @@ export function statisticsStatusTag(stationKey, channelKey, statusTag) {
 
 export function setChannelKey(channelKey) {
   return { type: SET_CHANNEL_KEY, channelKey: channelKey };
+}
+
+export async function getHomeStories(stationKey, channelKeys, dispatch) {
+  const promises = channelKeys.map(key =>
+    api.story.getStoryList(1, stationKey, null, key, 1, 1, "", "", 1, 10)
+  );
+  const results = await Promise.all(promises);
+  if (dispatch) {
+    dispatch({ type: GET_HOME_STORIES, results: results });
+  }
 }
 
 // 频道

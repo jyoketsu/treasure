@@ -66,6 +66,10 @@ const CustomizedForm = Form.create({
         ...props.showExif,
         value: props.showExif.value
       }),
+      inHome: Form.createFormField({
+        ...props.inHome,
+        value: props.inHome.value
+      }),
       contributeType: Form.createFormField({
         ...props.contributeType,
         value: props.contributeType.value
@@ -176,6 +180,9 @@ const CustomizedForm = Form.create({
         {getFieldDecorator("showExif", { valuePropName: "checked" })(
           <Switch />
         )}
+      </Form.Item>
+      <Form.Item label="在首页显示（仅对部分版式生效）">
+        {getFieldDecorator("inHome", { valuePropName: "checked" })(<Switch />)}
       </Form.Item>
 
       <Divider />
@@ -301,6 +308,9 @@ class EditChannel extends Component {
         },
         showExif: {
           value: channelInfo ? channelInfo.showExif : true
+        },
+        inHome: {
+          value: channelInfo ? channelInfo.inHome : true
         },
         contributeType: {
           value: channelInfo
