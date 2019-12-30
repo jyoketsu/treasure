@@ -28,9 +28,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "scp": "scp -r build/* root@132.232.47.47:/home/work/websites/treasure/build",
-    "scp-static": "scp -r build/static/* index.html root@132.232.47.47:/home/work/websites/treasure/build",
-    "deploy-all": "react-scripts build && npm run scp",
-    "deploy": "react-scripts build && npm run scp-static"
+    "deploy": "react-scripts build && npm run scp"
   },
   "eslintConfig": {
     "extends": "react-app"
