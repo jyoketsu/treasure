@@ -513,6 +513,53 @@ const operation = {
    */
   isPortalDetail(pathname) {
     return pathname.split("/")[3] === "detail";
+  },
+  async handleClickTag(stationKey, domain, channelkey, tagId) {
+    sessionStorage.setItem("portal-curpage", 1);
+    const result = await api.story.getStoryList(
+      1,
+      stationKey,
+      null,
+      channelkey,
+      1,
+      1,
+      tagId,
+      "",
+      1,
+      10
+    );
+    if (result.statusCode === "200") {
+      if (result.result.length === 1) {
+        const token = localStorage.getItem("TOKEN");
+        const story = result.result[0];
+        switch (story.type) {
+          case 12:
+            window.location.href = `https://editor.qingtime.cn?token=${token}&key=${story._key}`;
+            break;
+          case 15:
+            let url = story.url;
+            if (
+              url.includes("puku.qingtime.cn") ||
+              url.includes("bless.qingtime.cn") ||
+              url.includes("exp.qingtime.cn")
+            ) {
+              url = `${url}/${domain}?token=${token}`;
+            }
+            // 打开新标签页
+            if (story.openType === 1) {
+              window.open(url, "_blank");
+            } else {
+              // 本页内打开
+              window.location.href = url;
+            }
+            break;
+          default:
+            return result;
+        }
+      } else {
+        return result;
+      }
+    }
   }
 };
 

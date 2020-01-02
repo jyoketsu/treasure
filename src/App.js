@@ -69,7 +69,11 @@ export default function App() {
       window.location.pathname !== "/" &&
       !window.location.pathname.split("/")[2]
     ) {
-      window.location.href = `${window.location.href}/home`;
+      if (window.location.pathname.split("/")[2] === undefined) {
+        window.location.href = `${window.location.href}/home`;
+      } else {
+        window.location.href = `${window.location.href}home`;
+      }
     }
 
     return () => {

@@ -3,6 +3,12 @@ import api from "../services/Api";
 // common
 export const ASYNC_START = "ASYNC_START";
 export const ASYNC_END = "ASYNC_END";
+export function asyncStart() {
+  return { type: ASYNC_START };
+}
+export function asyncEnd() {
+  return { type: ASYNC_END };
+}
 
 // auth
 export const GET_USER_INFO = "GET_USER_INFO";
@@ -292,6 +298,7 @@ export function getLatestVisitors(stationKey, dispatch) {
 // story
 export const GET_STORY_LIST = "GET_STORY_LIST";
 export const CLEAR_STORY_LIST = "CLEAR_STORY_LIST";
+export const SET_STORY_LIST = "SET_STORY_LIST";
 export const ADD_STORY = "ADD_STORY";
 export const MODIFY_STORY = "MODIFY_STORY";
 export const DELETE_STORY = "DELETE_STORY";
@@ -366,6 +373,16 @@ export function getStoryList(
   } else {
     return dispatchBody;
   }
+}
+
+export function setStoryList(storyList, totalNumber, tag, statusTag) {
+  return {
+    type: SET_STORY_LIST,
+    storyList: storyList,
+    totalNumber: totalNumber,
+    tag: tag,
+    statusTag: statusTag
+  };
 }
 
 export function readyToRefresh() {

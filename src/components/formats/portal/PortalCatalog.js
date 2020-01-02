@@ -5,6 +5,7 @@ import util from "../../../services/Util";
 import PortalCatalogMobile from "./PortalCatalogMobile";
 import { Button } from "antd";
 import { connect } from "react-redux";
+import { asyncStart, asyncEnd } from "../../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation
 });
@@ -15,15 +16,33 @@ class Catalog extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(tag) {
-    const { location, history, match } = this.props;
+  async handleClick(tag) {
+    const {
+      location,
+      history,
+      match,
+      nowStation,
+      asyncStart,
+      asyncEnd
+    } = this.props;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
     const channelKey = match.params.id;
-    history.push({
-      pathname: `/${stationDomain}/home/detail/${channelKey}`,
-      state: { tagId: tag.id, tagName: tag.name }
-    });
+    asyncStart();
+    const result = await util.operation.handleClickTag(
+      nowStation._key,
+      stationDomain,
+      channelKey,
+      tag.id
+    );
+    asyncEnd();
+
+    if (result) {
+      history.push({
+        pathname: `/${stationDomain}/home/detail/${channelKey}`,
+        state: { tagId: tag.id, tagName: tag.name }
+      });
+    }
   }
 
   render() {
@@ -71,7 +90,7 @@ class Catalog extends Component {
   }
 }
 
-export default connect(mapStateToProps, {})(Catalog);
+export default connect(mapStateToProps, { asyncStart, asyncEnd })(Catalog);
 
 class CatalogCover extends React.Component {
   constructor(props) {

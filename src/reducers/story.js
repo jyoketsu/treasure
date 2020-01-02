@@ -1,6 +1,7 @@
 import {
   GET_STORY_LIST,
   CLEAR_STORY_LIST,
+  SET_STORY_LIST,
   ADD_STORY,
   MODIFY_STORY,
   DELETE_STORY,
@@ -75,6 +76,16 @@ const story = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case SET_STORY_LIST:
+      return {
+        ...state,
+        storyList: action.storyList,
+        storyNumber: action.totalNumber,
+        sortType: 1,
+        sortOrder: 1,
+        tag: action.tag,
+        statusTag: action.statusTag
+      };
     case READYTOREFRESH:
       return {
         ...state,

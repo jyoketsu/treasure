@@ -4,7 +4,13 @@ import util from "../../../services/Util";
 import PortalArticle from "./PortalArticle";
 import PortalArticleList from "./PortalArticleList";
 import { connect } from "react-redux";
-import { getStoryList, clearStoryList } from "../../../actions/app";
+import {
+  getStoryList,
+  clearStoryList,
+  setStoryList,
+  asyncStart,
+  asyncEnd
+} from "../../../actions/app";
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation,
   storyList: state.story.storyList,
@@ -20,17 +26,34 @@ class PortalDetail extends Component {
     this.getStoryList = this.getStoryList.bind(this);
   }
 
-  handleClickCatalog(tag) {
-    const { location, history, match } = this.props;
+  async handleClickCatalog(tag) {
+    const {
+      location,
+      history,
+      match,
+      nowStation,
+      asyncStart,
+      asyncEnd,
+      setStoryList
+    } = this.props;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
     const channelKey = match.params.id;
-    this.getStoryList(tag.id);
-    history.push({
-      pathname: `/${stationDomain}/home/detail/${channelKey}`,
-      state: { tagId: tag.id, tagName: tag.name }
-    });
-    this.jumpable = true;
+    asyncStart();
+    const result = await util.operation.handleClickTag(
+      nowStation._key,
+      stationDomain,
+      channelKey,
+      tag.id
+    );
+    asyncEnd();
+    if (result) {
+      setStoryList(result.result, result.total, tag.id, "");
+      history.push({
+        pathname: `/${stationDomain}/home/detail/${channelKey}`,
+        state: { tagId: tag.id, tagName: tag.name }
+      });
+    }
   }
 
   getStoryList(tagId) {
@@ -111,45 +134,6 @@ class PortalDetail extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { storyList: prevStoryList } = prevProps;
-    const { storyList, nowStation } = this.props;
-    const prevStoryKey = prevStoryList[0] ? prevStoryList[0]._key : "";
-    if (
-      storyList.length === 1 &&
-      (storyList[0].type === 12 || storyList[0].type === 15) &&
-      storyList[0]._key !== prevStoryKey
-    ) {
-      this.jumpable = false;
-      if (storyList[0].type === 12) {
-        const token = localStorage.getItem("TOKEN");
-        if (!util.common.isMobile()) {
-          window.open(
-            `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`,
-            "_blank"
-          );
-        } else {
-          window.location.href = `https://editor.qingtime.cn?token=${token}&key=${storyList[0]._key}`;
-        }
-      } else if (
-        storyList[0].type === 15 &&
-        storyList[0].openType === 1 &&
-        !util.common.isMobile()
-      ) {
-        const token = localStorage.getItem("TOKEN");
-        let url = storyList[0].url;
-        if (
-          storyList[0].url.includes("puku.qingtime.cn") ||
-          storyList[0].url.includes("bless.qingtime.cn") ||
-          storyList[0].url.includes("exp.qingtime.cn")
-        ) {
-          url = `${storyList[0].url}/${nowStation.domain}?token=${token}`;
-        }
-        window.open(url, "_blank");
-      }
-    }
-  }
-
   componentWillUnmount() {
     this.props.clearStoryList();
   }
@@ -157,7 +141,10 @@ class PortalDetail extends Component {
 
 export default connect(mapStateToProps, {
   getStoryList,
-  clearStoryList
+  clearStoryList,
+  setStoryList,
+  asyncStart,
+  asyncEnd
 })(PortalDetail);
 
 class CatalogBanner extends Component {
