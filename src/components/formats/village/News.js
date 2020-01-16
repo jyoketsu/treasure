@@ -2,8 +2,13 @@ import React, { useEffect } from "react";
 import "./News.css";
 import TitleHead from "./TitleHead";
 import useStoryClick from "../../common/useStoryClick";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getHomeStories } from "../../../actions/app";
+import {
+  getHomeStories,
+  clearStoryList,
+  clearStoryDetail
+} from "../../../actions/app";
 
 export default function News() {
   const dispatch = useDispatch();
@@ -35,10 +40,10 @@ export default function News() {
       {homeStories.map((result, index) => (
         <NewsSection
           key={index}
-          channelName={
+          channel={
             result.statusCode === "200" && result.result[0]
-              ? result.result[0].series.name
-              : ""
+              ? result.result[0].series
+              : null
           }
           storyList={result.statusCode === "200" ? result.result : []}
           onClick={handleClick}
@@ -48,14 +53,31 @@ export default function News() {
   );
 }
 
-function NewsSection({ channelName, storyList, onClick }) {
+function NewsSection({ channel, storyList, onClick }) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const nowStation = useSelector(state => state.station.nowStation);
+
+  function toChannel(channelKey) {
+    clearStoryList(dispatch);
+    clearStoryDetail(dispatch);
+    history.push(`/${nowStation.domain}/home/stories/${channelKey}`);
+  }
+
   return (
     <div>
       {storyList.length ? (
         <div>
           <TitleHead
             icon="/image/icon/village/volume-up-outline.svg"
-            text={channelName}
+            text={channel ? channel.name : ""}
+            onClick={
+              channel
+                ? () => {
+                    toChannel(channel._key);
+                  }
+                : () => {}
+            }
           />
           <div className="village-news-list">
             {storyList.map((story, index) => (

@@ -56,6 +56,10 @@ class Me extends Component {
     } else {
       document.documentElement.scrollTop = 0;
     }
+    const { user, history } = this.props;
+    if (!user || user.isGuest) {
+      history.push("/account/login");
+    }
   }
 }
 

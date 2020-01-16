@@ -1,0 +1,8 @@
+.village-invite {
+  width: 100%;
+}
+@media screen and (max-width: 768px) {
+  .village-invite {
+    padding-bottom: 50px;
+  }
+}

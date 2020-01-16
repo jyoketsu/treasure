@@ -21,11 +21,13 @@ function Channel({ channel }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const nowStation = useSelector(state => state.station.nowStation);
+
   function toChannel(channelKey) {
     clearStoryList(dispatch);
     clearStoryDetail(dispatch);
     history.push(`/${nowStation.domain}/home/stories/${channelKey}`);
   }
+  
   return (
     <div className="village-channel" onClick={() => toChannel(channel._key)}>
       <i style={{ backgroundImage: `url(${channel.logo})` }}></i>

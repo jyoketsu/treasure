@@ -199,7 +199,7 @@ const CustomizedForm = Form.create({
         })(
           <Radio.Group>
             <Radio value={1}>全站统一</Radio>
-            <Radio value={2}>频道插件独立管理</Radio>
+            <Radio value={2} disabled>频道插件独立管理</Radio>
           </Radio.Group>
         )}
       </Form.Item>
