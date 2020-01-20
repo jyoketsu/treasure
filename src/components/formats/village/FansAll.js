@@ -28,7 +28,12 @@ export default function AllFans() {
 function User({ user }) {
   return (
     <div className="all-fans-item">
-      <i style={{ backgroundImage: `url(${user.avatar})` }}></i>
+      <i
+        style={{
+          backgroundImage: `url(${user.avatar ||
+            "https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg"})`
+        }}
+      ></i>
       <div>
         <span className="all-fans-item-name">{user.nickName}</span>
       </div>
