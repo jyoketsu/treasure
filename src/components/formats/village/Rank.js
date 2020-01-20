@@ -9,6 +9,7 @@ export default function Rank() {
   const subStationList = useSelector(state => state.station.subStationList);
   const nowStation = useSelector(state => state.station.nowStation);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     getSubStationList(nowStation._key, dispatch);
@@ -16,7 +17,13 @@ export default function Rank() {
 
   return (
     <div className="village-sub-sites">
-      <TitleHead icon="/image/icon/village/sitemap.svg" text="子站点" />
+      <TitleHead
+        icon="/image/icon/village/sitemap.svg"
+        text="子站点"
+        onClick={() => {
+          history.push(`/${nowStation.domain}/home/rank`);
+        }}
+      />
       <div className="village-sub-site-list">
         {subStationList.map((station, index) => (
           <SubSite key={index} station={station} />

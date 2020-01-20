@@ -9,6 +9,9 @@ import Rank from "./Rank";
 import StoryList from "./StoryList";
 import Invite from "./Invite";
 import Checkin from "./Checkin";
+import AllVisitors from "./VisitorsAll";
+import AllFans from "./FansAll";
+import AllRank from "./RankAll";
 import AddButton from "../../AddArticleButton";
 import util from "../../../services/Util";
 import {
@@ -50,6 +53,9 @@ export default function Village() {
         />
         <Route path={`${match.path}/invite`} component={Invite} />
         <Route path={`${match.path}/checkin`} component={Checkin} />
+        <Route path={`${match.path}/visitors`} component={AllVisitors} />
+        <Route path={`${match.path}/fans`} component={AllFans} />
+        <Route path={`${match.path}/rank`} component={AllRank} />
         {util.common.isMobile() && !location.pathname.includes("/stories") ? (
           <FootNavi />
         ) : null}

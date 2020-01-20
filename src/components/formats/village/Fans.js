@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import "./Fans.css";
 import TitleHead from "./TitleHead";
+import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { groupMember } from "../../../actions/app";
 
 export default function Fans() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const nowStation = useSelector(state => state.station.nowStation);
   const userList = useSelector(state => state.station.userList);
@@ -17,7 +19,13 @@ export default function Fans() {
 
   return (
     <div className="village-fans">
-      <TitleHead icon="/image/icon/village/eye.svg" text="关注本站的人" />
+      <TitleHead
+        icon="/image/icon/village/eye.svg"
+        text="关注本站的人"
+        onClick={() => {
+          history.push(`/${nowStation.domain}/home/fans`);
+        }}
+      />
       <div className="village-fans-list">
         {userList.map((user, index) => (
           <User key={index} user={user} />
