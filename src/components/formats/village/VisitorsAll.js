@@ -29,7 +29,7 @@ function User({ user }) {
       <i
         style={{
           backgroundImage: `url(${user.avatar ||
-            "https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg"})`
+            "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"})`
         }}
       ></i>
       <div>
