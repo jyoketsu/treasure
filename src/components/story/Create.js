@@ -299,6 +299,7 @@ function More({ visible, setVisible }) {
         break;
     }
   }
+  const isMobile = util.common.isMobile();
   return (
     <Modal
       title="更多投稿方式"
@@ -319,12 +320,16 @@ function More({ visible, setVisible }) {
         <Option key={0} value="article">
           文章
         </Option>
-        <Option key={0} value="link">
-          链接
-        </Option>
-        <Option key={0} value="page">
-          网页
-        </Option>
+        {isMobile ? null : (
+          <Option key={0} value="link">
+            链接
+          </Option>
+        )}
+        {isMobile ? null : (
+          <Option key={0} value="page">
+            网页
+          </Option>
+        )}
       </Select>
     </Modal>
   );

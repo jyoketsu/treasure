@@ -1,57 +1,75 @@
 /* HeadMenu--------------- */
 .head-menu {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 999;
-    width: 288px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #D9D9D9;
-    box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.50);
-    padding: 10px 15px;
-    overflow: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  width: 288px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d9d9d9;
+  box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.5);
+  padding: 10px 15px;
+  overflow: auto;
 }
 
 .head-menu-button {
-    display: grid;
-    grid-template-columns: repeat(4, 25%);
-    grid-template-rows: repeat(2, 50%);
-    justify-items: center;
-    align-items: center;
-    border-bottom: 1px solid #EEEEEE;
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(2, 50%);
+  justify-items: center;
+  align-items: center;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .head-menu-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: unset;
 }
 
 .menu-station-list {
-    display: flex;
-    flex-direction: column;
-    padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+}
+.menu-station-list > div {
+  display: flex;
+  align-items: center;
 }
 
-.menu-station-list>span {
-    font-size: 14px;
-    line-height: 34px;
-    color: #4A4A4A;
+.menu-station-name {
+  width: 80%;
+  font-size: 14px;
+  line-height: 34px;
+  color: #4a4a4a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.menu-station-list>span:hover {
-    cursor: pointer;
-    color: #4A90E2;
+.menu-station-name:hover {
+  cursor: pointer;
+  color: #4a90e2;
+}
+.menu-station-role {
+  width: 20%;
+  font-style: normal;
+  font-weight: normal;
+  text-align: center;
+  font-size: 12px;
+  background-color: slategrey;
+  color: #fff;
+  border-radius: 4px;
 }
 
-@media screen and (max-width:768px) {
-    .head-menu {
-        width: 100%;
-        top: 0;
-        right: 0;
-        left: 0;
-        border: unset;
-        box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
-    }
+@media screen and (max-width: 768px) {
+  .head-menu {
+    width: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    border: unset;
+    box-shadow: 2px 4px 8px 0 rgba(71, 110, 87, 0.25);
+  }
 }

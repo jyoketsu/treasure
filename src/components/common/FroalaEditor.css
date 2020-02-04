@@ -1,78 +1,82 @@
 .my-froala-editor-container {
-    display: flex;
+  display: flex;
 }
 
 .editor-menu {
-    width: 350px;
+  width: 350px;
 }
 
 .editor-container {
-    flex: 1;
+  flex: 1;
 }
 
 .my-froala-editor.preview {
-    width: 816px;
-    min-height: 1173px;
-    box-shadow: 0 1px 6px #ccc;
-    background-color: #FFFFFF;
-    padding: 1cm 2cm 2cm;
-    margin: auto;
+  width: 816px;
+  min-height: 1173px;
+  box-shadow: 0 1px 6px #ccc;
+  background-color: #ffffff;
+  padding: 1cm 2cm 2cm;
+  margin: auto;
 }
 
 .my-froala-editor-container .ant-menu {
-    background: unset !important;
-    border-right: unset !important;
+  background: unset !important;
+  border-right: unset !important;
 }
 
-.editor-menu>ul {
-    overflow: -moz-scrollbars-none;
-    transition: top 0.2s;
+.editor-menu > ul {
+  overflow: -moz-scrollbars-none;
+  transition: top 0.2s;
 }
 
 /* chrome 隐藏滚动条 */
-.editor-menu>ul::-webkit-scrollbar {
-    width: 0 !important
+.editor-menu > ul::-webkit-scrollbar {
+  width: 0 !important;
 }
 
 .fr-box.fr-basic .fr-wrapper {
-    border: unset !important;
+  border: unset !important;
 }
 
 .fr-toolbar,
 .second-toolbar {
-    border-radius: unset !important;
-    border: unset !important;
+  border-radius: unset !important;
+  border: unset !important;
 }
 
-.fr-wrapper>div:first-child,
+.fr-wrapper > div:first-child,
 #logo,
-.fr-view>p[data-f-id="pbf"] {
-    position: absolute;
-    top: -10000px;
-    opacity: 0;
-    left: 0;
+.fr-view > p[data-f-id="pbf"] {
+  position: absolute;
+  top: -10000px;
+  opacity: 0;
+  left: 0;
 }
+@media screen and (max-width: 1150px) {
+  .editor-menu {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .my-froala-editor {
+    width: unset;
+    min-height: unset;
+    box-shadow: unset;
+    background-color: unset;
+  }
 
-@media screen and (max-width:768px) {
-    .my-froala-editor {
-        width: unset;
-        min-height: unset;
-        box-shadow: unset;
-        background-color: unset;
-    }
+  .editor-menu {
+    display: none;
+  }
 
-    .editor-menu {
-        display: none;
-    }
+  .my-froala-editor-container {
+    display: unset;
+  }
 
-    .my-froala-editor-container {
-        display: unset;
-    }
-
-    .my-froala-editor.preview {
-        width: 100%;
-        background-color: unset;
-        box-shadow: unset;
-        padding: 15px;
-    }
+  .my-froala-editor.preview {
+    width: 100%;
+    background-color: unset;
+    box-shadow: unset;
+    padding: 15px;
+  }
 }

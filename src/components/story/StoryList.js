@@ -20,7 +20,7 @@ class StoryList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnNum: 4
+      columnNum: null
     };
     this.setColumn = this.setColumn.bind(this);
   }
@@ -81,7 +81,11 @@ class StoryList extends Component {
     });
     return (
       <div className="story-list" ref="container">
-        {children.length && showStyle === 2 && !isMobile ? (
+        {columnNum &&
+        children.length &&
+        showStyle === 2 &&
+        !isMobile &&
+        this.refs.container.clientWidth >= 580 ? (
           <Waterfall columnNum={columnNum} gap={5}>
             {children}
           </Waterfall>
@@ -128,7 +132,4 @@ class StoryList extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { like }
-)(StoryList);
+export default connect(mapStateToProps, { like })(StoryList);

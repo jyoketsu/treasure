@@ -92,6 +92,30 @@ class HeadMenu extends Component {
     }
   }
 
+  getRoleName(role) {
+    let roleNmae;
+    switch (role) {
+      case 1:
+        roleNmae = "超管";
+        break;
+      case 2:
+        roleNmae = "管理员";
+        break;
+      case 3:
+        roleNmae = "编辑";
+        break;
+      case 4:
+        roleNmae = "作者";
+        break;
+      case 5:
+        roleNmae = "成员";
+        break;
+      default:
+        break;
+    }
+    return roleNmae;
+  }
+
   render() {
     const { user, stationList, switchMenu } = this.props;
     return (
@@ -158,15 +182,23 @@ class HeadMenu extends Component {
           {user && !user.isGuest ? (
             <div className="menu-station-list">
               {stationList.map(station => (
-                <span
-                  key={station._key}
-                  onClick={this.handleStationClick.bind(
-                    this,
-                    station._key,
-                    station.domain,
-                    station.url
-                  )}
-                >{`・${station.name}`}</span>
+                <div>
+                  <span
+                    className="menu-station-name"
+                    key={station._key}
+                    onClick={this.handleStationClick.bind(
+                      this,
+                      station._key,
+                      station.domain,
+                      station.url
+                    )}
+                  >{`・${station.name}`}</span>
+                  {station.role ? (
+                    <i className="menu-station-role">
+                      {this.getRoleName(station.role)}
+                    </i>
+                  ) : null}
+                </div>
               ))}
             </div>
           ) : null}

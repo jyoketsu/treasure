@@ -8,6 +8,7 @@ import { Modal, Tooltip, message, Input, Select } from "antd";
 import { connect } from "react-redux";
 import AddButton from "./AddArticleButton";
 import Header from "./Header";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {
   changeStation,
   getStoryList,
@@ -43,7 +44,8 @@ class Home extends Component {
       showSort: false,
       showFilter: false,
       tag: props.tag,
-      statusTag: props.statusTag
+      statusTag: props.statusTag,
+      showScrollTop: false
     };
     this.switchSortModal = this.switchSortModal.bind(this);
     this.handleMouseWheel = this.handleMouseWheel.bind(this);
@@ -70,6 +72,11 @@ class Home extends Component {
     } = this.props;
     const { tag, statusTag } = this.state;
     let top = document.body.scrollTop || document.documentElement.scrollTop;
+    if (top > document.body.clientHeight * 2) {
+      this.setState({ showScrollTop: true });
+    } else {
+      this.setState({ showScrollTop: false });
+    }
     if (
       nowStoryNumber < storyNumber &&
       !waiting &&
@@ -236,13 +243,14 @@ class Home extends Component {
       seePlugin,
       seeChannel
     } = this.props;
-    const { showSort, showFilter, tag, statusTag } = this.state;
+    const { showSort, showFilter, tag, statusTag, showScrollTop } = this.state;
 
     return (
       <div className="app-content homepage">
         <Header />
         {nowStationKey !== "all" ? (
           <Station
+            showScrollTop={showScrollTop}
             user={user}
             nowStationKey={nowStationKey}
             nowChannelKey={nowChannelKey}
@@ -500,7 +508,8 @@ class Station extends React.Component {
       handleSetStatus,
       tag: nowTag,
       statusTag: nowStatusTag,
-      handleFilter
+      handleFilter,
+      showScrollTop
     } = this.props;
     const { seriesInfo = [], pluginInfo = [] } = content;
     const { isCareStar, showAll } = content;
@@ -671,11 +680,19 @@ class Station extends React.Component {
         </div>
         <HomeFooter stationName={content.name} />
         <div className="operation-panel">
-          <Tooltip title="回到顶部" placement="left">
-            <div className="story-tool scrolltop" onClick={this.scrolltop}>
-              <i></i>
-            </div>
-          </Tooltip>
+          <ReactCSSTransitionGroup
+            transitionName="myFade"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+          >
+            {showScrollTop ? (
+              <Tooltip title="回到顶部" placement="left">
+                <div className="story-tool scrolltop" onClick={this.scrolltop}>
+                  <i></i>
+                </div>
+              </Tooltip>
+            ) : null}
+          </ReactCSSTransitionGroup>
           <Tooltip title="排序" placement="left">
             <div className="story-tool sort-story" onClick={switchSortModal}>
               <i></i>
