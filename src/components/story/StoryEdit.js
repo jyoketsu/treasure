@@ -669,10 +669,12 @@ class StoryEdit extends Component {
         if (flag === "deleteStory") {
           window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
         } else {
-          history.goBack();
+          // 返回到首页
+          history.push(`/${nowStation.domain}/home`);
         }
       } else {
-        history.goBack();
+        // 返回到首页
+        history.push(`/${nowStation.domain}/home`);
       }
     }
   }

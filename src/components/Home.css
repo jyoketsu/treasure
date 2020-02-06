@@ -92,7 +92,7 @@
 .operation-panel {
   position: fixed;
   bottom: 65px;
-  right: 25px;
+  right: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;

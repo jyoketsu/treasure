@@ -6,7 +6,12 @@ import { Form, Button, message, Modal, Select } from "antd";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
-import { addStory, modifyStory, deleteStory } from "../../actions/app";
+import {
+  addStory,
+  modifyStory,
+  deleteStory,
+  switchEditLinkVisible
+} from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
@@ -48,7 +53,8 @@ class EditArticle extends Component {
     this.state = {
       story: story,
       uptoken: null,
-      moreVisible: false
+      moreVisible: false,
+      postVisible: false
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -56,10 +62,14 @@ class EditArticle extends Component {
     this.getEditor = this.getEditor.bind(this);
     this.handleAticleChange = this.handleAticleChange.bind(this);
     this.switchMoreVisible = this.switchMoreVisible.bind(this);
+    this.switchPostVisible = this.switchPostVisible.bind(this);
 
     this.handleSetTag = this.handleSetTag.bind(this);
     this.handleSetStatus = this.handleSetStatus.bind(this);
     this.handleSelectChannel = this.handleSelectChannel.bind(this);
+
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleOk = this.handleOk.bind(this);
   }
 
   handleSetTag(value) {
@@ -98,6 +108,12 @@ class EditArticle extends Component {
     this.setState(prevState => ({
       moreVisible: !prevState.moreVisible
     }));
+  }
+
+  switchPostVisible(visible) {
+    this.setState({
+      postVisible: visible
+    });
   }
 
   async handleCommit(e) {
@@ -198,6 +214,42 @@ class EditArticle extends Component {
     this.editor = editor;
   }
 
+  handleSelect(value) {
+    this.type = value;
+  }
+  handleOk() {
+    const { history, location, nowStation, switchEditLinkVisible } = this.props;
+    const stationDomain = nowStation ? nowStation.domain : "";
+    const channelKey = util.common.getSearchParamValue(
+      location.search,
+      "channel"
+    );
+    if (!this.type) {
+      return message.info("请选择投稿方式！");
+    }
+    switch (this.type) {
+      case "album":
+        history.push({
+          pathname: `/${stationDomain}/editStory`,
+          search: `?type=new&channel=${channelKey}`
+        });
+        break;
+      case "page":
+        const token = localStorage.getItem("TOKEN");
+        window.open(
+          `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${channelKey}`,
+          "_blank"
+        );
+        break;
+      case "link":
+        history.goBack();
+        switchEditLinkVisible();
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     const { seriesInfo, inline } = this.props;
     const { story = {}, uptoken } = this.state;
@@ -218,6 +270,7 @@ class EditArticle extends Component {
       allowPublicStatus,
       role
     } = channelInfo;
+    const isMobile = util.common.isMobile();
     return (
       <div
         className={`app-content edit-story ${inline ? "inline" : ""}`}
@@ -239,6 +292,7 @@ class EditArticle extends Component {
                 handleChange={this.handleAticleChange}
                 uptoken={uptoken}
                 handleClickMore={this.switchMoreVisible}
+                handleClickMoreStyle={this.switchPostVisible}
                 inline={inline}
               />
             ) : null}
@@ -319,6 +373,34 @@ class EditArticle extends Component {
             </Select>
           ) : null}
         </Modal>
+        <Modal
+          title="更多投稿方式"
+          visible={this.state.postVisible}
+          okText="选择"
+          cancelText="取消"
+          onOk={this.handleOk}
+          onCancel={() => this.switchPostVisible(false)}
+        >
+          <Select
+            style={{ width: "100%" }}
+            placeholder="请选择投稿方式"
+            onChange={this.handleSelect}
+          >
+            <Option key={0} value="album">
+              图文
+            </Option>
+            {isMobile ? null : (
+              <Option key={0} value="link">
+                链接
+              </Option>
+            )}
+            {isMobile ? null : (
+              <Option key={0} value="page">
+                网页
+              </Option>
+            )}
+          </Select>
+        </Modal>
       </div>
     );
   }
@@ -356,17 +438,22 @@ class EditArticle extends Component {
         if (flag === "deleteStory") {
           window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
         } else {
-          history.goBack();
+          // 返回到首页
+          history.push(`/${nowStation.domain}/home`);
         }
       } else {
-        history.goBack();
+        // 返回到首页
+        history.push(`/${nowStation.domain}/home`);
       }
     }
   }
 }
 
 export default withRouter(
-  connect(mapStateToProps, { addStory, modifyStory, deleteStory })(
-    Form.create({ name: "create-station" })(EditArticle)
-  )
+  connect(mapStateToProps, {
+    addStory,
+    modifyStory,
+    deleteStory,
+    switchEditLinkVisible
+  })(Form.create({ name: "create-station" })(EditArticle))
 );

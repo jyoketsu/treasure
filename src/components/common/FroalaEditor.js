@@ -352,7 +352,7 @@ class MyFroalaEditor extends Component {
           ]
         },
         moreMisc: {
-          buttons: ["undo", "redo", "alert"]
+          buttons: ["alert", "moreStyle"]
         }
       },
 
@@ -361,7 +361,7 @@ class MyFroalaEditor extends Component {
         ["bold", "italic", "underline"],
         ["paragraphFormat"],
         ["insertImage", "insertVideo"],
-        ["alert"]
+        ["alert", "moreStyle"]
       ]
     };
     return (
@@ -420,8 +420,9 @@ class MyFroalaEditor extends Component {
   }
 
   componentDidMount() {
-    const { handleClickMore } = this.props;
+    const { handleClickMore, handleClickMoreStyle } = this.props;
     document.body.addEventListener("wheel", this.handleMouseWheel);
+
     Froalaeditor.DefineIcon("alert", { NAME: "info", SVG_KEY: "more" });
     Froalaeditor.RegisterCommand("alert", {
       title: "文章设定",
@@ -432,6 +433,19 @@ class MyFroalaEditor extends Component {
         handleClickMore();
       }
     });
+
+    // SVG_KEY在https://github.com/froala/wysiwyg-editor/issues/3478
+    Froalaeditor.DefineIcon("moreStyle", { NAME: "star", SVG_KEY: "add" });
+    Froalaeditor.RegisterCommand("moreStyle", {
+      title: "更多投稿方式",
+      focus: false,
+      undo: false,
+      refreshAfterCallback: false,
+      callback: function() {
+        handleClickMoreStyle(true);
+      }
+    });
+
     this.createMenu(this.props.data);
   }
 

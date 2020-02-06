@@ -510,8 +510,12 @@ export function statisticsStatusTag(stationKey, channelKey, statusTag) {
   };
 }
 
-export function setChannelKey(channelKey) {
-  return { type: SET_CHANNEL_KEY, channelKey: channelKey };
+export function setChannelKey(channelKey, dispatch) {
+  if (dispatch) {
+    dispatch({ type: SET_CHANNEL_KEY, channelKey: channelKey });
+  } else {
+    return { type: SET_CHANNEL_KEY, channelKey: channelKey };
+  }
 }
 
 export async function getHomeStories(stationKey, channelKeys, dispatch) {

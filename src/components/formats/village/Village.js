@@ -14,13 +14,14 @@ import AllFans from "./FansAll";
 import AllRank from "./RankAll";
 import AddButton from "../../AddArticleButton";
 import util from "../../../services/Util";
+import { setChannelKey } from "../../../actions/app";
 import {
   Route,
   useRouteMatch,
   useHistory,
   useLocation
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Village() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
@@ -66,6 +67,12 @@ export default function Village() {
 
 function Home() {
   const nowStation = useSelector(state => state.station.nowStation);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setChannelKey("allSeries", dispatch);
+  }, [dispatch]);
+
   return (
     <div>
       <div className="village-head-wrapper">

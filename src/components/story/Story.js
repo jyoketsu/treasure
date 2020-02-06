@@ -3,7 +3,8 @@ import "./Story.css";
 import LoginTip from "../common/LoginTip";
 import util from "../../services/Util";
 import api from "../../services/Api";
-import { Radio, Modal } from "antd";
+import moment from "moment";
+import { Radio } from "antd";
 import { connect } from "react-redux";
 import {
   getStoryDetail,
@@ -31,6 +32,7 @@ class Story extends Component {
     super(props);
     this.handleClickImage = this.handleClickImage.bind(this);
     this.handleToEdit = this.handleToEdit.bind(this);
+    this.handleClickSite = this.handleClickSite.bind(this);
     this.state = { propsKey: null };
   }
 
@@ -53,6 +55,11 @@ class Story extends Component {
       return;
     }
     history.push(`editStory${location.search}`);
+  }
+
+  handleClickSite() {
+    const { history, nowStation } = this.props;
+    history.push(`/${nowStation.domain}/home`);
   }
 
   render() {
@@ -122,7 +129,14 @@ class Story extends Component {
               <div className="story-title">{title}</div>
               <div className="story-head-info">
                 <div className="story-head-other">
-                  <div>频道：{story.series ? story.series.name : ""}</div>
+                  <div
+                    className="story-station-channel"
+                    onClick={this.handleClickSite}
+                  >
+                    {`${nowStation ? nowStation.name : ""} / ${
+                      story.series ? story.series.name : ""
+                    }`}
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -143,22 +157,22 @@ class Story extends Component {
                           <div
                             key="story-card-name"
                             className="story-card-name"
-                            onClick={async () => {
-                              const res = await util.operation.getUserInfoByKey(
-                                story.userKey
-                              );
-                              Modal.info({
-                                title: "用户信息",
-                                content: (
-                                  <div>
-                                    {res.map((item, index) => (
-                                      <p key={index}>{item}</p>
-                                    ))}
-                                  </div>
-                                ),
-                                onOk() {}
-                              });
-                            }}
+                            // onClick={async () => {
+                            //   const res = await util.operation.getUserInfoByKey(
+                            //     story.userKey
+                            //   );
+                            //   Modal.info({
+                            //     title: "用户信息",
+                            //     content: (
+                            //       <div>
+                            //         {res.map((item, index) => (
+                            //           <p key={index}>{item}</p>
+                            //         ))}
+                            //       </div>
+                            //     ),
+                            //     onOk() {}
+                            //   });
+                            // }}
                           >
                             {creator.name || creator.mobile}
                           </div>
@@ -166,11 +180,9 @@ class Story extends Component {
                       : null}
 
                     <div className="story-card-time">
-                      {util.common.timestamp2DataStr(
-                        story.updateTime,
-                        "yyyy-MM-dd"
-                      )}
+                      {moment(story.updateTime).format("l")}
                     </div>
+                    <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                   </div>
                 </div>
                 {/* {story.tag ? <div>标签：{story.tag}</div> : null} */}

@@ -22,6 +22,11 @@ class Article extends Component {
     history.push(`editArticle${location.search}`);
   }
 
+  handleClickSite() {
+    const { history, nowStation } = this.props;
+    history.push(`/${nowStation.domain}/home`);
+  }
+
   render() {
     const {
       user,
@@ -64,18 +69,25 @@ class Article extends Component {
           <div className="story-head-title" style={{ border: "unset" }}>
             <div
               className="story-title"
-              onClick={() =>
-                window.open(
-                  `${window.location.protocol}//${window.location.host}/${nowStation.domain}/article?key=${story._key}`,
-                  "_blank"
-                )
-              }
+              // onClick={() =>
+              //   window.open(
+              //     `${window.location.protocol}//${window.location.host}/${nowStation.domain}/article?key=${story._key}`,
+              //     "_blank"
+              //   )
+              // }
             >
               {title}
             </div>
             <div className="story-head-info">
               <div className="story-head-other">
-                <div>频道：{story.series ? story.series.name : ""}</div>
+                <div
+                  className="story-station-channel"
+                  onClick={this.handleClickSite.bind(this)}
+                >
+                  {`${nowStation ? nowStation.name : ""} / ${
+                    story.series ? story.series.name : ""
+                  }`}
+                </div>
                 <div
                   style={{
                     display: "flex",
@@ -97,6 +109,7 @@ class Article extends Component {
                       "yyyy-MM-dd"
                     )}
                   </div>
+                  <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                 </div>
               </div>
             </div>

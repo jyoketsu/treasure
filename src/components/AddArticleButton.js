@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import StroyLink from "./story/Link";
+import util from "../services/Util";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Modal, Tooltip, message, Select } from "antd";
 import { withRouter } from "react-router-dom";
@@ -12,7 +13,8 @@ const { Option } = Select;
 const mapStateToProps = state => ({
   user: state.auth.user,
   nowStation: state.station.nowStation,
-  eidtLinkVisible: state.story.eidtLinkVisible
+  eidtLinkVisible: state.story.eidtLinkVisible,
+  nowChannelKey: state.story.nowChannelKey
 });
 
 class AddButton extends Component {
@@ -98,6 +100,12 @@ class AddButton extends Component {
     }
     const { match, history, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = match.params.id;
+
+    // pc端默认进入文章编辑，手机端则进入简版
+    if (!util.common.isMobile()) {
+      this.contributeType = "article";
+    }
+
     switch (this.contributeType) {
       case "album":
         history.push({
@@ -126,19 +134,37 @@ class AddButton extends Component {
         history.push(`/${stationDomain}/create/${this.channelKey}`);
         break;
     }
-    this.switchChannelVisible();
   }
 
   switchChannelVisible() {
-    const { user, history } = this.props;
+    const { nowStation, user, history, nowChannelKey } = this.props;
     if (user.isGuest) {
       message.info("请先登录！");
       history.push("/account/login");
       return;
     }
-    this.setState(prevState => ({
-      showSelectChannel: !prevState.showSelectChannel
-    }));
+    if (nowChannelKey !== "allSeries") {
+      // 网站类型是门户类型
+      if (nowStation.style === 2) {
+        if (window.location.pathname.includes("/catalog/")) {
+          this.channelKey = window.location.pathname.split("/catalog/")[1];
+        } else if (window.location.pathname.includes("/detail/")) {
+          this.channelKey = window.location.pathname.split("/detail/")[1];
+        } else {
+          this.setState(prevState => ({
+            showSelectChannel: !prevState.showSelectChannel
+          }));
+          return;
+        }
+      } else {
+        this.channelKey = nowChannelKey;
+      }
+      this.handleSelectedChannel();
+    } else {
+      this.setState(prevState => ({
+        showSelectChannel: !prevState.showSelectChannel
+      }));
+    }
   }
 
   handleSelectChannel(value) {

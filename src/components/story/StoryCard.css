@@ -96,7 +96,11 @@
   text-overflow: ellipsis;
 }
 .story-card-name:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
+}
+
+.story-card-time {
+  margin-right: 15px;
 }
 
 .story-card-info > div > .story-card-name {
@@ -168,6 +172,15 @@
 .card-link {
   color: #4a90e2;
   margin: 0 5px;
+}
+.card-link.desktop {
+  display: none;
+}
+.story-card:hover .card-link.desktop {
+  display: unset;
+}
+.story-entry:hover .card-link.desktop {
+  display: unset;
 }
 .right-area {
   position: absolute;

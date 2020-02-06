@@ -83,6 +83,7 @@ class Card extends Component {
   render() {
     const { story, userKey, showSetting, height, role } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
+    const isMobile = util.common.isMobile() ? "mobile" : "desktop";
 
     // 显示项目设定
     const showAuthor = showSetting
@@ -216,19 +217,22 @@ class Card extends Component {
           </div>
         </div>
         <div className="right-area">
-          {story.statusTag ? (
-            <span className="cover-status">{story.statusTag}</span>
-          ) : null}
           {story.type === 15 && (isMyStory || (role && role <= 3)) ? (
-            <span className="card-link" onClick={this.handleEditLink}>
+            <span
+              className={`card-link ${isMobile}`}
+              onClick={this.handleEditLink}
+            >
               编辑
             </span>
           ) : null}
           {(story.type === 12 || story.type === 15) &&
           (isMyStory || (role && role <= 3)) ? (
-            <span className="card-link" onClick={this.deletePage}>
+            <span className={`card-link ${isMobile}`} onClick={this.deletePage}>
               删除
             </span>
+          ) : null}
+          {story.statusTag ? (
+            <span className="cover-status">{story.statusTag}</span>
           ) : null}
         </div>
       </div>

@@ -159,6 +159,13 @@
   margin-right: unset;
 }
 
+.story-station-channel {
+  color: #4a90e2;
+}
+.story-station-channel:hover {
+  cursor: pointer;
+}
+
 .story-head-avatar {
   width: 30px;
   height: 30px;
@@ -184,9 +191,6 @@
   text-overflow: ellipsis;
   display: block;
   font-weight: 800;
-}
-.story-title:hover {
-  cursor: pointer;
 }
 
 .story-image,

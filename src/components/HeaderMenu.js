@@ -96,7 +96,7 @@ class HeadMenu extends Component {
     let roleNmae;
     switch (role) {
       case 1:
-        roleNmae = "超管";
+        roleNmae = "站长";
         break;
       case 2:
         roleNmae = "管理员";
@@ -107,13 +107,31 @@ class HeadMenu extends Component {
       case 4:
         roleNmae = "作者";
         break;
-      case 5:
-        roleNmae = "成员";
-        break;
       default:
         break;
     }
     return roleNmae;
+  }
+
+  getRoleColor(role) {
+    let color;
+    switch (role) {
+      case 1:
+        color = "#EB817F";
+        break;
+      case 2:
+        color = "#68B68F";
+        break;
+      case 3:
+        color = "#6B90EF";
+        break;
+      case 4:
+        color = "#CEA461";
+        break;
+      default:
+        break;
+    }
+    return color;
   }
 
   render() {
@@ -193,8 +211,11 @@ class HeadMenu extends Component {
                       station.url
                     )}
                   >{`・${station.name}`}</span>
-                  {station.role ? (
-                    <i className="menu-station-role">
+                  {station.role && station.role < 5 ? (
+                    <i
+                      className="menu-station-role"
+                      style={{ backgroundColor: this.getRoleColor(station.role) }}
+                    >
                       {this.getRoleName(station.role)}
                     </i>
                   ) : null}

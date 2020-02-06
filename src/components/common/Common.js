@@ -18,7 +18,7 @@ class MemberCard extends Component {
     confirm({
       title: "移交",
       content:
-        "每个站点只有一名超管，确认后您将降级为管理员。（对方确认后生效）",
+        "每个站点只有一名站长，确认后您将降级为管理员。（对方确认后生效）",
       onOk() {
         transferStation(nowStationKey, userKey);
       }
@@ -212,7 +212,7 @@ class StationCard extends Component {
     let roleNmae;
     switch (station.role) {
       case 1:
-        roleNmae = "超管";
+        roleNmae = "站长";
         break;
       case 2:
         roleNmae = "管理员";
