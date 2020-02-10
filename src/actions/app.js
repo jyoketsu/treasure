@@ -218,22 +218,28 @@ export function searchStation(keyword, curPage, perPage, dispatch) {
   }
 }
 
-export function subscribe(channelKeys, stationKey, keys) {
-  let request = api.station.subscribe(channelKeys, stationKey);
+export function subscribe(channelKeys, stationKey, keys, relationDesc) {
+  let request = api.station.subscribe(channelKeys, stationKey, relationDesc);
   return {
     type: SUBSCRIBE,
     channelKeys: keys,
     stationKey: stationKey,
+    relationDesc: relationDesc,
     payload: request
   };
 }
 
-export function subscribeStation(stationKey, checked) {
-  let request = api.station.subscribeStation(stationKey, checked ? 1 : 2);
+export function subscribeStation(stationKey, checked, relationDesc) {
+  let request = api.station.subscribeStation(
+    stationKey,
+    checked ? 1 : 2,
+    relationDesc
+  );
   return {
     type: SUBSCRIBE_STATION,
     stationKey: stationKey,
     checked: checked,
+    relationDesc: relationDesc,
     payload: request
   };
 }

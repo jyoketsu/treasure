@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./EditArticle.css";
 import api from "../../services/Api";
 import { withRouter } from "react-router-dom";
-import { Form, Button, message, Modal, Select } from "antd";
+import { Form, Button, Input, message, Modal, Select } from "antd";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
@@ -14,6 +14,7 @@ import {
 } from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
+const { TextArea } = Input;
 
 const mapStateToProps = state => ({
   seriesInfo: state.station.nowStation
@@ -54,7 +55,8 @@ class EditArticle extends Component {
       story: story,
       uptoken: null,
       moreVisible: false,
-      postVisible: false
+      postVisible: false,
+      codeEditorVisible: false
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -63,6 +65,7 @@ class EditArticle extends Component {
     this.handleAticleChange = this.handleAticleChange.bind(this);
     this.switchMoreVisible = this.switchMoreVisible.bind(this);
     this.switchPostVisible = this.switchPostVisible.bind(this);
+    this.switchCodeEditor = this.switchCodeEditor.bind(this);
 
     this.handleSetTag = this.handleSetTag.bind(this);
     this.handleSetStatus = this.handleSetStatus.bind(this);
@@ -114,6 +117,12 @@ class EditArticle extends Component {
     this.setState({
       postVisible: visible
     });
+  }
+
+  switchCodeEditor() {
+    this.setState(prevState => ({
+      codeEditorVisible: !prevState.codeEditorVisible
+    }));
   }
 
   async handleCommit(e) {
@@ -217,6 +226,7 @@ class EditArticle extends Component {
   handleSelect(value) {
     this.type = value;
   }
+
   handleOk() {
     const { history, location, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = nowStation ? nowStation.domain : "";
@@ -293,6 +303,7 @@ class EditArticle extends Component {
                 uptoken={uptoken}
                 handleClickMore={this.switchMoreVisible}
                 handleClickMoreStyle={this.switchPostVisible}
+                openCodeEditor={this.switchCodeEditor}
                 inline={inline}
               />
             ) : null}
@@ -400,6 +411,23 @@ class EditArticle extends Component {
               </Option>
             )}
           </Select>
+        </Modal>
+        <Modal
+          title="文章源码编辑"
+          visible={this.state.codeEditorVisible}
+          width={document.body.clientWidth - 50}
+          okText="确定"
+          cancelText="取消"
+          onOk={() => this.switchCodeEditor()}
+          onCancel={() => this.switchCodeEditor()}
+        >
+          <TextArea
+            rows={20}
+            value={story ? story.content : ""}
+            onChange={e => {
+              this.handleAticleChange(e.target.value);
+            }}
+          />
         </Modal>
       </div>
     );

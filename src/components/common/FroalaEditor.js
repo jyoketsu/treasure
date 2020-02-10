@@ -352,7 +352,7 @@ class MyFroalaEditor extends Component {
           ]
         },
         moreMisc: {
-          buttons: ["alert", "moreStyle"]
+          buttons: ["codeEditor", "alert", "moreStyle"]
         }
       },
 
@@ -361,7 +361,7 @@ class MyFroalaEditor extends Component {
         ["bold", "italic", "underline"],
         ["paragraphFormat"],
         ["insertImage", "insertVideo"],
-        ["alert", "moreStyle"]
+        ["codeEditor", "alert", "moreStyle"]
       ]
     };
     return (
@@ -392,7 +392,6 @@ class MyFroalaEditor extends Component {
               <FroalaEditorView model={data} />
             ) : (
               <FroalaEditor
-                // tag='textarea'
                 model={data}
                 config={config}
                 onModelChange={handleChange}
@@ -420,9 +419,10 @@ class MyFroalaEditor extends Component {
   }
 
   componentDidMount() {
-    const { handleClickMore, handleClickMoreStyle } = this.props;
+    const { handleClickMore, handleClickMoreStyle,openCodeEditor } = this.props;
     document.body.addEventListener("wheel", this.handleMouseWheel);
 
+    // 设定标签
     Froalaeditor.DefineIcon("alert", { NAME: "info", SVG_KEY: "more" });
     Froalaeditor.RegisterCommand("alert", {
       title: "文章设定",
@@ -435,6 +435,7 @@ class MyFroalaEditor extends Component {
     });
 
     // SVG_KEY在https://github.com/froala/wysiwyg-editor/issues/3478
+    // 切换投稿方式
     Froalaeditor.DefineIcon("moreStyle", { NAME: "star", SVG_KEY: "add" });
     Froalaeditor.RegisterCommand("moreStyle", {
       title: "更多投稿方式",
@@ -443,6 +444,21 @@ class MyFroalaEditor extends Component {
       refreshAfterCallback: false,
       callback: function() {
         handleClickMoreStyle(true);
+      }
+    });
+
+    // 代码编辑
+    Froalaeditor.DefineIcon("codeEditor", {
+      NAME: "star",
+      SVG_KEY: "editLink"
+    });
+    Froalaeditor.RegisterCommand("codeEditor", {
+      title: "文章源码编辑",
+      focus: false,
+      undo: false,
+      refreshAfterCallback: false,
+      callback: function() {
+        openCodeEditor();
       }
     });
 

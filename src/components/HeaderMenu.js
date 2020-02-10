@@ -200,10 +200,9 @@ class HeadMenu extends Component {
           {user && !user.isGuest ? (
             <div className="menu-station-list">
               {stationList.map(station => (
-                <div>
+                <div key={station._key}>
                   <span
                     className="menu-station-name"
-                    key={station._key}
                     onClick={this.handleStationClick.bind(
                       this,
                       station._key,
@@ -214,7 +213,9 @@ class HeadMenu extends Component {
                   {station.role && station.role < 5 ? (
                     <i
                       className="menu-station-role"
-                      style={{ backgroundColor: this.getRoleColor(station.role) }}
+                      style={{
+                        backgroundColor: this.getRoleColor(station.role)
+                      }}
                     >
                       {this.getRoleName(station.role)}
                     </i>

@@ -61,11 +61,18 @@ const station = (state = defaultState, action) => {
       };
     case GET_STATION_LIST:
       if (!action.error) {
+        // 站点列表
+        // 排序
+        let stationList = action.payload.result.sort((a, b) => {
+          return b.starTime - a.starTime;
+        });
+        // 家庭树站置顶
+        stationList.sort((a, b) => (a.isFTStar ? -1 : 0));
+        // 主站置顶
+        stationList.sort((a, b) => (a.isMainStar ? -1 : 0));
         return {
           ...state,
-          stationList: action.payload.result.sort((a, b) => {
-            return b.starTime - a.starTime;
-          })
+          stationList: stationList
         };
       } else {
         return state;
@@ -74,7 +81,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         let stationList = Object.assign([], state.stationList);
         let res = action.payload.result;
-        stationList.unshift(res);
+        stationList.push(res);
         return {
           ...state,
           stationList: stationList
@@ -329,6 +336,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         message.success("修改订阅状态成功！");
         let nowStation = Object.assign([], state.nowStation);
+        nowStation.relationDesc = action.relationDesc;
         let seriesInfo = nowStation.seriesInfo;
         for (let i = 0; i < seriesInfo.length; i++) {
           if (action.channelKeys.indexOf(seriesInfo[i]._key) === -1) {
@@ -349,7 +357,7 @@ const station = (state = defaultState, action) => {
             }
           }
           if (unSubscribed) {
-            stationList.unshift(nowStation);
+            stationList.push(nowStation);
           }
         } else {
           for (let i = 0; i < stationList.length; i++) {
@@ -371,6 +379,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         message.success("修改订阅状态成功！");
         let nowStation = Object.assign([], state.nowStation);
+        nowStation.relationDesc = action.relationDesc;
         let seriesInfo = nowStation.seriesInfo;
         for (let i = 0; i < seriesInfo.length; i++) {
           seriesInfo[i].isCareSeries = true;
@@ -386,7 +395,7 @@ const station = (state = defaultState, action) => {
           }
         }
         if (unSubscribed) {
-          stationList.unshift(nowStation);
+          stationList.push(nowStation);
         }
         return {
           ...state,

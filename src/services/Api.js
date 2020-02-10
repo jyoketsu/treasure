@@ -382,19 +382,21 @@ const station = {
     });
   },
 
-  subscribe(channelKeys, stationKey) {
+  subscribe(channelKeys, stationKey, relationDesc) {
     return requests.post(APIURL + "/series/dealCareSeriesBatch", {
       token: token,
       seriesKeyArray: channelKeys,
-      starKey: stationKey
+      starKey: stationKey,
+      relationDesc: relationDesc
     });
   },
 
-  subscribeStation(stationKey, checked) {
+  subscribeStation(stationKey, checked, relationDesc) {
     return requests.patch(APIURL + "/star/dealCareStarAllSeries", {
       token: token,
       starKey: stationKey,
-      status: checked
+      status: checked,
+      relationDesc: relationDesc
     });
   },
 
