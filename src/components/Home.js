@@ -571,6 +571,26 @@ class Station extends React.Component {
         ></div>
         <div className="main-content station-home-page">
           <div className="station-plugin-container">
+            {content.openFamilyTree ? (
+              <div
+                className="station-plugin"
+                onClick={() =>
+                  window.open(
+                    `https://treesite.qingtime.cn/login?token=${token}&t=${content.familyTree._key}`,
+                    "_blank"
+                  )
+                }
+              >
+                <i
+                  style={{
+                    backgroundImage:
+                      "url(https://i.loli.net/2020/02/11/ypWxKFCJk6b1wG7.png)"
+                  }}
+                ></i>
+                <span>家庭树</span>
+              </div>
+            ) : null}
+
             {pluginInfo.map((plugin, index) => (
               <div
                 key={index}
@@ -620,7 +640,7 @@ class Station extends React.Component {
                 }}
               >
                 <i style={{ backgroundImage: `url(${plugin.icon})` }}></i>
-                <span>{plugin.name}</span>
+                <span>{plugin.pluginName}</span>
               </div>
             ))}
           </div>
