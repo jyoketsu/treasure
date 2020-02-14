@@ -13,7 +13,8 @@ const { TextArea } = Input;
 const mapStateToProps = state => ({
   stationList: state.station.stationList,
   loading: state.common.loading,
-  flag: state.common.flag
+  flag: state.common.flag,
+  nowStation: state.station.nowStation
 });
 
 const CustomizedForm = Form.create({
@@ -199,7 +200,9 @@ const CustomizedForm = Form.create({
         })(
           <Radio.Group>
             <Radio value={1}>全站统一</Radio>
-            <Radio value={2} disabled>频道插件独立管理</Radio>
+            <Radio value={2} disabled>
+              频道插件独立管理
+            </Radio>
           </Radio.Group>
         )}
       </Form.Item>
@@ -393,14 +396,15 @@ class StationBasicInfo extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { loading, history, flag } = this.props;
+    const { loading, history, flag, nowStation } = this.props;
     if (!loading && prevProps.loading) {
+      console.log("nowStation.domain", nowStation.domain);
       if (flag === "createStation") {
         message.success("创建成功！");
         history.goBack();
       } else if (flag === "editStation") {
         message.success("编辑成功！");
-        history.goBack();
+        // history.push(`/${nowStation.domain}/home`);
       }
     }
   }

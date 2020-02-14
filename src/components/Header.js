@@ -55,7 +55,7 @@ class Header extends Component {
     const { location, nowStation, user } = this.props;
     const { logoSize, showMenu, showSubscribe } = this.state;
     const pathname = location.pathname;
-    const stationDomain = pathname.split("/")[1];
+    const stationDomain = nowStation ? nowStation.domain : "";
     const isMobile = util.common.isMobile();
 
     return (

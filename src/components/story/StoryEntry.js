@@ -76,7 +76,14 @@ class StoryEntry extends Component {
   }
 
   render() {
-    const { story, like, userKey, role, handleCoverClick } = this.props;
+    const {
+      story,
+      like,
+      userKey,
+      role,
+      showSetting,
+      handleCoverClick
+    } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
     let avatar = (story.creator && story.creator.avatar) || "";
@@ -114,6 +121,34 @@ class StoryEntry extends Component {
           break;
       }
     }
+
+    // 显示项目设定
+    const showAuthor = showSetting
+      ? showSetting.indexOf("author") === -1
+        ? false
+        : true
+      : true;
+    const showTitle = showSetting
+      ? showSetting.indexOf("title") === -1
+        ? false
+        : true
+      : true;
+    const showLike = showSetting
+      ? showSetting.indexOf("like") === -1
+        ? false
+        : true
+      : true;
+    const showClickNumber = showSetting
+      ? showSetting.indexOf("clickNumber") === -1
+        ? false
+        : true
+      : true;
+    const showDate = showSetting
+      ? showSetting.indexOf("date") === -1
+        ? false
+        : true
+      : true;
+
     return (
       <div
         className={`story-entry type-${storyType}`}
@@ -126,7 +161,9 @@ class StoryEntry extends Component {
         <div className="story-entry-cover" style={coverStyle}></div>
         <div className="story-entry-info">
           <div className="story-entry-title">
-            <span className="story-entry-title-span">{story.title}</span>
+            {showTitle ? (
+              <span className="story-entry-title-span">{story.title}</span>
+            ) : null}
             <div
               style={{
                 display: "flex",
@@ -151,52 +188,60 @@ class StoryEntry extends Component {
                   删除
                 </span>
               ) : null}
-              <span className="story-card-time">
-                {util.common.timestamp2DataStr(
-                  story.time || story.updateTime,
-                  "yyyy-MM-dd"
-                )}
-              </span>
+              {showDate ? (
+                <span className="story-card-time">
+                  {util.common.timestamp2DataStr(
+                    story.time || story.updateTime,
+                    "yyyy-MM-dd"
+                  )}
+                </span>
+              ) : null}
             </div>
           </div>
 
           <div className="story-entry-memo">{story.memo}</div>
 
           <div className="story-entry-stat">
-            <div>
-              <i
-                className="story-card-avatar"
-                style={{
-                  backgroundImage: `url('${avatar ||
-                    "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
-                }}
-              ></i>
-              <span className="story-card-name">{name}</span>
-            </div>
+            {showAuthor ? (
+              <div>
+                <i
+                  className="story-card-avatar"
+                  style={{
+                    backgroundImage: `url('${avatar ||
+                      "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
+                  }}
+                ></i>
+                <span className="story-card-name">{name}</span>
+              </div>
+            ) : null}
             <div>
               <span style={statusStyle}>{status}</span>
-              <span className="story-card-record">
-                <i
-                  className="story-card-icon"
-                  style={{
-                    backgroundImage: "url(/image/icon/readNum.svg)",
-                    width: "18px"
-                  }}
-                ></i>
-                <span>{story.clickNumber}</span>
-              </span>
-              <span className="story-card-record">
-                <i
-                  className="story-card-icon"
-                  onClick={like.bind(this, story._key)}
-                  style={{
-                    backgroundImage: `url(/image/icon/${
-                      story.islike ? "like" : "like2"
-                    }.svg)`
-                  }}
-                ></i>
-                <span>{story.likeNumber}</span>
-              </span>
+              {showClickNumber ? (
+                <span className="story-card-record">
+                  <i
+                    className="story-card-icon"
+                    style={{
+                      backgroundImage: "url(/image/icon/readNum.svg)",
+                      width: "18px"
+                    }}
+                  ></i>
+                  <span>{story.clickNumber}</span>
+                </span>
+              ) : null}
+              {showLike ? (
+                <span className="story-card-record">
+                  <i
+                    className="story-card-icon"
+                    onClick={like.bind(this, story._key)}
+                    style={{
+                      backgroundImage: `url(/image/icon/${
+                        story.islike ? "like" : "like2"
+                      }.svg)`
+                    }}
+                  ></i>
+                  <span>{story.likeNumber}</span>
+                </span>
+              ) : null}
             </div>
           </div>
         </div>

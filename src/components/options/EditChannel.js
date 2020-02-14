@@ -158,6 +158,7 @@ const CustomizedForm = Form.create({
           <Checkbox.Group style={{ width: "100%" }}>
             <Checkbox value="author">显示作者</Checkbox>
             <Checkbox value="title">显示标题</Checkbox>
+            <Checkbox value="date">显示日期</Checkbox>
             <Checkbox value="like">显示点赞数</Checkbox>
             <Checkbox value="clickNumber">显示阅读数</Checkbox>
           </Checkbox.Group>

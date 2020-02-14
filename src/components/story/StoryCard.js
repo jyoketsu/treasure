@@ -13,7 +13,8 @@ const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
   userKey: state.auth.user ? state.auth.user._key : "",
-  role: state.station.nowStation ? state.station.nowStation.role : null
+  role: state.station.nowStation ? state.station.nowStation.role : null,
+  nowChannelKey: state.story.nowChannelKey
 });
 
 class Card extends Component {
@@ -81,7 +82,14 @@ class Card extends Component {
   }
 
   render() {
-    const { story, userKey, showSetting, height, role } = this.props;
+    const {
+      story,
+      userKey,
+      showSetting,
+      height,
+      role,
+      nowChannelKey
+    } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
 
@@ -103,6 +111,11 @@ class Card extends Component {
       : true;
     const showClickNumber = showSetting
       ? showSetting.indexOf("clickNumber") === -1
+        ? false
+        : true
+      : true;
+    const showDate = showSetting
+      ? showSetting.indexOf("date") === -1
         ? false
         : true
       : true;
@@ -172,7 +185,11 @@ class Card extends Component {
           </span>
         ) : null}
         <div className="story-card-info">
-          {showAuthor ? (
+          {nowChannelKey === "allSeries" ? (
+            <div>
+              <span className="story-card-name">{story.series.name}</span>
+            </div>
+          ) : showAuthor ? (
             <div>
               <i
                 className="story-card-avatar"
@@ -185,9 +202,11 @@ class Card extends Component {
             </div>
           ) : null}
           <div>
-            <span className="story-card-time">
-              {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
-            </span>
+            {showDate ? (
+              <span className="story-card-time">
+                {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
+              </span>
+            ) : null}
             {showClickNumber ? (
               <span className="story-card-record">
                 <i
