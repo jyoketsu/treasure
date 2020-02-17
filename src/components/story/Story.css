@@ -74,7 +74,7 @@
 .to-edit-story {
   color: #3a94cc;
   position: absolute;
-  top: 15px;
+  top: 5px;
   right: 15px;
   display: block;
   width: 50px;
@@ -242,5 +242,13 @@
 
   .story-head-other > div {
     padding-top: 10px;
+  }
+  .story-title{
+    height: unset;
+    overflow: unset;
+    white-space: unset;
+    text-align: left;
+    padding: 0 15px;
+    line-height: 40px;
   }
 }

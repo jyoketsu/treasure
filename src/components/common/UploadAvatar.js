@@ -45,7 +45,7 @@ class UploadAvatar extends Component {
             return;
         }
 
-        const domain = 'http://cdn-icare.qingtime.cn/';
+        const domain = 'https://cdn-icare.qingtime.cn/';
 
         let putExtra = {
             // 文件原文件名

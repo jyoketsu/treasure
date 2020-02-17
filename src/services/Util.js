@@ -422,6 +422,7 @@ const operation = {
   ) {
     const hostName = window.location.hostname;
     const pathname = window.location.pathname;
+    const search = window.location.search;
     const stationDomain = window.location.pathname.split("/")[1];
 
     if (user && !nowStationKey && !changed) {
@@ -461,9 +462,10 @@ const operation = {
         const res = await api.station.getStationName(hostName);
         if (res.msg === "OK") {
           const prevDomain = res.name;
-          history.push({
-            pathname: "/offical/home"
-          });
+          if (pathname && search) {
+          } else {
+            history.push("/offical/home");
+          }
           changeStation(null, prevDomain);
         } else {
           // window.location.replace("https://www.qingtime.cn/");

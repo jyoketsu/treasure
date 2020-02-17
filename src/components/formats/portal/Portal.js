@@ -94,7 +94,10 @@ class Portal extends Component {
         <div className="operation-panel">
           {nowStation ? <AddButton /> : null}
         </div>
-        <PortalFooter name={nowStation ? nowStation.name : ""} />
+        <PortalFooter
+          name={nowStation ? nowStation.name : ""}
+          recordNumber={nowStation ? nowStation.recordNumber : ""}
+        />
       </div>
     );
   }
@@ -110,20 +113,19 @@ class Portal extends Component {
 
 class PortalFooter extends Component {
   render() {
-    // const { name } = this.props;
+    const { recordNumber } = this.props;
     return (
       <div className="portal-foot">
         <span>
-          江苏时光信息科技有限公司 Qingtime All Rights Reserved&nbsp;&nbsp;
           <a
             href="http://www.beian.miit.gov.cn"
             target="_blank"
             rel="noopener noreferrer"
           >
-            苏ICP备15006448号
+            {recordNumber ? recordNumber : "苏ICP备15006448号"}
           </a>
         </span>
-        <span>hello@qingtime.com</span>
+        <span>技术支持 时光科技</span>
       </div>
     );
   }

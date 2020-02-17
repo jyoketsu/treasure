@@ -434,10 +434,10 @@ class EditArticle extends Component {
   }
 
   async componentDidMount() {
-    const { seriesInfo, history, story } = this.props;
-    if (seriesInfo.length === 0) {
-      history.push(`/${window.location.search}`);
-    }
+    const { story } = this.props;
+    // if (seriesInfo.length === 0) {
+    //   history.push(`/${window.location.search}`);
+    // }
     // 获取七牛token
     let res = await api.auth.getUptoken(localStorage.getItem("TOKEN"));
     if (res.msg === "OK") {
@@ -461,17 +461,18 @@ class EditArticle extends Component {
     }
     const { nowStation, history, loading, flag } = this.props;
     const { story } = this.state;
+    const domain = nowStation ? nowStation.domain : "";
     if (!loading && prevProps.loading) {
       if (story._key) {
         if (flag === "deleteStory") {
-          window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
+          window.location.href = `${window.location.protocol}//${window.location.host}/${domain}`;
         } else {
           // 返回到首页
-          history.push(`/${nowStation.domain}/home`);
+          history.push(`/${domain}/home`);
         }
       } else {
         // 返回到首页
-        history.push(`/${nowStation.domain}/home`);
+        history.push(`/${domain}/home`);
       }
     }
   }

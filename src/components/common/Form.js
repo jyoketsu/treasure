@@ -367,7 +367,7 @@ class FileUpload extends Component {
         }
 
         let that = this;
-        const domain = 'http://cdn-icare.qingtime.cn/';
+        const domain = 'https://cdn-icare.qingtime.cn/';
         let files = event.target.files;
         if (!files[0]) {
             return;

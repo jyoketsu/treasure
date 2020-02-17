@@ -43,7 +43,7 @@ import Froalaeditor from "froala-editor";
 import { Menu } from "antd";
 const { SubMenu } = Menu;
 
-const domain = "http://cdn-icare.qingtime.cn/";
+const domain = "https://cdn-icare.qingtime.cn/";
 let selectedFile;
 let qiniuConfig = {
   useCdnDomain: true,
@@ -124,7 +124,9 @@ class MyFroalaEditor extends Component {
         case "H2":
           switch (maxHead) {
             case 1:
-              array = typeArr[typeArr.length - 1].submenuItem;
+              array = typeArr[typeArr.length - 1]
+                ? typeArr[typeArr.length - 1].submenuItem
+                : [];
               break;
             case 2:
               array = typeArr;
@@ -144,12 +146,20 @@ class MyFroalaEditor extends Component {
           switch (maxHead) {
             case 1:
               array =
+                typeArr[typeArr.length - 1] &&
+                typeArr[typeArr.length - 1].submenuItem &&
                 typeArr[typeArr.length - 1].submenuItem[
                   typeArr[typeArr.length - 1].submenuItem.length - 1
-                ].submenuItem;
+                ]
+                  ? typeArr[typeArr.length - 1].submenuItem[
+                      typeArr[typeArr.length - 1].submenuItem.length - 1
+                    ].submenuItem
+                  : [];
               break;
             case 2:
-              array = typeArr[typeArr.length - 1].submenuItem;
+              array = typeArr[typeArr.length - 1]
+                ? typeArr[typeArr.length - 1].submenuItem
+                : [];
               break;
             case 3:
               array = typeArr;
@@ -419,7 +429,11 @@ class MyFroalaEditor extends Component {
   }
 
   componentDidMount() {
-    const { handleClickMore, handleClickMoreStyle,openCodeEditor } = this.props;
+    const {
+      handleClickMore,
+      handleClickMoreStyle,
+      openCodeEditor
+    } = this.props;
     document.body.addEventListener("wheel", this.handleMouseWheel);
 
     // 设定标签

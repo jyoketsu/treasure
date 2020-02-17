@@ -270,6 +270,9 @@
   color: #fff;
   background: #434343;
 }
+.home-footer a {
+  color: #fff;
+}
 
 .station-plugin {
   display: flex;

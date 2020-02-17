@@ -698,7 +698,10 @@ class Station extends React.Component {
             showMore={showMore}
           />
         </div>
-        <HomeFooter stationName={content.name} />
+        <HomeFooter
+          stationName={content.name}
+          recordNumber={content.recordNumber}
+        />
         <div className="operation-panel">
           <ReactCSSTransitionGroup
             transitionName="myFade"
@@ -820,25 +823,35 @@ class Station extends React.Component {
 
 class HomeFooter extends React.Component {
   render() {
-    const { stationName } = this.props;
+    const { recordNumber } = this.props;
     const isMobile = util.common.isMobile();
     return (
       <div className="home-footer">
         {!isMobile ? (
           <span>
-            <span>版权所有</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>2019-2029</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>{stationName}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>All Rights Reserved</span>
+            <a
+              href="http://www.beian.miit.gov.cn"
+              target="_blank"
+              tabindex="0"
+              rel="noopener noreferrer"
+            >
+              {recordNumber ? recordNumber : "苏ICP备15006448号"}
+            </a>
           </span>
         ) : (
           [
-            <span key="1">版权所有 2019-2029</span>,
-            <span key="2">{`${stationName} All Rights Reserved`}</span>
+            <a
+              href="http://www.beian.miit.gov.cn"
+              target="_blank"
+              tabindex="0"
+              rel="noopener noreferrer"
+            >
+              {recordNumber ? recordNumber : "苏ICP备15006448号"}
+            </a>
           ]
         )}
 
-        <span>{`Powered by 当归`}</span>
+        <span style={{ color: "#D3D3D3" }}>技术支持 时光科技</span>
       </div>
     );
   }

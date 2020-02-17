@@ -36,6 +36,10 @@ const CustomizedForm = Form.create({
         ...props.url,
         value: props.url.value
       }),
+      recordNumber: Form.createFormField({
+        ...props.recordNumber,
+        value: props.recordNumber.value
+      }),
       memo: Form.createFormField({
         ...props.memo,
         value: props.memo.value
@@ -83,6 +87,11 @@ const CustomizedForm = Form.create({
             { max: 50, message: "不能超过50个字符！" }
           ]
         })(<Input addonBefore={`https://`} />)}
+      </Form.Item>
+      <Form.Item label="版权声明与备案号">
+        {getFieldDecorator("recordNumber", {
+          rules: [{ max: 150, message: "不能超过150个字符！" }]
+        })(<Input />)}
       </Form.Item>
       <Form.Item label="概述">
         {getFieldDecorator("memo", {
@@ -243,6 +252,12 @@ class StationBasicInfo extends Component {
         url: {
           value: stationInfo ? stationInfo.url : ""
         },
+        recordNumber: {
+          value:
+            stationInfo && stationInfo.recordNumber
+              ? stationInfo.recordNumber
+              : "苏ICP备15006448号"
+        },
         memo: {
           value: stationInfo ? stationInfo.memo : ""
         },
@@ -329,6 +344,7 @@ class StationBasicInfo extends Component {
             fields.name.value,
             fields.domain.value.toLowerCase(),
             fields.url.value,
+            fields.recordNumber.value,
             type,
             fields.memo.value,
             isMainStar,
@@ -345,6 +361,7 @@ class StationBasicInfo extends Component {
             fields.name.value,
             fields.domain.value.toLowerCase(),
             fields.url.value,
+            fields.recordNumber.value,
             1,
             fields.memo.value,
             false,

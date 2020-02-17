@@ -42,11 +42,12 @@
     border-top: 1px solid #DDD; */
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   font-family: PingFangSC-Medium;
   font-size: 14px;
   color: #9399a0;
+  padding: 0 55px;
 }
 .portal-foot a {
   color: #9399a0;
