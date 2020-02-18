@@ -23,7 +23,10 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   story: state.story.story,
   nowStation: state.station.nowStation,
-  nowChannelKey: state.story.nowChannelKey,
+  nowChannelKey:
+    state.story.nowChannelKey !== "allSeries"
+      ? state.story.nowChannelKey
+      : undefined,
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
   loading: state.common.loading,
@@ -187,6 +190,10 @@ class EditArticle extends Component {
       story.content = story.content.replace(title.htmlStr, "");
     }
 
+    if (!story.series._key) {
+      return message.info("请选择投稿主题！");
+    }
+
     if (typeof story.series === "object") {
       story.series = story.series._key;
     }
@@ -230,7 +237,7 @@ class EditArticle extends Component {
   handleOk() {
     const { history, location, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = nowStation ? nowStation.domain : "";
-    const channelKey = util.common.getSearchParamValue(
+    let channelKey = util.common.getSearchParamValue(
       location.search,
       "channel"
     );

@@ -17,7 +17,10 @@ const mapStateToProps = state => ({
     : [],
   user: state.auth.user,
   story: state.story.story,
-  nowChannelKey: state.story.nowChannelKey,
+  nowChannelKey:
+    state.story.nowChannelKey !== "allSeries"
+      ? state.story.nowChannelKey
+      : undefined,
   nowStation: state.station.nowStation,
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,

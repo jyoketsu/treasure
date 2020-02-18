@@ -59,7 +59,7 @@ class StoryList extends Component {
           <StoryCard
             key={index}
             story={story}
-            like={like}
+            like={() => like(story._key)}
             showSetting={showSetting}
             width={290 + 5}
             height={height + 5}

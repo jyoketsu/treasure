@@ -19,7 +19,7 @@ export default function Rank() {
     <div className="village-sub-sites">
       <TitleHead
         icon="/image/icon/village/sitemap.svg"
-        text="子站点"
+        text="友站"
         onClick={() => {
           history.push(`/${nowStation.domain}/home/rank`);
         }}

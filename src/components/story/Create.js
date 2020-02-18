@@ -10,27 +10,39 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function Create() {
   const dispatch = useDispatch();
-  const match = useRouteMatch();
   const history = useHistory();
   const eidtLinkVisible = useSelector(state => state.story.eidtLinkVisible);
   const user = useSelector(state => state.auth.user);
   const nowStation = useSelector(state => state.station.nowStation);
+  const nowChannelKey = useSelector(state =>
+    state.story.nowChannelKey !== "allSeries"
+      ? state.story.nowChannelKey
+      : undefined
+  );
   const [storyTag, setStoryTag] = useState();
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
+  const [channelKey, setChannelKey] = useState(nowChannelKey);
 
   const seriesInfo = nowStation ? nowStation.seriesInfo : [];
   let channelInfo = {};
-  const nowChannelId = match.params.channelKey;
   for (let i = 0; i < seriesInfo.length; i++) {
-    if (seriesInfo[i]._key === nowChannelId) {
+    if (seriesInfo[i]._key === channelKey) {
       channelInfo = seriesInfo[i];
       break;
     }
   }
 
+  function handleChangeChannel(value) {
+    setChannelKey(value);
+    setStoryTag(undefined);
+  }
+
   async function handleCommit() {
     const { tag } = channelInfo;
+    if (!channelKey) {
+      return message.info("请选择投稿频道");
+    }
     if (tag && !storyTag) {
       return message.info("请选择标签");
     }
@@ -50,8 +62,9 @@ export default function Create() {
       starKey: nowStation._key,
       publish: 1,
       isSimple: 1,
-      series: match.params.channelKey,
+      series: channelKey,
       tag: storyTag,
+      pictureCount: images.length,
       richContent: [
         {
           _id: util.common.randomStr(false, 12),
@@ -70,7 +83,11 @@ export default function Create() {
   }
   return (
     <div className="create-story">
-      <Head handleCommit={handleCommit} />
+      <Head
+        handleCommit={handleCommit}
+        nowChannelKey={channelKey}
+        onChange={handleChangeChannel}
+      />
       <div className="create-story-content">
         <Content
           value={value}
@@ -80,9 +97,6 @@ export default function Create() {
         />
       </div>
       <Action
-        value={value}
-        images={images}
-        setImages={setImages}
         storyTag={storyTag}
         setStoryTag={setStoryTag}
         channelInfo={channelInfo}
@@ -92,39 +106,49 @@ export default function Create() {
   );
 }
 
-function Head({ handleCommit }) {
+function Head({ nowChannelKey, handleCommit, onChange }) {
+  const Option = Select.Option;
   const history = useHistory();
-  const [visible, setVisible] = useState(false);
+  const seriesInfo = useSelector(state =>
+    state.station.nowStation ? state.station.nowStation.seriesInfo : []
+  );
+
   return (
     <div className="village-stories-head create-head">
       <div>
-        <i className="back" onClick={() => history.goBack()}></i>
+        <div className="left-section">
+          <i className="back" onClick={() => history.goBack()}></i>
+          {seriesInfo.length ? (
+            <Select
+              style={{ width: 120 }}
+              placeholder="请选择频道"
+              value={nowChannelKey}
+              onChange={value => onChange(value)}
+            >
+              {seriesInfo.map((item, index) =>
+                (item.role && item.role < 5) || item.allowPublicUpload ? (
+                  <Option key={index} value={item._key}>
+                    {item.name}
+                  </Option>
+                ) : null
+              )}
+            </Select>
+          ) : null}
+        </div>
         <div className="right-section">
-          <i className="more" onClick={() => setVisible(true)}></i>
           <span onClick={() => handleCommit()}>发布</span>
         </div>
       </div>
-      <More visible={visible} setVisible={setVisible} />
     </div>
   );
 }
 
-function Action({
-  value,
-  storyTag,
-  setStoryTag,
-  images,
-  setImages,
-  channelInfo
-}) {
+function Action({ storyTag, setStoryTag, channelInfo }) {
   const Option = Select.Option;
 
   const { tag, allowPublicTag, role } = channelInfo;
 
-  function uploadImageCallback(imgs) {
-    let newImages = [...images, ...imgs];
-    setImages(newImages);
-  }
+  const [visible, setVisible] = useState(false);
 
   function handleSetTag(value) {
     setStoryTag(value);
@@ -133,12 +157,6 @@ function Action({
   return (
     <div className="create-action">
       <div className="left-section">
-        <FileUpload
-          className="create-foot-upload"
-          multiple="multiple"
-          maxSize={10000000}
-          callback={uploadImageCallback}
-        />
         {tag && (allowPublicTag || (!allowPublicTag && role && role < 4)) ? (
           <Select
             style={{ width: 120 }}
@@ -163,8 +181,9 @@ function Action({
         ) : null}
       </div>
       <div className="right-section">
-        <span>{`${value.length}字`}</span>
+        <i className="more" onClick={() => setVisible(true)}></i>
       </div>
+      <More visible={visible} setVisible={setVisible} />
     </div>
   );
 }
@@ -204,6 +223,12 @@ function Content({ value, setValue, images, setImages }) {
         : 0
     );
   }
+
+  function uploadImageCallback(imgs) {
+    let newImages = [...images, ...imgs];
+    setImages(newImages);
+  }
+
   return (
     <div className="content-wrapper">
       <div className="create-text" style={{ height: `${textareaHeight}px` }}>
@@ -212,7 +237,7 @@ function Content({ value, setValue, images, setImages }) {
             {value}
           </pre>
           <textarea
-            placeholder="说点什么吧..."
+            placeholder="这一刻的想法..."
             value={value}
             style={{ height: `${textareaHeight}px` }}
             onChange={e => handleChange(e.target.value)}
@@ -223,8 +248,8 @@ function Content({ value, setValue, images, setImages }) {
         className="images-wrapper"
         ref={imagesWrapperEl}
         style={{
-          maxHeight: `${window.innerHeight / 2}px`,
-          opacity: images.length ? 1 : 0
+          maxHeight: `${window.innerHeight / 2}px`
+          // opacity: images.length ? 1 : 0
         }}
       >
         {images.map((image, index) => (
@@ -236,6 +261,13 @@ function Content({ value, setValue, images, setImages }) {
             handleRemove={handleRemove}
           />
         ))}
+        <FileUpload
+          className="create-foot-upload"
+          multiple="multiple"
+          maxSize={10000000}
+          callback={uploadImageCallback}
+          style={{ width: itemWidth, height: itemWidth }}
+        />
       </div>
     </div>
   );
@@ -271,23 +303,25 @@ function More({ visible, setVisible }) {
     if (!type) {
       return message.info("请选择投稿方式！");
     }
+    const channelKey =
+      match.params.channelKey !== "allSeries" ? match.params.channelKey : "";
     switch (type) {
       case "album":
         history.push({
           pathname: `/${stationDomain}/editStory`,
-          search: `?type=new&channel=${match.params.channelKey}`
+          search: `?type=new&channel=${channelKey}`
         });
         break;
       case "article":
         history.push({
           pathname: `/${stationDomain}/editArticle`,
-          search: `?type=new&channel=${match.params.channelKey}`
+          search: `?type=new&channel=${channelKey}`
         });
         break;
       case "page":
         const token = localStorage.getItem("TOKEN");
         window.open(
-          `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${match.params.channelKey}`,
+          `https://editor.qingtime.cn?token=${token}&stationKey=${nowStation._key}&channelKey=${channelKey}`,
           "_blank"
         );
         break;

@@ -20,15 +20,15 @@
   max-width: 810px;
   margin: auto;
 }
+.create-head > div > .left-section,
 .create-head > div > .right-section {
   display: flex;
   align-items: center;
 }
-.create-head > div > .right-section > i {
-  margin: 0 15px;
+.create-action > .right-section > i {
   width: 30px;
   height: 30px;
-  background-image: url(/image/icon/story/add.svg);
+  background-image: url(/image/icon/story/more.svg);
   background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
@@ -109,12 +109,11 @@
 }
 
 .create-foot-upload {
-  width: 24px;
-  height: 24px;
-  background-image: url(/image/icon/village/pic.svg);
-  background-size: contain;
+  background-color: #dcdcdc;
+  background-image: url(/image/icon/add-story.svg);
+  background-size: 30%;
   background-position: center;
-  margin-right: 15px;
+  padding: 5px;
 }
 .create-image-item {
   padding: 5px;

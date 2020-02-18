@@ -4,7 +4,7 @@
   padding: 0 0 25px 0;
 }
 .village-story-list-container {
-  max-width: 600px;
+  max-width: 1490px;
   margin: auto;
 }
 .village-stories-head {
@@ -25,108 +25,20 @@
   display: flex;
   align-items: center;
 }
-.village-stories-head > div > i {
+.village-stories-head > div > .left-section > i {
   width: 30px;
   height: 30px;
+  margin-right: 15px;
   background-image: url(/image/icon/village/back.svg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
-.village-stories-head > div > i:hover,
+.village-stories-head > div > .left-section > i:hover,
 .village-stories-banner > div > i:hover {
   cursor: pointer;
 }
-.village-story-cover {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #e6e6e6;
-  background-color: #ffffff;
-  margin-bottom: 25px;
-}
-.village-story-cover:last-child {
-  margin-bottom: unset;
-}
-.village-story-cover > .user-info {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-}
-.village-story-cover > .user-info > i {
-  width: 45px;
-  height: 45px;
-  background-size: cover;
-  border-radius: 45px;
-  margin-right: 15px;
-}
-.village-story-cover > .user-info > div {
-  display: flex;
-  flex-direction: column;
-}
-.village-story-cover > .user-info > div > span:first-child {
-  font-size: 18px;
-}
-.village-story-cover > .cover {
-  width: 100%;
-  padding-bottom: 100%;
-  background-size: cover;
-  background-position: center;
-}
-.village-story-cover > .cover:hover {
-  cursor: pointer;
-}
-.village-story-cover > .foot {
-  padding: 0 15px;
-  display: flex;
-  flex-direction: column;
-}
-.village-story-cover > .foot > .story-title {
-  font-size: 14px;
-  font-weight: normal;
-  text-align: left;
-  height: 40px;
-  line-height: 40px;
-}
-.village-story-cover > .foot > .story-action {
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.village-story-cover > .foot > .story-action > span {
-  font-weight: normal;
-  color: rgba(var(--f07, 38, 38, 38), 1);
-}
-.village-story-cover > .foot > .story-action > div {
-  display: flex;
-}
-.village-story-cover > .foot > .story-action > div > i {
-  width: 24px;
-  height: 24px;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin-left: 10px;
-}
-.village-story-cover > .foot > .story-action > div > i:hover {
-  cursor: pointer;
-}
-.village-story-title {
-  font-size: 14px;
-  font-weight: 600;
-  text-align: left;
-  height: 40px;
-  line-height: 40px;
-  width: 100%;
-  color: #333333;
-  background: unset;
-  border: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-}
+
 .village-story-list-container > .show-more {
   text-align: center;
   line-height: 40px;
@@ -136,6 +48,7 @@
   position: relative;
   height: 450px;
   background-size: cover;
+  background-position: center;
 }
 .village-banner-head {
   background-color: rgba(0, 0, 0, 0.3);
@@ -162,7 +75,30 @@
   font-weight: bold;
   color: #ffffff;
 }
+
+@media screen and (max-width: 1490px) {
+  .village-story-list-container {
+    width: 1190px;
+  }
+}
+
+@media screen and (max-width: 1190px) {
+  .village-story-list-container {
+    width: 890px;
+  }
+}
+
+@media screen and (max-width: 890px) {
+  .village-story-list-container {
+    width: 590px;
+  }
+}
+
 @media screen and (max-width: 768px) {
+  .village-story-list-container {
+    width: 100%;
+    padding: 0 15px;
+  }
   .village-stories-head {
     margin-bottom: unset;
   }

@@ -96,9 +96,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.story-card-name:hover {
-  /* cursor: pointer; */
-}
 
 .story-card-time {
   margin-right: 15px;
@@ -192,6 +189,6 @@
 @media screen and (max-width: 768px) {
   .story-card {
     width: 100%;
-    margin: 10px 0;
+    margin-bottom: 25px;
   }
 }

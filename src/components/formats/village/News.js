@@ -84,7 +84,7 @@ function NewsSection({ channel, storyList, onClick }) {
               <NewsItem
                 key={index}
                 news={story}
-                showContent={index === 0 ? true : false}
+                // showContent={index === 0 ? true : false}
                 onClick={onClick}
               />
             ))}

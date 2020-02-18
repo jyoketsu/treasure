@@ -54,11 +54,6 @@ class Card extends Component {
     }
   }
 
-  handleLike(storyKey, e) {
-    e.stopPropagation();
-    this.props.like(storyKey);
-  }
-
   deletePage(e) {
     e.stopPropagation();
     const { deleteStory, story } = this.props;
@@ -158,18 +153,21 @@ class Card extends Component {
     }
 
     return (
-      <div
-        className={`story-card type-${storyType}`}
-        // style={{ height: height }}
-        onClick={this.handleClick.bind(this, story)}
-      >
-        <div className="story-card-cover" style={coverStyle}>
+      <div className={`story-card type-${storyType}`}>
+        <div
+          className="story-card-cover"
+          style={coverStyle}
+          onClick={this.handleClick.bind(this, story)}
+        >
           <div
             className="story-card-mask"
             style={{ height: `${height - 85}px` }}
           ></div>
         </div>
-        <div className="story-card-title">
+        <div
+          className="story-card-title"
+          onClick={this.handleClick.bind(this, story)}
+        >
           {showTitle ? (
             <span className="story-card-title-span">{story.title}</span>
           ) : null}
@@ -223,7 +221,7 @@ class Card extends Component {
               <span className="story-card-record">
                 <i
                   className="story-card-icon"
-                  onClick={this.handleLike.bind(this, story._key)}
+                  onClick={() => this.props.like()}
                   style={{
                     backgroundImage: `url(/image/icon/${
                       story.islike ? "like" : "like2"

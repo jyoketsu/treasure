@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./StoryList.css";
-import moment from "moment";
 import { Spin } from "antd";
-import useStoryClick from "../../common/useStoryClick";
+import AddButton from "../../AddArticleButton";
 import ScrollTitle from "../../common/ScrollTitle";
+import Waterfall from "react-waterfall-responsive";
+import { StoryCard } from "../../story/StoryCard";
 import util from "../../../services/Util";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,6 +24,9 @@ export default function StoryList() {
   const nowChannelKey = useSelector(state => state.story.nowChannelKey);
 
   const dispatch = useDispatch();
+
+  const [columnNum, setColumnNum] = useState(null);
+  const containerEl = useRef(null);
 
   useEffect(() => {
     getStoryList(
@@ -88,6 +92,14 @@ export default function StoryList() {
     dispatch
   ]);
 
+  useEffect(() => {
+    setColumn();
+    window.addEventListener("resize", setColumn);
+    return () => {
+      window.removeEventListener("resize", setColumn);
+    };
+  }, []);
+
   // 获取当前所在的频道
   const channels = nowStation ? nowStation.seriesInfo : [];
   let nowChannel = null;
@@ -119,6 +131,37 @@ export default function StoryList() {
     setNowTag(tagName, dispatch);
   }
 
+  function setColumn() {
+    if (containerEl) {
+      const containerWidth = containerEl.current.clientWidth;
+      setColumnNum(Math.floor(containerWidth / 290));
+    }
+  }
+
+  const children = storyList.map((story, index) => {
+    let height;
+    let size = story.size;
+    if (!(size && size.height && size.width)) {
+      if (story.type !== 6 && !story.cover) {
+        height = 80;
+      } else {
+        height = 310;
+      }
+    } else {
+      height = 80 + (size.height / size.width) * 290;
+    }
+    return (
+      <StoryCard
+        key={index}
+        story={story}
+        like={() => like(story._key, dispatch)}
+        showSetting={nowChannel.showSetting}
+        width={290 + 5}
+        height={height + 5}
+      />
+    );
+  });
+
   return (
     <div className="village-story-list">
       <Head nowChannel={nowChannel} />
@@ -127,10 +170,15 @@ export default function StoryList() {
         nowTitle={tag}
         onClick={handleClickTag}
       />
-      <div className="village-story-list-container">
-        {storyList.map((story, index) => (
-          <Story key={index} story={story} />
-        ))}
+      <div className="village-story-list-container" ref={containerEl}>
+        {columnNum && columnNum > 1 && children.length ? (
+          <Waterfall columnNum={columnNum} gap={5}>
+            {children}
+          </Waterfall>
+        ) : (
+          children
+        )}
+
         {waiting ? (
           <Loading />
         ) : (
@@ -138,6 +186,9 @@ export default function StoryList() {
             {storyList.length < storyNumber ? "查看更多" : "到底了"}
           </div>
         )}
+      </div>
+      <div className="operation-panel">
+        <AddButton />
       </div>
     </div>
   );
@@ -149,9 +200,7 @@ function Head({ nowChannel }) {
     <div
       className="village-stories-banner"
       style={{
-        backgroundImage: `url(${
-          nowChannel ? nowChannel.cover : ""
-        }?imageView2/2/w/1000)`
+        backgroundImage: `url(${nowChannel ? nowChannel.cover : ""})`
       }}
     >
       <div className="village-banner-head" style={{ height: "45px" }}>
@@ -167,59 +216,6 @@ function Loading(params) {
   return (
     <div className="story-loading">
       <Spin size="large" />
-    </div>
-  );
-}
-
-function Story({ story }) {
-  const dispatch = useDispatch();
-  const click = useStoryClick();
-  return (
-    <div className="village-story-cover">
-      <div className="user-info">
-        <i
-          style={{
-            backgroundImage: `url(${story.creator.avatar}?imageView2/2/w/90)`
-          }}
-        ></i>
-        <div>
-          <span>{story.creator.name}</span>
-          <span>{moment(story.updateTime).fromNow()}</span>
-        </div>
-      </div>
-      <div
-        className="cover"
-        style={{
-          backgroundImage: `url(${story.cover}?imageView2/2/w/700)`,
-          display: story.cover ? "block" : "none"
-        }}
-        onClick={() => click(story)}
-      ></div>
-      <div className="foot">
-        <div className="story-action">
-          <span>{`${story.likeNumber}次赞`}</span>
-          <div>
-            <i
-              className="like"
-              style={{
-                backgroundImage: story.islike
-                  ? "url(/image/icon/village/liked.svg)"
-                  : "url(/image/icon/village/like.svg)"
-              }}
-              onClick={() => like(story._key, dispatch)}
-            ></i>
-            <i
-              className="comment"
-              style={{
-                backgroundImage: "url(/image/icon/village/comment.svg)"
-              }}
-            ></i>
-          </div>
-        </div>
-        <div className="village-story-title" onClick={() => click(story)}>
-          {story.title}
-        </div>
-      </div>
     </div>
   );
 }

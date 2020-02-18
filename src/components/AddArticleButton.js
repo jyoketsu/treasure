@@ -98,6 +98,9 @@ class AddButton extends Component {
     if (!this.channelKey) {
       return message.info("请选择投稿主题！");
     }
+    if (this.channelKey === "allSeries") {
+      this.channelKey = "";
+    }
     const { match, history, nowStation, switchEditLinkVisible } = this.props;
     const stationDomain = match.params.id;
 
@@ -131,7 +134,9 @@ class AddButton extends Component {
         switchEditLinkVisible();
         break;
       default:
-        history.push(`/${stationDomain}/create/${this.channelKey}`);
+        history.push(
+          `/${stationDomain}/create/${this.channelKey || "allSeries"}`
+        );
         break;
     }
   }
@@ -143,7 +148,7 @@ class AddButton extends Component {
       history.push("/account/login");
       return;
     }
-    if (nowChannelKey !== "allSeries") {
+    if (nowChannelKey !== "todoallSeries") {
       // 网站类型是门户类型
       if (nowStation.style === 2) {
         if (window.location.pathname.includes("/catalog/")) {

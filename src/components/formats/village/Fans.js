@@ -21,7 +21,7 @@ export default function Fans() {
     <div className="village-fans">
       <TitleHead
         icon="/image/icon/village/eye.svg"
-        text="关注本站的人"
+        text="订阅用户"
         onClick={() => {
           history.push(`/${nowStation.domain}/home/fans`);
         }}
