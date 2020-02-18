@@ -26,8 +26,14 @@
   background-position: center;
 }
 .village-channel > span {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 23px;
   color: #8091a0;
+  display: block;
+  text-align: center;
 }
 /* 移动端 */
 @media screen and (max-width: 768px) {

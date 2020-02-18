@@ -405,7 +405,6 @@ class FileUpload extends Component {
             complete(res) {
                 uploaded.push(domain + encodeURIComponent(res.key));
                 if (uploaded.length === files.length) {
-                    message.success('上传成功');
                     that.props.callback(uploaded, that.props.extParam);
                     Loading.close();
                 }

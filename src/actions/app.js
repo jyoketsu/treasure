@@ -327,6 +327,7 @@ export const SET_STATUS_TAG = "SET_STATUS_TAG";
 export const SET_STATISTICS_STATUS_TAG = "SET_STATISTICS_STATUS_TAG";
 export const SET_CHANNEL_KEY = "SET_CHANNEL_KEY";
 export const GET_HOME_STORIES = "GET_HOME_STORIES";
+export const SET_NOW_TAG = "SET_NOW_TAG";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -535,6 +536,14 @@ export async function getHomeStories(stationKey, channelKeys, dispatch) {
   const results = await Promise.all(promises);
   if (dispatch) {
     dispatch({ type: GET_HOME_STORIES, results: results });
+  }
+}
+
+export function setNowTag(tag, dispatch) {
+  if (dispatch) {
+    dispatch({ type: SET_NOW_TAG, tag: tag });
+  } else {
+    return { type: SET_NOW_TAG, tag: tag };
   }
 }
 

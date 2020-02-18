@@ -17,7 +17,8 @@ import {
   SET_STATUS_TAG,
   SET_STATISTICS_STATUS_TAG,
   SET_CHANNEL_KEY,
-  GET_HOME_STORIES
+  GET_HOME_STORIES,
+  SET_NOW_TAG
 } from "../actions/app";
 import { message } from "antd";
 
@@ -96,12 +97,13 @@ const story = (state = defaultState, action) => {
       return {
         ...state,
         storyNumber: 0,
-        storyList: []
+        storyList: [],
+        tag: undefined,
+        statusTag: undefined
       };
 
     case ADD_STORY:
       if (!action.error) {
-        message.success("发布成功！");
         const addedStory = action.payload.result;
         let storyList = Object.assign([], state.storyList);
 
@@ -288,6 +290,12 @@ const story = (state = defaultState, action) => {
       return {
         ...state,
         homeStories: action.results
+      };
+    case SET_NOW_TAG:
+      return {
+        ...state,
+        storyList: [],
+        tag: action.tag
       };
     default:
       return state;

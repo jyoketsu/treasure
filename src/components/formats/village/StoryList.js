@@ -3,9 +3,11 @@ import "./StoryList.css";
 import moment from "moment";
 import { Spin } from "antd";
 import useStoryClick from "../../common/useStoryClick";
+import ScrollTitle from "../../common/ScrollTitle";
+import util from "../../../services/Util";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getStoryList,like } from "../../../actions/app";
+import { getStoryList, like, setNowTag } from "../../../actions/app";
 
 export default function StoryList() {
   const perPage = 20;
@@ -18,7 +20,10 @@ export default function StoryList() {
   const tag = useSelector(state => state.story.tag);
   const waiting = useSelector(state => state.common.waiting);
   const statusTag = useSelector(state => state.story.statusTag);
+  const nowChannelKey = useSelector(state => state.story.nowChannelKey);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
     getStoryList(
       1,
@@ -82,29 +87,78 @@ export default function StoryList() {
     statusTag,
     dispatch
   ]);
+
+  // 获取当前所在的频道
+  const channels = nowStation ? nowStation.seriesInfo : [];
+  let nowChannel = null;
+  for (let index = 0; index < channels.length; index++) {
+    const element = channels[index];
+    if (element._key === nowChannelKey) {
+      nowChannel = element;
+      break;
+    }
+  }
+
+  // 获取当前频道的标签列表
+  const tagList = nowChannel && nowChannel.tag ? nowChannel.tag.split(" ") : [];
+  let tagObjList = [];
+  for (let i = 0; i < tagList.length; i++) {
+    if (util.common.isJSON(tagList[i])) {
+      let obj = JSON.parse(tagList[i]);
+      tagObjList.push(obj);
+    } else {
+      tagObjList.push({
+        id: tagList[i],
+        name: tagList[i]
+      });
+    }
+  }
+
+  function handleClickTag(tagName) {
+    sessionStorage.setItem("home-curpage", 1);
+    setNowTag(tagName, dispatch);
+  }
+
   return (
     <div className="village-story-list">
-      <Head />
-      {storyList.map((story, index) => (
-        <Story key={index} story={story} />
-      ))}
-      {waiting ? (
-        <Loading />
-      ) : (
-        <div className="show-more">
-          {storyList.length < storyNumber ? "查看更多" : "到底了"}
-        </div>
-      )}
+      <Head nowChannel={nowChannel} />
+      <ScrollTitle
+        titleList={tagObjList}
+        nowTitle={tag}
+        onClick={handleClickTag}
+      />
+      <div className="village-story-list-container">
+        {storyList.map((story, index) => (
+          <Story key={index} story={story} />
+        ))}
+        {waiting ? (
+          <Loading />
+        ) : (
+          <div className="show-more">
+            {storyList.length < storyNumber ? "查看更多" : "到底了"}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-function Head() {
+function Head({ nowChannel }) {
   const history = useHistory();
   return (
-    <div className="village-stories-head">
-      <div>
+    <div
+      className="village-stories-banner"
+      style={{
+        backgroundImage: `url(${
+          nowChannel ? nowChannel.cover : ""
+        }?imageView2/2/w/1000)`
+      }}
+    >
+      <div className="village-banner-head" style={{ height: "45px" }}>
         <i className="back" onClick={() => history.goBack()}></i>
+      </div>
+      <div className="village-banner-title">
+        {nowChannel ? nowChannel.name : ""}
       </div>
     </div>
   );
@@ -136,7 +190,7 @@ function Story({ story }) {
       <div
         className="cover"
         style={{
-          backgroundImage: `url(${story.cover}?imageView2/2/w/900)`,
+          backgroundImage: `url(${story.cover}?imageView2/2/w/700)`,
           display: story.cover ? "block" : "none"
         }}
         onClick={() => click(story)}
@@ -152,7 +206,7 @@ function Story({ story }) {
                   ? "url(/image/icon/village/liked.svg)"
                   : "url(/image/icon/village/like.svg)"
               }}
-              onClick={()=>like(story._key,dispatch)}
+              onClick={() => like(story._key, dispatch)}
             ></i>
             <i
               className="comment"
@@ -162,7 +216,7 @@ function Story({ story }) {
             ></i>
           </div>
         </div>
-        <div className="story-title" onClick={() => click(story)}>
+        <div className="village-story-title" onClick={() => click(story)}>
           {story.title}
         </div>
       </div>

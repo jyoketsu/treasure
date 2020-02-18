@@ -75,7 +75,6 @@ class UploadAvatar extends Component {
                 that.setState({
                     showMask: false
                 });
-                // message.success('上传成功');
                 let url = domain + encodeURIComponent(res.key);
                 that.setState({
                     imgUrl: url

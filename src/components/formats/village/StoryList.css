@@ -1,7 +1,11 @@
 .village-story-list {
+  width: 100%;
+  margin: auto;
+  padding: 0 0 25px 0;
+}
+.village-story-list-container {
   max-width: 600px;
   margin: auto;
-  padding: 80px 0 25px 0;
 }
 .village-stories-head {
   position: fixed;
@@ -11,6 +15,7 @@
   width: 100%;
   height: 45px;
 }
+
 .village-stories-head > div {
   width: 100%;
   height: 100%;
@@ -28,7 +33,8 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-.village-stories-head > div > i:hover {
+.village-stories-head > div > i:hover,
+.village-stories-banner > div > i:hover {
   cursor: pointer;
 }
 .village-story-cover {
@@ -89,7 +95,7 @@
   align-items: center;
 }
 .village-story-cover > .foot > .story-action > span {
-  font-weight: 600;
+  font-weight: normal;
   color: rgba(var(--f07, 38, 38, 38), 1);
 }
 .village-story-cover > .foot > .story-action > div {
@@ -106,9 +112,55 @@
 .village-story-cover > .foot > .story-action > div > i:hover {
   cursor: pointer;
 }
-.village-story-list > .show-more {
+.village-story-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  color: #333333;
+  background: unset;
+  border: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.village-story-list-container > .show-more {
   text-align: center;
   line-height: 40px;
+}
+
+.village-stories-banner {
+  position: relative;
+  height: 450px;
+  background-size: cover;
+}
+.village-banner-head {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+}
+.village-banner-head > i {
+  width: 30px;
+  height: 30px;
+  background-image: url(/image/icon/village/back-white.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.village-banner-title {
+  position: absolute;
+  bottom: 55px;
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffffff;
 }
 @media screen and (max-width: 768px) {
   .village-stories-head {
