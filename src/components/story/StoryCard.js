@@ -173,6 +173,11 @@ class Card extends Component {
           ) : null}
           <div>
             <span style={statusStyle}>{status}</span>
+            {showDate ? (
+              <span className="story-card-time">
+                {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
+              </span>
+            ) : null}
           </div>
         </div>
         {// 图片数量
@@ -188,7 +193,12 @@ class Card extends Component {
               <span className="story-card-name">{story.series.name}</span>
             </div>
           ) : showAuthor ? (
-            <div>
+            <div
+              className="story-card-user"
+              onClick={() =>
+                (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+              }
+            >
               <i
                 className="story-card-avatar"
                 style={{
@@ -196,15 +206,14 @@ class Card extends Component {
                     "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
                 }}
               ></i>
-              <span className="story-card-name">{name}</span>
+              <span className="story-card-name">{`${name}${
+                story.creator && story.creator.relationDesc
+                  ? `（${story.creator.relationDesc}）`
+                  : ""
+              }`}</span>
             </div>
           ) : null}
           <div>
-            {showDate ? (
-              <span className="story-card-time">
-                {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
-              </span>
-            ) : null}
             {showClickNumber ? (
               <span className="story-card-record">
                 <i
@@ -218,7 +227,7 @@ class Card extends Component {
               </span>
             ) : null}
             {showLike ? (
-              <span className="story-card-record">
+              <span className="story-card-record story-like">
                 <i
                   className="story-card-icon"
                   onClick={() => this.props.like()}

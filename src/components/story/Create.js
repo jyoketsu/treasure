@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Create.css";
-import { Select, message, Modal } from "antd";
+import { Select, message, Modal, Button } from "antd";
 import { FileUpload } from "../common/Form";
 import StroyLink from "./Link";
 import util from "../../services/Util";
@@ -87,6 +87,9 @@ export default function Create() {
         handleCommit={handleCommit}
         nowChannelKey={channelKey}
         onChange={handleChangeChannel}
+        storyTag={storyTag}
+        setStoryTag={setStoryTag}
+        channelInfo={channelInfo}
       />
       <div className="create-story-content">
         <Content
@@ -96,31 +99,49 @@ export default function Create() {
           setImages={setImages}
         />
       </div>
-      <Action
-        storyTag={storyTag}
-        setStoryTag={setStoryTag}
-        channelInfo={channelInfo}
-      />
+      <Action />
       {eidtLinkVisible ? <StroyLink /> : null}
     </div>
   );
 }
 
-function Head({ nowChannelKey, handleCommit, onChange }) {
+function Head({
+  storyTag,
+  nowChannelKey,
+  handleCommit,
+  onChange,
+  setStoryTag,
+  channelInfo
+}) {
   const Option = Select.Option;
   const history = useHistory();
   const seriesInfo = useSelector(state =>
     state.station.nowStation ? state.station.nowStation.seriesInfo : []
   );
+  const { tag, allowPublicTag, role } = channelInfo;
+  const headEl = useRef(null);
+  const [selectWidth, setSelectWidth] = useState(0);
+
+  useEffect(() => {
+    const headWidth = headEl.current.clientWidth;
+
+    if (headWidth >= 375) {
+      setSelectWidth(120);
+    } else if (headWidth < 375 && headWidth >= 320) {
+      setSelectWidth(100);
+    } else {
+      setSelectWidth(80);
+    }
+  }, []);
 
   return (
-    <div className="village-stories-head create-head">
+    <div className="village-stories-head create-head" ref={headEl}>
       <div>
         <div className="left-section">
           <i className="back" onClick={() => history.goBack()}></i>
           {seriesInfo.length ? (
             <Select
-              style={{ width: 120 }}
+              style={{ width: selectWidth, marginRight: "5px" }}
               placeholder="请选择频道"
               value={nowChannelKey}
               onChange={value => onChange(value)}
@@ -134,52 +155,45 @@ function Head({ nowChannelKey, handleCommit, onChange }) {
               )}
             </Select>
           ) : null}
+          {tag && (allowPublicTag || (!allowPublicTag && role && role < 4)) ? (
+            <Select
+              style={{ width: selectWidth }}
+              placeholder="请选择标签"
+              value={storyTag}
+              onChange={value => setStoryTag(value)}
+            >
+              {tag.split(" ").map((item, index) => {
+                let tagName = item;
+                let tagValue = item;
+                if (util.common.isJSON(item)) {
+                  tagName = JSON.parse(item).name;
+                  tagValue = JSON.parse(item).id;
+                }
+                return (
+                  <Option key={index} index={index} value={tagValue}>
+                    {tagName}
+                  </Option>
+                );
+              })}
+            </Select>
+          ) : null}
         </div>
         <div className="right-section">
-          <span onClick={() => handleCommit()}>发布</span>
+          <Button type="primary" onClick={() => handleCommit()}>
+            发布
+          </Button>
         </div>
       </div>
     </div>
   );
 }
 
-function Action({ storyTag, setStoryTag, channelInfo }) {
-  const Option = Select.Option;
-
-  const { tag, allowPublicTag, role } = channelInfo;
-
+function Action() {
   const [visible, setVisible] = useState(false);
-
-  function handleSetTag(value) {
-    setStoryTag(value);
-  }
 
   return (
     <div className="create-action">
-      <div className="left-section">
-        {tag && (allowPublicTag || (!allowPublicTag && role && role < 4)) ? (
-          <Select
-            style={{ width: 120 }}
-            placeholder="请选择标签"
-            value={storyTag}
-            onChange={handleSetTag}
-          >
-            {tag.split(" ").map((item, index) => {
-              let tagName = item;
-              let tagValue = item;
-              if (util.common.isJSON(item)) {
-                tagName = JSON.parse(item).name;
-                tagValue = JSON.parse(item).id;
-              }
-              return (
-                <Option key={index} index={index} value={tagValue}>
-                  {tagName}
-                </Option>
-              );
-            })}
-          </Select>
-        ) : null}
-      </div>
+      <div className="left-section"></div>
       <div className="right-section">
         <i className="more" onClick={() => setVisible(true)}></i>
       </div>

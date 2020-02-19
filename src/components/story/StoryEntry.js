@@ -76,14 +76,7 @@ class StoryEntry extends Component {
   }
 
   render() {
-    const {
-      story,
-      like,
-      userKey,
-      role,
-      showSetting,
-      handleCoverClick
-    } = this.props;
+    const { story, userKey, role, showSetting, handleCoverClick } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
     let avatar = (story.creator && story.creator.avatar) || "";
@@ -150,17 +143,25 @@ class StoryEntry extends Component {
       : true;
 
     return (
-      <div
-        className={`story-entry type-${storyType}`}
-        onClick={
-          handleCoverClick
-            ? handleCoverClick.bind(this, story._key)
-            : this.handleClick.bind(this, story)
-        }
-      >
-        <div className="story-entry-cover" style={coverStyle}></div>
+      <div className={`story-entry type-${storyType}`}>
+        <div
+          className="story-entry-cover"
+          style={coverStyle}
+          onClick={
+            handleCoverClick
+              ? handleCoverClick.bind(this, story._key)
+              : this.handleClick.bind(this, story)
+          }
+        ></div>
         <div className="story-entry-info">
-          <div className="story-entry-title">
+          <div
+            className="story-entry-title"
+            onClick={
+              handleCoverClick
+                ? handleCoverClick.bind(this, story._key)
+                : this.handleClick.bind(this, story)
+            }
+          >
             {showTitle ? (
               <span className="story-entry-title-span">{story.title}</span>
             ) : null}
@@ -203,7 +204,12 @@ class StoryEntry extends Component {
 
           <div className="story-entry-stat">
             {showAuthor ? (
-              <div>
+              <div
+                className="story-card-user"
+                onClick={() =>
+                  (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                }
+              >
                 <i
                   className="story-card-avatar"
                   style={{
@@ -211,7 +217,11 @@ class StoryEntry extends Component {
                       "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
                   }}
                 ></i>
-                <span className="story-card-name">{name}</span>
+                <span className="story-card-name">{`${name}${
+                  story.creator && story.creator.relationDesc
+                    ? `（${story.creator.relationDesc}）`
+                    : ""
+                }`}</span>
               </div>
             ) : null}
             <div>
@@ -229,10 +239,10 @@ class StoryEntry extends Component {
                 </span>
               ) : null}
               {showLike ? (
-                <span className="story-card-record">
+                <span className="story-card-record story-like">
                   <i
                     className="story-card-icon"
-                    onClick={like.bind(this, story._key)}
+                    onClick={() => this.props.like()}
                     style={{
                       backgroundImage: `url(/image/icon/${
                         story.islike ? "like" : "like2"

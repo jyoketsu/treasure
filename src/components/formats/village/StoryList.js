@@ -205,9 +205,9 @@ function Head({ nowChannel }) {
     >
       <div className="village-banner-head" style={{ height: "45px" }}>
         <i className="back" onClick={() => history.goBack()}></i>
-      </div>
-      <div className="village-banner-title">
-        {nowChannel ? nowChannel.name : ""}
+        <span className="village-banner-title">
+          {nowChannel ? nowChannel.name : ""}
+        </span>
       </div>
     </div>
   );

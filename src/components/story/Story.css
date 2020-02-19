@@ -177,6 +177,10 @@
   background-color: bisque;
 }
 
+.story-head-avatar:hover {
+  cursor: pointer;
+}
+
 .story-title {
   width: 100%;
   height: 70px;
@@ -243,7 +247,7 @@
   .story-head-other > div {
     padding-top: 10px;
   }
-  .story-title{
+  .story-title {
     height: unset;
     overflow: unset;
     white-space: unset;

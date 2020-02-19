@@ -69,7 +69,11 @@ function NewsSection({ channel, storyList, onClick }) {
       {storyList.length ? (
         <div>
           <TitleHead
-            icon="/image/icon/village/volume-up-outline.svg"
+            icon={
+              channel && channel.logo
+                ? `${channel.logo}?imageView2/2/w/100/`
+                : "/image/icon/village/volume-up-outline.svg"
+            }
             text={channel ? channel.name : ""}
             onClick={
               channel

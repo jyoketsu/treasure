@@ -17,6 +17,7 @@
   height: 30px;
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   margin-right: 15px;
 }
 .village-title-head > i {

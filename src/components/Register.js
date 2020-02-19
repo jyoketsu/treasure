@@ -90,23 +90,6 @@ class Register extends Component {
     }
   }
 
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("两次输入的密码不同！");
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
-  };
-
   render() {
     const { getFieldDecorator } = this.props.form;
     let { nowStation } = this.props;
@@ -142,10 +125,29 @@ class Register extends Component {
               })(
                 <Input
                   addonBefore={prefixSelector}
+                  type="text"
                   style={{ width: "100%" }}
                   placeholder="手机号"
                 />
               )}
+            </Form.Item>
+            <Form.Item>
+              <Row gutter={8}>
+                <Col span={14}>
+                  {getFieldDecorator("code", {
+                    rules: [{ required: true, message: "请输入验证码！" }]
+                  })(<Input placeholder="请输入验证码！" />)}
+                </Col>
+                <Col span={10}>
+                  {count === 0 ? (
+                    <Button onClick={this.getCode}>获取验证码</Button>
+                  ) : (
+                    <span
+                      style={{ color: "#fff" }}
+                    >{`${count}秒`}</span>
+                  )}
+                </Col>
+              </Row>
             </Form.Item>
             <Form.Item hasFeedback>
               {getFieldDecorator("password", {
@@ -153,9 +155,6 @@ class Register extends Component {
                   {
                     required: true,
                     message: "请输入密码！"
-                  },
-                  {
-                    validator: this.validateToNextPassword
                   }
                 ]
               })(
@@ -163,48 +162,10 @@ class Register extends Component {
                   prefix={
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
-                  type="password"
+                  type="text"
                   placeholder="密码"
                 />
               )}
-            </Form.Item>
-            <Form.Item hasFeedback>
-              {getFieldDecorator("confirm", {
-                rules: [
-                  {
-                    required: true,
-                    message: "请确认密码！"
-                  },
-                  {
-                    validator: this.compareToFirstPassword
-                  }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  type="password"
-                  placeholder="请确认密码！"
-                  onBlur={this.handleConfirmBlur}
-                />
-              )}
-            </Form.Item>
-            <Form.Item>
-              <Row gutter={8}>
-                <Col span={12}>
-                  {getFieldDecorator("code", {
-                    rules: [{ required: true, message: "请输入验证码！" }]
-                  })(<Input placeholder="请输入验证码！" />)}
-                </Col>
-                <Col span={12}>
-                  {count === 0 ? (
-                    <Button onClick={this.getCode}>获取验证码</Button>
-                  ) : (
-                    <span>{`已发送验证码 ${count}秒`}</span>
-                  )}
-                </Col>
-              </Row>
             </Form.Item>
             <Form.Item>
               <Button

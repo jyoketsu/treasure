@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import "./ScrollTitle.css";
 
 export default function ScrollTitle({ titleList, nowTitle, onClick }) {
+  const [offset, setoffset] = useState(0);
+  const tabsEl = useRef(0);
+  const tabsContainerEl = useRef(0);
+  const titleWidth = 90;
+
+  function handleClick(index, id) {
+    onClick(id);
+    const tabsWidth = tabsEl.current.clientWidth;
+    const containerWidth = tabsContainerEl.current.clientWidth;
+    const nowX = index * titleWidth;
+    // 容器中点位置
+    const middleX = containerWidth / 2;
+    // 内容长度与容器长度的差
+    const differ = tabsWidth - containerWidth;
+    // 自动移动
+    if (differ > 0) {
+      if (nowX > middleX && nowX < differ) {
+        setoffset(-(nowX - middleX));
+      } else if (nowX > differ) {
+        setoffset(-differ);
+      } else {
+        setoffset(0);
+      }
+    }
+  }
+
   return (
-    <div className="scroll-title-container">
-      <div className="scroll-title">
+    <div className="scroll-title-container" ref={tabsContainerEl}>
+      <div
+        className="scroll-title"
+        style={{ transform: `translate(${offset}px, 0)` }}
+        ref={tabsEl}
+      >
         <div
           className={`title-item ${!nowTitle ? "selected" : ""}`}
-          onClick={() => onClick()}
+          style={{ width: titleWidth }}
+          onClick={() => handleClick(0, "")}
         >
           全部
         </div>
@@ -15,7 +46,8 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
           <div
             key={index}
             className={`title-item ${nowTitle === item.id ? "selected" : ""}`}
-            onClick={() => onClick(item.id)}
+            style={{ width: titleWidth }}
+            onClick={() => handleClick(index + 1, item.id)}
           >
             {item.name}
           </div>

@@ -71,7 +71,7 @@ class StoryList extends Component {
             key={index}
             userKey={userKey}
             story={story}
-            like={like}
+            like={() => like(story._key)}
             showSetting={showSetting}
             role={role}
             handleCoverClick={handleCoverClick}
