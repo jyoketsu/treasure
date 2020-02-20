@@ -18,6 +18,9 @@
   background-size: cover;
   background-position: center;
 }
+.all-visitor-item > i:hover {
+  cursor: pointer;
+}
 .all-visitor-item > div {
   display: flex;
   flex-direction: column;
@@ -25,4 +28,7 @@
 }
 .all-visitor-item-name {
   font-size: 18px;
+}
+.all-visitor-item-name:hover {
+  cursor: pointer;
 }

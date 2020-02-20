@@ -46,6 +46,11 @@ function User({ user }) {
               : "/image/icon/avatar.svg"
           })`
         }}
+        onClick={() => {
+          if (user.domain) {
+            window.location.href = `https://baoku.qingtime.cn/${user.domain}/home`;
+          }
+        }}
       ></i>
       <div>{user.nickName || ""}</div>
       <div>{`投稿数:${user.albumCount}`}</div>

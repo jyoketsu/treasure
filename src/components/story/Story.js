@@ -23,7 +23,6 @@ const mapStateToProps = state => ({
     ? state.station.nowStation.seriesInfo
     : [],
   loading: state.common.loading,
-  nowChannelKey: state.story.nowChannelKey,
   statusTagStats: state.story.statusTagStats
 });
 
@@ -322,8 +321,7 @@ class Story extends Component {
       updateExif,
       channelInfo,
       statisticsStatusTag,
-      nowStationKey,
-      nowChannelKey
+      nowStationKey
     } = this.props;
     const prevStoryKey = prevPros.story ? prevPros.story._key : null;
     // 获取到故事详情后
@@ -365,11 +363,14 @@ class Story extends Component {
           break;
         }
       }
-      statisticsStatusTag(
-        nowStationKey,
-        nowChannelKey === "allSeries" ? "" : nowChannelKey,
-        nowChannel.statusTag
-      );
+
+      if (nowChannelId && nowChannel.statusTag) {
+        statisticsStatusTag(
+          nowStationKey,
+          nowChannelId && nowChannelId === "allSeries" ? "" : nowChannelId,
+          nowChannel.statusTag
+        );
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./Visitors.css";
 import TitleHead from "./TitleHead";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,6 +58,11 @@ function User({ user }) {
           borderRadius: "30px",
           width: "60px",
           height: "60px"
+        }}
+        onClick={() => {
+          if (user.domain) {
+            window.location.href = `https://baoku.qingtime.cn/${user.domain}/home`;
+          }
         }}
       ></i>
     </div>

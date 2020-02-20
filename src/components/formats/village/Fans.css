@@ -18,6 +18,9 @@
   background-position: center;
   border-radius: 30px;
 }
+.village-fans-item > i:hover {
+  cursor: pointer;
+}
 .village-fans-item > div {
   width: 100%;
   text-align: center;

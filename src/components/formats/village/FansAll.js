@@ -13,6 +13,15 @@ export default function AllFans() {
       groupMember(nowStation.fansGroupKey, nowStation._key, dispatch);
     }
   }, [nowStation, dispatch]);
+
+  useEffect(() => {
+    if (document.body.scrollTop !== 0) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
+  }, []);
+
   return (
     <div className="village-all-fans">
       <Head />
@@ -26,6 +35,12 @@ export default function AllFans() {
 }
 
 function User({ user }) {
+  function toHomePage() {
+    if (user.domain) {
+      window.location.href = `https://baoku.qingtime.cn/${user.domain}/home`;
+    }
+  }
+
   return (
     <div className="all-fans-item">
       <i
@@ -33,9 +48,12 @@ function User({ user }) {
           backgroundImage: `url(${user.avatar ||
             "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"})`
         }}
+        onClick={() => toHomePage()}
       ></i>
       <div>
-        <span className="all-fans-item-name">{user.nickName}</span>
+        <span className="all-fans-item-name" onClick={() => toHomePage()}>
+          {user.nickName}
+        </span>
       </div>
     </div>
   );

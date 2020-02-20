@@ -18,6 +18,9 @@
   background-size: cover;
   background-position: center;
 }
+.all-fans-item > i:hover {
+  cursor: pointer;
+}
 .all-fans-item > div {
   display: flex;
   flex-direction: column;
@@ -25,4 +28,7 @@
 }
 .all-fans-item-name {
   font-size: 18px;
+}
+.all-fans-item-name:hover {
+  cursor: pointer;
 }

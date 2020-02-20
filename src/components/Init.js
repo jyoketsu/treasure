@@ -122,7 +122,7 @@ class Init extends Component {
       (prevProps.user && prevProps.user.isGuest && !user.isGuest)
     ) {
       clearStoryList();
-      if (nowStationKey !== "notFound") {
+      if (nowStationKey && nowStationKey !== "notFound") {
         getStationDetail(nowStationKey);
       } else {
         // history.push("/station/notFound");

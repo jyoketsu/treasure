@@ -8,9 +8,19 @@ export default function AllVisitors() {
   const dispatch = useDispatch();
   const nowStation = useSelector(state => state.station.nowStation);
   const latestVisitors = useSelector(state => state.station.latestVisitors);
+
   useEffect(() => {
     getLatestVisitors(nowStation._key, dispatch);
   }, [nowStation, dispatch]);
+
+  useEffect(() => {
+    if (document.body.scrollTop !== 0) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
+  }, []);
+
   return (
     <div className="village-all-visitors">
       <Head />
@@ -24,6 +34,12 @@ export default function AllVisitors() {
 }
 
 function User({ user }) {
+  function toHomePage() {
+    if (user.domain) {
+      window.location.href = `https://baoku.qingtime.cn/${user.domain}/home`;
+    }
+  }
+
   return (
     <div className="all-visitor-item">
       <i
@@ -31,9 +47,12 @@ function User({ user }) {
           backgroundImage: `url(${user.avatar ||
             "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"})`
         }}
+        onClick={() => toHomePage()}
       ></i>
       <div>
-        <span className="all-visitor-item-name">{user.nickName}</span>
+        <span className="all-visitor-item-name" onClick={() => toHomePage()}>
+          {user.nickName}
+        </span>
       </div>
     </div>
   );
