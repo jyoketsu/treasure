@@ -6,7 +6,6 @@ import HomeSubscribe from "./HomeSubscribe";
 import util from "../services/Util";
 import { Modal, Tooltip, message, Input, Select } from "antd";
 import { connect } from "react-redux";
-import AddButton from "./AddArticleButton";
 import Header from "./Header";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {
@@ -731,7 +730,6 @@ class Station extends React.Component {
               </div>
             </Tooltip>
           ) : null}
-          {content._key ? <AddButton /> : null}
         </div>
         <Modal
           title="排序"
@@ -832,23 +830,21 @@ class HomeFooter extends React.Component {
             <a
               href="http://www.beian.miit.gov.cn"
               target="_blank"
-              tabindex="0"
+              tabIndex="0"
               rel="noopener noreferrer"
             >
               {recordNumber ? recordNumber : "苏ICP备15006448号"}
             </a>
           </span>
         ) : (
-          [
-            <a
-              href="http://www.beian.miit.gov.cn"
-              target="_blank"
-              tabindex="0"
-              rel="noopener noreferrer"
-            >
-              {recordNumber ? recordNumber : "苏ICP备15006448号"}
-            </a>
-          ]
+          <a
+            href="http://www.beian.miit.gov.cn"
+            target="_blank"
+            tabIndex="0"
+            rel="noopener noreferrer"
+          >
+            {recordNumber ? recordNumber : "苏ICP备15006448号"}
+          </a>
         )}
 
         <span style={{ color: "#D3D3D3" }}>技术支持 时光科技</span>

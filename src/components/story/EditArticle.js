@@ -285,6 +285,7 @@ class EditArticle extends Component {
       allowPublicTag,
       statusTag,
       allowPublicStatus,
+      allowPublicUpload,
       role
     } = channelInfo;
     const isMobile = util.common.isMobile();
@@ -339,7 +340,9 @@ class EditArticle extends Component {
           <Select
             style={{ width: 200 }}
             placeholder="请选择频道"
-            value={nowChannelId}
+            value={
+              (role && role < 5) || allowPublicUpload ? nowChannelId : undefined
+            }
             onChange={this.handleSelectChannel}
           >
             {seriesInfo.map((item, index) =>

@@ -326,42 +326,43 @@ class Story extends Component {
     const prevStoryKey = prevPros.story ? prevPros.story._key : null;
     // 获取到故事详情后
     if (prevStoryKey !== story._key) {
-      let richContent = story.richContent;
-      const promises = [];
-      for (let i = 0; i < richContent.length; i++) {
-        if (richContent[i].metaType === "image") {
-          promises.push(api.requests.get(`${richContent[i].url}?exif`));
-        }
-      }
-
-      Promise.all(promises)
-        .then(function(posts) {
-          let postsIndex = 0;
-          for (let i = 0; i < richContent.length; i++) {
-            if (richContent[i].metaType === "image") {
-              if (!posts[postsIndex].error) {
-                richContent[i].exif = posts[postsIndex];
-              }
-              postsIndex++;
-            }
-          }
-          updateExif(JSON.parse(JSON.stringify(story)));
-        })
-        .catch(function(reason) {
-          console.log(reason);
-        });
-
+      // 当前频道
       const nowChannelId = story.series
         ? story.series._key
         : util.common.getSearchParamValue(window.location.search, "channel");
-
       let nowChannel = {};
-
       for (let i = 0; i < channelInfo.length; i++) {
         if (channelInfo[i]._key === nowChannelId) {
           nowChannel = channelInfo[i];
           break;
         }
+      }
+
+      if (nowChannel.showExif) {
+        let richContent = story.richContent;
+        const promises = [];
+        for (let i = 0; i < richContent.length; i++) {
+          if (richContent[i].metaType === "image") {
+            promises.push(api.requests.get(`${richContent[i].url}?exif`));
+          }
+        }
+
+        Promise.all(promises)
+          .then(function(posts) {
+            let postsIndex = 0;
+            for (let i = 0; i < richContent.length; i++) {
+              if (richContent[i].metaType === "image") {
+                if (!posts[postsIndex].error) {
+                  richContent[i].exif = posts[postsIndex];
+                }
+                postsIndex++;
+              }
+            }
+            updateExif(JSON.parse(JSON.stringify(story)));
+          })
+          .catch(function(reason) {
+            console.log(reason);
+          });
       }
 
       if (nowChannelId && nowChannel.statusTag) {

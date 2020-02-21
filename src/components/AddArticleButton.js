@@ -40,12 +40,11 @@ class AddButton extends Component {
     const {
       history,
       user,
-      match,
       nowStation,
       switchEditLinkVisible,
       clearStoryDetail
     } = this.props;
-    const stationDomain = match.params.id;
+    const stationDomain = nowStation.domain;
     if (user.isGuest) {
       message.info("请先登录！");
       return;
@@ -101,8 +100,8 @@ class AddButton extends Component {
     if (this.channelKey === "allSeries") {
       this.channelKey = "";
     }
-    const { match, history, nowStation, switchEditLinkVisible } = this.props;
-    const stationDomain = match.params.id;
+    const { history, nowStation, switchEditLinkVisible } = this.props;
+    const stationDomain = nowStation.domain;
 
     // pc端默认进入文章编辑，手机端则进入简版
     if (!util.common.isMobile()) {
@@ -142,7 +141,14 @@ class AddButton extends Component {
   }
 
   switchChannelVisible() {
-    const { nowStation, user, history, nowChannelKey } = this.props;
+    const {
+      nowStation,
+      user,
+      history,
+      nowChannelKey,
+      clearStoryDetail
+    } = this.props;
+    clearStoryDetail();
     if (user.isGuest) {
       message.info("请先登录！");
       history.push("/account/login");

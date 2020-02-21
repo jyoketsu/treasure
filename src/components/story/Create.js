@@ -79,7 +79,7 @@ export default function Create() {
       ]
     };
     addStory(story, dispatch);
-    history.goBack();
+    history.push(`/${nowStation.domain}/home`);
   }
   return (
     <div className="create-story">
@@ -143,7 +143,12 @@ function Head({
             <Select
               style={{ width: selectWidth, marginRight: "5px" }}
               placeholder="请选择频道"
-              value={nowChannelKey}
+              value={
+                (channelInfo.role && channelInfo.role < 5) ||
+                channelInfo.allowPublicUpload
+                  ? nowChannelKey
+                  : undefined
+              }
               onChange={value => onChange(value)}
             >
               {seriesInfo.map((item, index) =>

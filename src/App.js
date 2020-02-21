@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Spin, Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import Init from "./components/Init";
+import AddButton from "./components/AddArticleButton";
 import Home from "./components/Home";
 import Message from "./components/Message";
 import Me from "./components/User/Me";
@@ -51,7 +52,7 @@ export default function App() {
       home = <Route path="/:id/home" component={Village} />;
       break;
     default:
-      home = <Route path="/:id/home" component={LoadStation} />;
+      home = null;
       break;
   }
 
@@ -89,31 +90,41 @@ export default function App() {
     <Router>
       <div className="app" style={{ minHeight: minHeight }}>
         <Init />
-        <div className="route-container">
-          {home}
-          <Route path="/:id/message" component={Message} />
-          <Route path="/:id/me" component={Me} />
-          <Route path="/:id/editStation" component={EditStation} />
-          <Route path="/:id/story" component={Story} />
-          {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
-          <Route path="/:id/create/:channelKey" component={Create}></Route>
-          <Route path="/:id/editStory" component={StoryEdit}></Route>
-          <Route path="/:id/contribute" component={Contribute}></Route>
-          <Route path="/:id/stationOptions" component={StationOptions}></Route>
-          <Route path="/:id/article" component={Article}></Route>
-          <Route path="/:id/editArticle" component={EditArticle} />
-          <Route path="/account/login" component={Login} />
-          <Route path="/account/register" component={Register} />
-          <Route path="/account/reset" component={ResetPassword} />
-          <Route path="/:id/subscribe" component={Subscribe} />
-          <Route path="/:id/myArticle" component={MyArticle} />
-          <Route path="/station/notFound" component={NotFound} />
-        </div>
+        {nowStation ? (
+          <div className="route-container">
+            {home}
+            <Route path="/:id/message" component={Message} />
+            <Route path="/:id/me" component={Me} />
+            <Route path="/:id/editStation" component={EditStation} />
+            <Route path="/:id/story" component={Story} />
+            {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
+            <Route path="/:id/create/:channelKey" component={Create}></Route>
+            <Route path="/:id/editStory" component={StoryEdit}></Route>
+            <Route path="/:id/contribute" component={Contribute}></Route>
+            <Route
+              path="/:id/stationOptions"
+              component={StationOptions}
+            ></Route>
+            <Route path="/:id/article" component={Article}></Route>
+            <Route path="/:id/editArticle" component={EditArticle} />
+            <Route path="/account/login" component={Login} />
+            <Route path="/account/register" component={Register} />
+            <Route path="/account/reset" component={ResetPassword} />
+            <Route path="/:id/subscribe" component={Subscribe} />
+            <Route path="/:id/myArticle" component={MyArticle} />
+            <Route path="/station/notFound" component={NotFound} />
+          </div>
+        ) : (
+          <LoadStation />
+        )}
         {loading ? (
           <div className="loading-mask">
             <Spin size="large" />
           </div>
         ) : null}
+        <div className="operation-panel">
+          {nowStation ? <AddButton /> : null}
+        </div>
       </div>
     </Router>
   );

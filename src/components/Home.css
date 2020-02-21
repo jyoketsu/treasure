@@ -97,6 +97,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  z-index: 2;
 }
 
 .sortType.active {
@@ -368,9 +369,12 @@
   .story-tool.sort-story {
     display: none;
   }
-  .story-tool {
+  .village-navi .story-tool {
     width: 30px;
     height: 30px;
+    border-radius: 25px;
+  }
+  .story-tool {
     border-radius: 25px;
   }
   .story-tool > i {

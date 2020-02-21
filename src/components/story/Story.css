@@ -238,6 +238,11 @@
 @media screen and (max-width: 768px) {
   .story-content {
     width: 100%;
+    padding: 0;
+  }
+  .story-content-view,
+  .image-memo {
+    padding: 0 15px;
   }
 
   .story-head-other {
@@ -252,7 +257,7 @@
     overflow: unset;
     white-space: unset;
     text-align: center;
-    padding: 0 15px;
+    padding: 15px;
     line-height: 40px;
   }
 }

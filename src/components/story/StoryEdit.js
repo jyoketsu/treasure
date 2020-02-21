@@ -435,6 +435,7 @@ class StoryEdit extends Component {
       allowPublicTag,
       statusTag,
       allowPublicStatus,
+      allowPublicUpload,
       role
     } = channelInfo;
 
@@ -508,7 +509,11 @@ class StoryEdit extends Component {
               <Select
                 style={{ width: 120 }}
                 placeholder="请选择频道"
-                value={nowChannelId}
+                value={
+                  (role && role < 5) || allowPublicUpload
+                    ? nowChannelId
+                    : undefined
+                }
                 onChange={this.handleSelectChannel}
               >
                 {seriesInfo.map((item, index) =>
@@ -894,7 +899,7 @@ class ItemPreview extends Component {
                   height: "24px"
                 }}
                 metaType="video"
-                maxSize={200000000}
+                maxSize={400000000}
                 extParam={{ index: index }}
                 callback={uploadVideoCallback}
               />

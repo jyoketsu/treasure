@@ -4,7 +4,6 @@ import { Route } from "react-router-dom";
 import Header from "./PortalHeader";
 import Catalog from "./PortalCatalog";
 import Detail from "./PortalDetail";
-import AddButton from "../../AddArticleButton";
 import util from "../../../services/Util";
 import { connect } from "react-redux";
 const mapStateToProps = state => ({
@@ -90,9 +89,6 @@ class Portal extends Component {
               style={{ backgroundImage: customFootBk ? customFootBk : "unset" }}
             ></div>
           ) : null}
-        </div>
-        <div className="operation-panel">
-          {nowStation ? <AddButton /> : null}
         </div>
         <PortalFooter
           name={nowStation ? nowStation.name : ""}

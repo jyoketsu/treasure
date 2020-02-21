@@ -225,6 +225,9 @@ class LinkStory extends Component {
 
     const { cover } = this.state;
 
+    // 封面大小
+    let size = await util.common.getImageInfo(cover);
+
     this.form.validateFields(async (err, values) => {
       if (!err) {
         // 新增
@@ -234,6 +237,7 @@ class LinkStory extends Component {
             type: 15,
             starKey: nowStationKey,
             cover: cover,
+            size: size,
             title: values.title,
             url: values.url,
             openType: values.openType,
@@ -247,10 +251,9 @@ class LinkStory extends Component {
           modifyStory({
             ...story,
             ...values,
-            ...{ key: story._key, cover: cover }
+            ...{ key: story._key, cover: cover, size: size }
           });
         }
-
         switchEditLinkVisible();
       }
     });

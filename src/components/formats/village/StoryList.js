@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./StoryList.css";
 import { Spin } from "antd";
-import AddButton from "../../AddArticleButton";
 import ScrollTitle from "../../common/ScrollTitle";
 import Waterfall from "react-waterfall-responsive";
 import { StoryCard } from "../../story/StoryCard";
@@ -25,26 +24,41 @@ export default function StoryList() {
 
   const dispatch = useDispatch();
 
-  const [columnNum, setColumnNum] = useState(null);
+  const [columnNum, setColumnNum] = useState(
+    sessionStorage.getItem("VILLAGE-COLUMN-NUM")
+      ? parseInt(sessionStorage.getItem("VILLAGE-COLUMN-NUM"))
+      : null
+  );
   const containerEl = useRef(null);
 
   useEffect(() => {
-    getStoryList(
-      1,
-      nowStation._key,
-      null,
-      match.params.channelKey,
-      sortType,
-      sortOrder,
-      tag,
-      statusTag,
-      1,
-      perPage,
-      false,
-      false,
-      dispatch
-    );
-  }, [nowStation, match, sortType, sortOrder, tag, statusTag, dispatch]);
+    if (!storyList.length) {
+      getStoryList(
+        1,
+        nowStation._key,
+        null,
+        match.params.channelKey,
+        sortType,
+        sortOrder,
+        tag,
+        statusTag,
+        1,
+        perPage,
+        false,
+        false,
+        dispatch
+      );
+    }
+  }, [
+    nowStation,
+    storyList.length,
+    match,
+    sortType,
+    sortOrder,
+    tag,
+    statusTag,
+    dispatch
+  ]);
 
   useEffect(() => {
     function handleMouseWheel() {
@@ -134,7 +148,9 @@ export default function StoryList() {
   function setColumn() {
     if (containerEl) {
       const containerWidth = containerEl.current.clientWidth;
-      setColumnNum(Math.floor(containerWidth / 290));
+      const columnNum = Math.floor(containerWidth / 290);
+      sessionStorage.setItem("VILLAGE-COLUMN-NUM", columnNum);
+      setColumnNum(columnNum);
     }
   }
 
@@ -186,9 +202,6 @@ export default function StoryList() {
             {storyList.length < storyNumber ? "查看更多" : "到底了"}
           </div>
         )}
-      </div>
-      <div className="operation-panel">
-        <AddButton />
       </div>
     </div>
   );

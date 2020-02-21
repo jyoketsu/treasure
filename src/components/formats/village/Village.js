@@ -57,7 +57,9 @@ export default function Village() {
         <Route path={`${match.path}/visitors`} component={AllVisitors} />
         <Route path={`${match.path}/fans`} component={AllFans} />
         <Route path={`${match.path}/rank`} component={AllRank} />
-        {util.common.isMobile() && !location.pathname.includes("/stories") ? (
+        {false &&
+        util.common.isMobile() &&
+        !location.pathname.includes("/stories") ? (
           <FootNavi />
         ) : null}
       </div>
@@ -85,9 +87,6 @@ function Home() {
         <Visitors />
         <Fans />
         <Rank />
-        <div className="operation-panel">
-          {nowStation && !util.common.isMobile() ? <AddButton /> : null}
-        </div>
       </div>
     </div>
   );
