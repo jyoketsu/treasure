@@ -39,7 +39,12 @@ class Register extends Component {
           code: values.code,
           lo: 13,
           la: 14,
-          appHigh: 26
+          appHigh: 26,
+          profile: {
+            nickName: `用户${values.mobile}`,
+            gender: 0,
+            avatar: null
+          }
         });
       }
     });
@@ -142,9 +147,7 @@ class Register extends Component {
                   {count === 0 ? (
                     <Button onClick={this.getCode}>获取验证码</Button>
                   ) : (
-                    <span
-                      style={{ color: "#fff" }}
-                    >{`${count}秒`}</span>
+                    <span style={{ color: "#fff" }}>{`${count}秒`}</span>
                   )}
                 </Col>
               </Row>

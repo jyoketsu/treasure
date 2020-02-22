@@ -92,20 +92,9 @@ class StoryEdit extends Component {
       seriesInfo
     } = this.props;
     const { story } = this.state;
-    if (!story || (!story.series && !story._key)) {
+
+    if (!story || !story.series || !story.series._key) {
       message.info("请选择一个频道！");
-      return;
-    }
-    if (!story || !story.title) {
-      message.info("请输入标题！");
-      return;
-    }
-    if (!story.pictureCount && !story.videoCount) {
-      message.info("请至少上传一张图片/视频！");
-      return;
-    }
-    if (story.pictureCount > 200) {
-      message.info("不能超过200张图片！");
       return;
     }
 
@@ -117,10 +106,24 @@ class StoryEdit extends Component {
         break;
       }
     }
+
     const { tag, allowPublicTag } = channelInfo;
 
     if (tag && !story.tag && allowPublicTag) {
       message.info("请选择一个标签！");
+      return;
+    }
+
+    if (!story || !story.title) {
+      message.info("请输入标题！");
+      return;
+    }
+    if (!story.pictureCount && !story.videoCount) {
+      message.info("请至少上传一张图片/视频！");
+      return;
+    }
+    if (story.pictureCount > 200) {
+      message.info("不能超过200张图片！");
       return;
     }
 
