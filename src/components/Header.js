@@ -35,7 +35,14 @@ class Header extends Component {
   }
 
   switchMenu() {
-    this.setState(prevState => ({ showMenu: !prevState.showMenu }));
+    const { user, nowStation } = this.props;
+    if (user && !user.isGuest) {
+      this.setState(prevState => ({ showMenu: !prevState.showMenu }));
+    } else {
+      const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+      const logo = nowStation.logo;
+      window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
+    }
   }
 
   switchSubscribe() {
@@ -129,7 +136,7 @@ class Header extends Component {
             className={`head-icon me ${pathname === "/me" ? "active" : ""}`}
             style={{
               backgroundImage:
-                user && user.profile && user.profile.avatar
+                user && !user.isGuest && user.profile && user.profile.avatar
                   ? `url(${user.profile.avatar})`
                   : "/image/icon/me.svg",
               borderRadius:

@@ -58,7 +58,7 @@ class Me extends Component {
     }
     const { user, history } = this.props;
     if (!user || user.isGuest) {
-      history.push("/account/login");
+      history.push("/");
     }
   }
 }

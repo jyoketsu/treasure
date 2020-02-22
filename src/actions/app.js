@@ -25,7 +25,6 @@ export const SET_MEMBER_ROLE = "SET_MEMBER_ROLE";
 export const REMOVE_GROUP_MEMBER = "REMOVE_GROUP_MEMBER";
 
 export function logout(dispatch) {
-  // history.push(`/account/login${window.location.search}`);
   if (dispatch) {
     dispatch({ type: LOGOUT });
   } else {
@@ -33,12 +32,16 @@ export function logout(dispatch) {
   }
 }
 
-export function getUserInfo(token) {
+export function getUserInfo(token, dispatch) {
   if (token) {
     api.setToken(token);
   }
   let request = api.auth.getUserFullInfo();
-  return { type: GET_USER_INFO, payload: request, noLoading: true };
+  if (dispatch) {
+    dispatch({ type: GET_USER_INFO, payload: request, noLoading: true });
+  } else {
+    return { type: GET_USER_INFO, payload: request, noLoading: true };
+  }
 }
 
 export function editAccount(profile) {

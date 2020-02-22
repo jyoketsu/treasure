@@ -20,7 +20,6 @@ export default function StoryList() {
   const tag = useSelector(state => state.story.tag);
   const waiting = useSelector(state => state.common.waiting);
   const statusTag = useSelector(state => state.story.statusTag);
-  const nowChannelKey = useSelector(state => state.story.nowChannelKey);
 
   const dispatch = useDispatch();
 
@@ -119,7 +118,7 @@ export default function StoryList() {
   let nowChannel = null;
   for (let index = 0; index < channels.length; index++) {
     const element = channels[index];
-    if (element._key === nowChannelKey) {
+    if (element._key === match.params.channelKey) {
       nowChannel = element;
       break;
     }

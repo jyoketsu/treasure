@@ -141,17 +141,13 @@ class AddButton extends Component {
   }
 
   switchChannelVisible() {
-    const {
-      nowStation,
-      user,
-      history,
-      nowChannelKey,
-      clearStoryDetail
-    } = this.props;
+    const { nowStation, user, nowChannelKey, clearStoryDetail } = this.props;
     clearStoryDetail();
     if (user.isGuest) {
       message.info("请先登录！");
-      history.push("/account/login");
+      const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+      const logo = nowStation.logo;
+      window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
       return;
     }
     if (nowChannelKey !== "todoallSeries") {

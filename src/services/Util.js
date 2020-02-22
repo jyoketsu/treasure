@@ -444,14 +444,14 @@ const operation = {
             if (mainStar) {
               history.push(`/${mainStar.domain}/home`);
             } else {
-              const prevDomain = sessionStorage.getItem("DOMAIN") || "sgkj";
+              const prevDomain = localStorage.getItem("DOMAIN") || "sgkj";
               history.push(`/${prevDomain}/home`);
             }
           } else {
             // 游客用户
             if (pathname === "/") {
               // 什么站点都不指定，跳转到上次访问的微站或者时光科技站
-              const prevDomain = sessionStorage.getItem("DOMAIN") || "sgkj";
+              const prevDomain = localStorage.getItem("DOMAIN") || "sgkj";
               history.push(`/${prevDomain}/home`);
             }
           }

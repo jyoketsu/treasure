@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { message } from "antd";
 import util from "../services/Util";
 import { HOST_NAME } from "../global";
 import { withRouter } from "react-router-dom";
@@ -43,7 +42,7 @@ class Init extends Component {
   }
 
   componentDidMount() {
-    const { getUserInfo, changeStation } = this.props;
+    const { user, getUserInfo, changeStation } = this.props;
     // 监听窗口变化
     window.addEventListener("resize", this.handleResize);
     // 监听路由变化
@@ -58,8 +57,8 @@ class Init extends Component {
         const nowDomain =
           window.location.hostname === HOST_NAME
             ? route.pathname.split("/")[1]
-            : sessionStorage.getItem("DOMAIN");
-        const prevDomain = sessionStorage.getItem("DOMAIN");
+            : localStorage.getItem("DOMAIN");
+        const prevDomain = localStorage.getItem("DOMAIN");
         console.log("点击了浏览器前进，后退按钮", nowDomain, prevDomain);
         if (nowDomain !== prevDomain) {
           console.log("换站了");
@@ -67,18 +66,12 @@ class Init extends Component {
         }
       }
     });
-    const SEARCH_STR = window.location.search;
-    let token = null;
-    let query_token = null;
-    if (SEARCH_STR) {
-      query_token = util.common.getSearchParamValue(
-        window.location.search,
-        "token"
-      );
-    }
-    token = query_token ? query_token : window.localStorage.getItem("TOKEN");
+
+    let token = window.localStorage.getItem("TOKEN");
     // 获取用户信息
-    getUserInfo(token);
+    if (!user) {
+      getUserInfo(token);
+    }
   }
 
   async componentDidUpdate(prevProps) {
@@ -118,15 +111,12 @@ class Init extends Component {
 
     // 切换微站
     if (
-      nowStationKey !== prevProps.nowStationKey ||
+      (nowStationKey && nowStationKey !== prevProps.nowStationKey) ||
       (prevProps.user && prevProps.user.isGuest && !user.isGuest)
     ) {
       clearStoryList();
       if (nowStationKey && nowStationKey !== "notFound") {
         getStationDetail(nowStationKey);
-      } else {
-        // history.push("/station/notFound");
-        message.error("没有找到相应的站点！");
       }
     }
     const prevStationKey = prevProps.nowStation
@@ -134,7 +124,7 @@ class Init extends Component {
       : "";
     if (nowStation && nowStation._key !== prevStationKey) {
       document.title = nowStation.name ? nowStation.name : "时光宝库";
-      sessionStorage.setItem("DOMAIN", nowStation.domain);
+      localStorage.setItem("DOMAIN", nowStation.domain);
     }
   }
 }

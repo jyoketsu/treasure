@@ -46,11 +46,6 @@ class HeadMenu extends Component {
       case "logout":
         this.showConfirm();
         break;
-      case "login":
-        if (window.location.pathname !== "/account/login") {
-          history.push("/account/login");
-        }
-        break;
       case "subscribe":
         history.push(`/${stationDomain}/subscribe`);
         break;
@@ -84,7 +79,7 @@ class HeadMenu extends Component {
       window.open(
         `${
           url
-            ? `http://${url}?token=${token}`
+            ? `http://${url}/account/login?token=${token}`
             : `https://${HOST_NAME}/${domain}/home`
         }`,
         "_blank"

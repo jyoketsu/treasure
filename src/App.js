@@ -10,8 +10,6 @@ import Message from "./components/Message";
 import Me from "./components/User/Me";
 import EditStation from "./components/User/EditStation";
 import Login from "./components/Login";
-import Register from "./components/Register";
-import ResetPassword from "./components/ResetPassword";
 import Story from "./components/story/Story";
 // import EditStory from './components/story/EditStory';
 import Contribute from "./components/story/Contribute";
@@ -90,33 +88,33 @@ export default function App() {
     <Router>
       <div className="app" style={{ minHeight: minHeight }}>
         <Init />
-        {nowStation ? (
-          <div className="route-container">
-            {home}
-            <Route path="/:id/message" component={Message} />
-            <Route path="/:id/me" component={Me} />
-            <Route path="/:id/editStation" component={EditStation} />
-            <Route path="/:id/story" component={Story} />
-            {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
-            <Route path="/:id/create/:channelKey" component={Create}></Route>
-            <Route path="/:id/editStory" component={StoryEdit}></Route>
-            <Route path="/:id/contribute" component={Contribute}></Route>
-            <Route
-              path="/:id/stationOptions"
-              component={StationOptions}
-            ></Route>
-            <Route path="/:id/article" component={Article}></Route>
-            <Route path="/:id/editArticle" component={EditArticle} />
-            <Route path="/account/login" component={Login} />
-            <Route path="/account/register" component={Register} />
-            <Route path="/account/reset" component={ResetPassword} />
-            <Route path="/:id/subscribe" component={Subscribe} />
-            <Route path="/:id/myArticle" component={MyArticle} />
-            <Route path="/station/notFound" component={NotFound} />
-          </div>
-        ) : (
-          <LoadStation />
-        )}
+        <div className="route-container">
+          {nowStation ? (
+            <div>
+              {home}
+              <Route path="/:id/message" component={Message} />
+              <Route path="/:id/me" component={Me} />
+              <Route path="/:id/editStation" component={EditStation} />
+              <Route path="/:id/story" component={Story} />
+              {/* <Route path="/:id/editStory" component={EditStory}></Route> */}
+              <Route path="/:id/create/:channelKey" component={Create}></Route>
+              <Route path="/:id/editStory" component={StoryEdit}></Route>
+              <Route path="/:id/contribute" component={Contribute}></Route>
+              <Route
+                path="/:id/stationOptions"
+                component={StationOptions}
+              ></Route>
+              <Route path="/:id/article" component={Article}></Route>
+              <Route path="/:id/editArticle" component={EditArticle} />
+              <Route path="/:id/subscribe" component={Subscribe} />
+              <Route path="/:id/myArticle" component={MyArticle} />
+            </div>
+          ) : (
+            <LoadStation />
+          )}
+          <Route path="/account/login" component={Login} />
+          <Route path="/station/notFound" component={NotFound} />
+        </div>
         {loading ? (
           <div className="loading-mask">
             <Spin size="large" />
