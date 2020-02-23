@@ -259,7 +259,10 @@ class Content extends Component {
     }
     return (
       <div className="content-manage" ref={node => (this.auditRef = node)}>
-        <div ref={node => (this.contentRef = node)}>
+        <div
+          className="content-manage-grid"
+          ref={node => (this.contentRef = node)}
+        >
           <h2>内容管理</h2>
           <span className="pass-all" onClick={this.confirmPassAll}>
             全部通过
@@ -285,24 +288,21 @@ class Content extends Component {
             </TabPane>
           </Tabs>
         </div>
-        <div>
-          <CheckArticle handleClickEdit={this.handleClickEdit} />
-          {storyComp}
-        </div>
-        <Modal
-          className="story-preview-modal"
-          title="文章预览"
-          footer={null}
-          style={{ top: 0, right: 0, bottom: 0 }}
-          visible={visible}
-          onCancel={this.switchVisible.bind(this, null)}
-          width={
-            util.common.isMobile() ? "100%" : `${window.innerWidth * (2 / 3)}px`
-          }
-        >
-          <CheckArticle handleClickEdit={this.handleClickEdit} />
-          {storyComp}
-        </Modal>
+        {util.common.isMobile() ? null : (
+          <div className="content-manage-grid">
+            <CheckArticle handleClickEdit={this.handleClickEdit} />
+            {storyComp}
+          </div>
+        )}
+        {visible ? (
+          <div className="view-story-modal">
+            <div className="view-story-modal-head">
+              <i onClick={this.switchVisible.bind(this, null)}></i>
+            </div>
+            <CheckArticle handleClickEdit={this.handleClickEdit} />
+            <div className="container">{storyComp}</div>
+          </div>
+        ) : null}
         {eidtLinkVisible ? <StroyLink /> : null}
       </div>
     );

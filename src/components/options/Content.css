@@ -1,53 +1,78 @@
 .content-manage {
-    line-height: 40px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 40% 60%;
-    grid-template-rows: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+  line-height: 40px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
-
-.content-manage>div {
-    overflow: auto;
-    padding: 15px;
-    position: relative;
+.content-manage-grid {
+  position: relative;
+  overflow: auto;
+  padding: 0 15px;
 }
 
 .content-manage .story-card-cover:hover {
-    cursor: auto;
+  cursor: auto;
 }
 
-
-.content-manage>div>iframe{
-    height: calc(100% - 80px);
+.content-manage > div > iframe {
+  height: calc(100% - 80px);
 }
 
-.pass-all{
-    color: #40a9ff;
-    position: absolute;
-    top: 15px;
-    right: 15px;
+.pass-all {
+  color: #40a9ff;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
-.pass-all:hover{
-    cursor: pointer;
+.pass-all:hover {
+  cursor: pointer;
+}
+.view-story-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+.view-story-modal > .container {
+  flex: 1;
+  overflow: auto;
+}
+.view-story-modal-head {
+  position: relative;
+  width: 100%;
+  height: 45px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.view-story-modal-head > i {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 35px;
+  height: 35px;
+  background-image: url(/image/icon/story/close-black.svg);
+  background-size: cover;
+  background-position: center;
 }
 
-
-@media screen and (max-width:768px) {
-    .content-manage {
-        display: block;
-        position: relative;
-        top: 0;
-        left: 0;
-        right: 0;
-    }
-
-    .content-manage>div:last-child {
-        display: none;
-    }
+@media screen and (max-width: 768px) {
+  .content-manage {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }

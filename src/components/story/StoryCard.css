@@ -87,6 +87,7 @@
   background-position: center;
   margin-right: 6px;
   background-color: bisque;
+  flex-shrink: 0;
 }
 
 .story-card-name {
@@ -186,6 +187,12 @@
   position: absolute;
   top: 5px;
   right: 12px;
+}
+.story-card-user {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .story-card-user:hover {
   cursor: pointer;

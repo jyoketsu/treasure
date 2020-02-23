@@ -1,12 +1,6 @@
-import React, { Component } from 'react';
-import './Message.css';
+import React from "react";
+import "./Message.css";
 
-class Message extends Component {
-    render() {
-        return (
-            <div className="app-content message">功能开发中，敬请期待！</div>
-        );
-    };
+export default function Message() {
+  return <div className="message">暂无消息</div>;
 }
-
-export default Message;

@@ -7,7 +7,6 @@ import Init from "./components/Init";
 import AddButton from "./components/AddArticleButton";
 import Home from "./components/Home";
 import Message from "./components/Message";
-import Me from "./components/User/Me";
 import EditStation from "./components/User/EditStation";
 import Login from "./components/Login";
 import Story from "./components/story/Story";
@@ -93,7 +92,6 @@ export default function App() {
             <div>
               {home}
               <Route path="/:id/message" component={Message} />
-              <Route path="/:id/me" component={Me} />
               <Route path="/:id/editStation" component={EditStation} />
               <Route path="/:id/story" component={Story} />
               {/* <Route path="/:id/editStory" component={EditStory}></Route> */}

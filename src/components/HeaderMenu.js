@@ -1,114 +1,98 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./HeaderMenu.css";
-import { withRouter } from "react-router-dom";
-import { IconWithText } from "./common/Common";
+import { useHistory } from "react-router-dom";
 import ClickOutside from "./common/ClickOutside";
-import { Modal, message } from "antd";
+import Me from "./User/Me";
+import Message from "./Message";
+import util from "../services/Util";
 import { HOST_NAME } from "../global";
-import { connect } from "react-redux";
-import { logout, changeStation, clearStoryList } from "../actions/app";
-const confirm = Modal.confirm;
+import { changeStation } from "../actions/app";
+import { useSelector, useDispatch } from "react-redux";
 
-const mapStateToProps2 = state => ({
-  user: state.auth.user,
-  stationList: state.station.stationList
-});
-
-class HeadMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.showConfirm = this.showConfirm.bind(this);
+export default function HeadMenu({ switchMenu }) {
+  const [key, setkey] = useState("sites");
+  let content = null;
+  switch (key) {
+    case "sites":
+      content = <StationList switchMenu={switchMenu} />;
+      break;
+    case "messages":
+      content = <Message />;
+      break;
+    case "me":
+      content = <Me />;
+      break;
+    default:
+      break;
   }
+  return (
+    <div className="head-menu">
+      <ClickOutside onClickOutside={switchMenu}>
+        <Head switchMenu={switchMenu} />
+        <Tab selected={key} onClick={setkey} />
+        <div className="head-menu-content">{content}</div>
+      </ClickOutside>
+    </div>
+  );
+}
 
-  showConfirm() {
-    const { logout } = this.props;
-    confirm({
-      title: "退出",
-      content: "确定要退出吗？",
-      onOk() {
-        logout();
-      },
-      onCancel() {
-        console.log("Cancel");
-      }
-    });
-  }
+function Tab({ selected, onClick }) {
+  const tabs = [
+    { id: "sites", text: "站点" },
+    { id: "aritcles", text: "文章" },
+    { id: "messages", text: "消息" },
+    { id: "me", text: "我" }
+  ];
+  return (
+    <div className="menu-head-tab">
+      {tabs.map((tab, index) => (
+        <TabItem
+          key={index}
+          selected={selected}
+          id={tab.id}
+          text={tab.text}
+          onClick={onClick}
+        />
+      ))}
+    </div>
+  );
+}
+function TabItem({ id, text, selected, onClick }) {
+  return (
+    <div
+      className={`menu-head-tab-item ${id === selected ? "selected" : ""}`}
+      onClick={() => onClick(id)}
+    >
+      <div>{text}</div>
+    </div>
+  );
+}
 
-  handleClick(key) {
-    const { history, location, switchMenu } = this.props;
-    const pathname = location.pathname;
-    const stationDomain = pathname.split("/")[1];
-    switchMenu();
-    switch (key) {
-      case "account":
-        history.push(`/${stationDomain}/me`);
-        break;
-      case "logout":
-        this.showConfirm();
-        break;
-      case "subscribe":
-        history.push(`/${stationDomain}/subscribe`);
-        break;
-      case "discover":
-        window.open(
-          `https://exp.qingtime.cn?token=${localStorage.getItem("TOKEN")}`,
-          "_blank"
-        );
-        break;
-      case "article":
-        history.push(`/${stationDomain}/myArticle`);
-        break;
-      default:
-        message.info("功能开发中，敬请期待...");
-        break;
-    }
-  }
+function Head({ switchMenu }) {
+  const nowStation = useSelector(state => state.station.nowStation);
+  const isMobile = util.common.isMobile();
+  return isMobile ? (
+    <div
+      className="head-menu-head"
+      style={{ backgroundImage: `url(${nowStation.cover}?imageView2/2/w/500)` }}
+    >
+      <div className="head-menu-head-filter"></div>
+      <div className="left-section">
+        <span>{nowStation.name}</span>
+      </div>
+      <div className="right-section">
+        <i className="close-head-menu" onClick={() => switchMenu()}></i>
+      </div>
+    </div>
+  ) : null;
+}
 
-  handleStationClick(key, domain, url) {
-    const { history, changeStation, clearLogo, switchMenu } = this.props;
-    switchMenu();
-
-    const hostName = window.location.hostname;
-    // 切换站点
-    if ((hostName === HOST_NAME || hostName === "localhost") && !url) {
-      changeStation(key);
-      history.push(`/${domain}/home`);
-      if (clearLogo) clearLogo();
-    } else {
-      const token = localStorage.getItem("TOKEN");
-      window.open(
-        `${
-          url
-            ? `http://${url}/account/login?token=${token}`
-            : `https://${HOST_NAME}/${domain}/home`
-        }`,
-        "_blank"
-      );
-    }
-  }
-
-  getRoleName(role) {
-    let roleNmae;
-    switch (role) {
-      case 1:
-        roleNmae = "站长";
-        break;
-      case 2:
-        roleNmae = "管理员";
-        break;
-      case 3:
-        roleNmae = "编辑";
-        break;
-      case 4:
-        roleNmae = "作者";
-        break;
-      default:
-        break;
-    }
-    return roleNmae;
-  }
-
-  getRoleColor(role) {
+// 站点列表
+function StationList({ switchMenu }) {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const stationList = useSelector(state => state.station.stationList);
+  function getRoleColor(role) {
     let color;
     switch (role) {
       case 1:
@@ -129,102 +113,75 @@ class HeadMenu extends Component {
     return color;
   }
 
-  render() {
-    const { user, stationList, switchMenu } = this.props;
-    return (
-      <div
-        className="head-menu"
-        style={{ maxHeight: `${document.body.offsetHeight}px` }}
-      >
-        <ClickOutside onClickOutside={switchMenu}>
-          {user && !user.isGuest ? (
-            <div className="head-menu-button">
-              <IconWithText
-                key={"account"}
-                iconUrl="/image/icon/header/account.svg"
-                title="账户"
-                handleClick={this.handleClick.bind(this, "account")}
-              />
-              <IconWithText
-                key={"wallet"}
-                iconUrl="/image/icon/header/wallet.svg"
-                title="钱包"
-                handleClick={this.handleClick.bind(this, "wallet")}
-              />
-              <IconWithText
-                key={"message"}
-                iconUrl="/image/icon/header/message.svg"
-                title="消息"
-                handleClick={this.handleClick.bind(this, "message")}
-              />
-              <IconWithText
-                key={"logout"}
-                iconUrl="/image/icon/header/logout.svg"
-                title="退出"
-                handleClick={this.handleClick.bind(this, "logout")}
-              />
-              <IconWithText
-                key={"subscribe"}
-                iconUrl="/image/icon/header/subscribe.svg"
-                title="订阅"
-                handleClick={this.handleClick.bind(this, "subscribe")}
-              />
-              <IconWithText
-                key={"article"}
-                iconUrl="/image/icon/header/article.svg"
-                title="文章"
-                handleClick={this.handleClick.bind(this, "article")}
-              />
-              <IconWithText
-                key={"discover"}
-                iconUrl="/image/icon/header/discover.svg"
-                title="探索"
-                handleClick={this.handleClick.bind(this, "discover")}
-              />
-            </div>
-          ) : (
-            <div className="head-menu-login">
-              <IconWithText
-                key={"login"}
-                iconUrl="/image/icon/header/account.svg"
-                title="登录"
-                handleClick={this.handleClick.bind(this, "login")}
-              />
-            </div>
-          )}
-          {user && !user.isGuest ? (
-            <div className="menu-station-list">
-              {stationList.map(station => (
-                <div key={station._key}>
-                  <span
-                    className="menu-station-name"
-                    onClick={this.handleStationClick.bind(
-                      this,
-                      station._key,
-                      station.domain,
-                      station.url
-                    )}
-                  >{`・${station.name}`}</span>
-                  {station.role && station.role < 5 ? (
-                    <i
-                      className="menu-station-role"
-                      style={{
-                        backgroundColor: this.getRoleColor(station.role)
-                      }}
-                    >
-                      {this.getRoleName(station.role)}
-                    </i>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </ClickOutside>
-      </div>
-    );
+  function getRoleName(role) {
+    let roleNmae;
+    switch (role) {
+      case 1:
+        roleNmae = "站长";
+        break;
+      case 2:
+        roleNmae = "管理员";
+        break;
+      case 3:
+        roleNmae = "编辑";
+        break;
+      case 4:
+        roleNmae = "作者";
+        break;
+      default:
+        break;
+    }
+    return roleNmae;
   }
-}
 
-export default withRouter(
-  connect(mapStateToProps2, { clearStoryList, logout, changeStation })(HeadMenu)
-);
+  function handleStationClick(key, domain, url) {
+    switchMenu();
+    const hostName = window.location.hostname;
+    // 切换站点
+    if ((hostName === HOST_NAME || hostName === "localhost") && !url) {
+      changeStation(key, null, dispatch);
+      history.push(`/${domain}/home`);
+    } else {
+      const token = localStorage.getItem("TOKEN");
+      window.open(
+        `${
+          url
+            ? `http://${url}/account/login?token=${token}`
+            : `https://${HOST_NAME}/${domain}/home`
+        }`,
+        "_blank"
+      );
+    }
+  }
+
+  return (
+    <div className="menu-station-list">
+      {stationList.map(station => (
+        <div key={station._key}>
+          <i
+            className="menu-station-logo"
+            style={{
+              backgroundImage: `url(${station.logo}?imageView2/2/w/100)`
+            }}
+          ></i>
+          <span
+            className="menu-station-name"
+            onClick={() =>
+              handleStationClick(station._key, station.domain, station.url)
+            }
+          >{`${station.name}`}</span>
+          {station.role && station.role < 5 ? (
+            <i
+              className="menu-station-role"
+              style={{
+                backgroundColor: getRoleColor(station.role)
+              }}
+            >
+              {getRoleName(station.role)}
+            </i>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
+}
