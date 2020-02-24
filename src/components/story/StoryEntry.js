@@ -76,11 +76,18 @@ class StoryEntry extends Component {
   }
 
   render() {
-    const { story, userKey, role, showSetting, handleCoverClick } = this.props;
+    const {
+      story,
+      userKey,
+      role,
+      showSetting,
+      handleCoverClick,
+      showSiteName
+    } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
     let avatar = (story.creator && story.creator.avatar) || "";
-    let name = story.creator ? story.creator.name : "";
+    let name = story.creator ? story.creator.name || "" : "";
     let coverUrl = story.cover
       ? story.cover.indexOf("cdn-icare.qingtime.cn") !== -1
         ? story.cover.indexOf("vframe") === -1
@@ -200,7 +207,9 @@ class StoryEntry extends Component {
             </div>
           </div>
 
-          <div className="story-entry-memo">{story.memo}</div>
+          <div className="story-entry-memo">
+            {showSiteName ? story.starName : story.memo}
+          </div>
 
           <div className="story-entry-stat">
             {showAuthor ? (

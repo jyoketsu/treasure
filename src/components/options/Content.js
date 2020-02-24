@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Content.css";
 import { withRouter } from "react-router-dom";
-import { Tabs, Modal } from "antd";
+import { Tabs, Modal, Pagination } from "antd";
 import StoryList from "../story/StoryList";
 import Story from "../story/Story";
 import ArticlePreview from "../story/Article";
@@ -10,9 +10,8 @@ import StoryEdit from "../story/StoryEdit";
 import StroyLink from "../story/Link";
 import { connect } from "react-redux";
 import {
-  getStoryList,
-  readyToRefresh,
-  clearStoryList,
+  getStoryList2,
+  clearStoryList2,
   getStoryDetail,
   clearStoryDetail,
   switchEditLinkVisible,
@@ -24,14 +23,12 @@ const { TabPane } = Tabs;
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
+  user: state.auth.user,
   waiting: state.common.waiting,
   nowStationKey: state.station.nowStationKey,
-  sortType: state.story.sortType,
-  sortOrder: state.story.sortOrder,
-  storyListLength: state.story.storyList.length,
-  storyNumber: state.story.storyNumber,
+  storyList: state.story.storyList2,
+  storyNumber: state.story.storyNumber2,
   storyType: state.story.story.type,
-  nowStoryNumber: state.story.storyList.length,
   story: state.story.story,
   eidtLinkVisible: state.story.eidtLinkVisible
 });
@@ -42,16 +39,16 @@ class Content extends Component {
     this.state = { visible: false, isEdit: false };
     this.curPage = 1;
     this.perPage = 30;
-    this.handleMouseWheel = this.handleMouseWheel.bind(this);
-    this.showMore = this.showMore.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.switchVisible = this.switchVisible.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
     this.confirmPassAll = this.confirmPassAll.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   switchVisible(key) {
-    if (util.common.isMobile()) {
+    const { singleColumn } = this.props;
+    if (util.common.isMobile() || singleColumn) {
       this.setState(prevState => ({
         visible: !prevState.visible,
         isEdit: false
@@ -85,112 +82,84 @@ class Content extends Component {
     }
   }
 
-  // 滚动查看更多故事
-  handleMouseWheel(e) {
-    const {
-      nowStationKey,
-      getStoryList,
-      waiting,
-      nowStoryNumber,
-      storyNumber,
-      sortType,
-      sortOrder
-    } = this.props;
-    if (!this.contentRef) {
-      return;
-    }
-    let top = this.contentRef.scrollTop;
-    if (
-      nowStoryNumber < storyNumber &&
-      !waiting &&
-      top + this.contentRef.clientHeight === this.contentRef.scrollHeight
-    ) {
-      this.curPage++;
-      getStoryList(
-        this.filterType,
-        nowStationKey,
-        null,
-        "allSeries",
-        sortType,
-        sortOrder,
-        "",
-        "",
-        this.curPage,
-        this.perPage
-      );
-    }
-  }
+  onChange = page => {
+    const { paginationCallback, nowStationKey, getStoryList2 } = this.props;
+    this.curPage = page;
 
-  showMore() {
-    const { nowStationKey, getStoryList, sortType, sortOrder } = this.props;
-
-    this.curPage++;
-    getStoryList(
+    getStoryList2(
       this.filterType,
       nowStationKey,
       null,
-      "allSeries",
-      sortType,
-      sortOrder,
-      "",
-      "",
       this.curPage,
       this.perPage
     );
-  }
+
+    if (paginationCallback) {
+      paginationCallback();
+    } else {
+      if (document.body.scrollTop !== 0) {
+        document.body.scrollTop = 0;
+      } else {
+        document.documentElement.scrollTop = 0;
+      }
+    }
+  };
 
   handleTabChange(key) {
-    const {
-      getStoryList,
-      sortType,
-      sortOrder,
-      nowStationKey,
-      clearStoryList
-    } = this.props;
-    clearStoryList();
+    const { user, getStoryList2, nowStationKey, clearStoryList2 } = this.props;
+    clearStoryList2();
     this.curPage = 1;
     switch (key) {
       case "wait":
         this.filterType = 7;
-        getStoryList(
+        getStoryList2(
           this.filterType,
           nowStationKey,
           null,
-          "allSeries",
-          sortType,
-          sortOrder,
-          "",
-          "",
           this.curPage,
           this.perPage
         );
         break;
       case "passed":
         this.filterType = 6;
-        getStoryList(
+        getStoryList2(
           this.filterType,
           nowStationKey,
           null,
-          "allSeries",
-          sortType,
-          sortOrder,
-          "",
-          "",
           this.curPage,
           this.perPage
         );
         break;
       case "unpass":
         this.filterType = 8;
-        getStoryList(
+        getStoryList2(
           this.filterType,
           nowStationKey,
           null,
-          "allSeries",
-          sortType,
-          sortOrder,
+          this.curPage,
+          this.perPage
+        );
+        break;
+      case "wait_all":
+        this.filterType = 10;
+        getStoryList2(this.filterType, "", null, this.curPage, this.perPage);
+        break;
+      case "my":
+        this.filterType = 2;
+        getStoryList2(
+          this.filterType,
           "",
+          user._key,
+          this.curPage,
+          this.perPage
+        );
+        break;
+      case "coop":
+        this.filterType = 9;
+        getStoryList2(
+          this.filterType,
           "",
+          user._key,
           this.curPage,
           this.perPage
         );
@@ -214,7 +183,14 @@ class Content extends Component {
   }
 
   render() {
-    const { storyType, story, eidtLinkVisible } = this.props;
+    const {
+      storyType,
+      story,
+      eidtLinkVisible,
+      storyList,
+      storyNumber,
+      singleColumn
+    } = this.props;
     const { isEdit, visible } = this.state;
     let storyComp;
     switch (storyType) {
@@ -257,40 +233,99 @@ class Content extends Component {
       default:
         break;
     }
+    const containerStyle = singleColumn
+      ? { display: "block", position: "relative", top: 0, left: 0, right: 0 }
+      : {};
+    let showCheck = true;
+    if (this.filterType === 2 || this.filterType === 9) {
+      showCheck = false;
+    }
     return (
-      <div className="content-manage" ref={node => (this.auditRef = node)}>
+      <div
+        className="content-manage"
+        style={containerStyle}
+        ref={node => (this.auditRef = node)}
+      >
         <div
           className="content-manage-grid"
           ref={node => (this.contentRef = node)}
         >
-          <h2>内容管理</h2>
-          <span className="pass-all" onClick={this.confirmPassAll}>
-            全部通过
-          </span>
+          <h2>{singleColumn ? null : "内容管理"}</h2>
           <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
-            <TabPane tab="待审核" key="wait">
-              <StoryList
-                showMore={this.showMore}
-                handleCoverClick={this.switchVisible}
-              />
-            </TabPane>
-            <TabPane tab="已审核" key="passed">
-              <StoryList
-                showMore={this.showMore}
-                handleCoverClick={this.switchVisible}
-              />
-            </TabPane>
-            <TabPane tab="审核不通过" key="unpass">
-              <StoryList
-                showMore={this.showMore}
-                handleCoverClick={this.switchVisible}
-              />
-            </TabPane>
+            {!singleColumn
+              ? [
+                  <TabPane tab="待审核" key="wait">
+                    <span className="pass-all" onClick={this.confirmPassAll}>
+                      全部通过
+                    </span>
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                    />
+                  </TabPane>,
+                  <TabPane tab="已审核" key="passed">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                    />
+                  </TabPane>,
+                  <TabPane tab="审核不通过" key="unpass">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                    />
+                  </TabPane>
+                ]
+              : [
+                  <TabPane tab="我的" key="my">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                      showSiteName={true}
+                    />
+                  </TabPane>,
+                  <TabPane tab="待审核" key="wait_all">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                      showSiteName={true}
+                    />
+                  </TabPane>,
+                  <TabPane tab="协作" key="coop">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                      showSiteName={true}
+                    />
+                  </TabPane>
+                ]}
           </Tabs>
+          <Pagination
+            style={{ margin: "15px 0" }}
+            current={this.curPage}
+            pageSize={this.perPage}
+            total={storyNumber}
+            onChange={this.onChange}
+          />
         </div>
-        {util.common.isMobile() ? null : (
+        {util.common.isMobile() || singleColumn ? null : (
           <div className="content-manage-grid">
-            <CheckArticle handleClickEdit={this.handleClickEdit} />
+            <CheckArticle
+              handleClickEdit={this.handleClickEdit}
+              showCheck={showCheck}
+            />
             {storyComp}
           </div>
         )}
@@ -299,7 +334,10 @@ class Content extends Component {
             <div className="view-story-modal-head">
               <i onClick={this.switchVisible.bind(this, null)}></i>
             </div>
-            <CheckArticle handleClickEdit={this.handleClickEdit} />
+            <CheckArticle
+              handleClickEdit={this.handleClickEdit}
+              showCheck={showCheck}
+            />
             <div className="container">{storyComp}</div>
           </div>
         ) : null}
@@ -309,52 +347,33 @@ class Content extends Component {
   }
 
   componentDidMount() {
-    const {
-      getStoryList,
-      sortType,
-      sortOrder,
-      nowStationKey,
-      readyToRefresh,
-      clearStoryList
-    } = this.props;
-    clearStoryList();
-    readyToRefresh();
+    const { user, getStoryList2, nowStationKey, singleColumn } = this.props;
     if (nowStationKey) {
       this.curPage = 1;
-      this.filterType = 7;
-      getStoryList(
+      if (singleColumn) {
+        this.filterType = 2;
+      } else {
+        this.filterType = 7;
+      }
+      getStoryList2(
         this.filterType,
-        nowStationKey,
-        null,
-        "allSeries",
-        sortType,
-        sortOrder,
-        "",
-        "",
+        singleColumn ? "" : nowStationKey,
+        singleColumn ? user._key : null,
         this.curPage,
         this.perPage
       );
     }
-
-    // 监听滚动，查看更多
-    if (!util.common.isMobile()) {
-      document.body.addEventListener("wheel", this.handleMouseWheel);
-    }
   }
-
   componentWillUnmount() {
-    // 移除滚动事件
-    if (!util.common.isMobile()) {
-      document.body.removeEventListener("wheel", this.handleMouseWheel);
-    }
+    const { clearStoryList2 } = this.props;
+    clearStoryList2();
   }
 }
 
 export default withRouter(
   connect(mapStateToProps, {
-    getStoryList,
-    readyToRefresh,
-    clearStoryList,
+    getStoryList2,
+    clearStoryList2,
     getStoryDetail,
     clearStoryDetail,
     switchEditLinkVisible,

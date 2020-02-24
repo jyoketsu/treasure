@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./HeaderMenu.css";
 import { useHistory } from "react-router-dom";
 import ClickOutside from "./common/ClickOutside";
+import { Input } from "antd";
 import Me from "./User/Me";
 import Message from "./Message";
+import Content from "./options/Content";
 import util from "../services/Util";
 import { HOST_NAME } from "../global";
 import { changeStation } from "../actions/app";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function HeadMenu({ switchMenu }) {
+  const containerEl = useRef(null);
   const [key, setkey] = useState("sites");
   let content = null;
   switch (key) {
     case "sites":
       content = <StationList switchMenu={switchMenu} />;
+      break;
+    case "aritcles":
+      content = (
+        <div style={{ padding: "15px 5px" }}>
+          <Content singleColumn={true} paginationCallback={scrollTop} />
+        </div>
+      );
       break;
     case "messages":
       content = <Message />;
@@ -25,12 +35,19 @@ export default function HeadMenu({ switchMenu }) {
     default:
       break;
   }
+
+  function scrollTop() {
+    containerEl.current.scrollTop = 0;
+  }
+
   return (
     <div className="head-menu">
       <ClickOutside onClickOutside={switchMenu}>
         <Head switchMenu={switchMenu} />
         <Tab selected={key} onClick={setkey} />
-        <div className="head-menu-content">{content}</div>
+        <div className="head-menu-content" ref={containerEl}>
+          {content}
+        </div>
       </ClickOutside>
     </div>
   );
@@ -89,9 +106,12 @@ function Head({ switchMenu }) {
 
 // 站点列表
 function StationList({ switchMenu }) {
+  const { Search } = Input;
   const history = useHistory();
   const dispatch = useDispatch();
   const stationList = useSelector(state => state.station.stationList);
+  const [searchStr, setsearchStr] = useState("");
+
   function getRoleColor(role) {
     let color;
     switch (role) {
@@ -156,32 +176,40 @@ function StationList({ switchMenu }) {
 
   return (
     <div className="menu-station-list">
-      {stationList.map(station => (
-        <div key={station._key}>
-          <i
-            className="menu-station-logo"
-            style={{
-              backgroundImage: `url(${station.logo}?imageView2/2/w/100)`
-            }}
-          ></i>
-          <span
-            className="menu-station-name"
-            onClick={() =>
-              handleStationClick(station._key, station.domain, station.url)
-            }
-          >{`${station.name}`}</span>
-          {station.role && station.role < 5 ? (
+      <Search
+        placeholder="请输入站点名"
+        style={{ margin: "15px 0" }}
+        onSearch={value => setsearchStr(value)}
+        enterButton
+      />
+      {stationList.map(station =>
+        station.name.includes(searchStr) ? (
+          <div key={station._key}>
             <i
-              className="menu-station-role"
+              className="menu-station-logo"
               style={{
-                backgroundColor: getRoleColor(station.role)
+                backgroundImage: `url(${station.logo}?imageView2/2/w/100)`
               }}
-            >
-              {getRoleName(station.role)}
-            </i>
-          ) : null}
-        </div>
-      ))}
+            ></i>
+            <span
+              className="menu-station-name"
+              onClick={() =>
+                handleStationClick(station._key, station.domain, station.url)
+              }
+            >{`${station.name}`}</span>
+            {station.role && station.role < 5 ? (
+              <i
+                className="menu-station-role"
+                style={{
+                  backgroundColor: getRoleColor(station.role)
+                }}
+              >
+                {getRoleName(station.role)}
+              </i>
+            ) : null}
+          </div>
+        ) : null
+      )}
     </div>
   );
 }

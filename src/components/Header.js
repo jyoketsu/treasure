@@ -37,7 +37,9 @@ class Header extends Component {
   switchMenu() {
     const { user, nowStation } = this.props;
     if (user && !user.isGuest) {
-      this.setState(prevState => ({ showMenu: !prevState.showMenu }));
+      this.setState(prevState => {
+        return { showMenu: !prevState.showMenu };
+      });
     } else {
       const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
       const logo = nowStation.logo;

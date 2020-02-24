@@ -16,7 +16,6 @@ import StationOptions from "./components/options/StationOptions";
 import EditArticle from "./components/story/EditArticle";
 import Article from "./components/story/Article";
 import Subscribe from "./components/subscribe/Subscribe";
-import MyArticle from "./components/myArticle/MyArticle";
 import StoryEdit from "./components/story/StoryEdit";
 import Create from "./components/story/Create";
 import NotFound from "./components/NotFound";
@@ -105,7 +104,6 @@ export default function App() {
               <Route path="/:id/article" component={Article}></Route>
               <Route path="/:id/editArticle" component={EditArticle} />
               <Route path="/:id/subscribe" component={Subscribe} />
-              <Route path="/:id/myArticle" component={MyArticle} />
             </div>
           ) : (
             <LoadStation />

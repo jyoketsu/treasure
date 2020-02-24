@@ -10,8 +10,6 @@ import { like } from "../../actions/app";
 const mapStateToProps = state => ({
   userKey: state.auth.user ? state.auth.user._key : "",
   waiting: state.common.waiting,
-  storyList: state.story.storyList,
-  storyNumber: state.story.storyNumber,
   flag: state.common.flag,
   role: state.station.nowStation ? state.station.nowStation.role : null
 });
@@ -27,6 +25,7 @@ class StoryList extends Component {
 
   render() {
     const {
+      hideFoot,
       storyList,
       waiting,
       storyNumber,
@@ -37,7 +36,8 @@ class StoryList extends Component {
       showSetting,
       role,
       showMore,
-      handleCoverClick
+      handleCoverClick,
+      showSiteName
     } = this.props;
     const { columnNum } = this.state;
     const isMobile = util.common.isMobile();
@@ -70,6 +70,7 @@ class StoryList extends Component {
           <StoryEntry
             key={index}
             userKey={userKey}
+            showSiteName={showSiteName}
             story={story}
             like={() => like(story._key)}
             showSetting={showSetting}
@@ -79,6 +80,14 @@ class StoryList extends Component {
         );
       }
     });
+    const foot =
+      storyList.length !== 0 && storyList.length >= storyNumber ? (
+        <div className="story-is-all">已加载全部</div>
+      ) : storyList.length !== 0 ? (
+        <div className="show-more-story" onClick={showMore}>
+          查看更多
+        </div>
+      ) : null;
     return (
       <div className="story-list" ref="container">
         {columnNum &&
@@ -93,13 +102,9 @@ class StoryList extends Component {
           children
         )}
         {waiting && flag !== "auditStory" ? <StoryLoading /> : null}
-        {storyList.length !== 0 && storyList.length >= storyNumber ? (
-          <div className="story-is-all">已加载全部</div>
-        ) : storyList.length !== 0 ? (
-          <div className="show-more-story" onClick={showMore}>
-            查看更多
-          </div>
-        ) : null}
+
+        {!hideFoot ? foot : null}
+
         {!waiting && storyList.length === 0 ? (
           <div className="story-is-all">没有内容</div>
         ) : null}

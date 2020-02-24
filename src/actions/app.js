@@ -310,7 +310,9 @@ export function getLatestVisitors(stationKey, dispatch) {
 
 // story
 export const GET_STORY_LIST = "GET_STORY_LIST";
+export const GET_STORY_LIST_2 = "GET_STORY_LIST_2";
 export const CLEAR_STORY_LIST = "CLEAR_STORY_LIST";
+export const CLEAR_STORY_LIST_2 = "CLEAR_STORY_LIST_2";
 export const SET_STORY_LIST = "SET_STORY_LIST";
 export const ADD_STORY = "ADD_STORY";
 export const MODIFY_STORY = "MODIFY_STORY";
@@ -389,6 +391,38 @@ export function getStoryList(
   }
 }
 
+export function getStoryList2(
+  type,
+  starKey,
+  targetUKey,
+  curPage,
+  perPage,
+  dispatch
+) {
+  let request = api.story.getStoryList(
+    type,
+    starKey,
+    targetUKey,
+    "allSeries",
+    1,
+    1,
+    "",
+    "",
+    curPage,
+    perPage
+  );
+  const dispatchBody = {
+    type: GET_STORY_LIST_2,
+    noLoading: true,
+    payload: request
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
+}
+
 export function setStoryList(storyList, totalNumber, tag, statusTag) {
   return {
     type: SET_STORY_LIST,
@@ -409,6 +443,19 @@ export function clearStoryList(dispatch) {
   } else {
     return { type: CLEAR_STORY_LIST };
   }
+}
+
+export function clearStoryList2(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_STORY_LIST_2 });
+  } else {
+    return { type: CLEAR_STORY_LIST_2 };
+  }
+}
+
+export function passAll(stationKey) {
+  let request = api.story.passAll(stationKey);
+  return { type: PASS_ALL, payload: request };
 }
 
 export function addStory(story, dispatch) {
@@ -494,11 +541,6 @@ export function switchEditLinkVisible(dispatch) {
   } else {
     return { type: SWITCH_EDIT_LINK_VISIBLE };
   }
-}
-
-export function passAll(stationKey) {
-  let request = api.story.passAll(stationKey);
-  return { type: PASS_ALL, payload: request };
 }
 
 export function setStatusTag(key, statusTag) {

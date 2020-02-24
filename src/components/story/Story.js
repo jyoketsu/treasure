@@ -132,17 +132,11 @@ class Story extends Component {
                     className="story-station-channel"
                     onClick={this.handleClickSite}
                   >
-                    {`${nowStation ? nowStation.name : ""} / ${
+                    {`${story ? story.starName : ""} / ${
                       story.series ? story.series.name : ""
                     }`}
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
+                  <div className="story-head-date">
                     {showAuthor
                       ? [
                           <i

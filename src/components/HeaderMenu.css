@@ -7,7 +7,7 @@
   z-index: 999;
   width: 414px;
   height: 100%;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: #f5f5f5;
   box-shadow: 0 0 4px 0 rgba(190, 190, 190, 0.5);
   overflow: auto;
   display: flex;
@@ -131,6 +131,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.menu-head-tab-item:hover {
+  cursor: pointer;
 }
 .menu-head-tab-item > div {
   width: 100%;

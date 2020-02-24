@@ -17,9 +17,3 @@
     min-height: 410px;
     margin-top: 15px;
 }
-
-@media screen and (max-width:768px) {
-    .story-list {
-        padding: 15px 0;
-    }
-}

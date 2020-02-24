@@ -1,6 +1,8 @@
 import {
   GET_STORY_LIST,
+  GET_STORY_LIST_2,
   CLEAR_STORY_LIST,
+  CLEAR_STORY_LIST_2,
   SET_STORY_LIST,
   ADD_STORY,
   MODIFY_STORY,
@@ -36,7 +38,11 @@ const defaultState = {
   eidtLinkVisible: false,
   statusTagStats: [],
   // 乡村版式，显示在首页的频道故事列表
-  homeStories: []
+  homeStories: [],
+
+  // 以下为故事2
+  storyList2: [],
+  storyNumber2: 0
 };
 
 const story = (state = defaultState, action) => {
@@ -77,6 +83,18 @@ const story = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case GET_STORY_LIST_2:
+      if (!action.error) {
+        let storyList = [];
+        storyList = action.payload.result;
+        return {
+          ...state,
+          storyList2: storyList,
+          storyNumber2: action.payload.totalNumber
+        };
+      } else {
+        return state;
+      }
     case SET_STORY_LIST:
       return {
         ...state,
@@ -101,7 +119,12 @@ const story = (state = defaultState, action) => {
         tag: undefined,
         statusTag: undefined
       };
-
+    case CLEAR_STORY_LIST_2:
+      return {
+        ...state,
+        storyNumber2: 0,
+        storyList2: []
+      };
     case ADD_STORY:
       if (!action.error) {
         const addedStory = action.payload.result;
@@ -235,7 +258,7 @@ const story = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          storyList: []
+          storyList2: []
         };
       } else {
         return state;

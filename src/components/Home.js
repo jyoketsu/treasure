@@ -25,6 +25,7 @@ const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   nowStation: state.station.nowStation,
   storyNumber: state.story.storyNumber,
+  storyList: state.story.storyList,
   nowStoryNumber: state.story.storyList.length,
   sortType: state.story.sortType,
   sortOrder: state.story.sortOrder,
@@ -230,6 +231,8 @@ class Home extends Component {
   render() {
     const {
       user,
+      storyList,
+      storyNumber,
       getStoryList,
       storyListLength,
       nowStationKey,
@@ -249,6 +252,8 @@ class Home extends Component {
         <Header />
         {nowStationKey !== "all" ? (
           <Station
+            storyList={storyList}
+            storyNumber={storyNumber}
             showScrollTop={showScrollTop}
             user={user}
             nowStationKey={nowStationKey}
@@ -508,7 +513,9 @@ class Station extends React.Component {
       tag: nowTag,
       statusTag: nowStatusTag,
       handleFilter,
-      showScrollTop
+      showScrollTop,
+      storyList,
+      storyNumber
     } = this.props;
     const { seriesInfo = [], pluginInfo = [] } = content;
     const { isCareStar, showAll } = content;
@@ -692,6 +699,8 @@ class Station extends React.Component {
             </div>
           </div>
           <StoryList
+            storyList={storyList}
+            storyNumber={storyNumber}
             showStyle={nowChannel ? nowChannel.showStyle : 2}
             showSetting={nowChannel ? nowChannel.showSetting : null}
             showMore={showMore}

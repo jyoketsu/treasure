@@ -142,7 +142,7 @@
 }
 
 .story-head-info > div {
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .story-head-other {
@@ -234,6 +234,11 @@
   bottom: 25px;
   right: 15px;
 }
+.story-head-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 @media screen and (max-width: 768px) {
   .story-content {
@@ -251,13 +256,27 @@
 
   .story-head-other > div {
     padding-top: 10px;
+    margin: unset;
   }
   .story-title {
     height: unset;
     overflow: unset;
     white-space: unset;
-    text-align: center;
-    padding: 15px;
+    text-align: left;
     line-height: 40px;
+  }
+  .story-head-title {
+    padding: 15px;
+    align-items: flex-start;
+  }
+  .story-head-info {
+    align-items: flex-start;
+  }
+  .story-head-date {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .story-station-channel{
+    width: 100%;
   }
 }

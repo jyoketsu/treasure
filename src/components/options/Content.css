@@ -26,9 +26,9 @@
 
 .pass-all {
   color: #40a9ff;
-  position: absolute;
+  /* position: absolute;
   top: 15px;
-  right: 15px;
+  right: 15px; */
 }
 
 .pass-all:hover {
@@ -39,7 +39,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
+  width: 640px;
   background-color: #fff;
   z-index: 2;
   display: flex;
@@ -66,6 +66,9 @@
   background-size: cover;
   background-position: center;
 }
+.view-story-modal-head > i:hover {
+  cursor: pointer;
+}
 
 @media screen and (max-width: 768px) {
   .content-manage {
@@ -74,5 +77,11 @@
     top: 0;
     left: 0;
     right: 0;
+  }
+  .content-manage-grid {
+    padding: unset;
+  }
+  .view-story-modal {
+    width: 100%;
   }
 }
