@@ -15,7 +15,7 @@ class MySites extends Component {
             <div
                 className="my-site"
                 style={{
-                    minHeight: `${window.innerHeight - 70 - 56}px`
+                    minHeight: `${window.innerHeight}px`
                 }}
             >
                 <div className="site-station">

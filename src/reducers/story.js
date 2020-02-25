@@ -1,6 +1,7 @@
 import {
   GET_STORY_LIST,
   GET_STORY_LIST_2,
+  GET_SUBSCRIBE_STORY_LIST,
   CLEAR_STORY_LIST,
   CLEAR_STORY_LIST_2,
   SET_STORY_LIST,
@@ -84,6 +85,18 @@ const story = (state = defaultState, action) => {
         return state;
       }
     case GET_STORY_LIST_2:
+      if (!action.error) {
+        let storyList = [];
+        storyList = action.payload.result;
+        return {
+          ...state,
+          storyList2: storyList,
+          storyNumber2: action.payload.totalNumber
+        };
+      } else {
+        return state;
+      }
+    case GET_SUBSCRIBE_STORY_LIST:
       if (!action.error) {
         let storyList = [];
         storyList = action.payload.result;

@@ -33,7 +33,14 @@ class CheckArticle extends Component {
   }
 
   render() {
-    const { auditStory, story, groupKey, showCheck } = this.props;
+    const {
+      auditStory,
+      story,
+      groupKey,
+      showCheck,
+      hideEdit,
+      handleClickEdit
+    } = this.props;
     return (
       <div className="check-button-container">
         {showCheck
@@ -54,8 +61,10 @@ class CheckArticle extends Component {
             ]
           : null}
 
-        {/* {hideEdit ? null : <Button onClick={handleClickEdit}>编辑</Button>} */}
-        <Button type="danger" onClick={this.showDeleteConfirm}>删除</Button>
+        {hideEdit ? null : <Button onClick={handleClickEdit}>编辑</Button>}
+        <Button type="danger" onClick={this.showDeleteConfirm}>
+          删除
+        </Button>
       </div>
     );
   }

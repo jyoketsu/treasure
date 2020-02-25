@@ -29,7 +29,7 @@ class Subscribe extends Component {
         const { match, } = this.props;
         const { currentRouteKey } = this.state;
         return (
-            <div className="app-content subscribe-container">
+            <div className="subscribe-container">
                 <Tab
                     currentKey={currentRouteKey}
                     tabList={[

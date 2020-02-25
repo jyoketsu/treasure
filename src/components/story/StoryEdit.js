@@ -80,7 +80,12 @@ class StoryEdit extends Component {
   }
 
   handleCancel() {
-    this.props.history.goBack();
+    const { finishCallback } = this.props;
+    if (finishCallback) {
+      finishCallback();
+    } else {
+      this.props.history.goBack();
+    }
   }
 
   async handleCommit() {
@@ -485,7 +490,7 @@ class StoryEdit extends Component {
       <div className={`app-content story-edit ${inline ? "inline" : ""}`}>
         <div className="story-edit-head-buttons">
           <Button onClick={this.handleCancel}>取消</Button>
-          {story._key ? (
+          {story._key && !inline ? (
             <Button
               type="danger"
               onClick={this.showDeleteConfirm.bind(this, story._key)}
@@ -508,7 +513,7 @@ class StoryEdit extends Component {
           }}
         >
           <div className="top-right-buttons">
-            {seriesInfo.length ? (
+            {!inline && seriesInfo.length ? (
               <Select
                 style={{ width: 120 }}
                 placeholder="请选择频道"
@@ -530,7 +535,8 @@ class StoryEdit extends Component {
             ) : null}
           </div>
           <div className="left-bottom-buttons">
-            {tag &&
+            {!inline &&
+            tag &&
             (allowPublicTag || (!allowPublicTag && role && role < 4)) ? (
               <Select
                 style={{ width: 120 }}
@@ -556,7 +562,8 @@ class StoryEdit extends Component {
           </div>
           <div className="left-top-buttons">
             {statusTag &&
-            (allowPublicStatus || (!allowPublicStatus && role && role < 4)) ? (
+            ((!inline && allowPublicStatus) ||
+              (!allowPublicStatus && role && role < 4)) ? (
               <Select
                 style={{ width: 120 }}
                 placeholder="请选择状态"
@@ -673,16 +680,11 @@ class StoryEdit extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { nowStation, history, loading, flag, keep } = this.props;
+    const { nowStation, history, loading, finishCallback } = this.props;
     const { story } = this.state;
-    if (!loading && prevProps.loading && !keep) {
-      if (story._key) {
-        if (flag === "deleteStory") {
-          window.location.href = `${window.location.protocol}//${window.location.host}/${nowStation.domain}`;
-        } else {
-          // 返回到首页
-          history.push(`/${nowStation.domain}/home`);
-        }
+    if (!loading && prevProps.loading && story._key) {
+      if (finishCallback) {
+        finishCallback();
       } else {
         // 返回到首页
         history.push(`/${nowStation.domain}/home`);

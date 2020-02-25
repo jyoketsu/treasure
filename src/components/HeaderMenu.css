@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
 }
-.head-menu > div {
+.head-menu {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,6 @@
   align-items: center;
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
   padding: 0 15px;
   overflow: hidden;
   z-index: 1;
@@ -60,6 +59,9 @@
   background-image: url(/image/icon/story/close.svg);
   width: 30px;
   height: 30px;
+}
+.close-head-menu:hover {
+  cursor: pointer;
 }
 
 .head-menu-login {
@@ -139,10 +141,6 @@
   width: 100%;
   height: 35px;
   line-height: 35px;
-  border-right: 1px solid #d9d9d9;
-}
-.menu-head-tab-item:last-child > div {
-  border-right: unset;
 }
 .menu-head-tab-item.selected {
   font-weight: 800;

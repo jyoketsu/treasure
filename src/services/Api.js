@@ -646,6 +646,16 @@ const story = {
       seriesKey: channelKey,
       statusTag: statusTag
     });
+  },
+
+  getSubscribeStories(curPage, perPage) {
+    return requests.get(APIURL + "/album/seriesAlbumDetail", {
+      token: token,
+      seriesKey: "subscribe",
+      articleType: "[6, 9]",
+      curPage: curPage,
+      perPage: perPage
+    });
   }
 };
 

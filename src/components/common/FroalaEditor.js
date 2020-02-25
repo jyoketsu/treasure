@@ -362,7 +362,9 @@ class MyFroalaEditor extends Component {
           ]
         },
         moreMisc: {
-          buttons: ["codeEditor", "alert", "moreStyle"]
+          buttons: inline
+            ? ["codeEditor"]
+            : ["codeEditor", "alert", "moreStyle"]
         }
       },
 
@@ -371,7 +373,7 @@ class MyFroalaEditor extends Component {
         ["bold", "italic", "underline"],
         ["paragraphFormat"],
         ["insertImage", "insertVideo"],
-        ["codeEditor", "alert", "moreStyle"]
+        inline ? ["codeEditor"] : ["codeEditor", "alert", "moreStyle"]
       ]
     };
     return (

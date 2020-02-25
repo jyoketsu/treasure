@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./HeaderMenu.css";
 import { useHistory } from "react-router-dom";
-import ClickOutside from "./common/ClickOutside";
 import { Input } from "antd";
 import Me from "./User/Me";
 import Message from "./Message";
@@ -42,13 +41,11 @@ export default function HeadMenu({ switchMenu }) {
 
   return (
     <div className="head-menu">
-      <ClickOutside onClickOutside={switchMenu}>
-        <Head switchMenu={switchMenu} />
-        <Tab selected={key} onClick={setkey} />
-        <div className="head-menu-content" ref={containerEl}>
-          {content}
-        </div>
-      </ClickOutside>
+      <Head switchMenu={switchMenu} />
+      <Tab selected={key} onClick={setkey} />
+      <div className="head-menu-content" ref={containerEl}>
+        {content}
+      </div>
     </div>
   );
 }
@@ -95,13 +92,31 @@ function Head({ switchMenu }) {
     >
       <div className="head-menu-head-filter"></div>
       <div className="left-section">
-        <span>{nowStation.name}</span>
+        <span style={{ color: "#fff" }}>{nowStation.name}</span>
       </div>
       <div className="right-section">
         <i className="close-head-menu" onClick={() => switchMenu()}></i>
       </div>
     </div>
-  ) : null;
+  ) : (
+    <div
+      className="head-menu-head"
+      style={{ height: "50px", borderBottom: "1px solid #e6e6e6" }}
+    >
+      <div className="left-section">
+        <span>个人中心</span>
+      </div>
+      <div className="right-section">
+        <i
+          className="close-head-menu"
+          style={{
+            backgroundImage: "url(/image/icon/story/close-black.svg)"
+          }}
+          onClick={() => switchMenu()}
+        ></i>
+      </div>
+    </div>
+  );
 }
 
 // 站点列表

@@ -268,7 +268,7 @@ class EditArticle extends Component {
   }
 
   render() {
-    const { seriesInfo, inline } = this.props;
+    const { seriesInfo, inline, hideMenu } = this.props;
     const { story = {}, uptoken } = this.state;
     let channelInfo = {};
     const nowChannelId = story.series
@@ -313,11 +313,12 @@ class EditArticle extends Component {
                 handleClickMoreStyle={this.switchPostVisible}
                 openCodeEditor={this.switchCodeEditor}
                 inline={inline}
+                hideMenu={hideMenu}
               />
             ) : null}
           </div>
           <div className="article-footer">
-            {story._key ? (
+            {story._key && !inline ? (
               <Button
                 type="danger"
                 onClick={this.showDeleteConfirm.bind(this, story._key)}
@@ -445,9 +446,6 @@ class EditArticle extends Component {
 
   async componentDidMount() {
     const { story } = this.props;
-    // if (seriesInfo.length === 0) {
-    //   history.push(`/${window.location.search}`);
-    // }
     // 获取七牛token
     let res = await api.auth.getUptoken(localStorage.getItem("TOKEN"));
     if (res.msg === "OK") {
@@ -469,20 +467,14 @@ class EditArticle extends Component {
       this.scrollDown = false;
       this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
     }
-    const { nowStation, history, loading, flag } = this.props;
+    const { nowStation, history, loading, finishCallback } = this.props;
     const { story } = this.state;
-    const domain = nowStation ? nowStation.domain : "";
-    if (!loading && prevProps.loading) {
-      if (story._key) {
-        if (flag === "deleteStory") {
-          window.location.href = `${window.location.protocol}//${window.location.host}/${domain}`;
-        } else {
-          // 返回到首页
-          history.push(`/${domain}/home`);
-        }
+    if (!loading && prevProps.loading && story._key) {
+      if (finishCallback) {
+        finishCallback();
       } else {
         // 返回到首页
-        history.push(`/${domain}/home`);
+        history.push(`/${nowStation.domain}/home`);
       }
     }
   }

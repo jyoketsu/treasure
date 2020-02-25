@@ -423,6 +423,21 @@ export function getStoryList2(
   }
 }
 
+export const GET_SUBSCRIBE_STORY_LIST = "GET_SUBSCRIBE_STORY_LIST";
+export function getSubscribeStories(curPage, perPage, dispatch) {
+  let request = api.story.getSubscribeStories(curPage, perPage);
+  const dispatchBody = {
+    type: GET_SUBSCRIBE_STORY_LIST,
+    noLoading: true,
+    payload: request
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
+}
+
 export function setStoryList(storyList, totalNumber, tag, statusTag) {
   return {
     type: SET_STORY_LIST,

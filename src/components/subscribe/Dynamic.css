@@ -37,6 +37,10 @@
 .station-dynamic-name {
   font-size: 15px;
   color: #000000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
 }
 
 .station-dynamic-logo:hover,
@@ -52,6 +56,8 @@
 .station-dynamic-header > div {
   display: flex;
   align-items: center;
+  flex: 1;
+  overflow: hidden;
 }
 
 .station-dynamic-logo {
@@ -87,7 +93,7 @@
 .station-dynamic-story > span {
   flex: 1;
   overflow: hidden;
-  white-space: normal;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 

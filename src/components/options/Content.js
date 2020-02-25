@@ -11,6 +11,7 @@ import StroyLink from "../story/Link";
 import { connect } from "react-redux";
 import {
   getStoryList2,
+  getSubscribeStories,
   clearStoryList2,
   getStoryDetail,
   clearStoryDetail,
@@ -106,7 +107,13 @@ class Content extends Component {
   };
 
   handleTabChange(key) {
-    const { user, getStoryList2, nowStationKey, clearStoryList2 } = this.props;
+    const {
+      user,
+      getStoryList2,
+      getSubscribeStories,
+      nowStationKey,
+      clearStoryList2
+    } = this.props;
     clearStoryList2();
     this.curPage = 1;
     switch (key) {
@@ -164,6 +171,10 @@ class Content extends Component {
           this.perPage
         );
         break;
+      case "subscribe":
+        this.filterType = null;
+        getSubscribeStories(this.curPage, this.perPage);
+        break;
       default:
         break;
     }
@@ -196,14 +207,21 @@ class Content extends Component {
     switch (storyType) {
       case 6:
         storyComp = isEdit ? (
-          <StoryEdit keep={true} inline={true} />
+          <StoryEdit
+            inline={true}
+            finishCallback={() => this.setState({ isEdit: false })}
+          />
         ) : (
           <Story readOnly={true} inline={true} />
         );
         break;
       case 9:
         storyComp = isEdit ? (
-          <EditArticle inline={true} />
+          <EditArticle
+            inline={true}
+            hideMenu={true}
+            finishCallback={() => this.setState({ isEdit: false })}
+          />
         ) : (
           <ArticlePreview readOnly={true} hideMenu={true} inline={true} />
         );
@@ -283,6 +301,15 @@ class Content extends Component {
                   </TabPane>
                 ]
               : [
+                  <TabPane tab="订阅" key="subscribe">
+                    <StoryList
+                      storyList={storyList}
+                      storyNumber={storyNumber}
+                      handleCoverClick={this.switchVisible}
+                      hideFoot={true}
+                      showSiteName={true}
+                    />
+                  </TabPane>,
                   <TabPane tab="我的" key="my">
                     <StoryList
                       storyList={storyList}
@@ -334,10 +361,12 @@ class Content extends Component {
             <div className="view-story-modal-head">
               <i onClick={this.switchVisible.bind(this, null)}></i>
             </div>
-            <CheckArticle
-              handleClickEdit={this.handleClickEdit}
-              showCheck={showCheck}
-            />
+            {this.filterType ? (
+              <CheckArticle
+                handleClickEdit={this.handleClickEdit}
+                showCheck={showCheck}
+              />
+            ) : null}
             <div className="container">{storyComp}</div>
           </div>
         ) : null}
@@ -347,21 +376,27 @@ class Content extends Component {
   }
 
   componentDidMount() {
-    const { user, getStoryList2, nowStationKey, singleColumn } = this.props;
+    const {
+      user,
+      getStoryList2,
+      getSubscribeStories,
+      nowStationKey,
+      singleColumn
+    } = this.props;
     if (nowStationKey) {
       this.curPage = 1;
       if (singleColumn) {
-        this.filterType = 2;
+        getSubscribeStories(this.curPage, this.perPage);
       } else {
         this.filterType = 7;
+        getStoryList2(
+          this.filterType,
+          singleColumn ? "" : nowStationKey,
+          singleColumn ? user._key : null,
+          this.curPage,
+          this.perPage
+        );
       }
-      getStoryList2(
-        this.filterType,
-        singleColumn ? "" : nowStationKey,
-        singleColumn ? user._key : null,
-        this.curPage,
-        this.perPage
-      );
     }
   }
   componentWillUnmount() {
@@ -373,6 +408,7 @@ class Content extends Component {
 export default withRouter(
   connect(mapStateToProps, {
     getStoryList2,
+    getSubscribeStories,
     clearStoryList2,
     getStoryDetail,
     clearStoryDetail,

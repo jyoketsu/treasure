@@ -16,16 +16,9 @@
 .station-container {
   display: flex;
   flex-wrap: wrap;
-  padding: 25px 0;
-  margin-bottom: 80px;
 }
 
-.station-foot {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-top: 1px solid #ddd;
+.subscribe-foot {
   height: 80px;
   display: flex;
   justify-content: space-between;

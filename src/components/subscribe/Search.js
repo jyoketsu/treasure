@@ -87,7 +87,7 @@ class SearchStation extends Component {
             <div style={{ margin: "auto" }}>暂无结果</div>
           ) : null}
         </div>
-        <div className="station-foot">
+        <div className="subscribe-foot">
           <Pagination
             current={this.curPage}
             pageSize={this.perPage}
