@@ -333,6 +333,9 @@ export const SET_STATISTICS_STATUS_TAG = "SET_STATISTICS_STATUS_TAG";
 export const SET_CHANNEL_KEY = "SET_CHANNEL_KEY";
 export const GET_HOME_STORIES = "GET_HOME_STORIES";
 export const SET_NOW_TAG = "SET_NOW_TAG";
+export const GET_COMMENT_LIST = "GET_COMMENT_LIST";
+export const POST_COMMENT = "POST_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -604,6 +607,56 @@ export function setNowTag(tag, dispatch) {
     dispatch({ type: SET_NOW_TAG, tag: tag });
   } else {
     return { type: SET_NOW_TAG, tag: tag };
+  }
+}
+
+export function getCommentList(storyKey, type, dispatch) {
+  let request = api.story.getCommentList(storyKey, type);
+  if (dispatch) {
+    dispatch({ type: GET_COMMENT_LIST, payload: request });
+  } else {
+    return { type: GET_COMMENT_LIST, payload: request };
+  }
+}
+
+export function comment(
+  storyKey,
+  type,
+  content,
+  targetCommentKey,
+  targetUkey,
+  targetName,
+  targetContent,
+  targetTime,
+  dispatch
+) {
+  let request = api.story.comment(
+    storyKey,
+    type,
+    content,
+    targetCommentKey,
+    targetUkey,
+    targetName,
+    targetContent,
+    targetTime
+  );
+  if (dispatch) {
+    dispatch({ type: POST_COMMENT, payload: request });
+  } else {
+    return { type: POST_COMMENT, payload: request };
+  }
+}
+
+export function deleteComment(commentKey, dispatch) {
+  let request = api.story.deleteComment(commentKey);
+  if (dispatch) {
+    dispatch({
+      type: DELETE_COMMENT,
+      commentKey: commentKey,
+      payload: request
+    });
+  } else {
+    return { type: DELETE_COMMENT, commentKey: commentKey, payload: request };
   }
 }
 

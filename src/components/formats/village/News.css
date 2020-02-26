@@ -1,17 +1,30 @@
 .village-news-list {
   padding: 0 15px;
+  background: #fff;
 }
 .news-item {
+  height: 100px;
   border-bottom: 1px solid #eeeeee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .news-item:last-child {
-  border-bottom: unset;
+  border: unset;
+}
+.news-item-info {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
 }
 .news-item-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 14px;
+  font-size: 16px;
   color: #24374a;
   height: 35px;
   line-height: 35px;
@@ -27,4 +40,10 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+.news-item-cover {
+  width: 100px;
+  height: 65px;
+  background-size: cover;
+  background-position: center;
 }

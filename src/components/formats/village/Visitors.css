@@ -1,3 +1,23 @@
+.village-visitors {
+  background: #fff;
+}
+.latest-visitor-item {
+  width: 100px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 15px;
+}
 .latest-visitor-item > i:hover {
   cursor: pointer;
+}
+.latest-visitor-item > div {
+  width: 100px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

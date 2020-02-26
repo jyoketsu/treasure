@@ -1,0 +1,27 @@
+.story-comment {
+  border-top: 1px solid #e5e9ef;
+  margin-top: 35px;
+}
+.comment-box {
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+.comment-box > i,
+.story-comment-item > i {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+.story-comment-item {
+  display: flex;
+  margin-bottom: 15px;
+}
+.story-comment-item > div {
+  margin-left: 25px;
+  flex: 1;
+  border-bottom: 1px solid #e5e9ef;
+}

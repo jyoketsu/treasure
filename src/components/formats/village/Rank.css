@@ -1,3 +1,6 @@
+.village-sub-sites {
+  background: #fff;
+}
 .no-sub-site {
   width: 100%;
   color: #8091a0;
@@ -7,12 +10,9 @@
 .sub-site-wrapper {
   display: flex;
   align-items: center;
-  height: 75px;
-  margin: 15px 0;
+  height: 105px;
 }
-.sub-site-wrapper:last-child {
-  margin: 15px 0 0 0;
-}
+
 .village-sub-site-list {
   padding: 0 15px;
 }

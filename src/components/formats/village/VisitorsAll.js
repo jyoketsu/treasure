@@ -3,6 +3,9 @@ import "./VisitorsAll.css";
 import Head from "./Head";
 import { useDispatch, useSelector } from "react-redux";
 import { getLatestVisitors } from "../../../actions/app";
+import moment from "moment";
+import "moment/locale/zh-cn";
+moment.locale("zh-cn");
 
 export default function AllVisitors() {
   const dispatch = useDispatch();
@@ -23,7 +26,7 @@ export default function AllVisitors() {
 
   return (
     <div className="village-all-visitors">
-      <Head />
+      <Head title="最近访问" />
       <div className="village-all-visitor-content">
         {latestVisitors.map((visitor, index) => (
           <User key={index} user={visitor} />
@@ -52,6 +55,13 @@ function User({ user }) {
       <div>
         <span className="all-visitor-item-name" onClick={() => toHomePage()}>
           {user.nickName}
+        </span>
+        <span>
+          {user.updateTime
+            ? moment(user.updateTime)
+                .startOf("hour")
+                .fromNow()
+            : ""}
         </span>
       </div>
     </div>

@@ -101,8 +101,22 @@ class Article extends Component {
                       backgroundImage: `url('${avatar ||
                         "/image/icon/avatar.svg"}')`
                     }}
+                    onClick={() =>
+                      (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                    }
                   ></i>
-                  <div className="story-card-name">{creator.name}</div>
+                  <div
+                    className="story-card-name"
+                    onClick={() =>
+                      (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                    }
+                  >
+                    {`${creator.name || ""}${
+                      story.creator && story.creator.relationDesc
+                        ? `（${story.creator.relationDesc}）`
+                        : ""
+                    }`}
+                  </div>
                   <div className="story-card-time">
                     {util.common.timestamp2DataStr(
                       story.updateTime,

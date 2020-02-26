@@ -65,7 +65,15 @@ function NewsSection({ channel, storyList, onClick }) {
   }
 
   return (
-    <div>
+    <div
+      onClick={
+        channel
+          ? () => {
+              toChannel(channel._key);
+            }
+          : () => {}
+      }
+    >
       {storyList.length ? (
         <div>
           <TitleHead
@@ -75,22 +83,11 @@ function NewsSection({ channel, storyList, onClick }) {
                 : "/image/icon/village/volume-up-outline.svg"
             }
             text={channel ? channel.name : ""}
-            onClick={
-              channel
-                ? () => {
-                    toChannel(channel._key);
-                  }
-                : () => {}
-            }
+            style={{ background: "#fff" }}
           />
           <div className="village-news-list">
             {storyList.map((story, index) => (
-              <NewsItem
-                key={index}
-                news={story}
-                // showContent={index === 0 ? true : false}
-                onClick={onClick}
-              />
+              <NewsItem key={index} news={story} onClick={onClick} />
             ))}
           </div>
         </div>
@@ -99,15 +96,20 @@ function NewsSection({ channel, storyList, onClick }) {
   );
 }
 
-function NewsItem({ news, showContent, onClick }) {
+function NewsItem({ news, onClick }) {
   return (
     <div className="news-item">
-      <div className="news-item-title" onClick={() => onClick(news)}>{`${
-        showContent ? "" : "・"
-      }${news.title}`}</div>
-      {showContent ? (
-        <div className="news-item-content">{news.descript}</div>
-      ) : null}
+      <div className="news-item-info">
+        <span
+          className="news-item-title"
+          onClick={() => onClick(news)}
+        >{`${news.title}`}</span>
+        <span>{`阅读：${news.clickNumber}`}</span>
+      </div>
+      <i
+        className="news-item-cover"
+        style={{ backgroundImage: `url(${news.cover}?imageView2/2/w/200)` }}
+      ></i>
     </div>
   );
 }

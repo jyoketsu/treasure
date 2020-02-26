@@ -4,6 +4,9 @@ import TitleHead from "./TitleHead";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getLatestVisitors } from "../../../actions/app";
+import moment from "moment";
+import "moment/locale/zh-cn";
+moment.locale("zh-cn");
 
 export default function Visitors() {
   const history = useHistory();
@@ -36,17 +39,7 @@ export default function Visitors() {
 
 function User({ user }) {
   return (
-    <div
-      className="latest-visitor-item"
-      style={{
-        width: "100px",
-        height: "100px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexShrink: "0"
-      }}
-    >
+    <div className="latest-visitor-item">
       <i
         style={{
           backgroundImage: `url(${
@@ -65,6 +58,14 @@ function User({ user }) {
           }
         }}
       ></i>
+      <div>{user.nickName || ""}</div>
+      <div>
+        {user.updateTime
+          ? moment(user.updateTime)
+              .startOf("hour")
+              .fromNow()
+          : ""}
+      </div>
     </div>
   );
 }

@@ -9,12 +9,21 @@ export default function AllRank() {
   const dispatch = useDispatch();
   const nowStation = useSelector(state => state.station.nowStation);
   const subStationList = useSelector(state => state.station.subStationList);
+
+  useEffect(() => {
+    if (document.body.scrollTop !== 0) {
+      document.body.scrollTop = 0;
+    } else {
+      document.documentElement.scrollTop = 0;
+    }
+  }, []);
+
   useEffect(() => {
     getSubStationList(nowStation._key, dispatch);
   }, [nowStation, dispatch]);
   return (
     <div className="village-all-rank">
-      <Head />
+      <Head title="友站" />
       <div className="village-all-rank-content">
         {subStationList.map((station, index) => (
           <SubSite key={index} station={station} />

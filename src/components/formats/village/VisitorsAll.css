@@ -23,11 +23,18 @@
 }
 .all-visitor-item > div {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  justify-content: space-around;
   margin-left: 15px;
+  overflow: hidden;
 }
 .all-visitor-item-name {
+  width: 100%;
   font-size: 18px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .all-visitor-item-name:hover {
   cursor: pointer;

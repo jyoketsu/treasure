@@ -22,9 +22,6 @@ import NotFound from "./components/NotFound";
 import PortalHome from "./components/formats/portal/Portal";
 import Village from "./components/formats/village/Village";
 import { HOST_NAME } from "./global";
-import moment from "moment";
-import "moment/locale/zh-cn";
-moment.locale("zh-cn");
 
 export default function App() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);

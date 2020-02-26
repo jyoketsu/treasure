@@ -14,17 +14,13 @@
   right: 0;
   width: 100%;
   height: 45px;
-}
-
-.village-stories-head > div {
-  width: 100%;
-  height: 100%;
+  font-size: 18px;
   background-color: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   display: flex;
   align-items: center;
 }
-.village-stories-head > div > .left-section > i {
+.village-stories-head > .back {
   width: 30px;
   height: 30px;
   margin-right: 5px;
@@ -33,7 +29,7 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-.village-stories-head > div > .left-section > i:hover,
+.village-stories-head > .back:hover,
 .village-stories-banner > div > i:hover {
   cursor: pointer;
 }

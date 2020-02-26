@@ -21,7 +21,10 @@ import {
   SET_STATISTICS_STATUS_TAG,
   SET_CHANNEL_KEY,
   GET_HOME_STORIES,
-  SET_NOW_TAG
+  SET_NOW_TAG,
+  GET_COMMENT_LIST,
+  POST_COMMENT,
+  DELETE_COMMENT
 } from "../actions/app";
 import { message } from "antd";
 
@@ -40,7 +43,8 @@ const defaultState = {
   statusTagStats: [],
   // 乡村版式，显示在首页的频道故事列表
   homeStories: [],
-
+  // 评论
+  commentList: [],
   // 以下为故事2
   storyList2: [],
   storyNumber2: 0
@@ -190,7 +194,8 @@ const story = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          story: action.payload.result
+          story: action.payload.result,
+          commentList: action.payload.result.commentList
         };
       } else {
         return state;
@@ -333,6 +338,40 @@ const story = (state = defaultState, action) => {
         storyList: [],
         tag: action.tag
       };
+    case GET_COMMENT_LIST:
+      if (!action.error) {
+        return {
+          ...state,
+          commentList: []
+        };
+      } else {
+        return state;
+      }
+    case POST_COMMENT:
+      if (!action.error) {
+        return {
+          ...state,
+          commentList: []
+        };
+      } else {
+        return state;
+      }
+    case DELETE_COMMENT:
+      if (!action.error) {
+        let commentList = Object.assign([], state.commentList);
+        for (let i = 0; i < commentList.length; i++) {
+          if (commentList[i]._key === action.commentKey) {
+            commentList.splice(i, 1);
+            break;
+          }
+        }
+        return {
+          ...state,
+          commentList: commentList
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }

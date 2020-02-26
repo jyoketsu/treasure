@@ -648,6 +648,7 @@ const story = {
     });
   },
 
+  // 获取订阅故事列表
   getSubscribeStories(curPage, perPage) {
     return requests.get(APIURL + "/album/seriesAlbumDetail", {
       token: token,
@@ -655,6 +656,48 @@ const story = {
       articleType: "[6, 9]",
       curPage: curPage,
       perPage: perPage
+    });
+  },
+  /**
+   * 获取评论列表
+   * @param {String} storyKey
+   * @param {Number} type 图文：6；文章：9
+   */
+  getCommentList(storyKey, type) {
+    return requests.get(APIURL + "/comment/commentList", {
+      token: token,
+      key: storyKey,
+      type: type
+    });
+  },
+  // 发表评论
+  comment(
+    storyKey,
+    type,
+    content,
+    targetCommentKey,
+    targetUkey,
+    targetName,
+    targetContent,
+    targetTime
+  ) {
+    return requests.post(APIURL + "/comment/comment", {
+      token: token,
+      key: storyKey,
+      type: type,
+      content: content,
+      targetCommentKey: targetCommentKey,
+      targetUkey: targetUkey,
+      targetName: targetName,
+      targetContent: targetContent,
+      targetTime: targetTime
+    });
+  },
+  // 删除评论
+  deleteComment(commentKey) {
+    return requests.delete(APIURL + "/comment/comment", {
+      token: token,
+      key: commentKey
     });
   }
 };

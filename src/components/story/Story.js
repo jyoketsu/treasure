@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Story.css";
 import LoginTip from "../common/LoginTip";
+import Comments from "./Comments";
 import util from "../../services/Util";
 import api from "../../services/Api";
 import moment from "moment";
@@ -146,28 +147,22 @@ class Story extends Component {
                               backgroundImage: `url('${avatar ||
                                 "/image/icon/avatar.svg"}')`
                             }}
+                            onClick={() =>
+                              (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                            }
                           ></i>,
                           <div
                             key="story-card-name"
                             className="story-card-name"
-                            // onClick={async () => {
-                            //   const res = await util.operation.getUserInfoByKey(
-                            //     story.userKey
-                            //   );
-                            //   Modal.info({
-                            //     title: "用户信息",
-                            //     content: (
-                            //       <div>
-                            //         {res.map((item, index) => (
-                            //           <p key={index}>{item}</p>
-                            //         ))}
-                            //       </div>
-                            //     ),
-                            //     onOk() {}
-                            //   });
-                            // }}
+                            onClick={() =>
+                              (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                            }
                           >
-                            {creator.name || creator.mobile}
+                            {`${creator.name || creator.mobile || ""}${
+                              story.creator && story.creator.relationDesc
+                                ? `（${story.creator.relationDesc}）`
+                                : ""
+                            }`}
                           </div>
                         ]
                       : null}
@@ -292,6 +287,7 @@ class Story extends Component {
                 stats={statusTagStats}
               />
             ) : null}
+            <Comments />
           </div>
         ) : null}
         {user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null}

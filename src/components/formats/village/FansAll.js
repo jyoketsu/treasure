@@ -24,7 +24,7 @@ export default function AllFans() {
 
   return (
     <div className="village-all-fans">
-      <Head />
+      <Head title="订阅用户" />
       <div className="village-all-fans-content">
         {userList.map((user, index) => (
           <User key={index} user={user} />
@@ -54,6 +54,7 @@ function User({ user }) {
         <span className="all-fans-item-name" onClick={() => toHomePage()}>
           {user.nickName}
         </span>
+        <span>{`投稿数:${user.albumCount}`}</span>
       </div>
     </div>
   );

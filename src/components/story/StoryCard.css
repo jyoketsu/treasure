@@ -96,6 +96,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.story-card-name:hover {
+  cursor: pointer;
+}
 
 .story-card-time {
   font-weight: normal;

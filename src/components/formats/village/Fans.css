@@ -1,15 +1,26 @@
+.village-fans {
+  background: #fff;
+}
 .village-fans-list {
   display: flex;
   overflow: hidden;
 }
 .village-fans-item {
   width: 100px;
-  height: 150px;
+  height: 130px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-shrink: 0;
+  margin-top: 15px;
+}
+.village-fans-item > div {
+  width: 100px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .village-fans-item > i {
   width: 60px;
