@@ -59,13 +59,7 @@ function User({ user }) {
         }}
       ></i>
       <div>{user.nickName || ""}</div>
-      <div>
-        {user.updateTime
-          ? moment(user.updateTime)
-              .startOf("hour")
-              .fromNow()
-          : ""}
-      </div>
+      <div>{user.updateTime ? moment(user.updateTime).fromNow() : ""}</div>
     </div>
   );
 }

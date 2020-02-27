@@ -19,6 +19,9 @@
   font-size: 18px;
   max-width: 810px;
   margin: auto;
+  display: flex;
+  width: 100%;
+  background: #fff;
 }
 .create-head > div > .left-section,
 .create-head > div > .right-section {

@@ -1,42 +1,48 @@
 .app-content.inline .my-froala-editor {
-    width: unset;
-    box-shadow: unset;
-    background-color: unset;
+  width: unset;
+  box-shadow: unset;
+  background-color: unset;
 }
 
-.article-display>div>h1 {
-    text-align: center;
-    padding: 0.5em;
+.article-display > div > h1 {
+  text-align: center;
+  padding: 0.5em;
 }
 
-.article-display .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-    border: none;
+.article-display .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+  border: none;
 }
 
 .article-show {
-    padding: 5px 5px 25px 5px;
-    width: 100%;
-    /* min-width: 1200px; */
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: column;
+  padding: 5px 5px 25px 5px;
+  width: 100%;
+  /* min-width: 1200px; */
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
 }
 
 .article-show.hide-menu {
-    min-width: unset;
+  min-width: unset;
+}
+.article-comment-wrapper {
+  padding: 0 25px;
 }
 
-@media screen and (max-width:768px) {
-    .article-footer {
-        position: fixed;
-    }
+@media screen and (max-width: 768px) {
+  .article-footer {
+    position: fixed;
+  }
 
-    .article-show {
-        min-width: unset;
-    }
+  .article-show {
+    min-width: unset;
+  }
 
-    .to-edit-story {
-        top: 5px;
-        right: 5px;
-    }
+  .to-edit-story {
+    top: 5px;
+    right: 5px;
+  }
+  .article-comment-wrapper {
+    padding: unset;
+  }
 }

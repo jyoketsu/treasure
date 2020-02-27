@@ -153,9 +153,7 @@ class StationDynamic extends Component {
             <span className="station-dynamic-name">{station.name}</span>
           </div>
           <span className="dynamic-time">
-            {moment(station.albumInfo[0].updateTime)
-              .startOf("hour")
-              .fromNow()}
+            {moment(station.albumInfo[0].updateTime).fromNow()}
           </span>
         </div>
         <div className="station-dynamic-story-list">
@@ -197,7 +195,7 @@ class StationDynamic extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { myStationLatestStory, changeStation }
-)(Dynamic);
+export default connect(mapStateToProps, {
+  myStationLatestStory,
+  changeStation
+})(Dynamic);

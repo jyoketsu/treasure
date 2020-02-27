@@ -1,0 +1,26 @@
+.story-action {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.story-action-like {
+  width: 25px;
+  height: 25px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.story-action-like:hover {
+  cursor: pointer;
+}
+.story-action-number {
+  font-size: 18px;
+  margin-left: 5px;
+}
+@media screen and (max-width: 768px) {
+  .story-action {
+    padding: 0 15px;
+  }
+}

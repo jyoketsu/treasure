@@ -3,6 +3,8 @@ import "./Article.css";
 import LoginTip from "../common/LoginTip";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
+import StoryAction from "./StoryActions";
+import Comments from "./Comments";
 import { connect } from "react-redux";
 import { getStoryDetail } from "../../actions/app";
 import lozad from "lozad";
@@ -145,6 +147,10 @@ class Article extends Component {
             {!loading ? (
               <FroalaEditor previewMode={true} hideMenu={hideMenu} data={str} />
             ) : null}
+          </div>
+          <div className="article-comment-wrapper">
+            <StoryAction />
+            <Comments />
           </div>
         </div>
         {user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null}

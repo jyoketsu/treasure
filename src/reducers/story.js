@@ -24,7 +24,8 @@ import {
   SET_NOW_TAG,
   GET_COMMENT_LIST,
   POST_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  CLEAR_COMMENT_LIST
 } from "../actions/app";
 import { message } from "antd";
 
@@ -226,8 +227,20 @@ const story = (state = defaultState, action) => {
             break;
           }
         }
+
+        let story = Object.assign([], state.story);
+        if (story._key === action.storyKey) {
+          if (story.islike) {
+            story.islike = 0;
+            story.likeNumber = story.likeNumber - 1;
+          } else {
+            story.islike = 1;
+            story.likeNumber = story.likeNumber + 1;
+          }
+        }
         return {
           ...state,
+          story: story,
           storyList: storyList
         };
       } else {
@@ -342,16 +355,38 @@ const story = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          commentList: []
+          commentList: action.payload.result
         };
       } else {
         return state;
       }
+    case CLEAR_COMMENT_LIST:
+      return {
+        ...state,
+        commentList: []
+      };
     case POST_COMMENT:
       if (!action.error) {
+        let commentList = Object.assign([], state.commentList);
+        commentList.unshift({
+          _key: action.payload.result,
+          userKey: null,
+          type: action.storyType,
+          content: action.content,
+          createTime: new Date().getTime(),
+          updateTime: new Date().getTime(),
+          status: 1,
+          albumKey: action.storyKey,
+          targetUkey: action.targetUkey,
+          targetName: action.targetName,
+          targetContent: action.targetContent,
+          targetCommentKey: action.targetCommentKey,
+          etc: null,
+          targetTime: 1582707453864
+        });
         return {
           ...state,
-          commentList: []
+          commentList: commentList
         };
       } else {
         return state;

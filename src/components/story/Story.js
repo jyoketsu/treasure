@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Story.css";
 import LoginTip from "../common/LoginTip";
+import StoryAction from "./StoryActions";
 import Comments from "./Comments";
 import util from "../../services/Util";
 import api from "../../services/Api";
@@ -287,6 +288,7 @@ class Story extends Component {
                 stats={statusTagStats}
               />
             ) : null}
+            <StoryAction />
             <Comments />
           </div>
         ) : null}

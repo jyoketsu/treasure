@@ -336,6 +336,7 @@ export const SET_NOW_TAG = "SET_NOW_TAG";
 export const GET_COMMENT_LIST = "GET_COMMENT_LIST";
 export const POST_COMMENT = "POST_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
+export const CLEAR_COMMENT_LIST = "CLEAR_COMMENT_LIST";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -613,9 +614,17 @@ export function setNowTag(tag, dispatch) {
 export function getCommentList(storyKey, type, dispatch) {
   let request = api.story.getCommentList(storyKey, type);
   if (dispatch) {
-    dispatch({ type: GET_COMMENT_LIST, payload: request });
+    dispatch({ type: GET_COMMENT_LIST, payload: request, noLoading: true });
   } else {
-    return { type: GET_COMMENT_LIST, payload: request };
+    return { type: GET_COMMENT_LIST, payload: request, noLoading: true };
+  }
+}
+
+export function clearCommentList(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_COMMENT_LIST });
+  } else {
+    return { type: CLEAR_COMMENT_LIST };
   }
 }
 
@@ -640,10 +649,23 @@ export function comment(
     targetContent,
     targetTime
   );
+  const dispatchBody = {
+    type: POST_COMMENT,
+    storyKey: storyKey,
+    storyType: type,
+    content: content,
+    targetCommentKey: targetCommentKey,
+    targetUkey: targetUkey,
+    targetName: targetName,
+    targetContent: targetContent,
+    targetTime: targetTime,
+    noLoading: true,
+    payload: request
+  };
   if (dispatch) {
-    dispatch({ type: POST_COMMENT, payload: request });
+    dispatch(dispatchBody);
   } else {
-    return { type: POST_COMMENT, payload: request };
+    return dispatchBody;
   }
 }
 

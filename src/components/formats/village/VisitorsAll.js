@@ -56,13 +56,7 @@ function User({ user }) {
         <span className="all-visitor-item-name" onClick={() => toHomePage()}>
           {user.nickName}
         </span>
-        <span>
-          {user.updateTime
-            ? moment(user.updateTime)
-                .startOf("hour")
-                .fromNow()
-            : ""}
-        </span>
+        <span>{user.updateTime ? moment(user.updateTime).fromNow() : ""}</span>
       </div>
     </div>
   );

@@ -65,15 +65,7 @@ function NewsSection({ channel, storyList, onClick }) {
   }
 
   return (
-    <div
-      onClick={
-        channel
-          ? () => {
-              toChannel(channel._key);
-            }
-          : () => {}
-      }
-    >
+    <div>
       {storyList.length ? (
         <div>
           <TitleHead
@@ -84,6 +76,13 @@ function NewsSection({ channel, storyList, onClick }) {
             }
             text={channel ? channel.name : ""}
             style={{ background: "#fff" }}
+            onClick={
+              channel
+                ? () => {
+                    toChannel(channel._key);
+                  }
+                : () => {}
+            }
           />
           <div className="village-news-list">
             {storyList.map((story, index) => (
