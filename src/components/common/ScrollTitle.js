@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ScrollTitle.css";
 
 export default function ScrollTitle({ titleList, nowTitle, onClick }) {
@@ -7,8 +7,15 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
   const tabsContainerEl = useRef(0);
   const titleWidth = 90;
 
-  function handleClick(index, id) {
-    onClick(id);
+  useEffect(() => {
+    let index;
+    for (let i = 0; i < titleList.length; i++) {
+      const element = titleList[i];
+      if (nowTitle === element.id) {
+        index = i;
+        break;
+      }
+    }
     const tabsWidth = tabsEl.current.clientWidth;
     const containerWidth = tabsContainerEl.current.clientWidth;
     const nowX = index * titleWidth;
@@ -26,7 +33,7 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
         setoffset(0);
       }
     }
-  }
+  }, [nowTitle, titleList]);
 
   return (
     <div className="scroll-title-container" ref={tabsContainerEl}>
@@ -38,7 +45,7 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
         <div
           className={`title-item ${!nowTitle ? "selected" : ""}`}
           style={{ width: titleWidth }}
-          onClick={() => handleClick(0, "")}
+          onClick={() => onClick("")}
         >
           全部
         </div>
@@ -47,7 +54,7 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
             key={index}
             className={`title-item ${nowTitle === item.id ? "selected" : ""}`}
             style={{ width: titleWidth }}
-            onClick={() => handleClick(index + 1, item.id)}
+            onClick={() => onClick(item.id)}
           >
             {item.name}
           </div>

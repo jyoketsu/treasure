@@ -4,6 +4,7 @@ import { Spin } from "antd";
 import ScrollTitle from "../../common/ScrollTitle";
 import Waterfall from "react-waterfall-responsive";
 import { StoryCard } from "../../story/StoryCard";
+import { TagCloud } from "react-tagcloud";
 import util from "../../../services/Util";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -179,7 +180,11 @@ export default function StoryList() {
 
   return (
     <div className="village-story-list">
-      <Head nowChannel={nowChannel} />
+      <Head
+        nowChannel={nowChannel}
+        titleList={tagObjList}
+        onClick={handleClickTag}
+      />
       <ScrollTitle
         titleList={tagObjList}
         nowTitle={tag}
@@ -193,7 +198,6 @@ export default function StoryList() {
         ) : (
           children
         )}
-
         {waiting ? (
           <Loading />
         ) : (
@@ -206,8 +210,21 @@ export default function StoryList() {
   );
 }
 
-function Head({ nowChannel }) {
+function Head({ nowChannel, titleList, onClick }) {
   const history = useHistory();
+  let data = [];
+  
+  if (titleList.length > 4) {
+    for (let index = 0; index < titleList.length; index++) {
+      const element = titleList[index];
+      data.push({
+        id: element.id,
+        value: element.name,
+        count: Math.floor(Math.random() * (40 - 10 + 1) + 10)
+      });
+    }
+  }
+
   return (
     <div
       className="village-stories-banner"
@@ -221,6 +238,17 @@ function Head({ nowChannel }) {
           {nowChannel ? nowChannel.name : ""}
         </span>
       </div>
+      {titleList.length > 4 ? (
+        <div className="tag-cloud-wrapper">
+          <TagCloud
+            minSize={12}
+            maxSize={35}
+            tags={data}
+            className="tag-cloud"
+            onClick={tag => onClick(tag.id)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

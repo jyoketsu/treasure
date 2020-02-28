@@ -82,7 +82,8 @@ class StoryEntry extends Component {
       role,
       showSetting,
       handleCoverClick,
-      showSiteName
+      showSiteName,
+      inline
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
@@ -103,7 +104,7 @@ class StoryEntry extends Component {
       story.type === 6 ? "story" : story.type === 9 ? "article" : null;
     let status = "";
     let statusStyle = {};
-    if (isMyStory && role && role > 2) {
+    if (!inline && isMyStory && role && role > 2) {
       switch (story.pass) {
         case 1:
           status = "待审核";
@@ -179,7 +180,9 @@ class StoryEntry extends Component {
                 alignItems: "center"
               }}
             >
-              {story.type === 15 && (isMyStory || (role && role <= 3)) ? (
+              {!inline &&
+              story.type === 15 &&
+              (isMyStory || (role && role <= 3)) ? (
                 <span
                   className={`card-link ${isMobile}`}
                   onClick={this.handleEditLink}
@@ -188,7 +191,7 @@ class StoryEntry extends Component {
                 </span>
               ) : null}
               {(story.type === 12 || story.type === 15) &&
-              (isMyStory || (role && role <= 3)) ? (
+              ((!inline && isMyStory) || (role && role <= 3)) ? (
                 <span
                   className={`card-link ${isMobile}`}
                   onClick={this.deletePage}

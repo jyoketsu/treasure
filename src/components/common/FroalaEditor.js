@@ -3,6 +3,9 @@ import "./FroalaEditor.css";
 import PropTypes from "prop-types";
 import * as qiniu from "qiniu-js";
 import util from "../../services/Util";
+import StoryAction from "../story/StoryActions";
+import Comments from "../story/Comments";
+import Next from "../story/NextStory";
 // Require Editor JS files.
 import "froala-editor/js/froala_editor.pkgd.min";
 import "froala-editor/js/languages/zh_cn";
@@ -409,6 +412,11 @@ class MyFroalaEditor extends Component {
                 onModelChange={handleChange}
               />
             )}
+          </div>
+          <div className="article-ext-wrapper">
+            <StoryAction />
+            <Comments />
+            {!inline ? <Next /> : null}
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import "./Story.css";
 import LoginTip from "../common/LoginTip";
 import StoryAction from "./StoryActions";
 import Comments from "./Comments";
+import Next from "./NextStory";
 import util from "../../services/Util";
 import api from "../../services/Api";
 import moment from "moment";
@@ -290,6 +291,7 @@ class Story extends Component {
             ) : null}
             <StoryAction />
             <Comments />
+            {!inline ? <Next /> : null}
           </div>
         ) : null}
         {user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null}

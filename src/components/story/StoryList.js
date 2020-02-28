@@ -75,6 +75,7 @@ class StoryList extends Component {
             like={() => like(story._key)}
             showSetting={showSetting}
             role={role}
+            inline={showStyle ? false : true}
             handleCoverClick={handleCoverClick}
           />
         );

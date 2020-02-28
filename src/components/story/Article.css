@@ -14,7 +14,7 @@
 }
 
 .article-show {
-  padding: 5px 5px 25px 5px;
+  padding: 5px 5px 0 5px;
   width: 100%;
   /* min-width: 1200px; */
   background-color: #fafafa;
@@ -24,9 +24,6 @@
 
 .article-show.hide-menu {
   min-width: unset;
-}
-.article-comment-wrapper {
-  padding: 0 25px;
 }
 
 @media screen and (max-width: 768px) {
@@ -41,8 +38,5 @@
   .to-edit-story {
     top: 5px;
     right: 5px;
-  }
-  .article-comment-wrapper {
-    padding: unset;
   }
 }

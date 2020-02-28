@@ -12,11 +12,19 @@
 
 .my-froala-editor.preview {
   width: 816px;
-  min-height: 1173px;
+  /* min-height: 1173px; */
   box-shadow: 0 1px 6px #ccc;
   background-color: #ffffff;
   padding: 1cm 2cm 2cm;
   margin: auto;
+}
+.article-ext-wrapper {
+  width: 816px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  padding-top: 15px;
 }
 
 .my-froala-editor-container .ant-menu {
@@ -78,5 +86,8 @@
     background-color: unset;
     box-shadow: unset;
     padding: 15px;
+  }
+  .article-ext-wrapper {
+    width: 100%;
   }
 }

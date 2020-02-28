@@ -66,6 +66,16 @@
   color: #ffffff;
   margin-left: 15px;
 }
+.tag-cloud-wrapper {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+.tag-cloud .tag-cloud-tag {
+  cursor: pointer;
+}
 
 @media screen and (max-width: 1490px) {
   .village-story-list-container {

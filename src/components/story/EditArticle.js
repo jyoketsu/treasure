@@ -132,9 +132,12 @@ class EditArticle extends Component {
     const {
       user,
       nowStationKey,
+      nowStation,
       addStory,
       modifyStory,
-      seriesInfo
+      seriesInfo,
+      finishCallback,
+      history
     } = this.props;
     const { story } = this.state;
     e.preventDefault();
@@ -209,6 +212,13 @@ class EditArticle extends Component {
         starKey: nowStationKey
       });
       addStory(story);
+    }
+    // 跳转
+    if (finishCallback) {
+      finishCallback();
+    } else {
+      // 返回到首页
+      history.push(`/${nowStation.domain}/home`);
     }
   }
 
@@ -459,24 +469,6 @@ class EditArticle extends Component {
   componentWillUnmount() {
     const { story } = this.props;
     api.story.exitEdit(story._key);
-  }
-
-  async componentDidUpdate(prevProps) {
-    // 如果添加了内容，故事界面向下滚动一点
-    if (this.scrollDown) {
-      this.scrollDown = false;
-      this.eidtStoryRef.scrollTop = this.eidtStoryRef.scrollTop + 100;
-    }
-    const { nowStation, history, loading, finishCallback } = this.props;
-    const { story } = this.state;
-    if (!loading && prevProps.loading && story._key) {
-      if (finishCallback) {
-        finishCallback();
-      } else {
-        // 返回到首页
-        history.push(`/${nowStation.domain}/home`);
-      }
-    }
   }
 }
 

@@ -90,11 +90,14 @@ class StoryEdit extends Component {
 
   async handleCommit() {
     const {
+      history,
       user,
       nowStationKey,
+      nowStation,
       addStory,
       modifyStory,
-      seriesInfo
+      seriesInfo,
+      finishCallback
     } = this.props;
     const { story } = this.state;
 
@@ -160,6 +163,13 @@ class StoryEdit extends Component {
         isSimple: 0
       });
       addStory(story);
+    }
+    // 跳转
+    if (finishCallback) {
+      finishCallback();
+    } else {
+      // 返回到首页
+      history.push(`/${nowStation.domain}/home`);
     }
   }
 
@@ -676,19 +686,6 @@ class StoryEdit extends Component {
           this.selectAddress("");
         }
       );
-    }
-  }
-
-  async componentDidUpdate(prevProps) {
-    const { nowStation, history, loading, finishCallback } = this.props;
-    const { story } = this.state;
-    if (!loading && prevProps.loading && story._key) {
-      if (finishCallback) {
-        finishCallback();
-      } else {
-        // 返回到首页
-        history.push(`/${nowStation.domain}/home`);
-      }
     }
   }
 

@@ -486,9 +486,13 @@ export function addStory(story, dispatch) {
   }
 }
 
-export function getStoryDetail(storyKey) {
+export function getStoryDetail(storyKey, dispatch) {
   let request = api.story.getStoryDetail(storyKey);
-  return { type: GET_STORY_DETAIL, payload: request };
+  if (dispatch) {
+    dispatch({ type: GET_STORY_DETAIL, payload: request });
+  } else {
+    return { type: GET_STORY_DETAIL, payload: request };
+  }
 }
 
 export function clearStoryDetail(dispatch) {
