@@ -84,16 +84,25 @@ class Content extends Component {
   }
 
   onChange = page => {
-    const { paginationCallback, nowStationKey, getStoryList2 } = this.props;
+    const {
+      paginationCallback,
+      nowStationKey,
+      getStoryList2,
+      getSubscribeStories
+    } = this.props;
     this.curPage = page;
 
-    getStoryList2(
-      this.filterType,
-      nowStationKey,
-      null,
-      this.curPage,
-      this.perPage
-    );
+    if (this.filterType) {
+      getStoryList2(
+        this.filterType,
+        nowStationKey,
+        null,
+        this.curPage,
+        this.perPage
+      );
+    } else {
+      getSubscribeStories(this.curPage, this.perPage);
+    }
 
     if (paginationCallback) {
       paginationCallback();
@@ -367,7 +376,7 @@ class Content extends Component {
                 showCheck={showCheck}
               />
             ) : null}
-            <div className="container">{storyComp}</div>
+            {storyComp}
           </div>
         ) : null}
         {eidtLinkVisible ? <StroyLink /> : null}

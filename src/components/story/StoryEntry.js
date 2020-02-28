@@ -152,15 +152,6 @@ class StoryEntry extends Component {
 
     return (
       <div className={`story-entry type-${storyType}`}>
-        <div
-          className="story-entry-cover"
-          style={coverStyle}
-          onClick={
-            handleCoverClick
-              ? handleCoverClick.bind(this, story._key)
-              : this.handleClick.bind(this, story)
-          }
-        ></div>
         <div className="story-entry-info">
           <div
             className="story-entry-title"
@@ -267,6 +258,15 @@ class StoryEntry extends Component {
             </div>
           </div>
         </div>
+        <div
+          className="story-entry-cover"
+          style={coverStyle}
+          onClick={
+            handleCoverClick
+              ? handleCoverClick.bind(this, story._key)
+              : this.handleClick.bind(this, story)
+          }
+        ></div>
       </div>
     );
   }

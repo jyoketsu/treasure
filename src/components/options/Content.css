@@ -41,12 +41,7 @@
   bottom: 0;
   width: 640px;
   background-color: #fff;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
-.view-story-modal > .container {
-  flex: 1;
+  z-index: 999;
   overflow: auto;
 }
 .view-story-modal-head {

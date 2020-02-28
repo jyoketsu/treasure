@@ -12,11 +12,14 @@
 
 .my-froala-editor.preview {
   width: 816px;
-  /* min-height: 1173px; */
   box-shadow: 0 1px 6px #ccc;
   background-color: #ffffff;
   padding: 1cm 2cm 2cm;
   margin: auto;
+}
+.my-froala-editor.inline {
+  width: 100%;
+  padding: 15px;
 }
 .article-ext-wrapper {
   width: 816px;
@@ -25,6 +28,10 @@
   align-items: center;
   margin: auto;
   padding-top: 15px;
+}
+.article-ext-wrapper.inline {
+  width: 100%;
+  padding: 15px;
 }
 
 .my-froala-editor-container .ant-menu {

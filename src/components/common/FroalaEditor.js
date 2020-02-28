@@ -402,7 +402,11 @@ class MyFroalaEditor extends Component {
         ) : null}
 
         <div className="editor-container">
-          <div className={`my-froala-editor ${previewMode ? "preview" : ""}`}>
+          <div
+            className={`my-froala-editor ${previewMode ? "preview" : ""} ${
+              inline ? "inline" : ""
+            }`}
+          >
             {previewMode ? (
               <FroalaEditorView model={data} />
             ) : (
@@ -413,7 +417,7 @@ class MyFroalaEditor extends Component {
               />
             )}
           </div>
-          <div className="article-ext-wrapper">
+          <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
             <StoryAction />
             <Comments />
             {!inline ? <Next /> : null}

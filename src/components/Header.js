@@ -38,6 +38,11 @@ class Header extends Component {
     const { user, nowStation } = this.props;
     if (user && !user.isGuest) {
       this.setState(prevState => {
+        if (!prevState.showMenu) {
+          document.body.style.position = "fixed";
+        } else {
+          document.body.style.position = "";
+        }
         return { showMenu: !prevState.showMenu };
       });
     } else {

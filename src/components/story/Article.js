@@ -143,7 +143,12 @@ class Article extends Component {
             ref={node => (this.editorRef = node)}
           >
             {!loading ? (
-              <FroalaEditor previewMode={true} hideMenu={hideMenu} data={str} />
+              <FroalaEditor
+                previewMode={true}
+                hideMenu={hideMenu}
+                data={str}
+                inline={inline}
+              />
             ) : null}
           </div>
         </div>

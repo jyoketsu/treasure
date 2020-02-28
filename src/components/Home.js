@@ -249,7 +249,7 @@ class Home extends Component {
 
     return (
       <div className="app-content homepage">
-        <Header />
+        {/* <Header /> */}
         {nowStationKey !== "all" ? (
           <Station
             storyList={storyList}
@@ -574,7 +574,9 @@ class Station extends React.Component {
           style={{
             backgroundImage: `url(${content.cover ? content.cover : ""})`
           }}
-        ></div>
+        >
+          <Header />
+        </div>
         <div className="main-content station-home-page">
           <div className="station-plugin-container">
             {content.openFamilyTree ? (

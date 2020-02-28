@@ -40,12 +40,10 @@ export default function HeadMenu({ switchMenu }) {
   }
 
   return (
-    <div className="head-menu">
+    <div className="head-menu" ref={containerEl}>
       <Head switchMenu={switchMenu} />
       <Tab selected={key} onClick={setkey} />
-      <div className="head-menu-content" ref={containerEl}>
-        {content}
-      </div>
+      {content}
     </div>
   );
 }
