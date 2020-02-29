@@ -142,6 +142,10 @@ class EditArticle extends Component {
     const { story } = this.state;
     e.preventDefault();
 
+    if (!story.series._key) {
+      return message.info("请选择投稿主题！");
+    }
+
     let channelInfo = {};
     const nowChannelId = story.series._key;
     for (let i = 0; i < seriesInfo.length; i++) {
@@ -193,10 +197,6 @@ class EditArticle extends Component {
       story.content = story.content.replace(title.htmlStr, "");
     }
 
-    if (!story.series._key) {
-      return message.info("请选择投稿主题！");
-    }
-
     if (typeof story.series === "object") {
       story.series = story.series._key;
     }
@@ -223,7 +223,7 @@ class EditArticle extends Component {
   }
 
   showDeleteConfirm(key) {
-    const { deleteStory } = this.props;
+    const { deleteStory, finishCallback, nowStation, history } = this.props;
     confirm({
       title: "删除",
       content: `确定要删除吗？`,
@@ -232,6 +232,13 @@ class EditArticle extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(key);
+        // 跳转
+        if (finishCallback) {
+          finishCallback();
+        } else {
+          // 返回到首页
+          history.push(`/${nowStation.domain}/home`);
+        }
       }
     });
   }

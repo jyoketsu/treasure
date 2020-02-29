@@ -397,7 +397,7 @@ class StoryEdit extends Component {
   }
 
   showDeleteConfirm(key) {
-    const { deleteStory } = this.props;
+    const { deleteStory, finishCallback, history, nowStation } = this.props;
     confirm({
       title: "删除",
       content: `确定要删除吗？`,
@@ -406,6 +406,13 @@ class StoryEdit extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(key);
+        // 跳转
+        if (finishCallback) {
+          finishCallback();
+        } else {
+          // 返回到首页
+          history.push(`/${nowStation.domain}/home`);
+        }
       }
     });
   }

@@ -417,11 +417,13 @@ class MyFroalaEditor extends Component {
               />
             )}
           </div>
-          <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
-            <StoryAction />
-            <Comments />
-            {!inline ? <Next /> : null}
-          </div>
+          {previewMode ? (
+            <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
+              <StoryAction />
+              <Comments />
+              {!inline ? <Next /> : null}
+            </div>
+          ) : null}
         </div>
       </div>
     );
