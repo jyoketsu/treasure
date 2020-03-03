@@ -571,6 +571,10 @@ const operation = {
 
   // 获取微信分享参数
   getShareInfo(nowStation, nowChannelKey, story) {
+    const ua = window.navigator.userAgent.toLowerCase();
+    // 判断是否是微信浏览器
+    if (ua.indexOf("micromessenger") < 0) return false;
+
     const url = window.location.href;
     // 文章页
     if (
@@ -600,7 +604,9 @@ const operation = {
         url: url,
         title: nowChannel ? nowChannel.name : nowStation.name,
         desc: `${nowStation.name}-${nowChannel ? nowChannel.name : ""}`,
-        imgUrl: nowChannel ? nowChannel.logo : nowStation.logo
+        imgUrl: nowChannel
+          ? nowChannelKey.cover || nowChannel.logo
+          : nowStation.logo
       };
     } else {
       return {
@@ -612,7 +618,7 @@ const operation = {
     }
   },
   // 微信分享
-  async initWechat(url) {
+  async initWechat(url, title, desc, imgUrl) {
     const ua = window.navigator.userAgent.toLowerCase();
     // 判断是否是微信浏览器
     if (ua.indexOf("micromessenger") < 0) return false;
@@ -621,7 +627,7 @@ const operation = {
 
     const signature = await api.wechat.signature(url);
     wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: "wxa273ac80f9f74c3d", // 必填，公众号的唯一标识
       timestamp: parseInt(signature.result.timestamp), // 必填，生成签名的时间戳
       nonceStr: signature.result.nonceStr, // 必填，生成签名的随机串
@@ -632,11 +638,10 @@ const operation = {
     wx.ready(() => {
       //分享给朋友
       wx.onMenuShareAppMessage({
-        title: "测试标题", // 分享标题
-        desc: "测试描述", // 分享描述
+        title: title, // 分享标题
+        desc: desc, // 分享描述
         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl:
-          "https://cdn-icare.qingtime.cn/5ACD088A.jpg?imageView2/2/w/1280/&imageView2/0/format/jpg", // 分享图标
+        imgUrl: imgUrl, // 分享图标
         type: "", // 分享类型,music、video或link，不填默认为link
         dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
         success: function() {

@@ -178,10 +178,25 @@ class Article extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevPros) {
     // lazy loads elements with default selector as '.lozad'
     const observer = lozad();
     observer.observe();
+    const { nowStation, story } = this.props;
+    const prevStoryKey = prevPros.story ? prevPros.story._key : null;
+    // 获取到故事详情后
+    if (prevStoryKey !== story._key) {
+      // 微信分享
+      const shareInfo = util.operation.getShareInfo(nowStation, "", story);
+      if (shareInfo) {
+        util.operation.initWechat(
+          shareInfo.url,
+          shareInfo.title,
+          shareInfo.desc,
+          shareInfo.imgUrl
+        );
+      }
+    }
   }
 }
 

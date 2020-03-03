@@ -28,6 +28,9 @@ export default function Village() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
   const match = useRouteMatch();
   const location = useLocation();
+  const nowStation = useSelector(state => state.station.nowStation);
+  const nowChannelKey = useSelector(state => state.story.nowChannelKey);
+  const story = useSelector(state => state.story.story);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -35,6 +38,25 @@ export default function Village() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (!nowStation) {
+      return;
+    }
+    const shareInfo = util.operation.getShareInfo(
+      nowStation,
+      nowChannelKey,
+      story
+    );
+    if (shareInfo) {
+      util.operation.initWechat(
+        shareInfo.url,
+        shareInfo.title,
+        shareInfo.desc,
+        shareInfo.imgUrl
+      );
+    }
+  }, [nowStation, nowChannelKey, story]);
 
   function handleResize() {
     setMinHeight(window.innerHeight);

@@ -311,6 +311,7 @@ class Story extends Component {
 
   componentDidUpdate(prevPros) {
     const {
+      nowStation,
       story,
       updateExif,
       channelInfo,
@@ -364,6 +365,17 @@ class Story extends Component {
           nowStationKey,
           nowChannelId && nowChannelId === "allSeries" ? "" : nowChannelId,
           nowChannel.statusTag
+        );
+      }
+
+      // 微信分享
+      const shareInfo = util.operation.getShareInfo(nowStation, "", story);
+      if (shareInfo) {
+        util.operation.initWechat(
+          shareInfo.url,
+          shareInfo.title,
+          shareInfo.desc,
+          shareInfo.imgUrl
         );
       }
     }
