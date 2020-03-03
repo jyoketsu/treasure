@@ -234,7 +234,18 @@ class StationBasicInfo extends Component {
 
     this.state = {
       starKey: stationInfo ? stationInfo._key : "",
-      cover: stationInfo ? stationInfo.cover : "",
+      cover: stationInfo
+        ? stationInfo.covers
+          ? stationInfo.covers
+          : stationInfo.cover
+          ? [
+              {
+                url: stationInfo.cover,
+                size: stationInfo.size
+              }
+            ]
+          : []
+        : [],
       logo: stationInfo ? stationInfo.logo : "",
       size: stationInfo ? stationInfo.size : "",
       type: stationInfo ? stationInfo.type : "",
@@ -275,11 +286,29 @@ class StationBasicInfo extends Component {
     this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
     this.uploadConfigImageCallback = this.uploadConfigImageCallback.bind(this);
     this.handleBkTypeChange = this.handleBkTypeChange.bind(this);
+    this.handleRemoveCover = this.handleRemoveCover.bind(this);
   }
 
-  uploadAvatarCallback(imageUrl, columnName) {
-    this.setState({
-      [columnName]: imageUrl[0]
+  async uploadAvatarCallback(imageUrl, columnName) {
+    if (columnName === "cover" && imageUrl && imageUrl[0]) {
+      const size = await util.common.getImageInfo(imageUrl[0]);
+      this.setState(prevState => {
+        let cover = prevState.cover;
+        cover.push({ url: imageUrl[0], size: size });
+        return { cover: cover };
+      });
+    } else {
+      this.setState({
+        [columnName]: imageUrl[0]
+      });
+    }
+  }
+
+  handleRemoveCover(index) {
+    this.setState(prevState => {
+      let cover = prevState.cover;
+      cover.splice(index, 1);
+      return { cover: cover };
     });
   }
 
@@ -332,12 +361,11 @@ class StationBasicInfo extends Component {
 
     this.form.validateFields(async (err, values) => {
       if (!err) {
-        if (!cover) {
+        if (!cover.length) {
           message.info("请上传封面！");
           console.log("请上传封面！");
           return;
         }
-        let size = await util.common.getImageInfo(cover);
         if (starKey) {
           editStation(
             starKey,
@@ -350,7 +378,6 @@ class StationBasicInfo extends Component {
             isMainStar,
             cover,
             logo,
-            size,
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
@@ -367,7 +394,6 @@ class StationBasicInfo extends Component {
             false,
             cover,
             logo,
-            size,
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
@@ -394,11 +420,28 @@ class StationBasicInfo extends Component {
         <label className="ant-form-item-required form-label">
           Banner图：（推荐分辨率：1920*523）
         </label>
-        <UploadStationCover
+        <div className="options-cover-wrapper">
+          {cover.map((item, index) => (
+            <CoverItem
+              key={index}
+              index={index}
+              url={item.url}
+              onClick={this.handleRemoveCover}
+            />
+          ))}
+          {cover.length < 5 ? (
+            <UploadStationCover
+              uploadAvatarCallback={this.uploadAvatarCallback}
+              extParam={"cover"}
+            />
+          ) : null}
+        </div>
+
+        {/* <UploadStationCover
           uploadAvatarCallback={this.uploadAvatarCallback}
           extParam={"cover"}
           coverUrl={cover}
-        />
+        /> */}
         <CustomizedForm
           ref={node => (this.form = node)}
           {...fields}
@@ -425,6 +468,17 @@ class StationBasicInfo extends Component {
       }
     }
   }
+}
+
+function CoverItem({ url, index, onClick }) {
+  return (
+    <div
+      className="site-cover-item"
+      style={{ backgroundImage: `url(${url}?imageView2/2/w/150)` }}
+    >
+      <div onClick={() => onClick(index)}></div>
+    </div>
+  );
 }
 
 export default withRouter(

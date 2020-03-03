@@ -290,7 +290,6 @@ const station = {
     isMainStar,
     cover,
     logo,
-    size,
     inheritedMode,
     showAll,
     style,
@@ -305,9 +304,9 @@ const station = {
       type: type,
       memo: memo,
       isMainStar: isMainStar,
-      cover: cover,
+      covers: cover,
+      cover: cover && cover.length ? cover[0].url : null,
       logo: logo,
-      size: size,
       inheritedMode: inheritedMode,
       showAll: showAll,
       style: style,
@@ -333,7 +332,6 @@ const station = {
     isMainStar,
     cover,
     logo,
-    size,
     inheritedMode,
     showAll,
     style,
@@ -349,9 +347,9 @@ const station = {
       type: type,
       memo: memo,
       isMainStar: isMainStar,
-      cover: cover,
+      covers: cover,
+      cover: cover && cover.length ? cover[0].url : null,
       logo: logo,
-      size: size,
       inheritedMode: inheritedMode,
       showAll: showAll,
       style: style,
@@ -795,12 +793,21 @@ const plugin = {
   }
 };
 
+const wechat = {
+  signature(url) {
+    return requests.post(AUTH_URL + "/account/getShareWXInfo", {
+      url: url
+    });
+  }
+};
+
 export default {
   requests,
   auth,
   station,
   story,
   plugin,
+  wechat,
   setToken: _token => {
     window.localStorage.setItem("TOKEN", _token);
     token = _token;

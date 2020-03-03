@@ -4,7 +4,7 @@ import LoginTip from "./common/LoginTip";
 import StoryList from "./story/StoryList";
 import HomeSubscribe from "./HomeSubscribe";
 import util from "../services/Util";
-import { Modal, Tooltip, message, Input, Select } from "antd";
+import { Modal, Tooltip, message, Input, Select, Carousel } from "antd";
 import { connect } from "react-redux";
 import Header from "./Header";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
@@ -567,15 +567,30 @@ class Station extends React.Component {
       channelList = seriesInfo;
     }
 
+    const covers = content.covers
+      ? content.covers
+      : content.cover
+      ? [{ url: content.cover }]
+      : [];
+
     return (
       <div className="station-home">
-        <div
-          className="station-cover"
-          style={{
-            backgroundImage: `url(${content.cover ? content.cover : ""})`
-          }}
-        >
-          <Header />
+        <div className="station-cover">
+          <Carousel autoplay>
+            {covers.map((cover, index) => (
+              <div key={index}>
+                <div
+                  className="station-cover"
+                  style={{
+                    backgroundImage: `url(${cover.url})`
+                  }}
+                ></div>
+              </div>
+            ))}
+          </Carousel>
+          <div className="station-home-head-wrapper">
+            <Header />
+          </div>
         </div>
         <div className="main-content station-home-page">
           <div className="station-plugin-container">

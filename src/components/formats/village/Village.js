@@ -12,6 +12,7 @@ import Checkin from "./Checkin";
 import AllVisitors from "./VisitorsAll";
 import AllFans from "./FansAll";
 import AllRank from "./RankAll";
+import { Carousel } from "antd";
 import AddButton from "../../AddArticleButton";
 import util from "../../../services/Util";
 import { setChannelKey } from "../../../actions/app";
@@ -93,13 +94,24 @@ function Home() {
 }
 
 function Banner({ nowStation }) {
+  const covers = nowStation.covers
+    ? nowStation.covers
+    : nowStation.cover
+    ? [{ url: nowStation.cover }]
+    : [];
   return (
-    <div
-      className="village-banner"
-      style={{
-        backgroundImage: `url(${nowStation ? nowStation.cover : ""})`
-      }}
-    ></div>
+    <Carousel autoplay>
+      {covers.map((cover, index) => (
+        <div key={index}>
+          <div
+            className="village-banner"
+            style={{
+              backgroundImage: `url(${cover.url})`
+            }}
+          ></div>
+        </div>
+      ))}
+    </Carousel>
   );
 }
 

@@ -51,6 +51,10 @@ class StationOptions extends Component {
     const search = location.search;
     const pathname = location.pathname.split("/")[3];
     const isMobile = util.common.isMobile();
+    const cover =
+      nowStation.covers && nowStation.covers.length
+        ? nowStation.covers[0].url
+        : nowStation.cover;
     return (
       <div className="app-content">
         <Header />
@@ -58,11 +62,7 @@ class StationOptions extends Component {
           className="main-content station-options"
           style={{
             minHeight: minHeight,
-            backgroundImage: `url(${
-              nowStation && nowStation.cover
-                ? nowStation.cover
-                : "/image/background/banner.png"
-            })`
+            backgroundImage: `url(${cover})`
           }}
         >
           <ReactCSSTransitionGroup

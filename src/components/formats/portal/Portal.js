@@ -52,6 +52,12 @@ class Portal extends Component {
       nowStation.config.customBk.two
         ? `url(${nowStation.config.customBk.two.url})`
         : null;
+    // 封面
+    const cover = nowStation.cover
+      ? nowStation.cover
+      : nowStation.covers && nowStation.covers.length
+      ? nowStation.covers[0].url
+      : "";
     return (
       <div
         className="portal-home"
@@ -76,9 +82,7 @@ class Portal extends Component {
         <div
           className="portal-home-body"
           style={{
-            backgroundImage: pathname.split("/")[3]
-              ? "unset"
-              : `url(${nowStation ? nowStation.cover : ""})`
+            backgroundImage: pathname.split("/")[3] ? "unset" : `url(${cover})`
           }}
         >
           <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>

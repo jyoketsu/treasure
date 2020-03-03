@@ -122,6 +122,7 @@ function StationList({ switchMenu }) {
   const { Search } = Input;
   const history = useHistory();
   const dispatch = useDispatch();
+  const nowStation = useSelector(state => state.station.nowStation);
   const stationList = useSelector(state => state.station.stationList);
   const [searchStr, setsearchStr] = useState("");
 
@@ -168,6 +169,9 @@ function StationList({ switchMenu }) {
   }
 
   function handleStationClick(key, domain, url) {
+    if (domain === nowStation.domain) {
+      return;
+    }
     switchMenu();
     const hostName = window.location.hostname;
     // 切换站点

@@ -1,5 +1,6 @@
 .form-label {
   margin-top: 15px;
+  margin-bottom: 5px;
   display: block;
 }
 
@@ -38,4 +39,31 @@
 }
 .config-preview > div:last-child {
   background-image: url(/image/background/sample-child.png);
+}
+.options-cover-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.options-cover-wrapper > div {
+  margin: 5px;
+}
+.site-cover-item {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  background-size: cover;
+  background-position: center;
+}
+.site-cover-item > div {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(/image/icon/story/close.svg);
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.site-cover-item > div:hover {
+  cursor: pointer;
 }

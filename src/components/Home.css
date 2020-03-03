@@ -69,6 +69,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  position: relative;
 }
 
 .station-name {
@@ -322,6 +323,11 @@
   justify-content: space-around;
   align-items: center;
   height: 150px;
+}
+.station-home-head-wrapper{
+  width: 100%;
+  position: absolute;
+  top: 0;
 }
 
 /* --------------------------------媒体查询--------------------------------------------- */

@@ -1,5 +1,6 @@
 import api from "../services/Api";
 import { HOST_NAME } from "../global";
+import wx from "weixin-js-sdk";
 
 const common = {
   timestamp2DataStr(timestap, format) {
@@ -426,7 +427,11 @@ const operation = {
     const stationDomain = window.location.pathname.split("/")[1];
 
     if (user && !nowStationKey && !changed) {
-      if (hostName === HOST_NAME || hostName === "localhost") {
+      if (
+        hostName === HOST_NAME ||
+        hostName === "localhost" ||
+        (hostName !== HOST_NAME && !pathname.includes("/offical/home"))
+      ) {
         // 指定了要显示的微站
         if (stationDomain && stationDomain !== "account") {
           changeStation(null, stationDomain);
@@ -562,6 +567,101 @@ const operation = {
         return result;
       }
     }
+  },
+
+  // 获取微信分享参数
+  getShareInfo(nowStation, nowChannelKey, story) {
+    const url = window.location.href;
+    // 文章页
+    if (
+      story &&
+      (url.includes("/story?key=") || url.includes("/article?key="))
+    ) {
+      return {
+        url: url,
+        title: story.title,
+        desc: story.descript || nowStation.memo || nowStation.name,
+        imgUrl: story.cover || nowStation.logo
+      };
+    } else if (
+      nowChannelKey &&
+      nowChannelKey !== "allSeries" &&
+      url.includes("/home/stories/")
+    ) {
+      // 乡村频道
+      let nowChannel;
+      for (let i = 0; i < nowStation.seriesInfo.length; i++) {
+        if (nowChannelKey === nowStation.seriesInfo[i]._key) {
+          nowChannel = nowStation.seriesInfo[i];
+          break;
+        }
+      }
+      return {
+        url: url,
+        title: nowChannel ? nowChannel.name : nowStation.name,
+        desc: `${nowStation.name}-${nowChannel ? nowChannel.name : ""}`,
+        imgUrl: nowChannel ? nowChannel.logo : nowStation.logo
+      };
+    } else {
+      return {
+        url: url,
+        title: nowStation.name,
+        desc: nowStation.memo || nowStation.name,
+        imgUrl: nowStation.logo
+      };
+    }
+  },
+  // 微信分享
+  async initWechat(url) {
+    const ua = window.navigator.userAgent.toLowerCase();
+    // 判断是否是微信浏览器
+    if (ua.indexOf("micromessenger") < 0) return false;
+    // 最好在在 router 的全局钩子里调用这个方法，每次页面的 URL 发生变化时，都需要重新获取微信分享参数
+    // 如果你的 router 使用的是 hash 形式，应该不用每次都重新获取微信分享参数
+
+    const signature = await api.wechat.signature(url);
+    wx.config({
+      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      appId: "wxa273ac80f9f74c3d", // 必填，公众号的唯一标识
+      timestamp: parseInt(signature.result.timestamp), // 必填，生成签名的时间戳
+      nonceStr: signature.result.nonceStr, // 必填，生成签名的随机串
+      signature: signature.result.signature, // 必填，签名，见附录1
+      jsApiList: ["onMenuShareAppMessage", "onMenuShareTimeline"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    wx.ready(() => {
+      //分享给朋友
+      wx.onMenuShareAppMessage({
+        title: "测试标题", // 分享标题
+        desc: "测试描述", // 分享描述
+        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl:
+          "https://cdn-icare.qingtime.cn/5ACD088A.jpg?imageView2/2/w/1280/&imageView2/0/format/jpg", // 分享图标
+        type: "", // 分享类型,music、video或link，不填默认为link
+        dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
+        success: function() {
+          // 用户确认分享后执行的回调函数
+          console.log("分享成功！");
+        },
+        cancel: function() {
+          // 用户取消分享后执行的回调函数
+          console.log("取消分享！");
+        }
+      });
+
+      //分享到朋友圈
+      wx.onMenuShareTimeline({
+        title: "", // 分享标题
+        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: "", // 分享图标
+        success: function() {
+          // 用户确认分享后执行的回调函数
+        },
+        cancel: function() {
+          // 用户取消分享后执行的回调函数
+        }
+      });
+    });
   }
 };
 

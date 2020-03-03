@@ -21,7 +21,8 @@
     "react-waterfall-responsive": "^2.0.1",
     "react_carousel_comp_xujie": "^1.0.1",
     "redux": "^4.0.4",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "scripts": {
     "start": "react-scripts start",

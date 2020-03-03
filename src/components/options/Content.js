@@ -88,10 +88,11 @@ class Content extends Component {
       paginationCallback,
       nowStationKey,
       getStoryList2,
-      getSubscribeStories
+      getSubscribeStories,
+      clearStoryList2
     } = this.props;
     this.curPage = page;
-
+    clearStoryList2();
     if (this.filterType) {
       getStoryList2(
         this.filterType,
@@ -275,6 +276,7 @@ class Content extends Component {
       >
         <div
           className="content-manage-grid"
+          style={{ padding: singleColumn ? "unset" : "0 15px" }}
           ref={node => (this.contentRef = node)}
         >
           <h2>{singleColumn ? null : "内容管理"}</h2>
@@ -357,7 +359,10 @@ class Content extends Component {
           />
         </div>
         {util.common.isMobile() || singleColumn ? null : (
-          <div className="content-manage-grid">
+          <div
+            className="content-manage-grid"
+            style={{ padding: singleColumn ? "unset" : "0 15px" }}
+          >
             <CheckArticle
               handleClickEdit={this.handleClickEdit}
               showCheck={showCheck}
