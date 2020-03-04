@@ -253,6 +253,29 @@ const auth = {
       token: token,
       key: key
     });
+  },
+  // 批量导入用户
+  importUser(stationKey, targetUserArray) {
+    return requests.post(APIURL + "/starAddressBook", {
+      token: token,
+      starKey: stationKey,
+      targetUserArray
+    });
+  },
+  // 获取导入用户列表
+  getImportedUsers(stationKey) {
+    return requests.post(APIURL + "/starAddressBook/getUserList", {
+      token: token,
+      starKey: stationKey
+    });
+  },
+  // 批次删除导入用户
+  batchDeleteUser(stationKey, batchId) {
+    return requests.post(APIURL + "/starAddressBook/batchDeleteUser", {
+      token: token,
+      starKey: stationKey,
+      batchId: batchId
+    });
   }
 };
 

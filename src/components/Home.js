@@ -325,6 +325,16 @@ class Home extends Component {
       );
       sessionStorage.setItem("home-curpage", 1);
     }
+    // 微信分享
+    const shareInfo = util.operation.getShareInfo(nowStation, null, null);
+    if (shareInfo) {
+      util.operation.initWechat(
+        shareInfo.url,
+        shareInfo.title,
+        shareInfo.desc,
+        shareInfo.imgUrl
+      );
+    }
   }
 
   componentDidUpdate(prevProps) {

@@ -8,6 +8,7 @@
   align-items: center;
   margin-bottom: 15px;
   margin-right: 11px;
+  padding: 5px;
 }
 
 .member-card.clickable:hover {

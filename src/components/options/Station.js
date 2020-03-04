@@ -21,12 +21,15 @@ class Station extends Component {
     return (
       <div className="station">
         <h2>站点定义</h2>
-        <span className="clone-station" onClick={this.handleClone.bind(this)}>
-          克隆当前站
-        </span>
         <Tabs defaultActiveKey="basicInfo">
           <TabPane tab="基本信息" key="basicInfo">
             {nowStation ? <StationBasicInfo stationInfo={nowStation} /> : null}
+            <span
+              className="clone-station"
+              onClick={this.handleClone.bind(this)}
+            >
+              克隆当前站
+            </span>
           </TabPane>
           <TabPane tab="成员" key="group">
             <StationGroup />

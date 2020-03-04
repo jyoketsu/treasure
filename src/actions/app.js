@@ -23,6 +23,9 @@ export const CLEAR_GROUP_MEMBER = "CLEAR_GROUP_MEMBER";
 export const ADD_GROUP_MEMBER = "ADD_GROUP_MEMBER";
 export const SET_MEMBER_ROLE = "SET_MEMBER_ROLE";
 export const REMOVE_GROUP_MEMBER = "REMOVE_GROUP_MEMBER";
+export const IMPORT_USER = "IMPORT_USER";
+export const GET_IMPORTED_USERS = "GET_IMPORTED_USERS";
+export const BATCH_DELETE_USER = "BATCH_DELETE_USER";
 
 export function logout(dispatch) {
   if (dispatch) {
@@ -80,6 +83,20 @@ export function setMemberRole(groupId, targetUKey, role) {
 export function removeMember(groupId, targetUKeyList) {
   let request = api.auth.removeGroupMember(groupId, targetUKeyList);
   return { type: REMOVE_GROUP_MEMBER, targetUKeyList, payload: request };
+}
+
+export function importUser(stationKey, targetUserArray) {
+  let request = api.auth.importUser(stationKey, targetUserArray);
+  return { type: IMPORT_USER, payload: request };
+}
+
+export function getImportedUsers(stationKey) {
+  let request = api.auth.getImportedUsers(stationKey);
+  return { type: GET_IMPORTED_USERS, payload: request };
+}
+export function batchDeleteUser(stationKey, batchId) {
+  let request = api.auth.batchDeleteUser(stationKey, batchId);
+  return { type: BATCH_DELETE_USER, batchId, payload: request };
 }
 
 // station

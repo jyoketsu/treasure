@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import "./Header.css";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Link, withRouter } from "react-router-dom";
+import { Modal, Button } from "antd";
 // import TextMarquee from './common/TextMarquee';
 import util from "../services/Util";
 import TopMenu from "./HeaderMenu";
 import SubscribeMenu from "./HeaderSubscribe";
+import QRCode from "qrcode.react";
 import { connect } from "react-redux";
 import { changeStation } from "../actions/app";
 
@@ -25,7 +27,8 @@ class Header extends Component {
     this.state = {
       logoSize: null,
       showMenu: false,
-      showSubscribe: false
+      showSubscribe: false,
+      showQrCode: false
     };
     this.perPage = 32;
   }
@@ -68,9 +71,18 @@ class Header extends Component {
     this.changed = true;
   }
 
+  downloadQRCode() {
+    const Qr = document.getElementById("qrid");
+    let image = new Image();
+    image.src = Qr.toDataURL("image/png");
+    var a_link = document.getElementById("aId");
+    a_link.href = image.src;
+    a_link.click();
+  }
+
   render() {
     const { location, nowStation, user } = this.props;
-    const { logoSize, showMenu, showSubscribe } = this.state;
+    const { logoSize, showMenu, showSubscribe, showQrCode } = this.state;
     const pathname = location.pathname;
     const stationDomain = nowStation ? nowStation.domain : "";
     const isMobile = util.common.isMobile();
@@ -129,6 +141,10 @@ class Header extends Component {
               onClick={this.switchSubscribe}
             ></li>
           ) : null}
+          <li
+            className={`head-icon qrCode`}
+            onClick={() => this.setState({ showQrCode: true })}
+          ></li>
           {user &&
           !user.isGuest &&
           nowStation &&
@@ -179,6 +195,31 @@ class Header extends Component {
             <SubscribeMenu switchSubscribe={this.switchSubscribe} />
           ) : null}
         </ReactCSSTransitionGroup>
+        <Modal
+          title={nowStation.name}
+          visible={showQrCode}
+          footer={null}
+          onCancel={() => this.setState({ showQrCode: false })}
+        >
+          <div className="qrcode-wrapper">
+            <a download id="aId" href="result.png" style={{ display: "none" }}>
+              test
+            </a>
+            <QRCode
+              id="qrid"
+              value={`https://baoku.qingtime.cn/${nowStation.domain}/home`}
+            />
+            {!util.common.isMobile() ? (
+              <Button
+                type="primary"
+                style={{ margin: "15px" }}
+                onClick={this.downloadQRCode}
+              >
+                下载二维码
+              </Button>
+            ) : null}
+          </div>
+        </Modal>
       </div>
     );
   }

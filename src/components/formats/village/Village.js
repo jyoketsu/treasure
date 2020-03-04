@@ -29,8 +29,6 @@ export default function Village() {
   const match = useRouteMatch();
   const location = useLocation();
   const nowStation = useSelector(state => state.station.nowStation);
-  const nowChannelKey = useSelector(state => state.story.nowChannelKey);
-  const story = useSelector(state => state.story.story);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -43,11 +41,7 @@ export default function Village() {
     if (!nowStation) {
       return;
     }
-    const shareInfo = util.operation.getShareInfo(
-      nowStation,
-      nowChannelKey,
-      story
-    );
+    const shareInfo = util.operation.getShareInfo(nowStation, null, null);
     if (shareInfo) {
       util.operation.initWechat(
         shareInfo.url,
@@ -56,7 +50,7 @@ export default function Village() {
         shareInfo.imgUrl
       );
     }
-  }, [nowStation, nowChannelKey, story]);
+  }, [nowStation]);
 
   function handleResize() {
     setMinHeight(window.innerHeight);

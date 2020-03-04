@@ -104,6 +104,17 @@ class Portal extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.handleResize);
+    const { nowStation } = this.props;
+    // 微信分享
+    const shareInfo = util.operation.getShareInfo(nowStation, null, null);
+    if (shareInfo) {
+      util.operation.initWechat(
+        shareInfo.url,
+        shareInfo.title,
+        shareInfo.desc,
+        shareInfo.imgUrl
+      );
+    }
   }
 
   componentWillUnmount() {

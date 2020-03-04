@@ -32,7 +32,10 @@ import {
   GET_SUB_STATION_LIST,
   ADD_SUB_SITE,
   REMOVE_SUB_SITE,
-  GET_LATEST_VISITOR
+  GET_LATEST_VISITOR,
+  IMPORT_USER,
+  GET_IMPORTED_USERS,
+  BATCH_DELETE_USER
 } from "../actions/app";
 import { message } from "antd";
 
@@ -46,7 +49,8 @@ const defaultState = {
   matchedStationList: [],
   matchedNumber: 0,
   subStationList: [],
-  latestVisitors: []
+  latestVisitors: [],
+  importedUsers: []
 };
 
 const station = (state = defaultState, action) => {
@@ -534,6 +538,43 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           latestVisitors: action.payload.result
+        };
+      } else {
+        return state;
+      }
+    case IMPORT_USER:
+      if (!action.error) {
+        let importedUsers = JSON.parse(JSON.stringify(state.importedUsers));
+        importedUsers = [...importedUsers, ...action.payload.result];
+        return {
+          ...state,
+          importedUsers: importedUsers
+        };
+      } else {
+        return state;
+      }
+    case GET_IMPORTED_USERS:
+      if (!action.error) {
+        return {
+          ...state,
+          importedUsers: action.payload.result
+        };
+      } else {
+        return state;
+      }
+    case BATCH_DELETE_USER:
+      if (!action.error) {
+        let importedUsers = JSON.parse(JSON.stringify(state.importedUsers));
+        let temp = [];
+        for (let index = 0; index < importedUsers.length; index++) {
+          const element = importedUsers[index];
+          if (element.batchId !== action.batchId) {
+            temp.push(element);
+          }
+        }
+        return {
+          ...state,
+          importedUsers: temp
         };
       } else {
         return state;

@@ -1,8 +1,34 @@
+.station-group {
+  position: relative;
+}
 .member-search-result {
+  position: relative;
   margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
 }
 h2 {
   color: rgba(0, 0, 0, 0.65);
+}
+.batch-demo {
+  color: #1890ff;
+  margin-right: 25px;
+}
+.batch-demo:hover {
+  cursor: pointer;
+}
+.add-member-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.batch-import-member > .ant-modal-content > .ant-modal-body {
+  position: relative;
+}
+.batch-import-action{
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.batch-import-button{
+  line-height: 30px;
 }
