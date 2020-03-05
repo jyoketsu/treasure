@@ -17,6 +17,7 @@ import {
   GET_GROUP_MEMBER,
   ADD_GROUP_MEMBER,
   SET_MEMBER_ROLE,
+  SET_MEMBER_INFO,
   SUBSCRIBE_PLUGIN,
   CANCEL_PLUGIN,
   SEARCH_STATION,
@@ -35,7 +36,8 @@ import {
   GET_LATEST_VISITOR,
   IMPORT_USER,
   GET_IMPORTED_USERS,
-  BATCH_DELETE_USER
+  BATCH_DELETE_USER,
+  EDIT_IMPORTED_USER
 } from "../actions/app";
 import { message } from "antd";
 
@@ -270,11 +272,47 @@ const station = (state = defaultState, action) => {
         for (let i = 0; i < userList.length; i++) {
           if (userList[i]._key === action.targetUKey) {
             userList[i].role = action.role;
+            break;
           }
         }
         return {
           ...state,
           userList: userList
+        };
+      } else {
+        return state;
+      }
+    case SET_MEMBER_INFO:
+      if (!action.error) {
+        let userList = JSON.parse(JSON.stringify(state.userList));
+        for (let i = 0; i < userList.length; i++) {
+          if (userList[i]._key === action.targetUKey) {
+            userList[i] = { ...userList[i], ...action.info };
+            break;
+          }
+        }
+        return {
+          ...state,
+          userList: userList
+        };
+      } else {
+        return state;
+      }
+    case EDIT_IMPORTED_USER:
+      if (!action.error) {
+        let importedUsers = JSON.parse(JSON.stringify(state.importedUsers));
+        for (let i = 0; i < importedUsers.length; i++) {
+          if (
+            importedUsers[i].mobileArea === action.mobileArea &&
+            importedUsers[i].mobile === action.mobile
+          ) {
+            importedUsers[i].role = action.role;
+            importedUsers[i].safeCode = action.safeCode;
+          }
+        }
+        return {
+          ...state,
+          importedUsers: importedUsers
         };
       } else {
         return state;

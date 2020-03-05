@@ -7,10 +7,13 @@ import {
   GET_USER_INFO,
   LOGOUT,
   BIND_MOBILE,
-  EDIT_ACCOUNT
+  EDIT_ACCOUNT,
+  SIGN_IN,
+  CLEAR_SIGN_IN
 } from "../actions/app";
 const defaultState = {
-  user: null
+  user: null,
+  siginResult: null
 };
 
 const auth = (state = defaultState, action) => {
@@ -84,6 +87,21 @@ const auth = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case SIGN_IN:
+      if (!action.error) {
+        return {
+          ...state,
+          siginResult: action.payload.result[0]
+        };
+      } else {
+        return state;
+      }
+    case CLEAR_SIGN_IN: {
+      return {
+        ...state,
+        siginResult: null
+      };
+    }
     default:
       return state;
   }

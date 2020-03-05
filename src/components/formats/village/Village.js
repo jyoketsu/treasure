@@ -14,6 +14,7 @@ import AllFans from "./FansAll";
 import AllRank from "./RankAll";
 import { Carousel } from "antd";
 import AddButton from "../../AddArticleButton";
+import Signin from "../../common/Signin";
 import util from "../../../services/Util";
 import { setChannelKey } from "../../../actions/app";
 import {
@@ -116,18 +117,21 @@ function Banner({ nowStation }) {
     ? [{ url: nowStation.cover }]
     : [];
   return (
-    <Carousel autoplay>
-      {covers.map((cover, index) => (
-        <div key={index}>
-          <div
-            className="village-banner"
-            style={{
-              backgroundImage: `url(${cover.url})`
-            }}
-          ></div>
-        </div>
-      ))}
-    </Carousel>
+    <div className="village-banner-wrapper">
+      <Carousel autoplay>
+        {covers.map((cover, index) => (
+          <div key={index}>
+            <div
+              className="village-banner"
+              style={{
+                backgroundImage: `url(${cover.url})`
+              }}
+            ></div>
+          </div>
+        ))}
+      </Carousel>
+      <Signin style={{ position: "absolute", bottom: "15px", right: "5px" }} />
+    </div>
   );
 }
 

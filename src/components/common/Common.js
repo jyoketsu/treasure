@@ -8,9 +8,10 @@ const confirm = Modal.confirm;
 class MemberCard extends Component {
   constructor(props) {
     super(props);
-    this.state = { role: props.role };
+    this.state = { role: props.role, safeCode: props.safeCode };
     this.handleChange = this.handleChange.bind(this);
     this.showConfirm = this.showConfirm.bind(this);
+    this.handleChangeSafeCode = this.handleChangeSafeCode.bind(this);
   }
 
   showConfirm() {
@@ -26,18 +27,55 @@ class MemberCard extends Component {
   }
 
   handleChange(value) {
-    const { userKey, groupKey, setMemberRole } = this.props;
-    if (value === 1) {
-      this.showConfirm();
-      return;
+    const {
+      stationKey,
+      type,
+      mobile,
+      userKey,
+      safeCode,
+      groupKey,
+      setMemberRole,
+      setMemberInfo
+    } = this.props;
+    if (type === "import") {
+      let bango = mobile ? mobile.split(" ") : ["", ""];
+      setMemberInfo(stationKey, bango[0], bango[1], value, safeCode);
+    } else {
+      if (value === 1) {
+        this.showConfirm();
+        return;
+      }
+      setMemberRole(groupKey, userKey, value);
     }
-    setMemberRole(groupKey, userKey, value);
     this.setState({
       role: value
     });
   }
+
+  handleChangeSafeCode(value) {
+    const {
+      stationKey,
+      type,
+      role,
+      mobile,
+      userKey,
+      groupKey,
+      setMemberInfo
+    } = this.props;
+    if (type === "import") {
+      let bango = mobile ? mobile.split(" ") : ["", ""];
+      setMemberInfo(stationKey, bango[0], bango[1], role, value);
+    } else {
+      setMemberInfo(groupKey, userKey, { safeCode: value });
+    }
+    this.setState({
+      safeCode: value
+    });
+  }
+
   render() {
     const {
+      type,
       avatar,
       name,
       mobile,
@@ -47,7 +85,7 @@ class MemberCard extends Component {
       handleDelete,
       count
     } = this.props;
-    const { role } = this.state;
+    const { role, safeCode } = this.state;
     let roleName = "";
     if (disabled) {
       switch (role) {
@@ -75,7 +113,11 @@ class MemberCard extends Component {
         className={`member-card ${handleClick ? "clickable" : ""}`}
         onClick={handleClick}
       >
-        {!disabled && userRole && userRole <= 2 && userRole < role ? (
+        {type !== "import" &&
+        !disabled &&
+        userRole &&
+        userRole <= 2 &&
+        userRole < role ? (
           <i className="deleteMember" onClick={handleDelete}></i>
         ) : null}
         <div className="member-avatar-container">
@@ -96,21 +138,43 @@ class MemberCard extends Component {
           {disabled ? (
             <div>{`${roleName} 投稿数:${count}`}</div>
           ) : (
-            <Select
-              value={role}
-              style={{ width: 120 }}
-              ref={node => (this.select = node)}
-              onChange={this.handleChange}
-              disabled={
-                userRole && userRole <= 2 && userRole < role ? false : true
-              }
-            >
-              <Option value={1}>站长</Option>
-              <Option value={2}>管理员</Option>
-              <Option value={3}>编辑</Option>
-              <Option value={4}>作者</Option>
-              <Option value={5}>成员</Option>
-            </Select>
+            <div className="member-card-select-wrapper">
+              <Select
+                value={role}
+                style={{ width: 80 }}
+                ref={node => (this.select = node)}
+                onChange={this.handleChange}
+                disabled={
+                  userRole && userRole <= 2 && userRole < role ? false : true
+                }
+              >
+                {type === "import" ? (
+                  <Option value={1} disabled>
+                    站长
+                  </Option>
+                ) : (
+                  <Option value={1}>站长</Option>
+                )}
+                <Option value={2}>管理员</Option>
+                <Option value={3}>编辑</Option>
+                <Option value={4}>作者</Option>
+                <Option value={5}>成员</Option>
+              </Select>
+              <Select
+                value={safeCode}
+                style={{ width: 80 }}
+                ref={node => (this.select = node)}
+                onChange={this.handleChangeSafeCode}
+                disabled={
+                  userRole && userRole <= 2 && userRole < role ? false : true
+                }
+              >
+                <Option value={1}>绿码</Option>
+                <Option value={2}>黄码</Option>
+                <Option value={3}>红码</Option>
+                <Option value={4}>黑码</Option>
+              </Select>
+            </div>
           )}
         </div>
       </div>

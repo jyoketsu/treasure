@@ -248,6 +248,14 @@ const auth = {
       role: role
     });
   },
+  setMemberInfo(groupId, targetUKey, info) {
+    return requests.post(APIURL + "/groupmember/setProperty", {
+      token: token,
+      groupKey: groupId,
+      targetUKey: targetUKey,
+      patchData: info
+    });
+  },
   getUserInfoByKey(key) {
     return requests.get(AUTH_URL + "/account/targetUserInfo", {
       token: token,
@@ -275,6 +283,31 @@ const auth = {
       token: token,
       starKey: stationKey,
       batchId: batchId
+    });
+  },
+  // 编辑导入用户
+  editImportedUser(stationKey, mobileArea, mobile, role, safeCode) {
+    return requests.post(APIURL + "/starAddressBook/updateInfo", {
+      token: token,
+      starKey: stationKey,
+      mobileArea: mobileArea,
+      mobile: mobile,
+      patchData: {
+        role: role,
+        safeCode: safeCode
+      }
+    });
+  },
+  // 签到
+  // resultCode
+  // 1 绿码 通过
+  // 2 黄码 审核中
+  // 3 红码 拒绝
+  // 4 黑码 非注册用户，拒绝 自动加入粉丝群
+  signin(stationKey) {
+    return requests.post(APIURL + "/starCheckIn", {
+      token: token,
+      starKey: stationKey
     });
   }
 };

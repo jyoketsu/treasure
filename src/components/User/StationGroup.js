@@ -9,11 +9,13 @@ import {
   groupMember,
   addGroupMember,
   setMemberRole,
+  setMemberInfo,
   transferStation,
   removeMember,
   getImportedUsers,
   importUser,
-  batchDeleteUser
+  batchDeleteUser,
+  editImportedUser
 } from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
@@ -83,7 +85,9 @@ class StationGroup extends Component {
         PID: element["身份证号"],
         depart: element["工作单位"],
         position: element["角色职位"],
-        from: element["籍贯"]
+        from: element["籍贯"],
+        role: element["角色"],
+        safeCode: element["安全码"]
       });
     }
     importUser(nowStation._key, targetUserArray);
@@ -107,17 +111,35 @@ class StationGroup extends Component {
       importedUsers,
       searchUserList,
       addGroupMember,
+      setMemberInfo,
       setMemberRole,
       groupKey,
       nowStation,
-      transferStation
+      transferStation,
+      editImportedUser
     } = this.props;
+
     const {
       importData,
       batchImportVisible,
       batchDeleteVisible,
       seletedBatchId
     } = this.state;
+
+    const roleMap = {
+      1: "站长",
+      2: "管理员",
+      3: "编辑",
+      4: "作者",
+      5: "成员"
+    };
+
+    const codeMap = {
+      1: "绿码",
+      2: "黄码",
+      3: "红码",
+      4: "黑码"
+    };
 
     const columns = [
       {
@@ -154,6 +176,18 @@ class StationGroup extends Component {
         title: "籍贯",
         dataIndex: "籍贯",
         key: "籍贯"
+      },
+      {
+        title: "角色",
+        dataIndex: "角色",
+        key: "角色",
+        render: text => roleMap[text]
+      },
+      {
+        title: "安全码",
+        dataIndex: "安全码",
+        key: "安全码",
+        render: text => codeMap[text]
       }
     ];
 
@@ -215,8 +249,10 @@ class StationGroup extends Component {
               mobile={`${user.mobileArea} ${user.mobile}`}
               name={user.nickName ? user.nickName : ""}
               role={user.role}
+              safeCode={user.safeCode}
               userRole={nowStation.role}
               setMemberRole={setMemberRole}
+              setMemberInfo={setMemberInfo}
               transferStation={transferStation}
               handleDelete={this.showDeleteConfirm.bind(
                 this,
@@ -239,18 +275,16 @@ class StationGroup extends Component {
           {importedUsers.map((user, index) => (
             <MemberCard
               key={index}
+              stationKey={nowStation._key}
+              type={"import"}
               nowStationKey={nowStation._key}
               mobile={`${user.mobileArea} ${user.mobile}`}
               name={user.name}
+              role={user.role}
+              safeCode={user.safeCode}
               userRole={nowStation.role}
-              setMemberRole={setMemberRole}
-              transferStation={transferStation}
               batchId={user.batchId}
-              handleDelete={this.showDeleteConfirm.bind(
-                this,
-                user.userId,
-                user.nickName ? user.nickName : ""
-              )}
+              setMemberInfo={editImportedUser}
             />
           ))}
         </div>
@@ -258,7 +292,7 @@ class StationGroup extends Component {
           className="batch-import-member"
           title="人员批量导入"
           visible={batchImportVisible}
-          width={960}
+          width={1100}
           okText="导入"
           cancelText="取消"
           onOk={this.importUser}
@@ -317,9 +351,11 @@ export default connect(mapStateToProps, {
   groupMember,
   addGroupMember,
   setMemberRole,
+  setMemberInfo,
   transferStation,
   removeMember,
   getImportedUsers,
   importUser,
-  batchDeleteUser
+  batchDeleteUser,
+  editImportedUser,
 })(StationGroup);

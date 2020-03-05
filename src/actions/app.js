@@ -22,10 +22,14 @@ export const GET_GROUP_MEMBER = "GET_GROUP_MEMBER";
 export const CLEAR_GROUP_MEMBER = "CLEAR_GROUP_MEMBER";
 export const ADD_GROUP_MEMBER = "ADD_GROUP_MEMBER";
 export const SET_MEMBER_ROLE = "SET_MEMBER_ROLE";
+export const SET_MEMBER_INFO = "SET_MEMBER_INFO";
 export const REMOVE_GROUP_MEMBER = "REMOVE_GROUP_MEMBER";
 export const IMPORT_USER = "IMPORT_USER";
 export const GET_IMPORTED_USERS = "GET_IMPORTED_USERS";
 export const BATCH_DELETE_USER = "BATCH_DELETE_USER";
+export const SIGN_IN = "SIGN_IN";
+export const CLEAR_SIGN_IN = "CLEAR_SIGN_IN";
+export const EDIT_IMPORTED_USER = "EDIT_IMPORTED_USER";
 
 export function logout(dispatch) {
   if (dispatch) {
@@ -80,6 +84,11 @@ export function setMemberRole(groupId, targetUKey, role) {
   return { type: SET_MEMBER_ROLE, targetUKey, role, payload: request };
 }
 
+export function setMemberInfo(groupId, targetUKey, info) {
+  let request = api.auth.setMemberInfo(groupId, targetUKey, info);
+  return { type: SET_MEMBER_INFO, targetUKey, info, payload: request };
+}
+
 export function removeMember(groupId, targetUKeyList) {
   let request = api.auth.removeGroupMember(groupId, targetUKeyList);
   return { type: REMOVE_GROUP_MEMBER, targetUKeyList, payload: request };
@@ -97,6 +106,44 @@ export function getImportedUsers(stationKey) {
 export function batchDeleteUser(stationKey, batchId) {
   let request = api.auth.batchDeleteUser(stationKey, batchId);
   return { type: BATCH_DELETE_USER, batchId, payload: request };
+}
+export function editImportedUser(
+  stationKey,
+  mobileArea,
+  mobile,
+  role,
+  safeCode
+) {
+  let request = api.auth.editImportedUser(
+    stationKey,
+    mobileArea,
+    mobile,
+    role,
+    safeCode
+  );
+  return {
+    type: EDIT_IMPORTED_USER,
+    role: role,
+    mobileArea: mobileArea,
+    mobile: mobile,
+    safeCode: safeCode,
+    payload: request
+  };
+}
+export function signIn(stationKey, dispatch) {
+  let request = api.auth.signin(stationKey);
+  if (dispatch) {
+    dispatch({ type: SIGN_IN, payload: request });
+  } else {
+    return { type: SIGN_IN, payload: request };
+  }
+}
+export function clearSignin(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_SIGN_IN });
+  } else {
+    return { type: CLEAR_SIGN_IN };
+  }
 }
 
 // station

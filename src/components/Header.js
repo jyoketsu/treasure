@@ -207,7 +207,7 @@ class Header extends Component {
             </a>
             <QRCode
               id="qrid"
-              value={`https://baoku.qingtime.cn/${nowStation.domain}/home`}
+              value={`https://baoku.qingtime.cn/${nowStation.domain}/home?signin=${nowStation._key}`}
             />
             {!util.common.isMobile() ? (
               <Button
