@@ -430,7 +430,9 @@ const operation = {
       if (
         hostName === HOST_NAME ||
         hostName === "localhost" ||
-        (hostName !== HOST_NAME && !pathname.includes("/offical/home"))
+        (hostName !== HOST_NAME &&
+          pathname !== "/" &&
+          !pathname.includes("/offical/home"))
       ) {
         // 指定了要显示的微站
         if (stationDomain && stationDomain !== "account") {
@@ -467,13 +469,18 @@ const operation = {
         const res = await api.station.getStationName(hostName);
         if (res.msg === "OK") {
           const prevDomain = res.name;
-          if (pathname && search) {
+
+          const ua = window.navigator.userAgent.toLowerCase();
+          // 不是微信浏览器
+          if (ua.indexOf("micromessenger") < 0) {
+            if (pathname && search) {
+            } else {
+              history.push("/offical/home");
+            }
+            changeStation(null, prevDomain);
           } else {
-            history.push("/offical/home");
+            window.location.href = `https://baoku.qingtime.cn/${prevDomain}/home`;
           }
-          changeStation(null, prevDomain);
-        } else {
-          // window.location.replace("https://www.qingtime.cn/");
         }
       }
     }
