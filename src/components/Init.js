@@ -69,7 +69,7 @@ class Init extends Component {
 
     let token = window.localStorage.getItem("TOKEN");
     // 获取用户信息
-    if (!user) {
+    if (!user && !window.location.pathname.includes("/account")) {
       getUserInfo(token);
     }
   }
