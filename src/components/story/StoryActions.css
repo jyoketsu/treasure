@@ -5,6 +5,13 @@
   justify-content: flex-end;
   align-items: center;
 }
+.story-action-like-wrapper {
+  width: 55px;
+  height: 45px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .story-action-like {
   width: 25px;
   height: 25px;

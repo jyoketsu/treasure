@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Comments.css";
-import { Input, Button } from "antd";
+import { Input, Button, message, Modal } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { comment, getCommentList, clearCommentList } from "../../actions/app";
+import {
+  comment,
+  getCommentList,
+  clearCommentList,
+  deleteComment
+} from "../../actions/app";
 // import util from "../../services/Util";
 import ClickOutside from "../common/ClickOutside";
 import moment from "moment";
 import "moment/locale/zh-cn";
+const { confirm } = Modal;
 moment.locale("zh-cn");
 
 export default function Comments() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    return () => {
-      clearCommentList(dispatch);
-    };
-  }, [dispatch]);
-
   return (
     <div className="story-comment">
       <div style={{ fontSize: "18px", lineHeight: "30px" }}>评论：</div>
@@ -72,6 +71,9 @@ function PostBox({ targetComment, autoFocus }) {
         type="primary"
         size="large"
         onClick={() => {
+          if (!reply || !reply.trim()) {
+            return message.info("评论不能为空！");
+          }
           comment(
             story._key,
             story.type,
@@ -98,6 +100,14 @@ function PostBox({ targetComment, autoFocus }) {
 
 function List() {
   const commentList = useSelector(state => state.story.commentList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      clearCommentList(dispatch);
+    };
+  }, [dispatch]);
+
   return (
     <div className="story-comment-list">
       {commentList.map((comment, index) => (
@@ -108,6 +118,7 @@ function List() {
 }
 
 function Comment({ comment }) {
+  const dispatch = useDispatch();
   const [visible, setvisible] = useState(false);
   const user = useSelector(state => state.auth.user);
   const avatar = comment.etc
@@ -124,6 +135,20 @@ function Comment({ comment }) {
   function handleClickReply() {
     setvisible(true);
   }
+
+  function showDeleteConfirm(commentKey, content) {
+    confirm({
+      title: "确定要删除该评论吗?",
+      content: content,
+      okText: "删除",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        deleteComment(commentKey, dispatch);
+      }
+    });
+  }
+
   return (
     <ClickOutside onClickOutside={() => setvisible(false)}>
       <div className="story-comment-item">
@@ -148,9 +173,18 @@ function Comment({ comment }) {
           </span>
           <div className="comment-info">
             <span>{moment(comment.updateTime).fromNow()}</span>
-            <span className="replay-comment" onClick={handleClickReply}>
-              回复
-            </span>
+            {user._key === comment.userKey ? (
+              <span
+                className="replay-comment"
+                onClick={() => showDeleteConfirm(comment._key, comment.content)}
+              >
+                删除
+              </span>
+            ) : (
+              <span className="replay-comment" onClick={handleClickReply}>
+                回复
+              </span>
+            )}
           </div>
           {visible ? (
             <PostBox targetComment={comment} autoFocus={true} />

@@ -94,7 +94,7 @@
     flex: unset;
   }
   .comment-box > button {
-    width: 100%;
+    width: 100px;
     height: 45px;
   }
   .story-comment {

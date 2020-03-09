@@ -749,7 +749,7 @@ const story = {
   },
   // 删除评论
   deleteComment(commentKey) {
-    return requests.delete(APIURL + "/comment/comment", {
+    return requests.delete(APIURL + "/comment", {
       token: token,
       key: commentKey
     });

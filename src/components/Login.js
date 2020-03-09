@@ -11,6 +11,7 @@ export default function Login() {
   const user = useSelector(state => state.auth.user);
   const token = util.common.getQueryString("token");
   const domain = localStorage.getItem("DOMAIN") || "sgkj";
+  const redirect_uri = localStorage.getItem("REDIRECT_URI");
 
   // 根据token获取用户信息
   useEffect(() => {
@@ -22,8 +23,9 @@ export default function Login() {
   // 登录成功，跳转到首页
   useEffect(() => {
     if (user && user._key && !user.isGuest) {
-      history.push(`/${domain}/home`);
+      history.push(redirect_uri ? redirect_uri : `/${domain}/home`);
+      localStorage.removeItem("REDIRECT_URI");
     }
-  }, [user, domain, history]);
+  }, [user, domain, redirect_uri, history]);
   return <div className="login"></div>;
 }

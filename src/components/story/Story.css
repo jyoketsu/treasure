@@ -227,8 +227,8 @@
 
 .preview-status {
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 35px;
+  right: 15px;
   display: block;
   min-width: 50px;
   height: 30px;

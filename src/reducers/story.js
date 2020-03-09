@@ -393,7 +393,7 @@ const story = (state = defaultState, action) => {
       }
     case DELETE_COMMENT:
       if (!action.error) {
-        let commentList = Object.assign([], state.commentList);
+        let commentList = JSON.parse(JSON.stringify(state.commentList));
         for (let i = 0; i < commentList.length; i++) {
           if (commentList[i]._key === action.commentKey) {
             commentList.splice(i, 1);

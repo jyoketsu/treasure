@@ -7,12 +7,10 @@ import Next from "./NextStory";
 import util from "../../services/Util";
 import api from "../../services/Api";
 import moment from "moment";
-import { Radio } from "antd";
 import { connect } from "react-redux";
 import {
   getStoryDetail,
   updateExif,
-  setStatusTag,
   statisticsStatusTag
 } from "../../actions/app";
 
@@ -25,8 +23,7 @@ const mapStateToProps = state => ({
   channelInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
-  loading: state.common.loading,
-  statusTagStats: state.story.statusTagStats
+  loading: state.common.loading
 });
 
 class Story extends Component {
@@ -74,9 +71,7 @@ class Story extends Component {
       readOnly,
       inline,
       loading,
-      channelInfo,
-      setStatusTag,
-      statusTagStats
+      channelInfo
     } = this.props;
     const {
       userKey,
@@ -104,7 +99,7 @@ class Story extends Component {
       }
     }
 
-    const { statusTag, allowPublicStatus, showSetting } = nowChannel;
+    const { showSetting } = nowChannel;
     const showAuthor = showSetting
       ? showSetting.indexOf("author") === -1
         ? false
@@ -278,17 +273,6 @@ class Story extends Component {
                   );
                 })
               : null}
-            {!inline &&
-            statusTag &&
-            (allowPublicStatus || (!allowPublicStatus && role && role < 4)) ? (
-              <StatusTagRadio
-                storyKey={story._key}
-                statusTag={statusTag}
-                status={story.statusTag}
-                setStatusTag={setStatusTag}
-                stats={statusTagStats}
-              />
-            ) : null}
             <StoryAction />
             <Comments />
             {!inline ? <Next /> : null}
@@ -385,45 +369,5 @@ class Story extends Component {
 export default connect(mapStateToProps, {
   getStoryDetail,
   updateExif,
-  setStatusTag,
   statisticsStatusTag
 })(Story);
-
-class StatusTagRadio extends Component {
-  render() {
-    const { statusTag, status, setStatusTag, storyKey, stats } = this.props;
-    const radioStyle = {
-      display: "block",
-      height: "30px",
-      lineHeight: "30px"
-    };
-    return (
-      <div className="status-tag-radio">
-        <Radio.Group
-          value={status}
-          onChange={e => setStatusTag(storyKey, e.target.value)}
-        >
-          <Radio style={radioStyle} value="">
-            无
-          </Radio>
-          {statusTag.split(" ").map((item, index) => (
-            <Radio key={index} style={radioStyle} value={item}>
-              {this.getStats(item, stats)
-                ? `${item}（${this.getStats(item, stats)}）`
-                : item}
-            </Radio>
-          ))}
-        </Radio.Group>
-      </div>
-    );
-  }
-
-  getStats(tag, stats) {
-    for (let i = 0; i < stats.length; i++) {
-      const nowStats = stats[i];
-      if (nowStats.statusTag === tag) {
-        return nowStats.length;
-      }
-    }
-  }
-}

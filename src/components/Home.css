@@ -92,6 +92,16 @@
 
 .operation-panel {
   position: fixed;
+  bottom: 120px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 2;
+}
+.operation-panel-wrapper{
+  position: fixed;
   bottom: 65px;
   right: 20px;
   display: flex;
@@ -168,7 +178,7 @@
 
 .add-story,
 .add-story-multi {
-  background-color: #4a90e2;
+  background-color: #1890ff;
 }
 
 .add-story > i,
@@ -243,7 +253,7 @@
 }
 
 .channel-item {
-  width: 80px;
+  width: 100px;
   overflow: hidden;
   white-space: nowrap;
   -o-text-overflow: ellipsis;

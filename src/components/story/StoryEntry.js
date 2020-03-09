@@ -207,20 +207,23 @@ class StoryEntry extends Component {
 
           <div className="story-entry-stat">
             {showAuthor ? (
-              <div
-                className="story-card-user"
-                onClick={() =>
-                  (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-                }
-              >
+              <div className="story-card-user">
                 <i
                   className="story-card-avatar"
                   style={{
                     backgroundImage: `url('${avatar ||
                       "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
                   }}
+                  onClick={() =>
+                    (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                  }
                 ></i>
-                <span className="story-card-name">{`${name}${
+                <span
+                  className="story-card-name"
+                  onClick={() =>
+                    (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                  }
+                >{`${name}${
                   story.creator && story.creator.relationDesc
                     ? `（${story.creator.relationDesc}）`
                     : ""

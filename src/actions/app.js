@@ -626,14 +626,20 @@ export function switchEditLinkVisible(dispatch) {
   }
 }
 
-export function setStatusTag(key, statusTag) {
+export function setStatusTag(key, statusTag, dispatch) {
   let request = api.story.updateStatusTag(key, statusTag);
-  return {
+  const dispatchBody = {
     type: SET_STATUS_TAG,
     payload: request,
     storyKey: key,
-    statusTag: statusTag
+    statusTag: statusTag,
+    noLoading: true
   };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
 export function statisticsStatusTag(stationKey, channelKey, statusTag) {
@@ -738,11 +744,17 @@ export function deleteComment(commentKey, dispatch) {
   if (dispatch) {
     dispatch({
       type: DELETE_COMMENT,
+      noLoading: true,
       commentKey: commentKey,
       payload: request
     });
   } else {
-    return { type: DELETE_COMMENT, commentKey: commentKey, payload: request };
+    return {
+      type: DELETE_COMMENT,
+      noLoading: true,
+      commentKey: commentKey,
+      payload: request
+    };
   }
 }
 

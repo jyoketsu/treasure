@@ -19,8 +19,8 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
     const tabsWidth = tabsEl.current.clientWidth;
     const containerWidth = tabsContainerEl.current.clientWidth;
     const nowX = index * titleWidth;
-    // 容器中点位置
-    const middleX = containerWidth / 2;
+    // 容器1/3位置
+    const middleX = containerWidth / 3;
     // 内容长度与容器长度的差
     const differ = tabsWidth - containerWidth;
     // 自动移动

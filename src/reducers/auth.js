@@ -91,7 +91,7 @@ const auth = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          siginResult: action.payload.result[0]
+          siginResult: action.payload.result
         };
       } else {
         return state;

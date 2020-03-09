@@ -1,61 +1,82 @@
 .account-content {
-    margin: auto;
+  margin: auto;
 }
 
 .user-info-card {
-    width: 100%;
-    height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-image: url(/image/background/avatar-bk.png);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #ffffff;
-    font-size: 16px;
-    margin-bottom: 15px;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  font-size: 16px;
+  margin-bottom: 15px;
+  z-index: 1;
+  overflow: hidden;
+}
+.user-info-card-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  background-color: rgba(0, 0, 0, 0.1);
+  filter: blur(4px);
+  margin: -15px;
+  z-index: -1;
 }
 
 .my-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.my-content>div:hover {
-    cursor: pointer;
+.my-content > div:hover {
+  cursor: pointer;
 }
 
 .user-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.user-info-card>div {
-    margin: 5px 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 5px;
 }
 
 .account .ant-tabs-tabpane {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .account .ant-tabs-left-bar {
-    border-right: unset !important;
-    background-color: #ffffff;
+  border-right: unset !important;
+  background-color: #ffffff;
 }
 
-.account .ant-table-thead>tr {
-    background: #ffffff;
+.account .ant-table-thead > tr {
+  background: #ffffff;
 }
 
 .account .ant-tabs .ant-tabs-left-content {
-    border-left: unset;
+  border-left: unset;
+}
+.user-logout {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #1890ff;
+}
+.user-logout:hover {
+  cursor: pointer;
 }
 
-@media screen and (max-width:768px) {}
+@media screen and (max-width: 768px) {
+}

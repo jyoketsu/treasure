@@ -89,6 +89,9 @@
   background-color: bisque;
   flex-shrink: 0;
 }
+.story-card-avatar:hover {
+  cursor: pointer;
+}
 
 .story-card-name {
   margin-right: 6px;
@@ -103,10 +106,6 @@
 .story-card-time {
   font-weight: normal;
   margin-right: 6px;
-}
-
-.story-card-info > div > .story-card-name {
-  flex: 1;
 }
 
 .story-card-record {
@@ -131,7 +130,7 @@
 
 .picture-count {
   position: absolute;
-  bottom: 90px;
+  bottom: 12px;
   right: 12px;
   color: #ffffff;
 }
@@ -197,9 +196,6 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-.story-card-user:hover {
-  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

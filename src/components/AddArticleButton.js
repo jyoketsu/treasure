@@ -196,7 +196,7 @@ class AddButton extends Component {
 
     return (
       <div className="multi-button">
-        <Tooltip title="投稿" placement="bottom">
+        <Tooltip title="投稿" placement="left">
           <div
             className="story-tool add-story-multi"
             onClick={this.switchChannelVisible}

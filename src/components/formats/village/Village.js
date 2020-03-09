@@ -130,7 +130,7 @@ function Banner({ nowStation }) {
           </div>
         ))}
       </Carousel>
-      <Signin style={{ position: "absolute", bottom: "15px", right: "5px" }} />
+      <Signin />
     </div>
   );
 }

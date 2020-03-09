@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Signin.css";
-import { Modal } from "antd";
+import util from "../../services/Util";
+import { Modal, message } from "antd";
 import { signIn, clearSignin } from "../../actions/app";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function Signin({ style }) {
   const dispatch = useDispatch();
+  const [modalSign, setmodalSign] = useState(
+    util.common.getQueryString("signin") ? true : false
+  );
+  const user = useSelector(state => state.auth.user);
   const nowStation = useSelector(state => state.station.nowStation);
   const siginResult = useSelector(state => state.auth.siginResult);
 
@@ -38,7 +43,19 @@ export default function Signin({ style }) {
     <div className="sign-in-wrapper" style={style}>
       <i
         className="sign-in-button"
-        onClick={() => signIn(nowStation._key, dispatch)}
+        onClick={() => {
+          if (user.isGuest) {
+            localStorage.setItem(
+              "REDIRECT_URI",
+              `${window.location.pathname}${window.location.search}`
+            );
+            const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+            const logo = nowStation.logo;
+            window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
+            return message.info("请先登录！");
+          }
+          signIn(nowStation._key, dispatch);
+        }}
       ></i>
       <Modal
         title="签到结果"
@@ -54,6 +71,32 @@ export default function Signin({ style }) {
               ? moment(siginResult.checkInTime).format("YYYY-MM-DD HH:mm:ss")
               : ""
           }`}</span>
+        </div>
+      </Modal>
+      <Modal
+        title={`签到-${nowStation.name}`}
+        visible={modalSign}
+        footer={null}
+        onCancel={() => setmodalSign(false)}
+      >
+        <div className="modal-sign-in">
+          <i
+            className="sign-in-button-modal"
+            onClick={() => {
+              if (user.isGuest) {
+                localStorage.setItem(
+                  "REDIRECT_URI",
+                  `${window.location.pathname}${window.location.search}`
+                );
+                const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+                const logo = nowStation.logo;
+                window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
+                return message.info("请先登录！");
+              }
+              signIn(nowStation._key, dispatch);
+              setmodalSign(false);
+            }}
+          ></i>
         </div>
       </Modal>
     </div>

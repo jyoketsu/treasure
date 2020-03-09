@@ -116,7 +116,7 @@ class Card extends Component {
       : true;
 
     let avatar = (story.creator && story.creator.avatar) || "";
-    let name = story.creator ? story.creator.name : "";
+    let name = story.creator && story.creator.name ? story.creator.name : "";
     let coverUrl = story.cover
       ? story.cover.indexOf("cdn-icare.qingtime.cn") !== -1
         ? story.cover.indexOf("vframe") === -1
@@ -159,6 +159,13 @@ class Card extends Component {
           style={coverStyle}
           onClick={this.handleClick.bind(this, story)}
         >
+          {// 图片数量
+          story.type === 6 ? (
+            <span className="picture-count">
+              <i className="picture-count-icon"></i>
+              <span>{story.pictureCount}</span>
+            </span>
+          ) : null}
           <div
             className="story-card-mask"
             style={{ height: `${height - 85}px` }}
@@ -180,33 +187,29 @@ class Card extends Component {
             ) : null}
           </div>
         </div>
-        {// 图片数量
-        story.type === 6 ? (
-          <span className="picture-count">
-            <i className="picture-count-icon"></i>
-            <span>{story.pictureCount}</span>
-          </span>
-        ) : null}
         <div className="story-card-info">
           {nowChannelKey === "allSeries" ? (
             <div>
               <span className="story-card-name">{story.series.name}</span>
             </div>
           ) : showAuthor ? (
-            <div
-              className="story-card-user"
-              onClick={() =>
-                (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-              }
-            >
+            <div className="story-card-user">
               <i
                 className="story-card-avatar"
                 style={{
                   backgroundImage: `url('${avatar ||
                     "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
                 }}
+                onClick={() =>
+                  (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                }
               ></i>
-              <span className="story-card-name">{`${name}${
+              <span
+                className="story-card-name"
+                onClick={() =>
+                  (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                }
+              >{`${name}${
                 story.creator && story.creator.relationDesc
                   ? `（${story.creator.relationDesc}）`
                   : ""

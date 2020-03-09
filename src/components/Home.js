@@ -8,6 +8,7 @@ import { Modal, Tooltip, message, Input, Select, Carousel } from "antd";
 import { connect } from "react-redux";
 import Header from "./Header";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import Signin from "./common/Signin";
 import {
   changeStation,
   getStoryList,
@@ -451,9 +452,9 @@ class Station extends React.Component {
 
     const { clientWidth: containerWidth } = this.tabContainer;
     const { clientWidth: tabsWidth } = this.tabs;
-    const nowX = index * 80;
-    // 容器中点位置
-    const middleX = containerWidth / 2;
+    const nowX = index * 100;
+    // 容器1/3位置
+    const middleX = containerWidth / 3;
     // 内容长度与容器长度的差
     const differ = tabsWidth - containerWidth;
     if (tabsWidth > containerWidth) {
@@ -542,6 +543,7 @@ class Station extends React.Component {
       }
     }
     const { tag = "", statusTag = "" } = nowChannel || {};
+
     let tagStr = tag ? `全部 ${tag}` : tag;
     let tagList = tag
       ? tag.split(" ").map((item, index) => {
@@ -598,6 +600,7 @@ class Station extends React.Component {
               </div>
             ))}
           </Carousel>
+          <Signin />
           <div className="station-home-head-wrapper">
             <Header />
           </div>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Header.css";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Link, withRouter } from "react-router-dom";
-import { Modal, Button } from "antd";
+import { Modal, Button, Checkbox } from "antd";
 // import TextMarquee from './common/TextMarquee';
 import util from "../services/Util";
 import TopMenu from "./HeaderMenu";
@@ -28,7 +28,8 @@ class Header extends Component {
       logoSize: null,
       showMenu: false,
       showSubscribe: false,
-      showQrCode: false
+      showQrCode: false,
+      signinQR: false
     };
     this.perPage = 32;
   }
@@ -82,7 +83,13 @@ class Header extends Component {
 
   render() {
     const { location, nowStation, user } = this.props;
-    const { logoSize, showMenu, showSubscribe, showQrCode } = this.state;
+    const {
+      logoSize,
+      showMenu,
+      showSubscribe,
+      showQrCode,
+      signinQR
+    } = this.state;
     const pathname = location.pathname;
     const stationDomain = nowStation ? nowStation.domain : "";
     const isMobile = util.common.isMobile();
@@ -207,7 +214,11 @@ class Header extends Component {
             </a>
             <QRCode
               id="qrid"
-              value={`https://baoku.qingtime.cn/${nowStation.domain}/home?signin=${nowStation._key}`}
+              value={
+                signinQR
+                  ? `https://baoku.qingtime.cn/${nowStation.domain}/home?signin=${nowStation._key}`
+                  : `https://baoku.qingtime.cn/${nowStation.domain}/home?sitekey=${nowStation._key}`
+              }
             />
             {!util.common.isMobile() ? (
               <Button
@@ -218,6 +229,15 @@ class Header extends Component {
                 下载二维码
               </Button>
             ) : null}
+            <div style={{ margin: "15px" }}>
+              <Checkbox
+                name="signinQR"
+                checked={signinQR}
+                onChange={e => this.setState({ signinQR: e.target.checked })}
+              >
+                签到二维码
+              </Checkbox>
+            </div>
           </div>
         </Modal>
       </div>

@@ -113,7 +113,7 @@ export default function App() {
             <Spin size="large" />
           </div>
         ) : null}
-        <div className="operation-panel">
+        <div className="operation-panel-wrapper">
           {nowStation ? <AddButton /> : null}
         </div>
       </div>
