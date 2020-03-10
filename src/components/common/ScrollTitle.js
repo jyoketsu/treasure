@@ -45,7 +45,7 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
         <div
           className={`title-item ${!nowTitle ? "selected" : ""}`}
           style={{ width: titleWidth }}
-          onClick={() => onClick("")}
+          onClick={() => onClick({ id: "", name: "" })}
         >
           全部
         </div>
@@ -54,7 +54,7 @@ export default function ScrollTitle({ titleList, nowTitle, onClick }) {
             key={index}
             className={`title-item ${nowTitle === item.id ? "selected" : ""}`}
             style={{ width: titleWidth }}
-            onClick={() => onClick(item.id)}
+            onClick={() => onClick({ id: item.id, name: item.name })}
           >
             {item.name}
           </div>

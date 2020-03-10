@@ -23,25 +23,30 @@ class MemberList extends Component {
     } = this.props;
     return (
       <div className="member-list">
-        {userList.map((user, index) => (
-          <MemberCard
-            key={index}
-            nowStationKey={nowStation._key}
-            groupKey={groupKey}
-            userKey={user.userId}
-            avatar={user.avatar ? user.avatar : ""}
-            mobile={`${user.mobileArea} ${user.mobile}`}
-            name={user.nickName ? user.nickName : ""}
-            role={user.role}
-            userRole={nowStation.role}
-            count={user.albumCount}
-            disabled={true}
-            handleClick={() => {
-              clearStoryList();
-              history.push(`memberStory?key=${user.userId}`);
-            }}
-          />
-        ))}
+        <h3>{`粉丝数：${userList.length}`}</h3>
+        <div className="member-list-wrapper">
+          {userList.map((user, index) => (
+            <MemberCard
+              key={index}
+              nowStationKey={nowStation._key}
+              groupKey={groupKey}
+              userKey={user.userId}
+              avatar={user.avatar ? user.avatar : ""}
+              mobile={`${user.mobileArea ? user.mobileArea : ""} ${
+                user.mobile ? user.mobile : ""
+              }`}
+              name={user && user.nickName ? user.nickName : ""}
+              role={user.role}
+              userRole={nowStation.role}
+              count={user.albumCount}
+              disabled={true}
+              handleClick={() => {
+                clearStoryList();
+                history.push(`memberStory?key=${user.userId}`);
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
   }

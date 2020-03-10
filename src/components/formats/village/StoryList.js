@@ -4,7 +4,7 @@ import { Spin } from "antd";
 import ScrollTitle from "../../common/ScrollTitle";
 import Waterfall from "react-waterfall-responsive";
 import { StoryCard } from "../../story/StoryCard";
-import { TagCloud } from "react-tagcloud";
+import TagCloud from "react3dtagcloud_withclick";
 import util from "../../../services/Util";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -140,9 +140,9 @@ export default function StoryList() {
     }
   }
 
-  function handleClickTag(tagName) {
+  function handleClickTag(tag) {
     sessionStorage.setItem("home-curpage", 1);
-    setNowTag(tagName, dispatch);
+    setNowTag(tag.id, dispatch);
   }
 
   function setColumn() {
@@ -213,16 +213,16 @@ export default function StoryList() {
 function Head({ nowChannel, titleList, onClick }) {
   const history = useHistory();
   let data = [];
-  
-  if (titleList.length > 4) {
+
+  if (titleList.length > 2) {
     for (let index = 0; index < titleList.length; index++) {
       const element = titleList[index];
       data.push({
         id: element.id,
-        value: element.name,
-        count: Math.floor(Math.random() * (40 - 10 + 1) + 10)
+        name: element.name
       });
     }
+    data = [...data, ...data, ...data];
   }
 
   return (
@@ -238,17 +238,20 @@ function Head({ nowChannel, titleList, onClick }) {
           {nowChannel ? nowChannel.name : ""}
         </span>
       </div>
-      {titleList.length > 4 ? (
-        <div className="tag-cloud-wrapper">
-          <TagCloud
-            minSize={12}
-            maxSize={35}
-            tags={data}
-            className="tag-cloud"
-            onClick={tag => onClick(tag.id)}
-          />
-        </div>
-      ) : null}
+      <div className="tag-cloud-wrapper">
+        {titleList.length > 2 ? (
+          <div
+            style={{
+              width: "200px",
+              height: "200px",
+              marginRight: "30px",
+              boxSizing: "content-box"
+            }}
+          >
+            <TagCloud tagName={data} radius={150} onClick={onClick} />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

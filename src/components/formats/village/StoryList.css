@@ -67,11 +67,17 @@
   margin-left: 15px;
 }
 .tag-cloud-wrapper {
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
   position: absolute;
+  top: 45px;
+  right: 0;
   bottom: 0;
-  width: 100%;
+  left: 0;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 .tag-cloud .tag-cloud-tag {
   cursor: pointer;

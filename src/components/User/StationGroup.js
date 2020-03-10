@@ -246,8 +246,10 @@ class StationGroup extends Component {
               groupKey={groupKey}
               userKey={user.userId}
               avatar={user.avatar ? user.avatar : ""}
-              mobile={`${user.mobileArea} ${user.mobile}`}
-              name={user.nickName ? user.nickName : ""}
+              mobile={`${user.mobileArea ? user.mobileArea : ""} ${
+                user.mobile ? user.mobile : ""
+              }`}
+              name={user && user.nickName ? user.nickName : ""}
               role={user.role}
               safeCode={user.safeCode}
               userRole={nowStation.role}
@@ -278,8 +280,10 @@ class StationGroup extends Component {
               stationKey={nowStation._key}
               type={"import"}
               nowStationKey={nowStation._key}
-              mobile={`${user.mobileArea} ${user.mobile}`}
-              name={user.name}
+              mobile={`${user.mobileArea ? user.mobileArea : ""} ${
+                user.mobile ? user.mobile : ""
+              }`}
+              name={user && user.name ? user.name : ""}
               role={user.role}
               safeCode={user.safeCode}
               userRole={nowStation.role}
@@ -357,5 +361,5 @@ export default connect(mapStateToProps, {
   getImportedUsers,
   importUser,
   batchDeleteUser,
-  editImportedUser,
+  editImportedUser
 })(StationGroup);
