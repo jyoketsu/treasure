@@ -48,13 +48,13 @@ class CheckArticle extends Component {
               <Button
                 key="pass"
                 type="primary"
-                onClick={auditStory.bind(this, story._key, groupKey, 2)}
+                onClick={() => auditStory(story._key, groupKey, 2)}
               >
                 审核通过
               </Button>,
               <Button
                 key="reject"
-                onClick={auditStory.bind(this, story._key, groupKey, 3)}
+                onClick={() => auditStory(story._key, groupKey, 3)}
               >
                 审核不通过
               </Button>

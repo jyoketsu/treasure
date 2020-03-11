@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import "./StoryEntry.css";
 import { withRouter } from "react-router-dom";
 import util from "../../services/Util";
-import { Modal } from "antd";
+import { Modal, Tooltip } from "antd";
 import { connect } from "react-redux";
 import {
   deleteStory,
   switchEditLinkVisible,
-  getStoryDetail
+  getStoryDetail,
+  auditStory
 } from "../../actions/app";
 const confirm = Modal.confirm;
 
@@ -83,7 +84,9 @@ class StoryEntry extends Component {
       showSetting,
       handleCoverClick,
       showSiteName,
-      inline
+      inline,
+      auditStory,
+      groupKey
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
@@ -104,19 +107,21 @@ class StoryEntry extends Component {
       story.type === 6 ? "story" : story.type === 9 ? "article" : null;
     let status = "";
     let statusStyle = {};
-    if (!inline && isMyStory && role && role > 2) {
+
+    // 审核状态
+    if (!inline && (isMyStory || (role && role < 3))) {
       switch (story.pass) {
         case 1:
           status = "待审核";
-          statusStyle = { color: "#9F353A" };
+          statusStyle = { color: "#9F353A", marginRight: "5px" };
           break;
-        case 2:
-          status = "审核通过";
-          statusStyle = { color: "#7BA23F" };
-          break;
+        // case 2:
+        //   status = "审核通过";
+        //   statusStyle = { color: "#7BA23F", marginRight: "5px" };
+        //   break;
         case 3:
           status = "审核不通过";
-          statusStyle = { color: "#CB1B45" };
+          statusStyle = { color: "#CB1B45", marginRight: "5px" };
           break;
         default:
           break;
@@ -231,7 +236,22 @@ class StoryEntry extends Component {
               </div>
             ) : null}
             <div>
-              <span style={statusStyle}>{status}</span>
+              {status && !inline && role < 3 ? (
+                <Tooltip title="点击快速通过" placement="bottom">
+                  <span
+                    style={statusStyle}
+                    onClick={e => {
+                      e.stopPropagation();
+                      auditStory(story._key, groupKey, 2, true);
+                    }}
+                  >
+                    {status}
+                  </span>
+                </Tooltip>
+              ) : (
+                <span style={statusStyle}>{status}</span>
+              )}
+
               {showClickNumber ? (
                 <span className="story-card-record">
                   <i
@@ -279,6 +299,7 @@ export default withRouter(
   connect(mapStateToProps, {
     deleteStory,
     switchEditLinkVisible,
-    getStoryDetail
+    getStoryDetail,
+    auditStory
   })(StoryEntry)
 );

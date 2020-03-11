@@ -6,6 +6,7 @@
   background: #ffffff;
   border-radius: 4px;
   transition: all 0.2s ease-in;
+  margin-bottom: 25px;
 }
 
 .story-card:hover {
@@ -201,6 +202,5 @@
 @media screen and (max-width: 768px) {
   .story-card {
     width: 100%;
-    margin-bottom: 25px;
   }
 }

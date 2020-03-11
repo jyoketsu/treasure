@@ -241,7 +241,21 @@ const station = (state = defaultState, action) => {
         let userList = JSON.parse(JSON.stringify(state.userList));
         let result = action.payload.result;
         if (result.length !== 0) {
-          userList.push(result[0]);
+          const newMember = result[0];
+          if (action.isImprove) {
+            for (let index = 0; index < userList.length; index++) {
+              const element = userList[index];
+              if (element.userId === newMember.userKey) {
+                userList[index] = {
+                  ...element,
+                  ...newMember
+                };
+                break;
+              }
+            }
+          } else {
+            userList.push(newMember);
+          }
         }
         return {
           ...state,

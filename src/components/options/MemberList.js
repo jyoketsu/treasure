@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./MemberList.css";
 import { MemberCard } from "../common/Common";
 import { connect } from "react-redux";
-import { groupMember, clearStoryList } from "../../actions/app";
+import { groupMember, clearStoryList, addGroupMember } from "../../actions/app";
 
 const mapStateToProps = state => ({
   nowStation: state.station.nowStation,
@@ -19,7 +19,8 @@ class MemberList extends Component {
       groupKey,
       nowStation,
       history,
-      clearStoryList
+      clearStoryList,
+      addGroupMember
     } = this.props;
     return (
       <div className="member-list">
@@ -30,6 +31,7 @@ class MemberList extends Component {
               key={index}
               nowStationKey={nowStation._key}
               groupKey={groupKey}
+              siteGroupKey={nowStation.intimateGroupKey}
               userKey={user.userId}
               avatar={user.avatar ? user.avatar : ""}
               mobile={`${user.mobileArea ? user.mobileArea : ""} ${
@@ -40,6 +42,7 @@ class MemberList extends Component {
               userRole={nowStation.role}
               count={user.albumCount}
               disabled={true}
+              addGroupMember={addGroupMember}
               handleClick={() => {
                 clearStoryList();
                 history.push(`memberStory?key=${user.userId}`);
@@ -58,6 +61,8 @@ class MemberList extends Component {
   }
 }
 
-export default connect(mapStateToProps, { groupMember, clearStoryList })(
-  MemberList
-);
+export default connect(mapStateToProps, {
+  groupMember,
+  clearStoryList,
+  addGroupMember
+})(MemberList);

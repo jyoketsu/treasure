@@ -445,7 +445,7 @@ const station = {
       token: token,
       seriesKeyArray: channelKeys,
       starKey: stationKey,
-      relationDesc: relationDesc
+      relationDesc: relationDesc ? relationDesc : ""
     });
   },
 
@@ -454,7 +454,7 @@ const station = {
       token: token,
       starKey: stationKey,
       status: checked,
-      relationDesc: relationDesc
+      relationDesc: relationDesc ? relationDesc : ""
     });
   },
 
@@ -752,6 +752,62 @@ const story = {
     return requests.delete(APIURL + "/comment", {
       token: token,
       key: commentKey
+    });
+  },
+
+  // TODO 订阅：获取频道订阅的列表
+  getSubscribeChannels(seriesKey) {
+    return requests.get(APIURL + "/series/subscribeList", {
+      token: token,
+      seriesKey: seriesKey
+    });
+  },
+
+  // TODO 订阅：搜索微站
+  searchSite(text, curPage, perPage) {
+    return requests.get(APIURL + "/star/searchStar", {
+      token: token,
+      searchCondition: text,
+      searchType2: 1,
+      curPage: curPage,
+      perPage: perPage
+    });
+  },
+
+  /**
+   * TODO 订阅：频道分发订阅提交
+   * @param {String} sourceSeriesKey
+   * @param {String} targetSeriesKey
+   * @param {Number} disOrSubType 1 分发 4 订阅
+   * @param {Number} selectOrNot 1 勾选 2 取消勾选
+   */
+  channelSubscribe(
+    sourceSeriesKey,
+    targetSeriesKey,
+    disOrSubType,
+    selectOrNot
+  ) {
+    return requests.post(APIURL + "/series/distribute", {
+      token: token,
+      sourceSeriesKey: sourceSeriesKey,
+      targetSeriesKey: targetSeriesKey,
+      disOrSubType: disOrSubType,
+      selectOrNot: selectOrNot
+    });
+  },
+
+  /**
+   * TODO 频道订阅处理
+   * @param {String} distributeApplyKey 频道分发申请key
+   * @param {Number} status 2 同意 3 拒绝
+   * @param {Number} feedKey
+   */
+  dealSubscribe(distributeApplyKey, status, feedKey) {
+    return requests.post(APIURL + "/series/dealSubscribe", {
+      token: token,
+      distributeApplyKey: distributeApplyKey,
+      status: status,
+      feedKey: feedKey
     });
   }
 };

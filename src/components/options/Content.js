@@ -292,6 +292,8 @@ class Content extends Component {
                       storyNumber={storyNumber}
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>,
                   <TabPane tab="已审核" key="passed">
@@ -300,6 +302,8 @@ class Content extends Component {
                       storyNumber={storyNumber}
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>,
                   <TabPane tab="审核不通过" key="unpass">
@@ -308,6 +312,8 @@ class Content extends Component {
                       storyNumber={storyNumber}
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>
                 ]
@@ -319,6 +325,8 @@ class Content extends Component {
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
                       showSiteName={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>,
                   <TabPane tab="我的" key="my">
@@ -328,6 +336,8 @@ class Content extends Component {
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
                       showSiteName={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>,
                   <TabPane tab="待审核" key="wait_all">
@@ -337,6 +347,8 @@ class Content extends Component {
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
                       showSiteName={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>,
                   <TabPane tab="协作" key="coop">
@@ -346,6 +358,8 @@ class Content extends Component {
                       handleCoverClick={this.switchVisible}
                       hideFoot={true}
                       showSiteName={true}
+                      showStyle={2}
+                      inline={true}
                     />
                   </TabPane>
                 ]}

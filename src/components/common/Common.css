@@ -31,6 +31,23 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.improve-member {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-style: normal;
+  /* color: #1890ff; */
+  color: #ffffff;
+  width: 70px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+.member-card:hover > .improve-member {
+  display: unset;
+}
 
 .deleteMember:hover {
   cursor: pointer;
@@ -51,6 +68,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 15px;
+  overflow: hidden;
 }
 
 .member-name {

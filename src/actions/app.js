@@ -74,9 +74,15 @@ export function clearGroupMember() {
   return { type: CLEAR_GROUP_MEMBER };
 }
 
-export function addGroupMember(groupId, targetUidList) {
+/**
+ * 添加群成员
+ * @param {String} groupId
+ * @param {Array} targetUidList
+ * @param {Boolean} isImprove 是否是从粉丝列表提升
+ */
+export function addGroupMember(groupId, targetUidList, isImprove) {
   let request = api.auth.addGroupMember(groupId, targetUidList);
-  return { type: ADD_GROUP_MEMBER, payload: request };
+  return { type: ADD_GROUP_MEMBER, isImprove: isImprove, payload: request };
 }
 
 export function setMemberRole(groupId, targetUKey, role) {
@@ -597,13 +603,21 @@ export function updateExif(story) {
   return { type: UPDATE_EXIF, story: story };
 }
 
-export function auditStory(storyKey, groupKey, passOrNot) {
+/**
+ * 文章审核
+ * @param {String} storyKey
+ * @param {String} groupKey
+ * @param {Number} passOrNot 2:通过,3:不通过
+ * @param {Boolean} isQuickPass 是否是首页的快速通过
+ */
+export function auditStory(storyKey, groupKey, passOrNot, isQuickPass) {
   let request = api.story.audit(storyKey, groupKey, passOrNot);
   return {
     type: AUDIT,
     flag: "auditStory",
     storyKey: storyKey,
     passOrNot: passOrNot,
+    isQuickPass: isQuickPass,
     payload: request
   };
 }

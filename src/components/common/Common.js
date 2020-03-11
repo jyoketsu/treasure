@@ -12,6 +12,7 @@ class MemberCard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.showConfirm = this.showConfirm.bind(this);
     this.handleChangeSafeCode = this.handleChangeSafeCode.bind(this);
+    this.improveMember = this.improveMember.bind(this);
   }
 
   showConfirm() {
@@ -73,6 +74,24 @@ class MemberCard extends Component {
     });
   }
 
+  improveMember(e) {
+    e.stopPropagation();
+    const { userKey, siteGroupKey, addGroupMember } = this.props;
+    addGroupMember(
+      siteGroupKey,
+      [
+        {
+          userKey: userKey,
+          role: 5
+        }
+      ],
+      true
+    );
+    this.setState({
+      role: 5
+    });
+  }
+
   render() {
     const {
       type,
@@ -113,6 +132,7 @@ class MemberCard extends Component {
         className={`member-card ${handleClick ? "clickable" : ""}`}
         onClick={handleClick}
       >
+        {/* 删除按钮 */}
         {type !== "import" &&
         !disabled &&
         userRole &&
@@ -120,6 +140,8 @@ class MemberCard extends Component {
         userRole < role ? (
           <i className="deleteMember" onClick={handleDelete}></i>
         ) : null}
+
+        {/* 用户头像 */}
         <div className="member-avatar-container">
           <i
             className="member-avatar"
@@ -132,6 +154,8 @@ class MemberCard extends Component {
             }}
           ></i>
         </div>
+
+        {/* 用户信息 */}
         <div className="member-info">
           <span className="member-name">{name || ""}</span>
           <span className="member-name">{mobile || ""}</span>
@@ -177,6 +201,13 @@ class MemberCard extends Component {
             </div>
           )}
         </div>
+
+        {/* 提升粉丝为成员 */}
+        {!role && type !== "import" && disabled ? (
+          <i className="improve-member" onClick={this.improveMember}>
+            设为成员
+          </i>
+        ) : null}
       </div>
     );
   }

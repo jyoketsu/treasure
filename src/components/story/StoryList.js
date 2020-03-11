@@ -37,7 +37,8 @@ class StoryList extends Component {
       role,
       showMore,
       handleCoverClick,
-      showSiteName
+      showSiteName,
+      inline
     } = this.props;
     const { columnNum } = this.state;
     const isMobile = util.common.isMobile();
@@ -63,6 +64,8 @@ class StoryList extends Component {
             showSetting={showSetting}
             width={290 + 5}
             height={height + 5}
+            inline={inline}
+            handleCoverClick={handleCoverClick}
           />
         );
       } else {
@@ -75,7 +78,7 @@ class StoryList extends Component {
             like={() => like(story._key)}
             showSetting={showSetting}
             role={role}
-            inline={showStyle ? false : true}
+            inline={inline}
             handleCoverClick={handleCoverClick}
           />
         );
@@ -89,13 +92,15 @@ class StoryList extends Component {
           查看更多
         </div>
       ) : null;
+    const isWaterfall =
+      columnNum &&
+      children.length &&
+      showStyle === 2 &&
+      !isMobile &&
+      this.refs.container.clientWidth >= 580;
     return (
       <div className="story-list" ref="container">
-        {columnNum &&
-        children.length &&
-        showStyle === 2 &&
-        !isMobile &&
-        this.refs.container.clientWidth >= 580 ? (
+        {isWaterfall ? (
           <Waterfall columnNum={columnNum} gap={5}>
             {children}
           </Waterfall>

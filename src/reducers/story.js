@@ -249,18 +249,34 @@ const story = (state = defaultState, action) => {
     case AUDIT:
       if (!action.error) {
         message.success("操作成功！");
-        let storyList = Object.assign([], state.storyList);
-        for (let i = 0; i < storyList.length; i++) {
-          let story = storyList[i];
-          if (story._key === action.storyKey) {
-            storyList.splice(i, 1);
-            break;
+        if (action.isQuickPass) {
+          let storyList = JSON.parse(JSON.stringify(state.storyList));
+          for (let i = 0; i < storyList.length; i++) {
+            let story = storyList[i];
+            if (story._key === action.storyKey) {
+              storyList[i].pass = 2;
+              break;
+            }
           }
+          return {
+            ...state,
+            storyList: storyList
+          };
+        } else {
+          let storyList = JSON.parse(JSON.stringify(state.storyList2));
+          for (let i = 0; i < storyList.length; i++) {
+            let story = storyList[i];
+            if (story._key === action.storyKey) {
+              storyList.splice(i, 1);
+              break;
+            }
+          }
+          return {
+            ...state,
+            storyList2: storyList,
+            story: {}
+          };
         }
-        return {
-          ...state,
-          storyList: storyList
-        };
       } else {
         return state;
       }

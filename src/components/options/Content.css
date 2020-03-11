@@ -2,7 +2,7 @@
   line-height: 40px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 430px 1fr;
   grid-template-rows: 100%;
   height: 100%;
   position: absolute;
@@ -13,10 +13,6 @@
 .content-manage-grid {
   position: relative;
   overflow: auto;
-}
-
-.content-manage .story-card-cover:hover {
-  cursor: auto;
 }
 
 .content-manage > div > iframe {

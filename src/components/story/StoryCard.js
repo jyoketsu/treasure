@@ -2,19 +2,23 @@ import React, { Component } from "react";
 import "./StoryCard.css";
 import { withRouter } from "react-router-dom";
 import util from "../../services/Util";
-import { Spin, Modal } from "antd";
+import { Spin, Modal, Tooltip } from "antd";
 import { connect } from "react-redux";
 import {
   deleteStory,
   switchEditLinkVisible,
-  getStoryDetail
+  getStoryDetail,
+  auditStory
 } from "../../actions/app";
 const confirm = Modal.confirm;
 
 const mapStateToProps = state => ({
   userKey: state.auth.user ? state.auth.user._key : "",
   role: state.station.nowStation ? state.station.nowStation.role : null,
-  nowChannelKey: state.story.nowChannelKey
+  nowChannelKey: state.story.nowChannelKey,
+  groupKey: state.station.nowStation
+    ? state.station.nowStation.intimateGroupKey
+    : null
 });
 
 class Card extends Component {
@@ -83,7 +87,11 @@ class Card extends Component {
       showSetting,
       height,
       role,
-      nowChannelKey
+      inline,
+      nowChannelKey,
+      handleCoverClick,
+      auditStory,
+      groupKey
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
@@ -133,19 +141,21 @@ class Card extends Component {
       story.type === 6 ? "story" : story.type === 9 ? "article" : "page";
     let status = "";
     let statusStyle = {};
-    if (isMyStory && role && role > 2) {
+
+    // 审核状态
+    if (!inline && (isMyStory || (role && role < 3))) {
       switch (story.pass) {
         case 1:
           status = "待审核";
-          statusStyle = { color: "#9F353A" };
+          statusStyle = { color: "#9F353A", marginRight: "5px" };
           break;
-        case 2:
-          status = "审核通过";
-          statusStyle = { color: "#7BA23F" };
-          break;
+        // case 2:
+        //   status = "审核通过";
+        //   statusStyle = { color: "#7BA23F", marginRight: "5px" };
+        //   break;
         case 3:
           status = "审核不通过";
-          statusStyle = { color: "#CB1B45" };
+          statusStyle = { color: "#CB1B45", marginRight: "5px" };
           break;
         default:
           break;
@@ -157,7 +167,11 @@ class Card extends Component {
         <div
           className="story-card-cover"
           style={coverStyle}
-          onClick={this.handleClick.bind(this, story)}
+          onClick={
+            handleCoverClick
+              ? handleCoverClick.bind(this, story._key)
+              : this.handleClick.bind(this, story)
+          }
         >
           {// 图片数量
           story.type === 6 ? (
@@ -173,13 +187,33 @@ class Card extends Component {
         </div>
         <div
           className="story-card-title"
-          onClick={this.handleClick.bind(this, story)}
+          onClick={
+            handleCoverClick
+              ? handleCoverClick.bind(this, story._key)
+              : this.handleClick.bind(this, story)
+          }
         >
           {showTitle ? (
             <span className="story-card-title-span">{story.title}</span>
           ) : null}
+
           <div>
-            <span style={statusStyle}>{status}</span>
+            {status && !inline && role < 3 ? (
+              <Tooltip title="点击快速通过" placement="bottom">
+                <span
+                  style={statusStyle}
+                  onClick={e => {
+                    e.stopPropagation();
+                    auditStory(story._key, groupKey, 2, true);
+                  }}
+                >
+                  {status}
+                </span>
+              </Tooltip>
+            ) : (
+              <span style={statusStyle}>{status}</span>
+            )}
+
             {showDate ? (
               <span className="story-card-time">
                 {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
@@ -246,7 +280,9 @@ class Card extends Component {
           </div>
         </div>
         <div className="right-area">
-          {story.type === 15 && (isMyStory || (role && role <= 3)) ? (
+          {!inline &&
+          story.type === 15 &&
+          (isMyStory || (role && role <= 3)) ? (
             <span
               className={`card-link ${isMobile}`}
               onClick={this.handleEditLink}
@@ -254,7 +290,8 @@ class Card extends Component {
               编辑
             </span>
           ) : null}
-          {(story.type === 12 || story.type === 15) &&
+          {!inline &&
+          (story.type === 12 || story.type === 15) &&
           (isMyStory || (role && role <= 3)) ? (
             <span className={`card-link ${isMobile}`} onClick={this.deletePage}>
               删除
@@ -282,7 +319,8 @@ const StoryCard = withRouter(
   connect(mapStateToProps, {
     deleteStory,
     switchEditLinkVisible,
-    getStoryDetail
+    getStoryDetail,
+    auditStory
   })(Card)
 );
 

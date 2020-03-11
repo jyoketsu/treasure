@@ -21,6 +21,7 @@ import Create from "./components/story/Create";
 import NotFound from "./components/NotFound";
 import PortalHome from "./components/formats/portal/Portal";
 import Village from "./components/formats/village/Village";
+import Im from "./components/common/Im";
 import { HOST_NAME } from "./global";
 
 export default function App() {
@@ -83,6 +84,7 @@ export default function App() {
     <Router>
       <div className="app" style={{ minHeight: minHeight }}>
         <Init />
+        <Im />
         <div className="route-container">
           {nowStation ? (
             <div>
