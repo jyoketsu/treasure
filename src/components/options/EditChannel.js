@@ -15,6 +15,7 @@ import {
   Modal,
   Icon
 } from "antd";
+import ChannelSubscribe from "./ChannelSubscribe";
 import { connect } from "react-redux";
 import { addChannel, editChannel } from "../../actions/app";
 const Option = Select.Option;
@@ -107,7 +108,7 @@ const CustomizedForm = Form.create({
     ? util.common.isJSON(props.tag.value.split(" ")[0])
     : false;
   return (
-    <Form onSubmit={props.onSubmit}>
+    <Form>
       <Form.Item label="频道名">
         {getFieldDecorator("name", {
           rules: [{ required: true, message: "请输入微站名！" }]
@@ -251,12 +252,6 @@ const CustomizedForm = Form.create({
       </Form.Item>
 
       <Divider />
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          保存
-        </Button>
-      </Form.Item>
     </Form>
   );
 });
@@ -412,8 +407,10 @@ class EditChannel extends Component {
 
         if (fields.key.value) {
           editChannel(fields.key.value, fields.name.value, 1, extParams);
+          message.success("编辑成功！");
         } else {
           addChannel(nowStationKey, fields.name.value, 1, extParams);
+          message.success("创建成功！");
         }
       }
     });
@@ -463,17 +460,19 @@ class EditChannel extends Component {
             <TagOptionList tag={fields.tag.value} onOk={this.handleSetTag} />
           ) : null}
         </Modal>
+        <ChannelSubscribe/>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+            onClick={this.handleSubmit}
+          >
+            保存
+          </Button>
+        </Form.Item>
       </div>
     );
-  }
-
-  componentDidUpdate(prevProps) {
-    const { fields } = this.state;
-    const { loading, history } = this.props;
-    if (!loading && prevProps.loading) {
-      message.success(`${fields.key.value ? "编辑" : "创建"}成功！`);
-      history.goBack();
-    }
   }
 }
 

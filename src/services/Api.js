@@ -431,10 +431,11 @@ const station = {
     });
   },
 
-  searchStation(keyword, curPage, perPage) {
+  searchStation(keyword, curPage, perPage, type) {
     return requests.get(APIURL + "/star/searchStar", {
       token: token,
       searchCondition: keyword,
+      searchType2: type ? type : "",
       curPage: curPage,
       perPage: perPage
     });
@@ -760,17 +761,6 @@ const story = {
     return requests.get(APIURL + "/series/subscribeList", {
       token: token,
       seriesKey: seriesKey
-    });
-  },
-
-  // TODO 订阅：搜索微站
-  searchSite(text, curPage, perPage) {
-    return requests.get(APIURL + "/star/searchStar", {
-      token: token,
-      searchCondition: text,
-      searchType2: 1,
-      curPage: curPage,
-      perPage: perPage
     });
   },
 

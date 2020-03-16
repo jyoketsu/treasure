@@ -21,6 +21,7 @@ import {
   SUBSCRIBE_PLUGIN,
   CANCEL_PLUGIN,
   SEARCH_STATION,
+  CLEAR_SEARCH_STATION,
   SUBSCRIBE,
   SUBSCRIBE_STATION,
   TRANSFER_STATION,
@@ -37,7 +38,10 @@ import {
   IMPORT_USER,
   GET_IMPORTED_USERS,
   BATCH_DELETE_USER,
-  EDIT_IMPORTED_USER
+  EDIT_IMPORTED_USER,
+  SUBSCRIBE_CHANNEL,
+  GET_SUBSCRIBE_CHANNELS,
+  CLEAR_SUBSCRIBE_CHANNELS
 } from "../actions/app";
 import { message } from "antd";
 
@@ -52,7 +56,8 @@ const defaultState = {
   matchedNumber: 0,
   subStationList: [],
   latestVisitors: [],
-  importedUsers: []
+  importedUsers: [],
+  subscribeChannels: []
 };
 
 const station = (state = defaultState, action) => {
@@ -388,6 +393,16 @@ const station = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case CLEAR_SEARCH_STATION:
+      if (!action.error) {
+        return {
+          ...state,
+          matchedStationList: [],
+          matchedNumber: 0
+        };
+      } else {
+        return state;
+      }
     case SUBSCRIBE:
       if (!action.error) {
         message.success("修改订阅状态成功！");
@@ -631,6 +646,83 @@ const station = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case SUBSCRIBE_CHANNEL:
+      if (!action.error) {
+        if (action.selectOrNot === 1) {
+          message.success("申请成功，对方同意后生效");
+        } else if (action.selectOrNot === 2) {
+          message.success("取消成功");
+        }
+        if (action.subscribeType === "search") {
+          let matchedStationList = JSON.parse(
+            JSON.stringify(state.matchedStationList)
+          );
+          sites: for (
+            let index = 0;
+            index < matchedStationList.length;
+            index++
+          ) {
+            const element = matchedStationList[index];
+            const channels = element.seriesInfo;
+            for (let i = 0; i < channels.length; i++) {
+              const channel = channels[i];
+              if (channel._key === action.targetSeriesKey) {
+                channels[i].status = 4;
+                break sites;
+              }
+            }
+          }
+          return {
+            ...state,
+            matchedStationList: matchedStationList
+          };
+        } else if (action.subscribeType === "result") {
+          let subscribeChannels = JSON.parse(
+            JSON.stringify(state.subscribeChannels)
+          );
+          sites: for (
+            let index = 0;
+            index < subscribeChannels.length;
+            index++
+          ) {
+            const element = subscribeChannels[index];
+            const channels = element.seriesInfo;
+            for (let i = 0; i < channels.length; i++) {
+              const channel = channels[i];
+              if (channel._key === action.targetSeriesKey) {
+                if (action.selectOrNot === 1) {
+                  channels[i].status = 4;
+                } else {
+                  channels.splice(i, 1);
+                }
+                break sites;
+              }
+            }
+          }
+          return {
+            ...state,
+            subscribeChannels: subscribeChannels
+          };
+        } else {
+          return state;
+        }
+      } else {
+        return state;
+      }
+    case GET_SUBSCRIBE_CHANNELS:
+      if (!action.error) {
+        return {
+          ...state,
+          subscribeChannels: action.payload.result
+        };
+      } else {
+        return state;
+      }
+    case CLEAR_SUBSCRIBE_CHANNELS:
+      return {
+        ...state,
+        subscribeChannels: []
+      };
     default:
       return state;
   }

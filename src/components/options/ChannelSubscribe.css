@@ -1,0 +1,58 @@
+.channel-subscribe {
+  margin-bottom: 15px;
+  color: #1890ff;
+}
+.channel-subscribe > span:hover {
+  cursor: pointer;
+}
+.search-result-site {
+  overflow: hidden;
+}
+.search-result-site > span {
+  display: block;
+  font-size: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+.search-result-site > span:hover {
+  cursor: pointer;
+}
+.site-channels {
+  padding-left: 25px;
+}
+.result-site-on,
+.result-site-off {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.result-site-on {
+  background-image: url(/image/icon/arrow-on.svg);
+}
+.result-site-off {
+  background-image: url(/image/icon/arrow-down.svg);
+}
+
+.channel-subscribe-action {
+  color: #1890ff;
+  margin-left: 15px;
+}
+.channel-subscribe-action.applied{
+  color: gray;
+}
+.channel-subscribe-action:hover {
+  cursor: pointer;
+}
+.site-channel:hover > .channel-subscribe-action {
+  display: inline;
+}
+.site-channel{
+  display: flex;
+  justify-content: space-between;
+}

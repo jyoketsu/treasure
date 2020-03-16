@@ -17,21 +17,12 @@ class Catalog extends Component {
   }
 
   async handleClick(tag) {
-    const {
-      location,
-      history,
-      match,
-      nowStation,
-      asyncStart,
-      asyncEnd
-    } = this.props;
-    const pathname = location.pathname;
-    const stationDomain = pathname.split("/")[1];
+    const { history, match, nowStation, asyncStart, asyncEnd } = this.props;
     const channelKey = match.params.id;
     asyncStart();
     const result = await util.operation.handleClickTag(
       nowStation._key,
-      stationDomain,
+      nowStation.domain,
       channelKey,
       tag.id
     );
@@ -39,7 +30,7 @@ class Catalog extends Component {
 
     if (result) {
       history.push({
-        pathname: `/${stationDomain}/home/detail/${channelKey}`,
+        pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
         state: { tagId: tag.id, tagName: tag.name }
       });
     }

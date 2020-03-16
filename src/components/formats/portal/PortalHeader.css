@@ -5,7 +5,7 @@
   align-items: flex-start;
   /* padding-top: 35px; */
   padding-top: 55px;
-  z-index: 999;
+  z-index: auto;
 }
 .portal-head-left {
   display: flex;

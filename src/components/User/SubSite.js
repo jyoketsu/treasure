@@ -7,7 +7,8 @@ import {
   searchStation,
   getSubStationList,
   addSubSite,
-  removeSubSite
+  removeSubSite,
+  clearSearchStation
 } from "../../actions/app";
 
 export default function SubSite() {
@@ -22,6 +23,9 @@ export default function SubSite() {
 
   useEffect(() => {
     getSubStationList(dispatch);
+    return () => {
+      clearSearchStation(dispatch);
+    };
   }, [dispatch]);
 
   function showConfirm(station) {
@@ -39,7 +43,7 @@ export default function SubSite() {
       <h2>添加子站</h2>
       <Search
         placeholder="请搜索要添加的站点"
-        onSearch={value => searchStation(value, 1, 100, dispatch)}
+        onSearch={value => searchStation(value, 1, 100, null, dispatch)}
         style={{ width: 200 }}
       />
       <div className="member-search-result">

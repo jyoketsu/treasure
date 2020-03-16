@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Header.css";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Link, withRouter } from "react-router-dom";
-import { Modal, Button, Checkbox } from "antd";
+import { Modal, Button, Checkbox, Tooltip } from "antd";
 // import TextMarquee from './common/TextMarquee';
 import util from "../services/Util";
 import TopMenu from "./HeaderMenu";
@@ -141,46 +141,56 @@ class Header extends Component {
           ) : null}
           <li className="menu-space"></li>
           {user && !user.isGuest ? (
-            <li
-              className={`head-icon subscribe ${
-                pathname === "/message" ? "active" : ""
-              }`}
-              onClick={this.switchSubscribe}
-            ></li>
+            <Tooltip title="订阅" placement="bottom">
+              <li
+                className={`head-icon subscribe ${
+                  pathname === "/message" ? "active" : ""
+                }`}
+                onClick={this.switchSubscribe}
+              ></li>
+            </Tooltip>
           ) : null}
-          <li
-            className={`head-icon qrCode`}
-            onClick={() => this.setState({ showQrCode: true })}
-          ></li>
+          <Tooltip title="本站二维码" placement="bottom">
+            <li
+              className={`head-icon qrCode`}
+              onClick={() => this.setState({ showQrCode: true })}
+            ></li>
+          </Tooltip>
           {user &&
           !user.isGuest &&
           nowStation &&
           nowStation.role &&
           nowStation.role <= 3 ? (
-            <li
-              className={`head-icon station-option-icon ${
-                pathname === "/message" ? "active" : ""
-              }`}
-            >
-              <Link to={`/${stationDomain}/stationOptions`}></Link>
-            </li>
+            <Tooltip title="站点设置" placement="bottom">
+              <li
+                className={`head-icon station-option-icon ${
+                  pathname === "/message" ? "active" : ""
+                }`}
+              >
+                <Link to={`/${stationDomain}/stationOptions`}></Link>
+              </li>
+            </Tooltip>
           ) : null}
-          <li
-            className={`head-icon me ${pathname === "/me" ? "active" : ""}`}
-            style={{
-              backgroundImage:
-                user && !user.isGuest && user.profile && user.profile.avatar
-                  ? `url(${user.profile.avatar})`
-                  : "/image/icon/me.svg",
-              borderRadius:
-                user && user.profile && user.profile.avatar ? "25px" : "unset",
-              width:
-                user && user.profile && user.profile.avatar ? "50px" : "24px",
-              height:
-                user && user.profile && user.profile.avatar ? "50px" : "24px"
-            }}
-            onClick={this.switchMenu}
-          ></li>
+          <Tooltip title="个人中心" placement="bottom">
+            <li
+              className={`head-icon me ${pathname === "/me" ? "active" : ""}`}
+              style={{
+                backgroundImage:
+                  user && !user.isGuest && user.profile && user.profile.avatar
+                    ? `url(${user.profile.avatar})`
+                    : "/image/icon/me.svg",
+                borderRadius:
+                  user && user.profile && user.profile.avatar
+                    ? "25px"
+                    : "unset",
+                width:
+                  user && user.profile && user.profile.avatar ? "50px" : "24px",
+                height:
+                  user && user.profile && user.profile.avatar ? "50px" : "24px"
+              }}
+              onClick={this.switchMenu}
+            ></li>
+          </Tooltip>
         </ul>
         {
           // isMobile ?

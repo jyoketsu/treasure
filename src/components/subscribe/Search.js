@@ -29,7 +29,12 @@ class SearchStation extends Component {
   onChange = page => {
     this.curPage = page;
     sessionStorage.setItem("searchStationPage", page);
-    this.props.searchStation(this.state.keyWord, this.curPage, this.perPage);
+    this.props.searchStation(
+      this.state.keyWord,
+      this.curPage,
+      this.perPage,
+      null
+    );
   };
 
   render() {
@@ -56,7 +61,7 @@ class SearchStation extends Component {
             placeholder="请输入站点名"
             onSearch={value => {
               sessionStorage.setItem("searchStationKeyword", value);
-              searchStation(value, 1, this.perPage);
+              searchStation(value, 1, this.perPage, null);
             }}
             style={{ width: 200, marginRight: "15px" }}
             value={keyWord}

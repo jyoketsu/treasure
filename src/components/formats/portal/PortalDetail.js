@@ -28,7 +28,6 @@ class PortalDetail extends Component {
 
   async handleClickCatalog(tag) {
     const {
-      location,
       history,
       match,
       nowStation,
@@ -36,13 +35,11 @@ class PortalDetail extends Component {
       asyncEnd,
       setStoryList
     } = this.props;
-    const pathname = location.pathname;
-    const stationDomain = pathname.split("/")[1];
     const channelKey = match.params.id;
     asyncStart();
     const result = await util.operation.handleClickTag(
       nowStation._key,
-      stationDomain,
+      nowStation.domain,
       channelKey,
       tag.id
     );
@@ -50,7 +47,7 @@ class PortalDetail extends Component {
     if (result) {
       setStoryList(result.result, result.total, tag.id, "");
       history.push({
-        pathname: `/${stationDomain}/home/detail/${channelKey}`,
+        pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
         state: { tagId: tag.id, tagName: tag.name }
       });
     }

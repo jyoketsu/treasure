@@ -398,4 +398,7 @@
     height: 30px;
     margin-bottom: unset;
   }
+  .operation-panel-wrapper{
+    right: 5px;
+  }
 }

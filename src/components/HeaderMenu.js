@@ -183,7 +183,7 @@ function StationList({ switchMenu }) {
       window.open(
         `${
           url
-            ? `http://${url}/account/login?token=${token}`
+            ? `http://${url}/account/login?token=${token}&redirect_uri=/${domain}/home`
             : `https://${HOST_NAME}/${domain}/home`
         }`,
         "_blank"

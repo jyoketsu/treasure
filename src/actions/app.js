@@ -161,6 +161,7 @@ export const CHANGE_STATION = "CHANGE_STATION";
 export const GET_STATION_DETAIL = "GET_STATION_DETAIL";
 export const GET_STATION_DETAIL_DOMAIN = "GET_STATION_DETAIL_DOMAIN";
 export const SEARCH_STATION = "SEARCH_STATION";
+export const CLEAR_SEARCH_STATION = "CLEAR_SEARCH_STATION";
 export const SUBSCRIBE = "SUBSCRIBE";
 export const SUBSCRIBE_STATION = "SUBSCRIBE_STATION";
 export const TRANSFER_STATION = "TRANSFER_STATION";
@@ -168,6 +169,9 @@ export const CLONE_STATION = "CLONE_STATION";
 export const GET_SUB_STATION_LIST = "GET_SUB_STATION_LIST";
 export const ADD_SUB_SITE = "ADD_SUB_SITE";
 export const REMOVE_SUB_SITE = "REMOVE_SUB_SITE";
+export const SUBSCRIBE_CHANNEL = "SUBSCRIBE_CHANNEL";
+export const GET_SUBSCRIBE_CHANNELS = "GET_SUBSCRIBE_CHANNELS";
+export const CLEAR_SUBSCRIBE_CHANNELS = "CLEAR_SUBSCRIBE_CHANNELS";
 
 export function getStationList() {
   let request = api.station.getStationList();
@@ -282,12 +286,20 @@ export function getStationDetailByDomain(domain) {
   return { type: GET_STATION_DETAIL_DOMAIN, domain: domain, payload: request };
 }
 
-export function searchStation(keyword, curPage, perPage, dispatch) {
-  let request = api.station.searchStation(keyword, curPage, perPage);
+export function searchStation(keyword, curPage, perPage, type, dispatch) {
+  let request = api.station.searchStation(keyword, curPage, perPage, type);
   if (dispatch) {
     dispatch({ type: SEARCH_STATION, payload: request });
   } else {
     return { type: SEARCH_STATION, payload: request };
+  }
+}
+
+export function clearSearchStation(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_SEARCH_STATION });
+  } else {
+    return { type: CLEAR_SEARCH_STATION };
   }
 }
 
@@ -371,6 +383,55 @@ export function getLatestVisitors(stationKey, dispatch) {
     dispatch({ type: GET_LATEST_VISITOR, payload: request });
   } else {
     return { type: GET_LATEST_VISITOR, payload: request };
+  }
+}
+
+export function subscribeChannel(
+  type,
+  sourceSeriesKey,
+  targetSeriesKey,
+  disOrSubType,
+  selectOrNot,
+  dispatch
+) {
+  let request = api.story.channelSubscribe(
+    sourceSeriesKey,
+    targetSeriesKey,
+    disOrSubType,
+    selectOrNot
+  );
+  if (dispatch) {
+    dispatch({
+      type: SUBSCRIBE_CHANNEL,
+      subscribeType: type,
+      targetSeriesKey: targetSeriesKey,
+      selectOrNot: selectOrNot,
+      payload: request
+    });
+  } else {
+    return {
+      type: SUBSCRIBE_CHANNEL,
+      targetSeriesKey: targetSeriesKey,
+      selectOrNot: selectOrNot,
+      payload: request
+    };
+  }
+}
+
+export function getSubscribeChannels(channelKey, dispatch) {
+  let request = api.story.getSubscribeChannels(channelKey);
+  if (dispatch) {
+    dispatch({ type: GET_SUBSCRIBE_CHANNELS, payload: request });
+  } else {
+    return { type: GET_SUBSCRIBE_CHANNELS, payload: request };
+  }
+}
+
+export function clearSubscribeChannels(dispatch) {
+  if (dispatch) {
+    dispatch({ type: CLEAR_SUBSCRIBE_CHANNELS });
+  } else {
+    return { type: CLEAR_SUBSCRIBE_CHANNELS };
   }
 }
 
