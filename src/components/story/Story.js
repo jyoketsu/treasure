@@ -3,6 +3,7 @@ import "./Story.css";
 import LoginTip from "../common/LoginTip";
 import StoryAction from "./StoryActions";
 import Comments from "./Comments";
+import SubStory from "./SubStory";
 import Next from "./NextStory";
 import util from "../../services/Util";
 import api from "../../services/Api";
@@ -99,7 +100,7 @@ class Story extends Component {
       }
     }
 
-    const { showSetting } = nowChannel;
+    const { showSetting, commentType } = nowChannel;
     const showAuthor = showSetting
       ? showSetting.indexOf("author") === -1
         ? false
@@ -274,7 +275,7 @@ class Story extends Component {
                 })
               : null}
             <StoryAction />
-            <Comments />
+            {commentType === 2 ? <SubStory /> : <Comments />}
             {!inline ? <Next /> : null}
           </div>
         ) : null}

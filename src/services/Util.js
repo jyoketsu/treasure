@@ -575,7 +575,6 @@ const operation = {
       }
     }
   },
-
   // 获取微信分享参数
   getShareInfo(nowStation, nowChannelKey, story) {
     const ua = window.navigator.userAgent.toLowerCase();

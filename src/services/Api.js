@@ -596,6 +596,29 @@ const story = {
     });
   },
 
+  addSubStory(story, fatherStoryKey, fatherSiteName, fatherChannelKey) {
+    return requests.post(APIURL + "/album/createCommentAlbum", {
+      token: token,
+      type: 6,
+      ...story,
+      fatherAlbumKey: fatherStoryKey,
+      fatherAlbumStarName: fatherSiteName,
+      fatherSeriesKey: fatherChannelKey
+    });
+  },
+  /**
+   * 子文章加星
+   * @param {String} storyKey
+   * @param {Number} status 1 投票；2 取消投票
+   */
+  vote(storyKey, status) {
+    return requests.post(APIURL + "/album/pollAlbum", {
+      token: token,
+      albumKey: storyKey,
+      status: status
+    });
+  },
+
   addChannel(stationKey, name, type, extParams) {
     return requests.post(APIURL + "/series", {
       token: token,

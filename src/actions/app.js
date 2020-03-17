@@ -464,6 +464,7 @@ export const GET_COMMENT_LIST = "GET_COMMENT_LIST";
 export const POST_COMMENT = "POST_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const CLEAR_COMMENT_LIST = "CLEAR_COMMENT_LIST";
+export const ADD_SUB_STORY = "ADD_SUB_STORY";
 
 export function applyEdit(storyKey, updateTime) {
   let request = api.story.applyEdit(storyKey, updateTime);
@@ -828,6 +829,34 @@ export function deleteComment(commentKey, dispatch) {
       type: DELETE_COMMENT,
       noLoading: true,
       commentKey: commentKey,
+      payload: request
+    };
+  }
+}
+
+export function addSubStory(
+  story,
+  fatherStoryKey,
+  fatherSiteName,
+  fatherChannelKey,
+  dispatch
+) {
+  let request = api.story.addSubStory(
+    story,
+    fatherStoryKey,
+    fatherSiteName,
+    fatherChannelKey
+  );
+  if (dispatch) {
+    dispatch({
+      type: ADD_SUB_STORY,
+      noLoading: true,
+      payload: request
+    });
+  } else {
+    return {
+      type: ADD_SUB_STORY,
+      noLoading: true,
       payload: request
     };
   }

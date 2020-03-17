@@ -25,7 +25,8 @@ import {
   GET_COMMENT_LIST,
   POST_COMMENT,
   DELETE_COMMENT,
-  CLEAR_COMMENT_LIST
+  CLEAR_COMMENT_LIST,
+  ADD_SUB_STORY
 } from "../actions/app";
 import { message } from "antd";
 
@@ -416,6 +417,17 @@ const story = (state = defaultState, action) => {
             break;
           }
         }
+        return {
+          ...state,
+          commentList: commentList
+        };
+      } else {
+        return state;
+      }
+    case ADD_SUB_STORY:
+      if (!action.error) {
+        let commentList = JSON.parse(JSON.stringify(state.commentList));
+        commentList.unshift(action.payload.result);
         return {
           ...state,
           commentList: commentList

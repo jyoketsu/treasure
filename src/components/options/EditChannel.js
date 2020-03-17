@@ -5,6 +5,7 @@ import UploadStationCover from "../common/UploadCover";
 import {
   Form,
   Input,
+  InputNumber,
   Button,
   message,
   Select,
@@ -98,6 +99,14 @@ const CustomizedForm = Form.create({
       allowPublicStatus: Form.createFormField({
         ...props.allowPublicStatus,
         value: props.allowPublicStatus.value
+      }),
+      commentType: Form.createFormField({
+        ...props.commentType,
+        value: props.commentType.value
+      }),
+      votePercent: Form.createFormField({
+        ...props.votePercent,
+        value: props.votePercent.value
       })
     };
   }
@@ -252,6 +261,25 @@ const CustomizedForm = Form.create({
       </Form.Item>
 
       <Divider />
+      <Form.Item label="评论类型">
+        {getFieldDecorator("commentType", {
+          rules: [{ required: true, message: "请选择评论类型！" }]
+        })(
+          <Radio.Group>
+            <Radio value={1}>普通</Radio>
+            <Radio value={2}>图文（子文章）</Radio>
+          </Radio.Group>
+        )}
+      </Form.Item>
+      {props.commentType.value === 2 ? (
+        <Form.Item label="票数比率（票数=子站数 * 票数比率）">
+          {getFieldDecorator("votePercent", {
+            rules: [{ pattern: /[0-1]/, message: "请输入0-1间的小数！" }]
+          })(<InputNumber min={0} max={1} step={0.1} />)}
+        </Form.Item>
+      ) : null}
+
+      <Divider />
     </Form>
   );
 });
@@ -336,6 +364,12 @@ class EditChannel extends Component {
         },
         allowPublicStatus: {
           value: channelInfo ? channelInfo.allowPublicStatus : false
+        },
+        commentType: {
+          value: channelInfo ? channelInfo.commentType || 1 : 1
+        },
+        votePercent: {
+          value: channelInfo ? channelInfo.votePercent || 0.2 : 0.2
         }
       }
     };
@@ -422,9 +456,12 @@ class EditChannel extends Component {
       showModal: false
     }));
   }
-
   render() {
     const { fields, logo, cover, showModal } = this.state;
+    const channelKey = util.common.getSearchParamValue(
+      window.location.search,
+      "key"
+    );
     return (
       <div className="edit-channel">
         <div className="channel-head">
@@ -460,7 +497,8 @@ class EditChannel extends Component {
             <TagOptionList tag={fields.tag.value} onOk={this.handleSetTag} />
           ) : null}
         </Modal>
-        <ChannelSubscribe/>
+        {channelKey ? <ChannelSubscribe /> : null}
+
         <Form.Item>
           <Button
             type="primary"

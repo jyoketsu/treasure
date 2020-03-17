@@ -7,7 +7,12 @@ import TopMenu from "../../HeaderMenu";
 import SubscribeMenu from "../../HeaderSubscribe";
 import Header from "../../Header";
 import { connect } from "react-redux";
-import { setChannelKey } from "../../../actions/app";
+import {
+  setChannelKey,
+  setStoryList,
+  asyncStart,
+  asyncEnd
+} from "../../../actions/app";
 
 const mapStateToProps = state => ({
   user: state.auth.user,
@@ -61,7 +66,15 @@ class PortalHeader extends Component {
   }
 
   render() {
-    const { location, nowStation, user, history } = this.props;
+    const {
+      location,
+      nowStation,
+      user,
+      history,
+      setStoryList,
+      asyncStart,
+      asyncEnd
+    } = this.props;
     const { logoSize, showMenu, showSubscribe } = this.state;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
@@ -79,12 +92,16 @@ class PortalHeader extends Component {
             {channelList.map((channel, index) => (
               <Channel
                 key={index}
+                nowStation={nowStation}
                 channelKey={channel._key}
                 name={channel.name}
                 icon={channel.logo}
                 tag={channel.tag}
                 location={location}
                 history={history}
+                setStoryList={setStoryList}
+                asyncStart={asyncStart}
+                asyncEnd={asyncEnd}
                 onClick={() => this.handleClick(channel._key)}
               />
             ))}
@@ -266,17 +283,37 @@ class Channel extends Component {
       </div>
     );
   }
-  handleClick(tag, channelKey) {
-    const { location, history } = this.props;
-    const pathname = location.pathname;
-    const stationDomain = pathname.split("/")[1];
-    history.push({
-      pathname: `/${stationDomain}/home/detail/${channelKey}`,
-      state: { tagId: tag.id, tagName: tag.name }
-    });
+  async handleClick(tag, channelKey) {
+    const {
+      history,
+      nowStation,
+      asyncStart,
+      asyncEnd,
+      setStoryList
+    } = this.props;
+    asyncStart();
+    const result = await util.operation.handleClickTag(
+      nowStation._key,
+      nowStation.domain,
+      channelKey,
+      tag.id
+    );
+    asyncEnd();
+    if (result) {
+      setStoryList(result.result, result.total, tag.id, "");
+      history.push({
+        pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
+        state: { tagId: tag.id, tagName: tag.name }
+      });
+    }
   }
 }
 
 export default withRouter(
-  connect(mapStateToProps, { setChannelKey })(PortalHeader)
+  connect(mapStateToProps, {
+    setChannelKey,
+    setStoryList,
+    asyncStart,
+    asyncEnd
+  })(PortalHeader)
 );
