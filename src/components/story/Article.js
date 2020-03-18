@@ -13,7 +13,10 @@ const mapStateToProps = state => ({
   story: state.story.story,
   nowStation: state.station.nowStation,
   nowStationKey: state.station.nowStationKey,
-  loading: state.common.loading
+  loading: state.common.loading,
+  channelInfo: state.station.nowStation
+    ? state.station.nowStation.seriesInfo
+    : []
 });
 
 class Article extends Component {
@@ -37,7 +40,8 @@ class Article extends Component {
       readOnly,
       hideMenu,
       inline,
-      loading
+      loading,
+      channelInfo
     } = this.props;
     const { userKey, title, creator = {} } = story;
     const role = nowStation ? nowStation.role : 8;
@@ -50,6 +54,19 @@ class Article extends Component {
       let regex = /<img src=/gi;
       str = story.content.replace(regex, "<img class='lozad' data-src=");
     }
+
+    // 文章所在频道
+    const nowChannelId = story.series
+      ? story.series._key
+      : util.common.getSearchParamValue(window.location.search, "channel");
+    let nowChannel = {};
+    for (let i = 0; i < channelInfo.length; i++) {
+      if (channelInfo[i]._key === nowChannelId) {
+        nowChannel = channelInfo[i];
+        break;
+      }
+    }
+    const { commentType } = nowChannel;
 
     return (
       <div
@@ -148,6 +165,8 @@ class Article extends Component {
                 hideMenu={hideMenu}
                 data={str}
                 inline={inline}
+                commentType={commentType}
+                fatherAlbumKey={story.fatherAlbumKey}
               />
             ) : null}
           </div>

@@ -465,15 +465,27 @@ export const POST_COMMENT = "POST_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const CLEAR_COMMENT_LIST = "CLEAR_COMMENT_LIST";
 export const ADD_SUB_STORY = "ADD_SUB_STORY";
+export const VOTE = "VOTE";
+export const EDIT_COMMENT = "EDIT_COMMENT";
 
-export function applyEdit(storyKey, updateTime) {
+export function applyEdit(storyKey, updateTime, dispatch) {
   let request = api.story.applyEdit(storyKey, updateTime);
-  return { type: APPLY_EDIT, noLoading: true, payload: request };
+  const dispatchBody = { type: APPLY_EDIT, noLoading: true, payload: request };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
-export function exitEdit(storyKey) {
+export function exitEdit(storyKey, dispatch) {
   let request = api.story.exitEdit(storyKey);
-  return { type: EXIT_EDIT, noLoading: true, payload: request };
+  const dispatchBody = { type: EXIT_EDIT, noLoading: true, payload: request };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
 }
 
 export function getStoryList(
@@ -775,6 +787,7 @@ export function clearCommentList(dispatch) {
 }
 
 export function comment(
+  userKey,
   storyKey,
   type,
   content,
@@ -797,6 +810,7 @@ export function comment(
   );
   const dispatchBody = {
     type: POST_COMMENT,
+    userKey: userKey,
     storyKey: storyKey,
     storyType: type,
     content: content,
@@ -847,18 +861,65 @@ export function addSubStory(
     fatherSiteName,
     fatherChannelKey
   );
+  const dispatchBody = {
+    type: ADD_SUB_STORY,
+    noLoading: true,
+    payload: request
+  };
   if (dispatch) {
-    dispatch({
-      type: ADD_SUB_STORY,
-      noLoading: true,
-      payload: request
-    });
+    dispatch(dispatchBody);
   } else {
-    return {
-      type: ADD_SUB_STORY,
-      noLoading: true,
-      payload: request
-    };
+    return dispatchBody;
+  }
+}
+
+export function editSubStory(story, dispatch) {
+  let request = api.story.editStory(story);
+  const dispatchBody = {
+    type: EDIT_COMMENT,
+    noLoading: true,
+    payload: request
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
+}
+
+/**
+ * 子文章加星
+ * @param {String} storyKey
+ * @param {Number} status 1 投票；2 取消投票
+ */
+export function vote(storyKey, status, dispatch) {
+  let request = api.story.vote(storyKey, status);
+  const dispatchBody = {
+    type: VOTE,
+    noLoading: true,
+    storyKey: storyKey,
+    status: status,
+    payload: request
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
+  }
+}
+
+export function deleteSubStory(storyKey, dispatch) {
+  let request = api.story.deleteStory(storyKey);
+  const dispatchBody = {
+    type: DELETE_COMMENT,
+    noLoading: true,
+    commentKey: storyKey,
+    payload: request
+  };
+  if (dispatch) {
+    dispatch(dispatchBody);
+  } else {
+    return dispatchBody;
   }
 }
 

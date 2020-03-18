@@ -275,7 +275,11 @@ class Story extends Component {
                 })
               : null}
             <StoryAction />
-            {commentType === 2 ? <SubStory /> : <Comments />}
+            {!story.fatherAlbumKey && commentType === 2 ? (
+              <SubStory />
+            ) : (
+              <Comments />
+            )}
             {!inline ? <Next /> : null}
           </div>
         ) : null}

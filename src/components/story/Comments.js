@@ -75,6 +75,7 @@ function PostBox({ targetComment, autoFocus }) {
             return message.info("评论不能为空！");
           }
           comment(
+            user._key,
             story._key,
             story.type,
             reply,

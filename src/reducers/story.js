@@ -26,7 +26,9 @@ import {
   POST_COMMENT,
   DELETE_COMMENT,
   CLEAR_COMMENT_LIST,
-  ADD_SUB_STORY
+  ADD_SUB_STORY,
+  VOTE,
+  EDIT_COMMENT
 } from "../actions/app";
 import { message } from "antd";
 
@@ -387,7 +389,7 @@ const story = (state = defaultState, action) => {
         let commentList = Object.assign([], state.commentList);
         commentList.unshift({
           _key: action.payload.result,
-          userKey: null,
+          userKey: action.userKey,
           type: action.storyType,
           content: action.content,
           createTime: new Date().getTime(),
@@ -428,6 +430,47 @@ const story = (state = defaultState, action) => {
       if (!action.error) {
         let commentList = JSON.parse(JSON.stringify(state.commentList));
         commentList.unshift(action.payload.result);
+        return {
+          ...state,
+          commentList: commentList
+        };
+      } else {
+        return state;
+      }
+    case VOTE:
+      if (!action.error) {
+        let commentList = JSON.parse(JSON.stringify(state.commentList));
+        for (let index = 0; index < commentList.length; index++) {
+          const element = commentList[index];
+          if (element._key === action.storyKey) {
+            if (!commentList[index].voteNum) {
+              commentList[index].voteNum = 0;
+            }
+            if (action.status === 1) {
+              commentList[index].voteNum += 1;
+            } else {
+              commentList[index].voteNum -= 1;
+            }
+            break;
+          }
+        }
+        return {
+          ...state,
+          commentList: commentList
+        };
+      } else {
+        return state;
+      }
+    case EDIT_COMMENT:
+      if (!action.error) {
+        let commentList = JSON.parse(JSON.stringify(state.commentList));
+        const result = action.payload.result;
+        for (let i = 0; i < commentList.length; i++) {
+          if (commentList[i]._key === result._key) {
+            commentList[i] = result;
+            break;
+          }
+        }
         return {
           ...state,
           commentList: commentList

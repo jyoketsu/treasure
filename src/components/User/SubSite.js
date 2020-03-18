@@ -22,11 +22,11 @@ export default function SubSite() {
   const nowStation = useSelector(state => state.station.nowStation);
 
   useEffect(() => {
-    getSubStationList(dispatch);
+    getSubStationList(nowStation._key, dispatch);
     return () => {
       clearSearchStation(dispatch);
     };
-  }, [dispatch]);
+  }, [nowStation._key, dispatch]);
 
   function showConfirm(station) {
     confirm({

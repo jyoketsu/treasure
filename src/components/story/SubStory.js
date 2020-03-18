@@ -1,9 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./SubStory.css";
-import { message, Button } from "antd";
+import { message, Button, Modal } from "antd";
 import { FileUpload } from "../common/Form";
 import util from "../../services/Util";
-import { addSubStory, getCommentList } from "../../actions/app";
+import {
+  addSubStory,
+  getCommentList,
+  vote,
+  deleteSubStory,
+  editSubStory,
+  applyEdit,
+  exitEdit
+} from "../../actions/app";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import "moment/locale/zh-cn";
@@ -13,20 +21,52 @@ export default function SubStory() {
   return (
     <div className="sub-story-wrapper">
       <div className="sub-story-wrapper-title">回复：</div>
-      <Create />
+      <Editor />
       <SubStories />
       <More />
     </div>
   );
 }
 
-function Create() {
+function Editor({ story, handleFinish }) {
+  const contents = story ? story.richContent : [];
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const nowStation = useSelector(state => state.station.nowStation);
   const nowStory = useSelector(state => state.story.story);
-  const [value, setValue] = useState("");
-  const [images, setImages] = useState([]);
+
+  let text = "";
+  let medias = [];
+  for (let index = 0; index < contents.length; index++) {
+    const element = contents[index];
+    switch (element.metaType) {
+      case "html":
+        text += element.memo;
+        break;
+      case "image":
+        medias.push(element.url);
+        break;
+      case "video":
+        medias.push(element.url);
+        break;
+      default:
+        break;
+    }
+  }
+
+  const [value, setValue] = useState(text);
+  const [images, setImages] = useState(medias);
+
+  useEffect(() => {
+    if (story) {
+      applyEdit(story._key, story.updateTime, dispatch);
+    }
+    return () => {
+      if (story) {
+        exitEdit(story._key, dispatch);
+      }
+    };
+  }, [story, dispatch]);
 
   async function handleCommit() {
     if (!images.length) {
@@ -35,38 +75,71 @@ function Create() {
     if (!value) {
       return message.info("请输入内容");
     }
-    let size = await util.common.getImageInfo(images[0]);
-    const story = {
-      title: value.substr(0, 100),
-      type: 6,
-      cover: images[0],
-      size: size,
-      userKey: user._key,
-      starKey: nowStation._key,
-      publish: 1,
-      isSimple: 1,
-      pictureCount: images.length,
-      richContent: [
-        {
-          _id: util.common.randomStr(false, 12),
-          metaType: "html",
-          memo: value
-        },
-        ...images.map((image, index) => ({
-          _id: util.common.randomStr(false, 12),
-          metaType: "image",
-          url: image
-        }))
-      ]
-    };
 
-    addSubStory(
-      story,
-      nowStory._key,
-      nowStation.name,
-      nowStory.series._key,
-      dispatch
-    );
+    if (story) {
+      // 编辑
+      let size = await util.common.getImageInfo(images[0]);
+      const params = {
+        ...story,
+        ...{
+          key: story._key,
+          series: story.series._key,
+          title: value.substr(0, 100),
+          cover: images[0],
+          size: size,
+          pictureCount: images.length,
+          richContent: [
+            {
+              _id: util.common.randomStr(false, 12),
+              metaType: "html",
+              memo: value
+            },
+            ...images.map((image, index) => ({
+              _id: util.common.randomStr(false, 12),
+              metaType: "image",
+              url: image
+            }))
+          ]
+        }
+      };
+      editSubStory(params, dispatch);
+      handleFinish();
+    } else {
+      // 新增
+      let size = await util.common.getImageInfo(images[0]);
+      const params = {
+        title: value.substr(0, 100),
+        type: 6,
+        cover: images[0],
+        size: size,
+        userKey: user._key,
+        starKey: nowStation._key,
+        publish: 1,
+        isSimple: 1,
+        pictureCount: images.length,
+        richContent: [
+          {
+            _id: util.common.randomStr(false, 12),
+            metaType: "html",
+            memo: value
+          },
+          ...images.map((image, index) => ({
+            _id: util.common.randomStr(false, 12),
+            metaType: "image",
+            url: image
+          }))
+        ]
+      };
+
+      addSubStory(
+        params,
+        nowStory._key,
+        nowStation.name,
+        nowStory.series._key,
+        dispatch
+      );
+    }
+
     setValue("");
     setImages([]);
   }
@@ -80,17 +153,17 @@ function Create() {
           setImages={setImages}
         />
       </div>
-      <Commit handleCommit={handleCommit} />
+      <Commit handleCommit={handleCommit} story={story} />
     </div>
   );
 }
 
-function Commit({ handleCommit }) {
+function Commit({ handleCommit, story }) {
   const waiting = useSelector(state => state.common.waiting);
   return (
     <div className="sub-story-commit">
       <Button type="primary" loading={waiting} onClick={() => handleCommit()}>
-        发表回复
+        {!story ? "发表回复" : "保存更改"}
       </Button>
     </div>
   );
@@ -215,16 +288,22 @@ function SubStories() {
 }
 
 function Story({ story }) {
+  const storyEl = useRef(null);
+  const [isEditor, setisEditor] = useState(false);
   const richContent = story.richContent || [];
 
-  function handleClickImage(url) {
-    if (!util.common.isMiniProgram()) {
-      window.open(url, "_blank");
+  function handleEdit(value) {
+    const top = storyEl.current.offsetTop;
+    if (document.body.scrollTop !== 0) {
+      document.body.scrollTop = top;
+    } else {
+      document.documentElement.scrollTop = top;
     }
+    setisEditor(value);
   }
 
   return (
-    <div className="sub-story">
+    <div className="sub-story" ref={storyEl}>
       <div className="sub-story-user">
         <i
           style={{
@@ -236,88 +315,137 @@ function Story({ story }) {
         <span>{story.creator.name}</span>
       </div>
       <div className="sub-story-content">
-        {richContent.map((content, index) => {
-          const { url, memo } = content;
-          let result = null;
-          let regex1 = /[^()]+(?=\))/g;
-          switch (content.metaType) {
-            case "html":
-              result = <pre className="story-content-view">{memo}</pre>;
-              break;
-            case "header":
-              result = <span className="story-text-title-show">{memo}</span>;
-              break;
-            case "image": {
-              let exifStr = "";
-              if (content.exif) {
-                const model = content.exif.Model
-                  ? `${content.exif.Model.val}，  `
-                  : "";
-                const shutterSpeedValue = content.exif.ShutterSpeedValue
-                  ? `${content.exif.ShutterSpeedValue.val.match(regex1)}，  `
-                  : "";
-                const apertureValue = content.exif.ApertureValue
-                  ? `${content.exif.ApertureValue.val.match(regex1)}，  `
-                  : "";
-                const iSOSpeedRatings = content.exif.ISOSpeedRatings
-                  ? `${content.exif.ISOSpeedRatings.val}`
-                  : "";
-                exifStr =
-                  model + shutterSpeedValue + apertureValue + iSOSpeedRatings;
-              }
-
-              result = (
-                <div className="story-imageGroup">
-                  <div className="story-image-box">
-                    <img
-                      className="story-image lozad"
-                      src={`${url}?imageView2/2/w/900/`}
-                      alt="story"
-                      onClick={() => handleClickImage(url)}
-                    />
-                    {exifStr ? <div className="img-exif">{exifStr}</div> : null}
-                  </div>
-                  <div className="image-memo">{memo}</div>
-                </div>
-              );
-              break;
-            }
-            case "video":
-              result = (
-                <video
-                  className="story-video"
-                  src={url}
-                  controls="controls"
-                  loop="loop"
-                >
-                  Your browser does not support the video tag.
-                </video>
-              );
-              break;
-            default:
-              break;
-          }
-          return (
-            <div className="story-content-edit-box" key={index}>
-              {result}
-            </div>
-          );
-        })}
-        <StoryFoot story={story} />
+        {!isEditor ? (
+          <StoryContent contents={richContent} />
+        ) : (
+          <Editor story={story} handleFinish={() => setisEditor(false)} />
+        )}
+        {!isEditor ? <StoryFoot story={story} handleEdit={handleEdit} /> : null}
       </div>
     </div>
   );
 }
 
-function StoryFoot({ story }) {
+function StoryContent({ contents }) {
+  function handleClickImage(url) {
+    if (!util.common.isMiniProgram()) {
+      window.open(url, "_blank");
+    }
+  }
+  return (
+    <div>
+      {contents.map((content, index) => {
+        const { url, memo } = content;
+        let result = null;
+        let regex1 = /[^()]+(?=\))/g;
+        switch (content.metaType) {
+          case "html":
+            result = <pre className="story-content-view">{memo}</pre>;
+            break;
+          case "header":
+            result = <span className="story-text-title-show">{memo}</span>;
+            break;
+          case "image": {
+            let exifStr = "";
+            if (content.exif) {
+              const model = content.exif.Model
+                ? `${content.exif.Model.val}，  `
+                : "";
+              const shutterSpeedValue = content.exif.ShutterSpeedValue
+                ? `${content.exif.ShutterSpeedValue.val.match(regex1)}，  `
+                : "";
+              const apertureValue = content.exif.ApertureValue
+                ? `${content.exif.ApertureValue.val.match(regex1)}，  `
+                : "";
+              const iSOSpeedRatings = content.exif.ISOSpeedRatings
+                ? `${content.exif.ISOSpeedRatings.val}`
+                : "";
+              exifStr =
+                model + shutterSpeedValue + apertureValue + iSOSpeedRatings;
+            }
+
+            result = (
+              <div className="story-imageGroup">
+                <div className="story-image-box">
+                  <img
+                    className="story-image lozad"
+                    src={`${url}?imageView2/2/w/900/`}
+                    alt="story"
+                    onClick={() => handleClickImage(url)}
+                  />
+                  {exifStr ? <div className="img-exif">{exifStr}</div> : null}
+                </div>
+                <div className="image-memo">{memo}</div>
+              </div>
+            );
+            break;
+          }
+          case "video":
+            result = (
+              <video
+                className="story-video"
+                src={url}
+                controls="controls"
+                loop="loop"
+              >
+                Your browser does not support the video tag.
+              </video>
+            );
+            break;
+          default:
+            break;
+        }
+        return (
+          <div className="story-content-edit-box" key={index}>
+            {result}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function StoryFoot({ story, handleEdit }) {
+  const confirm = Modal.confirm;
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+
+  function deleteConfirm(story) {
+    confirm({
+      title: "删除回复",
+      content: `确定要删除${story.title}吗？`,
+      okText: "删除",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        deleteSubStory(story._key, dispatch);
+      }
+    });
+  }
   return (
     <div className="sub-story-foot">
       <div className="left-section">
         <span>{moment(story.updateTime).fromNow()}</span>
       </div>
       <div className="right-section">
-        <i className="sub-story-star"></i>
-        <span className="story-action-number">999</span>
+        {user._key === story.userKey ? (
+          <div className="sub-story-action" onClick={() => handleEdit(true)}>
+            编辑
+          </div>
+        ) : null}
+        {user._key === story.userKey ? (
+          <div
+            className="sub-story-action"
+            onClick={() => deleteConfirm(story)}
+          >
+            删除
+          </div>
+        ) : null}
+        <i
+          className="sub-story-star"
+          onClick={() => vote(story._key, story.isVote ? 2 : 1, dispatch)}
+        ></i>
+        <span className="story-action-number">{story.voteNum || 0}</span>
       </div>
     </div>
   );

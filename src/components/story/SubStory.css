@@ -1,5 +1,7 @@
 .sub-story-wrapper {
+  width: 100%;
   padding-bottom: 15px;
+  background-color: #fff;
 }
 .sub-story-wrapper-title {
   font-size: 18px;
@@ -159,6 +161,7 @@
 .sub-story-star {
   width: 25px;
   height: 25px;
+  margin-left: 15px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -166,6 +169,13 @@
 }
 .sub-story-star:hover {
   cursor: pointer;
+}
+.sub-story-action {
+  margin-left: 15px;
+}
+.sub-story-action:hover {
+  cursor: pointer;
+  color: #1890ff;
 }
 @media screen and (max-width: 768px) {
   .sub-story-wrapper-title,

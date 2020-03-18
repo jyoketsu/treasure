@@ -28,7 +28,9 @@
   flex-direction: column;
   align-items: center;
   margin: auto;
-  padding-top: 15px;
+  padding: 15px;
+  margin-top: 25px;
+  background-color: #fff;
 }
 .article-ext-wrapper.inline {
   width: 100%;

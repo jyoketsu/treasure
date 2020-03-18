@@ -5,6 +5,7 @@ import * as qiniu from "qiniu-js";
 import util from "../../services/Util";
 import StoryAction from "../story/StoryActions";
 import Comments from "../story/Comments";
+import SubStory from "../story/SubStory";
 import Next from "../story/NextStory";
 // Require Editor JS files.
 import "froala-editor/js/froala_editor.pkgd.min";
@@ -261,7 +262,9 @@ class MyFroalaEditor extends Component {
       handleChange,
       uptoken,
       hideMenu,
-      inline
+      inline,
+      fatherAlbumKey,
+      commentType
     } = this.props;
     const { typeArr, subs, top } = this.state;
     const that = this;
@@ -379,6 +382,7 @@ class MyFroalaEditor extends Component {
         inline ? ["codeEditor"] : ["codeEditor", "alert", "moreStyle"]
       ]
     };
+
     return (
       <div className="my-froala-editor-container">
         {!hideMenu && typeArr.length ? (
@@ -420,7 +424,11 @@ class MyFroalaEditor extends Component {
           {previewMode ? (
             <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
               <StoryAction />
-              <Comments />
+              {!fatherAlbumKey && commentType === 2 ? (
+                <SubStory />
+              ) : (
+                <Comments />
+              )}
               {!inline ? <Next /> : null}
             </div>
           ) : null}
