@@ -6,6 +6,7 @@ import util from "../../services/Util";
 import {
   addSubStory,
   getCommentList,
+  clearCommentList,
   vote,
   deleteSubStory,
   editSubStory,
@@ -20,7 +21,6 @@ moment.locale("zh-cn");
 export default function SubStory() {
   return (
     <div className="sub-story-wrapper">
-      <div className="sub-story-wrapper-title">回复：</div>
       <Editor />
       <SubStories />
       <More />
@@ -170,6 +170,7 @@ function Commit({ handleCommit, story }) {
 }
 
 function Content({ value, setValue, images, setImages }) {
+  const user = useSelector(state => state.auth.user);
   const imagesWrapperEl = useRef(null);
   const contentEl = useRef(null);
   const [itemWidth, setItemWidth] = useState(0);
@@ -202,9 +203,9 @@ function Content({ value, setValue, images, setImages }) {
     setValue(value);
     setTextareaHeight(
       contentEl.current
-        ? contentEl.current.offsetHeight > 90
+        ? contentEl.current.offsetHeight > 60
           ? contentEl.current.offsetHeight + 30
-          : 90 + 30
+          : 60 + 30
         : 0
     );
   }
@@ -220,6 +221,14 @@ function Content({ value, setValue, images, setImages }) {
         className="sub-story-create-text"
         style={{ height: `${textareaHeight}px` }}
       >
+        <i
+          style={{
+            backgroundImage: user.profile
+              ? `url(${user.profile.avatar ||
+                  "/image/icon/avatar.svg"}?imageView2/2/w/100)`
+              : "/image/icon/avatar.svg"
+          }}
+        ></i>
         <div className="sub-story-text-wrapper">
           <pre className="content" ref={contentEl}>
             {value}
@@ -277,7 +286,15 @@ function Image({ index, image, itemWidth, handleRemove }) {
 }
 
 function SubStories() {
+  const dispatch = useDispatch();
   const commentList = useSelector(state => state.story.commentList);
+
+  useEffect(() => {
+    return () => {
+      clearCommentList(dispatch);
+    };
+  }, [dispatch]);
+
   return (
     <div className="sub-stories">
       {commentList.map((story, index) => (
@@ -409,6 +426,7 @@ function StoryFoot({ story, handleEdit }) {
   const confirm = Modal.confirm;
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const nowStation = useSelector(state => state.station.nowStation);
 
   function deleteConfirm(story) {
     confirm({
@@ -433,7 +451,7 @@ function StoryFoot({ story, handleEdit }) {
             编辑
           </div>
         ) : null}
-        {user._key === story.userKey ? (
+        {nowStation.role <= 2 || user._key === story.userKey ? (
           <div
             className="sub-story-action"
             onClick={() => deleteConfirm(story)}
@@ -442,7 +460,7 @@ function StoryFoot({ story, handleEdit }) {
           </div>
         ) : null}
         <i
-          className="sub-story-star"
+          className={`sub-story-star ${story.isVote ? "active" : ""}`}
           onClick={() => vote(story._key, story.isVote ? 2 : 1, dispatch)}
         ></i>
         <span className="story-action-number">{story.voteNum || 0}</span>
@@ -462,7 +480,7 @@ function More() {
   }
   return (
     <div className="more-comment" style={{ marginTop: "15px" }}>
-      {commentList.length >= 0 && visible ? (
+      {commentList.length >= 10 && visible ? (
         <span onClick={handleClick}>查看更多评论</span>
       ) : null}
     </div>

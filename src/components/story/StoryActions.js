@@ -5,11 +5,14 @@ import { Select } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { like, setStatusTag } from "../../actions/app";
 
-export default function StoryAction() {
+export default function StoryAction({ children }) {
   return (
     <div className="story-action">
-      <StatusTag />
-      <Like />
+      <div className="left-section">{children}</div>
+      <div className="right-section">
+        <StatusTag />
+        <Like />
+      </div>
     </div>
   );
 }

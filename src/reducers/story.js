@@ -448,8 +448,10 @@ const story = (state = defaultState, action) => {
             }
             if (action.status === 1) {
               commentList[index].voteNum += 1;
+              commentList[index].isVote = true;
             } else {
               commentList[index].voteNum -= 1;
+              commentList[index].isVote = false;
             }
             break;
           }

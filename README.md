@@ -30,6 +30,10 @@ sudo chown -R $USER:$GROUP ~/.npm
 sudo chown -R $USER:$GROUP ~/.config
 npm cache clean --force
 ```
+## 自动登录
+```
+`https://baoku.qingtime.cn/account/login?token=${token}&redirect_uri=/${domain}/home`
+```
 
 ### 在create-react-app中build禁止生成源映射
 create-react-app会默认的在构建期间缩小代码并生成源映射，这样的话会在build文件夹的js目录生成.js与.map文件

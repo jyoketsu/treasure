@@ -263,8 +263,9 @@ class MyFroalaEditor extends Component {
       uptoken,
       hideMenu,
       inline,
-      fatherAlbumKey,
-      commentType
+      commentType,
+      story = {},
+      children
     } = this.props;
     const { typeArr, subs, top } = this.state;
     const that = this;
@@ -383,6 +384,11 @@ class MyFroalaEditor extends Component {
       ]
     };
 
+    const { title, creator = {} } = story;
+    let avatar = creator.avatar
+      ? `${creator.avatar}?imageView2/1/w/160/h/160`
+      : "/image/icon/avatar.svg";
+
     return (
       <div className="my-froala-editor-container">
         {!hideMenu && typeArr.length ? (
@@ -412,6 +418,53 @@ class MyFroalaEditor extends Component {
             }`}
           >
             {previewMode ? (
+              <div className="story-head-title" style={{ border: "unset" }}>
+                <div className="story-title">{title}</div>
+                <div className="story-head-info">
+                  <div className="story-head-other">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <i
+                        className="story-head-avatar"
+                        style={{
+                          backgroundImage: `url('${avatar ||
+                            "/image/icon/avatar.svg"}')`
+                        }}
+                        onClick={() =>
+                          (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                        }
+                      ></i>
+                      <div
+                        className="story-card-name"
+                        onClick={() =>
+                          (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                        }
+                      >
+                        {`${creator.name || ""}${
+                          story.creator && story.creator.relationDesc
+                            ? `（${story.creator.relationDesc}）`
+                            : ""
+                        }`}
+                      </div>
+                      <div className="story-card-time">
+                        {util.common.timestamp2DataStr(
+                          story.updateTime,
+                          "yyyy-MM-dd"
+                        )}
+                      </div>
+                      <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {previewMode ? (
               <FroalaEditorView model={data} />
             ) : (
               <FroalaEditor
@@ -423,12 +476,11 @@ class MyFroalaEditor extends Component {
           </div>
           {previewMode ? (
             <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
-              <StoryAction />
-              {!fatherAlbumKey && commentType === 2 ? (
-                <SubStory />
-              ) : (
-                <Comments />
-              )}
+              <StoryAction>{children}</StoryAction>
+
+              {!story.fatherAlbumKey && commentType === 2 ? <SubStory /> : null}
+              {commentType !== 1 ? <Comments /> : null}
+
               {!inline ? <Next /> : null}
             </div>
           ) : null}

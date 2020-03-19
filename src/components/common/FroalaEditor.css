@@ -12,7 +12,6 @@
 
 .my-froala-editor.preview {
   width: 816px;
-  min-height: 500px;
   box-shadow: 0 1px 6px #ccc;
   background-color: #ffffff;
   padding: 1cm 2cm 2cm;
@@ -28,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   margin: auto;
-  padding: 15px;
+  padding: 0 15px;
   margin-top: 25px;
   background-color: #fff;
 }

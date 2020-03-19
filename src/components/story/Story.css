@@ -129,7 +129,6 @@
 .story-head-title {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid gainsboro;
   margin-bottom: 10px;
 }
 
@@ -166,7 +165,6 @@
 
 .story-station-channel {
   width: 100%;
-  color: #4a90e2;
   text-align: center;
   overflow: hidden;
   white-space: nowrap;
@@ -174,6 +172,7 @@
 }
 .story-station-channel:hover {
   cursor: pointer;
+  color: #4a90e2;
 }
 
 .story-head-avatar {
@@ -260,6 +259,9 @@
   .story-content-view,
   .image-memo {
     padding: 0 15px;
+  }
+  .story-head-other {
+    align-items: flex-start;
   }
 
   .story-head-other > div {

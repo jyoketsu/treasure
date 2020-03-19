@@ -18,7 +18,7 @@ moment.locale("zh-cn");
 export default function Comments() {
   return (
     <div className="story-comment">
-      <div style={{ fontSize: "18px", lineHeight: "30px" }}>评论：</div>
+      {/* <div style={{ fontSize: "18px", lineHeight: "30px" }}>评论：</div> */}
       <PostBox />
       <List />
       <More />

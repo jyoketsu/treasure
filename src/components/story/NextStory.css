@@ -12,3 +12,6 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+.next-story > i:hover {
+  cursor: pointer;
+}

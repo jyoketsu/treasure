@@ -43,11 +43,8 @@ class Article extends Component {
       loading,
       channelInfo
     } = this.props;
-    const { userKey, title, creator = {} } = story;
+    const { userKey } = story;
     const role = nowStation ? nowStation.role : 8;
-    let avatar = creator.avatar
-      ? `${creator.avatar}?imageView2/1/w/160/h/160`
-      : "/image/icon/avatar.svg";
 
     let str;
     if (story && story.content) {
@@ -80,71 +77,9 @@ class Article extends Component {
             hideMenu ? "hide-menu" : ""
           }`}
           style={{
-            minHeight: `${window.innerHeight - 70}px`
+            minHeight: `${window.innerHeight}px`
           }}
         >
-          <div className="story-head-title" style={{ border: "unset" }}>
-            <div
-              className="story-title"
-              // onClick={() =>
-              //   window.open(
-              //     `${window.location.protocol}//${window.location.host}/${nowStation.domain}/article?key=${story._key}`,
-              //     "_blank"
-              //   )
-              // }
-            >
-              {title}
-            </div>
-            <div className="story-head-info">
-              <div className="story-head-other">
-                <div
-                  className="story-station-channel"
-                  onClick={this.handleClickSite.bind(this)}
-                >
-                  {`${nowStation ? nowStation.name : ""} / ${
-                    story.series ? story.series.name : ""
-                  }`}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                >
-                  <i
-                    className="story-head-avatar"
-                    style={{
-                      backgroundImage: `url('${avatar ||
-                        "/image/icon/avatar.svg"}')`
-                    }}
-                    onClick={() =>
-                      (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-                    }
-                  ></i>
-                  <div
-                    className="story-card-name"
-                    onClick={() =>
-                      (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-                    }
-                  >
-                    {`${creator.name || ""}${
-                      story.creator && story.creator.relationDesc
-                        ? `（${story.creator.relationDesc}）`
-                        : ""
-                    }`}
-                  </div>
-                  <div className="story-card-time">
-                    {util.common.timestamp2DataStr(
-                      story.updateTime,
-                      "yyyy-MM-dd"
-                    )}
-                  </div>
-                  <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
-                </div>
-              </div>
-            </div>
-          </div>
           {!readOnly &&
           (userId === userKey || (role && role <= 3)) &&
           nowStationKey !== "all" ? (
@@ -166,8 +101,17 @@ class Article extends Component {
                 data={str}
                 inline={inline}
                 commentType={commentType}
-                fatherAlbumKey={story.fatherAlbumKey}
-              />
+                story={story}
+              >
+                <div
+                  className="story-station-channel"
+                  onClick={this.handleClickSite.bind(this)}
+                >
+                  {`${nowStation ? nowStation.name : ""} / ${
+                    story.series ? story.series.name : ""
+                  }`}
+                </div>
+              </FroalaEditor>
             ) : null}
           </div>
         </div>
