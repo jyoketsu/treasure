@@ -9,6 +9,7 @@
   align-items: center;
   border-radius: 4px;
   background-color: rgba(74, 144, 226, 0.6);
+  display: none;
 }
 .sign-in-button {
   width: 35px;

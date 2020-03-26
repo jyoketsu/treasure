@@ -479,7 +479,7 @@ class MyFroalaEditor extends Component {
               <StoryAction>{children}</StoryAction>
 
               {!story.fatherAlbumKey && commentType === 2 ? <SubStory /> : null}
-              {commentType !== 1 ? <Comments /> : null}
+              {commentType === 1 ? <Comments /> : null}
 
               {!inline ? <Next /> : null}
             </div>
