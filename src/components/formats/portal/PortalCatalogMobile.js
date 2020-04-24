@@ -1,21 +1,33 @@
 import React from "react";
 import "./PortalCatalogMobile.css";
-import { useLocation, useHistory, useRouteMatch } from "react-router";
+import { useHistory, useRouteMatch } from "react-router";
 import util from "../../../services/Util";
+import { asyncStart, asyncEnd } from "../../../actions/app";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function PortalCatalogMobile({ tagList }) {
-  const location = useLocation();
+  const dispatch = useDispatch();
   const history = useHistory();
   const match = useRouteMatch();
-  const pathname = location.pathname;
-  const stationDomain = pathname.split("/")[1];
   const channelKey = match.params.id;
+  const nowStation = useSelector((state) => state.station.nowStation);
 
-  function handleClick(tag) {
-    history.push({
-      pathname: `/${stationDomain}/home/detail/${channelKey}`,
-      state: { tagId: tag.id, tagName: tag.name }
-    });
+  async function handleClick(tag) {
+    asyncStart(dispatch);
+    const result = await util.operation.handleClickTag(
+      nowStation._key,
+      nowStation.domain,
+      channelKey,
+      tag.id
+    );
+    asyncEnd(dispatch);
+
+    if (result) {
+      history.push({
+        pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
+        state: { tagId: tag.id, tagName: tag.name },
+      });
+    }
   }
 
   return (

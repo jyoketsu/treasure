@@ -3,11 +3,19 @@ import api from "../services/Api";
 // common
 export const ASYNC_START = "ASYNC_START";
 export const ASYNC_END = "ASYNC_END";
-export function asyncStart() {
-  return { type: ASYNC_START };
+export function asyncStart(dispatch) {
+  if (dispatch) {
+    dispatch({ type: ASYNC_START });
+  } else {
+    return { type: ASYNC_START };
+  }
 }
-export function asyncEnd() {
-  return { type: ASYNC_END };
+export function asyncEnd(dispatch) {
+  if (dispatch) {
+    dispatch({ type: ASYNC_END });
+  } else {
+    return { type: ASYNC_END };
+  }
 }
 
 // auth
@@ -133,7 +141,7 @@ export function editImportedUser(
     mobileArea: mobileArea,
     mobile: mobile,
     safeCode: safeCode,
-    payload: request
+    payload: request,
   };
 }
 export function signIn(stationKey, dispatch) {
@@ -252,7 +260,7 @@ export function editStation(
     type: EDIT_STATION,
     stationKey: key,
     flag: "editStation",
-    payload: request
+    payload: request,
   };
 }
 
@@ -277,7 +285,7 @@ export function getStationDetail(key) {
     type: GET_STATION_DETAIL,
     stationKey: key,
     payload: request,
-    noLoading: true
+    noLoading: true,
   };
 }
 
@@ -310,7 +318,7 @@ export function subscribe(channelKeys, stationKey, keys, relationDesc) {
     channelKeys: keys,
     stationKey: stationKey,
     relationDesc: relationDesc,
-    payload: request
+    payload: request,
   };
 }
 
@@ -325,7 +333,7 @@ export function subscribeStation(stationKey, checked, relationDesc) {
     stationKey: stationKey,
     checked: checked,
     relationDesc: relationDesc,
-    payload: request
+    payload: request,
   };
 }
 
@@ -353,7 +361,7 @@ export function addSubSite(stationKey, subStation, dispatch) {
   const dispatchBody = {
     type: ADD_SUB_SITE,
     payload: request,
-    subStation: subStation
+    subStation: subStation,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -367,7 +375,7 @@ export function removeSubSite(stationKey, subStation, dispatch) {
   const dispatchBody = {
     type: REMOVE_SUB_SITE,
     payload: request,
-    subStationKey: subStation._key
+    subStationKey: subStation._key,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -406,14 +414,14 @@ export function subscribeChannel(
       subscribeType: type,
       targetSeriesKey: targetSeriesKey,
       selectOrNot: selectOrNot,
-      payload: request
+      payload: request,
     });
   } else {
     return {
       type: SUBSCRIBE_CHANNEL,
       targetSeriesKey: targetSeriesKey,
       selectOrNot: selectOrNot,
-      payload: request
+      payload: request,
     };
   }
 }
@@ -526,7 +534,7 @@ export function getStoryList(
     isRefresh: isRefresh,
     tag: tag,
     statusTag: statusTag,
-    isPagination: isPagination
+    isPagination: isPagination,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -558,7 +566,7 @@ export function getStoryList2(
   const dispatchBody = {
     type: GET_STORY_LIST_2,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -573,7 +581,7 @@ export function getSubscribeStories(curPage, perPage, dispatch) {
   const dispatchBody = {
     type: GET_SUBSCRIBE_STORY_LIST,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -588,7 +596,7 @@ export function setStoryList(storyList, totalNumber, tag, statusTag) {
     storyList: storyList,
     totalNumber: totalNumber,
     tag: tag,
-    statusTag: statusTag
+    statusTag: statusTag,
   };
 }
 
@@ -654,7 +662,7 @@ export function deleteStory(storyKey) {
     type: DELETE_STORY,
     storyKey: storyKey,
     flag: "deleteStory",
-    payload: request
+    payload: request,
   };
 }
 
@@ -664,7 +672,7 @@ export function like(storyKey, dispatch) {
     type: LIKE_STORY,
     storyKey: storyKey,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -692,7 +700,7 @@ export function auditStory(storyKey, groupKey, passOrNot, isQuickPass) {
     storyKey: storyKey,
     passOrNot: passOrNot,
     isQuickPass: isQuickPass,
-    payload: request
+    payload: request,
   };
 }
 
@@ -702,7 +710,7 @@ export function myStationLatestStory(curPage) {
     type: MY_STATION_LATEST_STORY,
     curPage: curPage,
     noLoading: true,
-    payload: request
+    payload: request,
   };
 }
 
@@ -721,7 +729,7 @@ export function setStatusTag(key, statusTag, dispatch) {
     payload: request,
     storyKey: key,
     statusTag: statusTag,
-    noLoading: true
+    noLoading: true,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -739,7 +747,7 @@ export function statisticsStatusTag(stationKey, channelKey, statusTag) {
   return {
     type: SET_STATISTICS_STATUS_TAG,
     payload: request,
-    noLoading: true
+    noLoading: true,
   };
 }
 
@@ -752,7 +760,7 @@ export function setChannelKey(channelKey, dispatch) {
 }
 
 export async function getHomeStories(stationKey, channelKeys, dispatch) {
-  const promises = channelKeys.map(key =>
+  const promises = channelKeys.map((key) =>
     api.story.getStoryList(1, stationKey, null, key, 1, 1, "", "", 1, 10)
   );
   const results = await Promise.all(promises);
@@ -820,7 +828,7 @@ export function comment(
     targetContent: targetContent,
     targetTime: targetTime,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -836,14 +844,14 @@ export function deleteComment(commentKey, dispatch) {
       type: DELETE_COMMENT,
       noLoading: true,
       commentKey: commentKey,
-      payload: request
+      payload: request,
     });
   } else {
     return {
       type: DELETE_COMMENT,
       noLoading: true,
       commentKey: commentKey,
-      payload: request
+      payload: request,
     };
   }
 }
@@ -864,7 +872,7 @@ export function addSubStory(
   const dispatchBody = {
     type: ADD_SUB_STORY,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -878,7 +886,7 @@ export function editSubStory(story, dispatch) {
   const dispatchBody = {
     type: EDIT_COMMENT,
     noLoading: true,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -899,7 +907,7 @@ export function vote(storyKey, status, dispatch) {
     noLoading: true,
     storyKey: storyKey,
     status: status,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -914,7 +922,7 @@ export function deleteSubStory(storyKey, dispatch) {
     type: DELETE_COMMENT,
     noLoading: true,
     commentKey: storyKey,
-    payload: request
+    payload: request,
   };
   if (dispatch) {
     dispatch(dispatchBody);
@@ -964,7 +972,7 @@ export function sortChannel(index, isUp, keys, nowStationKey) {
     type: SORT_CHANNEL,
     channelIndex: index,
     isUp: isUp,
-    request: request
+    request: request,
   };
 }
 
@@ -1056,6 +1064,6 @@ export function sortPlugin(index, isUp, keys, nowStationKey) {
     type: SORT_PLUGIN,
     channelIndex: index,
     isUp: isUp,
-    request: request
+    request: request,
   };
 }

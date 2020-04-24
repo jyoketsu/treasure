@@ -17,7 +17,7 @@ const common = {
       "m+": Date.getMinutes(),
       "s+": Date.getSeconds(),
       "q+": Math.floor((Date.getMonth() + 3) / 3),
-      "S+": Date.getMilliseconds()
+      "S+": Date.getMilliseconds(),
     };
     if (/(y+)/i.test(format)) {
       format = format.replace(
@@ -133,7 +133,7 @@ const common = {
       return a.concat(b);
     });
 
-    middeleArray.forEach(arrItem => {
+    middeleArray.forEach((arrItem) => {
       if (array.indexOf(arrItem) === -1) {
         array.push(arrItem);
       }
@@ -213,7 +213,7 @@ const common = {
         "W",
         "X",
         "Y",
-        "Z"
+        "Z",
       ];
 
     // 随机产生
@@ -248,7 +248,7 @@ const common = {
       showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
       showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
       panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-      zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
     });
 
     geolocation.getCurrentPosition();
@@ -265,10 +265,10 @@ const common = {
     let AMap = global.AMap;
     var lnglatXY = [lng, lat];
     return new Promise((resolve, reject) => {
-      AMap.service("AMap.Geocoder", function() {
+      AMap.service("AMap.Geocoder", function () {
         // コールバック
         let geocoder = new AMap.Geocoder({});
-        geocoder.getAddress(lnglatXY, function(status, result) {
+        geocoder.getAddress(lnglatXY, function (status, result) {
           if (status === "complete" && result.info === "OK") {
             var address = result.regeocode;
             resolve(address);
@@ -320,10 +320,10 @@ const common = {
     let image = new Image();
     image.src = url;
     return new Promise((resolve, reject) => {
-      image.onload = function() {
+      image.onload = function () {
         resolve({
           width: image.width,
-          height: image.height
+          height: image.height,
         });
       };
       image.onerror = () => {
@@ -386,7 +386,7 @@ const common = {
       if (node && node.tagName !== "HEAD" && node.tagName !== "BODY") {
         result = {
           innerText: node.innerText,
-          htmlStr: node.outerHTML
+          htmlStr: node.outerHTML,
         };
         break;
       }
@@ -408,7 +408,7 @@ const common = {
       }
     }
     return false;
-  }
+  },
 };
 
 const operation = {
@@ -490,16 +490,17 @@ const operation = {
     if (res.statusCode === "200") {
       return [
         `手机：${res.result.mobileArea} ${res.result.mobile}`,
-        `姓名：${res.result.profile.trueName ||
-          res.result.profile.nickName ||
-          "--"}`,
+        `姓名：${
+          res.result.profile.trueName || res.result.profile.nickName || "--"
+        }`,
         `性别：${res.result.profile.gender ? "女" : "男"}`,
         `邮箱：${res.result.profile.email || "--"}`,
-        `相机：${res.result.profile.camera || "-"} ${res.result.profile
-          .cameraModel || "-"}`,
+        `相机：${res.result.profile.camera || "-"} ${
+          res.result.profile.cameraModel || "-"
+        }`,
         `地区：${
           res.result.profile.region ? res.result.profile.region.join("-") : "--"
-        }`
+        }`,
       ];
     }
   },
@@ -557,15 +558,25 @@ const operation = {
               url.includes("bless.qingtime.cn") ||
               url.includes("exp.qingtime.cn")
             ) {
-              url = `${url}/${domain}?token=${token}`;
+              if (url.includes("puku.qingtime.cn")) {
+                url = `${url}/${domain}/genealogySearch?token=${token}`;
+              } else {
+                url = `${url}/${domain}?token=${token}`;
+              }
             }
             // 打开新标签页
-            if (story.openType === 1) {
-              window.open(url, "_blank");
-            } else {
+            if (common.isMobile()) {
               // 本页内打开
               window.location.href = url;
+            } else {
+              if (story.openType === 1) {
+                window.open(url, "_blank");
+              } else {
+                // 本页内打开
+                window.location.href = url;
+              }
             }
+
             break;
           default:
             return result;
@@ -591,7 +602,7 @@ const operation = {
         url: url,
         title: story.title,
         desc: story.descript || nowStation.memo || nowStation.name,
-        imgUrl: story.cover || nowStation.logo
+        imgUrl: story.cover || nowStation.logo,
       };
     } else if (
       nowChannelKey &&
@@ -612,14 +623,14 @@ const operation = {
         desc: `${nowStation.name}-${nowChannel ? nowChannel.name : ""}`,
         imgUrl: nowChannel
           ? nowChannelKey.cover || nowChannel.logo
-          : nowStation.logo
+          : nowStation.logo,
       };
     } else {
       return {
         url: url,
         title: nowStation.name,
         desc: nowStation.memo || nowStation.name,
-        imgUrl: nowStation.logo
+        imgUrl: nowStation.logo,
       };
     }
   },
@@ -638,7 +649,7 @@ const operation = {
       timestamp: parseInt(signature.result.timestamp), // 必填，生成签名的时间戳
       nonceStr: signature.result.nonceStr, // 必填，生成签名的随机串
       signature: signature.result.signature, // 必填，签名，见附录1
-      jsApiList: ["onMenuShareAppMessage", "onMenuShareTimeline"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      jsApiList: ["onMenuShareAppMessage", "onMenuShareTimeline"], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
 
     wx.ready(() => {
@@ -650,14 +661,14 @@ const operation = {
         imgUrl: imgUrl, // 分享图标
         type: "", // 分享类型,music、video或link，不填默认为link
         dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
-        success: function() {
+        success: function () {
           // 用户确认分享后执行的回调函数
           console.log("分享成功！");
         },
-        cancel: function() {
+        cancel: function () {
           // 用户取消分享后执行的回调函数
           console.log("取消分享！");
-        }
+        },
       });
 
       //分享到朋友圈
@@ -665,18 +676,18 @@ const operation = {
         title: "", // 分享标题
         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: "", // 分享图标
-        success: function() {
+        success: function () {
           // 用户确认分享后执行的回调函数
         },
-        cancel: function() {
+        cancel: function () {
           // 用户取消分享后执行的回调函数
-        }
+        },
       });
     });
-  }
+  },
 };
 
 export default {
   common,
-  operation
+  operation,
 };
