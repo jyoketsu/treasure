@@ -84,7 +84,7 @@ export default function App() {
     <Router>
       <div className="app" style={{ minHeight: minHeight }}>
         <Init />
-        <Im />
+        {/* <Im /> */}
         <div className="route-container">
           {nowStation ? (
             <div>

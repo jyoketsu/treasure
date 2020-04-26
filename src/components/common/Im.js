@@ -6,7 +6,7 @@ import util from "../../services/Util";
 
 export default function Im() {
   const isMobile = util.common.isMobile();
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const [open, setopen] = useState(false);
   const token = localStorage.getItem("TOKEN");
 
@@ -22,7 +22,7 @@ export default function Im() {
         <div className="im-wrapper">
           <i
             className={`im-button ${open ? "closed" : "opened"}`}
-            onClick={() => setopen(prevOpen => !prevOpen)}
+            onClick={() => setopen((prevOpen) => !prevOpen)}
           ></i>
           <iframe
             className="im-iframe"
