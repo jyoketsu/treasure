@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { addStory, modifyStory, deleteStory } from "../../actions/app";
 const confirm = Modal.confirm;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   seriesInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
   loading: state.common.loading,
-  flag: state.common.flag
+  flag: state.common.flag,
 });
 
 class EditStory extends Component {
@@ -27,7 +27,7 @@ class EditStory extends Component {
     super(props);
     let type = util.common.getSearchParamValue(props.location.search, "type");
     this.state = {
-      story: type === "new" ? { series: props.nowChannelKey } : props.story
+      story: type === "new" ? { series: props.nowChannelKey } : props.story,
     };
     this.addContent = this.addContent.bind(this);
     this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -89,7 +89,7 @@ class EditStory extends Component {
         starKey: nowStationKey,
         publish: 1,
         size: size,
-        isSimple: 0
+        isSimple: 0,
       });
       addStory(story);
     }
@@ -101,13 +101,13 @@ class EditStory extends Component {
    * @param {String} contentType 内容类型
    */
   addContent(index, metaType) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       prevContent.splice(index, 0, {
         _id: util.common.randomStr(false, 12),
         metaType: metaType,
-        memo: ""
+        memo: "",
       });
       prevStory.richContent = prevContent;
       this.scrollDown = true;
@@ -122,7 +122,7 @@ class EditStory extends Component {
    */
   uploadImageCallback(images, extParams) {
     let index = extParams.index;
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       for (let i = 0; i < images.length; i++) {
@@ -132,7 +132,7 @@ class EditStory extends Component {
           metaType: "image",
           url: images[i],
           size: size,
-          memo: ""
+          memo: "",
         });
       }
       prevStory.richContent = prevContent;
@@ -157,7 +157,7 @@ class EditStory extends Component {
    */
   uploadVideoCallback(videoUrl, extParams) {
     let index = extParams.index;
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       prevContent.splice(index, 0, {
@@ -165,7 +165,7 @@ class EditStory extends Component {
         metaType: "video",
         url: videoUrl,
         thumbnailUrl: `${videoUrl}?vframe/jpg/offset/1`,
-        memo: ""
+        memo: "",
       });
       prevStory.richContent = prevContent;
       this.scrollDown = true;
@@ -189,7 +189,7 @@ class EditStory extends Component {
    * @param {Number} index 要删除的位置
    */
   deleteContent(index, metaType) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       prevContent.splice(index - 1, 1);
@@ -238,7 +238,7 @@ class EditStory extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(key);
-      }
+      },
     });
   }
 
@@ -305,12 +305,12 @@ class EditStory extends Component {
     return (
       <div
         className="app-content edit-story"
-        ref={eidtStory => (this.eidtStoryRef = eidtStory)}
+        ref={(eidtStory) => (this.eidtStoryRef = eidtStory)}
       >
         <div
           className="story-head"
           style={{
-            backgroundImage: `url(${cover}?imageView2/2/w/960/)`
+            backgroundImage: `url(${cover}?imageView2/2/w/960/)`,
           }}
         >
           {/* <div className="channel-select">
@@ -345,7 +345,7 @@ class EditStory extends Component {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              marginTop: "50px"
+              marginTop: "50px",
             }}
           >
             <input
@@ -387,7 +387,7 @@ class EditStory extends Component {
     }
     // 位置定位
     util.common.getLocation(
-      data => {
+      (data) => {
         console.log("定位信息：", data);
         const address =
           data && data.addressComponent
@@ -470,14 +470,14 @@ class StoryEditButtonGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: true
+      collapsed: true,
     };
     this.collapseButton = this.collapseButton.bind(this);
   }
 
   collapseButton() {
-    this.setState(prevState => ({
-      collapsed: !prevState.collapsed
+    this.setState((prevState) => ({
+      collapsed: !prevState.collapsed,
     }));
   }
 
@@ -531,7 +531,7 @@ class StoryEditButtonGroup extends Component {
                   backgroundImage: "url(/image/icon/story-image.png)",
                   display: "block",
                   width: "24px",
-                  height: "24px"
+                  height: "24px",
                 }}
                 maxSize={10000000}
                 multiple="multiple"
@@ -550,7 +550,7 @@ class StoryEditButtonGroup extends Component {
                   backgroundImage: "url(/image/icon/story-video.png)",
                   display: "block",
                   width: "24px",
-                  height: "24px"
+                  height: "24px",
                 }}
                 metaType="video"
                 maxSize={200000000}
@@ -571,7 +571,7 @@ class StoryEditButtonGroup extends Component {
           <button
             style={{
               backgroundImage: `url('/image/icon/${icon}.svg')`,
-              backgroundPosition: "top"
+              backgroundPosition: "top",
             }}
             onClick={this.collapseButton}
           />

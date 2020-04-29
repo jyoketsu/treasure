@@ -10,13 +10,13 @@ import {
   addStory,
   modifyStory,
   deleteStory,
-  switchEditLinkVisible
+  switchEditLinkVisible,
 } from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 const { TextArea } = Input;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   seriesInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
@@ -30,7 +30,7 @@ const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
   loading: state.common.loading,
-  flag: state.common.flag
+  flag: state.common.flag,
 });
 
 class EditArticle extends Component {
@@ -47,8 +47,8 @@ class EditArticle extends Component {
                 util.common.getSearchParamValue(
                   window.location.search,
                   "channel"
-                ) || props.nowChannelKey
-            }
+                ) || props.nowChannelKey,
+            },
           }
         : props.story;
     if (story._key) {
@@ -59,7 +59,7 @@ class EditArticle extends Component {
       uptoken: null,
       moreVisible: false,
       postVisible: false,
-      codeEditorVisible: false
+      codeEditorVisible: false,
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -79,7 +79,7 @@ class EditArticle extends Component {
   }
 
   handleSetTag(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.tag = value;
       return { story: prevStory };
@@ -87,7 +87,7 @@ class EditArticle extends Component {
   }
 
   handleSetStatus(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.statusTag = value;
       return { story: prevStory };
@@ -95,7 +95,7 @@ class EditArticle extends Component {
   }
 
   handleSelectChannel(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.series = { _key: value };
       prevStory.tag = undefined;
@@ -111,20 +111,20 @@ class EditArticle extends Component {
   }
 
   switchMoreVisible() {
-    this.setState(prevState => ({
-      moreVisible: !prevState.moreVisible
+    this.setState((prevState) => ({
+      moreVisible: !prevState.moreVisible,
     }));
   }
 
   switchPostVisible(visible) {
     this.setState({
-      postVisible: visible
+      postVisible: visible,
     });
   }
 
   switchCodeEditor() {
-    this.setState(prevState => ({
-      codeEditorVisible: !prevState.codeEditorVisible
+    this.setState((prevState) => ({
+      codeEditorVisible: !prevState.codeEditorVisible,
     }));
   }
 
@@ -132,12 +132,10 @@ class EditArticle extends Component {
     const {
       user,
       nowStationKey,
-      nowStation,
       addStory,
       modifyStory,
       seriesInfo,
       finishCallback,
-      history
     } = this.props;
     const { story } = this.state;
     e.preventDefault();
@@ -209,7 +207,7 @@ class EditArticle extends Component {
       Object.assign(story, {
         userKey: user._key,
         type: 9,
-        starKey: nowStationKey
+        starKey: nowStationKey,
       });
       addStory(story);
     }
@@ -218,7 +216,8 @@ class EditArticle extends Component {
       finishCallback();
     } else {
       // 返回到首页
-      history.push(`/${nowStation.domain}/home`);
+      // history.push(`/${nowStation.domain}/home`);
+      this.toHome = true;
     }
   }
 
@@ -239,7 +238,7 @@ class EditArticle extends Component {
           // 返回到首页
           history.push(`/${nowStation.domain}/home`);
         }
-      }
+      },
     });
   }
 
@@ -265,7 +264,7 @@ class EditArticle extends Component {
       case "album":
         history.push({
           pathname: `/${stationDomain}/editStory`,
-          search: `?type=new&channel=${channelKey}`
+          search: `?type=new&channel=${channelKey}`,
         });
         break;
       case "page":
@@ -303,23 +302,23 @@ class EditArticle extends Component {
       statusTag,
       allowPublicStatus,
       allowPublicUpload,
-      role
+      role,
     } = channelInfo;
     const isMobile = util.common.isMobile();
     return (
       <div
         className={`app-content edit-story ${inline ? "inline" : ""}`}
-        ref={eidtStory => (this.eidtStoryRef = eidtStory)}
+        ref={(eidtStory) => (this.eidtStoryRef = eidtStory)}
       >
         <div
           className="main-content story-content edit-article"
           style={{
-            minHeight: `${window.innerHeight}px`
+            minHeight: `${window.innerHeight}px`,
           }}
         >
           <div
             className="editor-container"
-            ref={node => (this.editorRef = node)}
+            ref={(node) => (this.editorRef = node)}
           >
             {uptoken ? (
               <FroalaEditor
@@ -452,7 +451,7 @@ class EditArticle extends Component {
           <TextArea
             rows={20}
             value={story ? story.content : ""}
-            onChange={e => {
+            onChange={(e) => {
               this.handleAticleChange(e.target.value);
             }}
           />
@@ -477,6 +476,13 @@ class EditArticle extends Component {
     const { story } = this.props;
     api.story.exitEdit(story._key);
   }
+
+  componentDidUpdate(prevProps) {
+    const { loading, history, nowStation } = this.props;
+    if (prevProps.loading && !loading && this.toHome) {
+      history.push(`/${nowStation.domain}/home`);
+    }
+  }
 }
 
 export default withRouter(
@@ -484,6 +490,6 @@ export default withRouter(
     addStory,
     modifyStory,
     deleteStory,
-    switchEditLinkVisible
+    switchEditLinkVisible,
   })(Form.create({ name: "create-station" })(EditArticle))
 );
