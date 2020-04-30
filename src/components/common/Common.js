@@ -23,7 +23,7 @@ class MemberCard extends Component {
         "每个站点只有一名站长，确认后您将降级为管理员。（对方确认后生效）",
       onOk() {
         transferStation(nowStationKey, userKey);
-      }
+      },
     });
   }
 
@@ -36,7 +36,7 @@ class MemberCard extends Component {
       safeCode,
       groupKey,
       setMemberRole,
-      setMemberInfo
+      setMemberInfo,
     } = this.props;
     if (type === "import") {
       let bango = mobile ? mobile.split(" ") : ["", ""];
@@ -49,7 +49,7 @@ class MemberCard extends Component {
       setMemberRole(groupKey, userKey, value);
     }
     this.setState({
-      role: value
+      role: value,
     });
   }
 
@@ -61,7 +61,7 @@ class MemberCard extends Component {
       mobile,
       userKey,
       groupKey,
-      setMemberInfo
+      setMemberInfo,
     } = this.props;
     if (type === "import") {
       let bango = mobile ? mobile.split(" ") : ["", ""];
@@ -70,7 +70,7 @@ class MemberCard extends Component {
       setMemberInfo(groupKey, userKey, { safeCode: value });
     }
     this.setState({
-      safeCode: value
+      safeCode: value,
     });
   }
 
@@ -82,13 +82,13 @@ class MemberCard extends Component {
       [
         {
           userKey: userKey,
-          role: 5
-        }
+          role: 5,
+        },
       ],
       true
     );
     this.setState({
-      role: 5
+      role: 5,
     });
   }
 
@@ -102,7 +102,7 @@ class MemberCard extends Component {
       disabled,
       handleClick,
       handleDelete,
-      count
+      count,
     } = this.props;
     const { role, safeCode } = this.state;
     let roleName = "";
@@ -150,7 +150,7 @@ class MemberCard extends Component {
                 avatar
                   ? `${avatar}?imageView2/1/w/80/h/80`
                   : "/image/icon/avatar.svg"
-              })`
+              })`,
             }}
           ></i>
         </div>
@@ -166,7 +166,7 @@ class MemberCard extends Component {
               <Select
                 value={role}
                 style={{ width: 80 }}
-                ref={node => (this.select = node)}
+                ref={(node) => (this.select = node)}
                 onChange={this.handleChange}
                 disabled={
                   userRole && userRole <= 2 && userRole < role ? false : true
@@ -187,7 +187,7 @@ class MemberCard extends Component {
               <Select
                 value={safeCode}
                 style={{ width: 80 }}
-                ref={node => (this.select = node)}
+                ref={(node) => (this.select = node)}
                 onChange={this.handleChangeSafeCode}
                 disabled={
                   userRole && userRole <= 2 && userRole < role ? false : true
@@ -222,7 +222,7 @@ class SearchMemberCard extends Component {
       name,
       mobile,
       addGroupMember,
-      disable
+      disable,
     } = this.props;
     return (
       <div className="member-card">
@@ -234,7 +234,7 @@ class SearchMemberCard extends Component {
                 avatar
                   ? `${avatar}?imageView2/1/w/80/h/80`
                   : "/image/icon/avatar.svg"
-              })`
+              })`,
             }}
           ></i>
         </div>
@@ -246,12 +246,17 @@ class SearchMemberCard extends Component {
           ) : (
             <span
               className="member-button"
-              onClick={addGroupMember.bind(this, groupKey, [
-                {
-                  userKey: userKey,
-                  role: 5
-                }
-              ])}
+              onClick={addGroupMember.bind(
+                this,
+                groupKey,
+                [
+                  {
+                    userKey: userKey,
+                    role: 5,
+                  },
+                ],
+                false
+              )}
             >
               添加
             </span>
@@ -297,7 +302,7 @@ class StationCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      logoSize: null
+      logoSize: null,
     };
   }
 
@@ -354,7 +359,7 @@ class StationCard extends Component {
               })`,
               width: logoSize
                 ? `${Math.ceil(68 * (logoSize.width / logoSize.height))}px`
-                : "68px"
+                : "68px",
             }}
           ></i>
           <span className="card-station-name">{station.name}</span>
@@ -378,7 +383,7 @@ class StationCard extends Component {
     this.setState({
       checkedChannels: checkedChannels,
       allChecked: checkedChannels.length === seriesInfo.length ? true : false,
-      logoSize: size
+      logoSize: size,
     });
   }
 
@@ -394,7 +399,7 @@ class StationCard extends Component {
       }
       this.setState({
         checkedChannels: checkedChannels,
-        allChecked: checkedChannels.length === seriesInfo.length ? true : false
+        allChecked: checkedChannels.length === seriesInfo.length ? true : false,
       });
     }
   }
