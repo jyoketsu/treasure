@@ -5,11 +5,11 @@ import { connect } from "react-redux";
 import { auditStory, deleteStory } from "../../actions/app";
 const confirm = Modal.confirm;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   story: state.story.story,
   groupKey: state.station.nowStation
     ? state.station.nowStation.intimateGroupKey
-    : null
+    : null,
 });
 
 class CheckArticle extends Component {
@@ -28,7 +28,7 @@ class CheckArticle extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(story._key);
-      }
+      },
     });
   }
 
@@ -39,7 +39,7 @@ class CheckArticle extends Component {
       groupKey,
       showCheck,
       hideEdit,
-      handleClickEdit
+      handleClickEdit,
     } = this.props;
     return (
       <div className="check-button-container">
@@ -48,21 +48,34 @@ class CheckArticle extends Component {
               <Button
                 key="pass"
                 type="primary"
+                disabled={!story._key ? true : false}
                 onClick={() => auditStory(story._key, groupKey, 2)}
               >
                 审核通过
               </Button>,
               <Button
                 key="reject"
+                disabled={!story._key ? true : false}
                 onClick={() => auditStory(story._key, groupKey, 3)}
               >
                 审核不通过
-              </Button>
+              </Button>,
             ]
           : null}
 
-        {hideEdit ? null : <Button onClick={handleClickEdit}>编辑</Button>}
-        <Button type="danger" onClick={this.showDeleteConfirm}>
+        {hideEdit ? null : (
+          <Button
+            onClick={handleClickEdit}
+            disabled={!story._key ? true : false}
+          >
+            编辑
+          </Button>
+        )}
+        <Button
+          type="danger"
+          onClick={this.showDeleteConfirm}
+          disabled={!story._key ? true : false}
+        >
           删除
         </Button>
       </div>

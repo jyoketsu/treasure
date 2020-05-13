@@ -4,10 +4,10 @@ import LoginTip from "../common/LoginTip";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
-import { getStoryDetail } from "../../actions/app";
+import { getStoryDetail, clearStoryDetail } from "../../actions/app";
 import lozad from "lozad";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   userId: state.auth.user ? state.auth.user._key : null,
   story: state.story.story,
@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
   loading: state.common.loading,
   channelInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
-    : []
+    : [],
 });
 
 class Article extends Component {
@@ -41,7 +41,7 @@ class Article extends Component {
       hideMenu,
       inline,
       loading,
-      channelInfo
+      channelInfo,
     } = this.props;
     const { userKey } = story;
     const role = nowStation ? nowStation.role : 8;
@@ -70,14 +70,14 @@ class Article extends Component {
         className={`app-content story-container article-display  ${
           inline ? "inline" : ""
         }`}
-        ref={eidtStory => (this.eidtStoryRef = eidtStory)}
+        ref={(eidtStory) => (this.eidtStoryRef = eidtStory)}
       >
         <div
           className={`main-content story-content article-show ${
             hideMenu ? "hide-menu" : ""
           }`}
           style={{
-            minHeight: `${window.innerHeight}px`
+            minHeight: `${window.innerHeight}px`,
           }}
         >
           {!readOnly &&
@@ -92,7 +92,7 @@ class Article extends Component {
           ) : null}
           <div
             className="editor-container"
-            ref={node => (this.editorRef = node)}
+            ref={(node) => (this.editorRef = node)}
           >
             {!loading ? (
               <FroalaEditor
@@ -161,6 +161,12 @@ class Article extends Component {
       }
     }
   }
+
+  componentWillUnmount() {
+    this.props.clearStoryDetail();
+  }
 }
 
-export default connect(mapStateToProps, { getStoryDetail })(Article);
+export default connect(mapStateToProps, { getStoryDetail, clearStoryDetail })(
+  Article
+);

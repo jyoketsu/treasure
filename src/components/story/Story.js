@@ -12,7 +12,8 @@ import { connect } from "react-redux";
 import {
   getStoryDetail,
   updateExif,
-  statisticsStatusTag
+  statisticsStatusTag,
+  clearStoryDetail
 } from "../../actions/app";
 
 const mapStateToProps = state => ({
@@ -368,10 +369,15 @@ class Story extends Component {
       }
     }
   }
+
+  componentWillUnmount(){
+    this.props.clearStoryDetail();
+  }
 }
 
 export default connect(mapStateToProps, {
   getStoryDetail,
   updateExif,
-  statisticsStatusTag
+  statisticsStatusTag,
+  clearStoryDetail
 })(Story);
