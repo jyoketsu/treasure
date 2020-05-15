@@ -4,7 +4,7 @@ import LoginTip from "../common/LoginTip";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
-import { getStoryDetail, clearStoryDetail } from "../../actions/app";
+import { getStoryDetail } from "../../actions/app";
 import lozad from "lozad";
 
 const mapStateToProps = (state) => ({
@@ -161,12 +161,6 @@ class Article extends Component {
       }
     }
   }
-
-  componentWillUnmount() {
-    this.props.clearStoryDetail();
-  }
 }
 
-export default connect(mapStateToProps, { getStoryDetail, clearStoryDetail })(
-  Article
-);
+export default connect(mapStateToProps, { getStoryDetail })(Article);

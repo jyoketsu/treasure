@@ -13,10 +13,9 @@ import {
   getStoryDetail,
   updateExif,
   statisticsStatusTag,
-  clearStoryDetail
 } from "../../actions/app";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   userId: state.auth.user ? state.auth.user._key : null,
   story: state.story.story,
@@ -25,7 +24,7 @@ const mapStateToProps = state => ({
   channelInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
-  loading: state.common.loading
+  loading: state.common.loading,
 });
 
 class Story extends Component {
@@ -73,7 +72,7 @@ class Story extends Component {
       readOnly,
       inline,
       loading,
-      channelInfo
+      channelInfo,
     } = this.props;
     const {
       userKey,
@@ -81,7 +80,7 @@ class Story extends Component {
       creator = {},
       richContent = [],
       address,
-      memo
+      memo,
     } = story;
     const role = nowStation ? nowStation.role : 8;
     let avatar = creator.avatar
@@ -112,7 +111,7 @@ class Story extends Component {
       <div
         className={`app-content story-container ${inline ? "inline" : ""}`}
         style={{
-          backgroundColor: inline ? "unset" : "#f5f5f5"
+          backgroundColor: inline ? "unset" : "#f5f5f5",
         }}
       >
         {!loading ? (
@@ -121,7 +120,7 @@ class Story extends Component {
             style={{
               minHeight: `${window.innerHeight - 70}px`,
               backgroundColor: inline ? "unset" : "white",
-              boxShadow: inline ? "unset" : "0 0 3px rgba(0, 0, 0, .1)"
+              boxShadow: inline ? "unset" : "0 0 3px rgba(0, 0, 0, .1)",
             }}
           >
             <div className="story-head-title">
@@ -143,8 +142,9 @@ class Story extends Component {
                             key="story-head-avatar"
                             className="story-head-avatar"
                             style={{
-                              backgroundImage: `url('${avatar ||
-                                "/image/icon/avatar.svg"}')`
+                              backgroundImage: `url('${
+                                avatar || "/image/icon/avatar.svg"
+                              }')`,
                             }}
                             onClick={() =>
                               (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
@@ -162,7 +162,7 @@ class Story extends Component {
                                 ? `（${story.creator.relationDesc}）`
                                 : ""
                             }`}
-                          </div>
+                          </div>,
                         ]
                       : null}
 
@@ -276,7 +276,7 @@ class Story extends Component {
                 })
               : null}
             <StoryAction />
-            
+
             {!story.fatherAlbumKey && commentType === 2 ? <SubStory /> : null}
             {commentType === 1 ? <Comments /> : null}
 
@@ -305,7 +305,7 @@ class Story extends Component {
       updateExif,
       channelInfo,
       statisticsStatusTag,
-      nowStationKey
+      nowStationKey,
     } = this.props;
     const prevStoryKey = prevPros.story ? prevPros.story._key : null;
     // 获取到故事详情后
@@ -332,7 +332,7 @@ class Story extends Component {
         }
 
         Promise.all(promises)
-          .then(function(posts) {
+          .then(function (posts) {
             let postsIndex = 0;
             for (let i = 0; i < richContent.length; i++) {
               if (richContent[i].metaType === "image") {
@@ -344,7 +344,7 @@ class Story extends Component {
             }
             updateExif(JSON.parse(JSON.stringify(story)));
           })
-          .catch(function(reason) {
+          .catch(function (reason) {
             console.log(reason);
           });
       }
@@ -369,15 +369,10 @@ class Story extends Component {
       }
     }
   }
-
-  componentWillUnmount(){
-    this.props.clearStoryDetail();
-  }
 }
 
 export default connect(mapStateToProps, {
   getStoryDetail,
   updateExif,
   statisticsStatusTag,
-  clearStoryDetail
 })(Story);

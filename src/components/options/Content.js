@@ -16,14 +16,14 @@ import {
   getStoryDetail,
   clearStoryDetail,
   switchEditLinkVisible,
-  passAll
+  passAll,
 } from "../../actions/app";
 import CheckArticle from "../common/CheckArticle";
 import util from "../../services/Util";
 const { TabPane } = Tabs;
 const confirm = Modal.confirm;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   waiting: state.common.waiting,
   nowStationKey: state.station.nowStationKey,
@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
   storyNumber: state.story.storyNumber2,
   storyType: state.story.story.type,
   story: state.story.story,
-  eidtLinkVisible: state.story.eidtLinkVisible
+  eidtLinkVisible: state.story.eidtLinkVisible,
 });
 
 class Content extends Component {
@@ -50,9 +50,9 @@ class Content extends Component {
   switchVisible(key) {
     const { singleColumn } = this.props;
     if (util.common.isMobile() || singleColumn) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         visible: !prevState.visible,
-        isEdit: false
+        isEdit: false,
       }));
     } else {
       this.setState({ isEdit: false });
@@ -70,7 +70,7 @@ class Content extends Component {
       case 6:
       case 9:
         this.setState({
-          isEdit: true
+          isEdit: true,
         });
         break;
       case 12:
@@ -83,13 +83,13 @@ class Content extends Component {
     }
   }
 
-  onChange = page => {
+  onChange = (page) => {
     const {
       paginationCallback,
       nowStationKey,
       getStoryList2,
       getSubscribeStories,
-      clearStoryList2
+      clearStoryList2,
     } = this.props;
     this.curPage = page;
     clearStoryList2();
@@ -122,7 +122,7 @@ class Content extends Component {
       getStoryList2,
       getSubscribeStories,
       nowStationKey,
-      clearStoryList2
+      clearStoryList2,
     } = this.props;
     clearStoryList2();
     this.curPage = 1;
@@ -199,7 +199,7 @@ class Content extends Component {
       cancelText: "取消",
       onOk() {
         passAll(nowStationKey);
-      }
+      },
     });
   }
 
@@ -210,7 +210,7 @@ class Content extends Component {
       eidtLinkVisible,
       storyList,
       storyNumber,
-      singleColumn
+      singleColumn,
     } = this.props;
     const { isEdit, visible } = this.state;
     let storyComp;
@@ -272,12 +272,12 @@ class Content extends Component {
       <div
         className="content-manage"
         style={containerStyle}
-        ref={node => (this.auditRef = node)}
+        ref={(node) => (this.auditRef = node)}
       >
         <div
           className="content-manage-grid"
           style={{ padding: singleColumn ? "unset" : "0 15px" }}
-          ref={node => (this.contentRef = node)}
+          ref={(node) => (this.contentRef = node)}
         >
           <h2>{singleColumn ? null : "内容管理"}</h2>
           <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
@@ -315,7 +315,7 @@ class Content extends Component {
                       showStyle={2}
                       inline={true}
                     />
-                  </TabPane>
+                  </TabPane>,
                 ]
               : [
                   <TabPane tab="订阅" key="subscribe">
@@ -361,7 +361,7 @@ class Content extends Component {
                       showStyle={2}
                       inline={true}
                     />
-                  </TabPane>
+                  </TabPane>,
                 ]}
           </Tabs>
           <Pagination
@@ -409,8 +409,10 @@ class Content extends Component {
       getStoryList2,
       getSubscribeStories,
       nowStationKey,
-      singleColumn
+      singleColumn,
+      clearStoryDetail,
     } = this.props;
+    clearStoryDetail();
     if (nowStationKey) {
       this.curPage = 1;
       if (singleColumn) {
@@ -441,6 +443,6 @@ export default withRouter(
     getStoryDetail,
     clearStoryDetail,
     switchEditLinkVisible,
-    passAll
+    passAll,
   })(Content)
 );
