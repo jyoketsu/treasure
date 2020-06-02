@@ -7,6 +7,7 @@ import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
 import {
+  getStoryDetail,
   addStory,
   modifyStory,
   deleteStory,
@@ -28,7 +29,6 @@ const mapStateToProps = (state) => ({
       ? state.story.nowChannelKey
       : undefined,
   nowStationKey: state.station.nowStationKey,
-  storyList: state.story.storyList,
   loading: state.common.loading,
   flag: state.common.flag,
 });
@@ -461,7 +461,14 @@ class EditArticle extends Component {
   }
 
   async componentDidMount() {
-    const { story } = this.props;
+    const { location, story, getStoryDetail } = this.props;
+    if (location && !story._key) {
+      let storyKey = util.common.getSearchParamValue(location.search, "key");
+      if (storyKey) {
+        getStoryDetail(storyKey);
+      }
+    }
+
     // 获取七牛token
     let res = await api.auth.getUptoken(localStorage.getItem("TOKEN"));
     if (res.msg === "OK") {
@@ -472,21 +479,30 @@ class EditArticle extends Component {
     api.story.applyEdit(story._key, story.updateTime);
   }
 
-  componentWillUnmount() {
-    const { story } = this.props;
-    api.story.exitEdit(story._key);
-  }
-
   componentDidUpdate(prevProps) {
-    const { loading, history, nowStation } = this.props;
+    const { loading, history, story, nowStation } = this.props;
+    // 编辑完成后返回首页
     if (prevProps.loading && !loading && this.toHome) {
       history.push(`/${nowStation.domain}/home`);
     }
+    // 获取到故事详情后
+    const prevStoryKey = prevProps.story ? prevProps.story._key : null;
+    if (prevStoryKey !== story._key) {
+      this.setState({
+        story: story,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    const { story } = this.props;
+    api.story.exitEdit(story._key);
   }
 }
 
 export default withRouter(
   connect(mapStateToProps, {
+    getStoryDetail,
     addStory,
     modifyStory,
     deleteStory,

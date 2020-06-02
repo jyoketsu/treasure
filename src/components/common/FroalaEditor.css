@@ -64,10 +64,10 @@
 .fr-wrapper > div:first-child,
 #logo,
 .fr-view > p[data-f-id="pbf"] {
-  position: absolute;
+  /* position: absolute;
   top: -10000px;
   opacity: 0;
-  left: 0;
+  left: 0; */
 }
 @media screen and (max-width: 1150px) {
   .editor-menu {
@@ -98,5 +98,8 @@
   }
   .article-ext-wrapper {
     width: 100%;
+  }
+  .fr-box.fr-basic .fr-element {
+    min-height: 812px;
   }
 }

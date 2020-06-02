@@ -10,11 +10,11 @@ import ClickOutside from "./common/ClickOutside";
 
 const { Option } = Select;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   nowStation: state.station.nowStation,
   eidtLinkVisible: state.story.eidtLinkVisible,
-  nowChannelKey: state.story.nowChannelKey
+  nowChannelKey: state.story.nowChannelKey,
 });
 
 class AddButton extends Component {
@@ -22,7 +22,7 @@ class AddButton extends Component {
     super(props);
     this.state = {
       showExtButton: false,
-      showSelectChannel: false
+      showSelectChannel: false,
     };
     this.handleClickAdd = this.handleClickAdd.bind(this);
     this.switchExtButton = this.switchExtButton.bind(this);
@@ -31,8 +31,8 @@ class AddButton extends Component {
     this.handleSelectChannel = this.handleSelectChannel.bind(this);
   }
   switchExtButton() {
-    this.setState(prevState => ({
-      showExtButton: !prevState.showExtButton
+    this.setState((prevState) => ({
+      showExtButton: !prevState.showExtButton,
     }));
   }
 
@@ -42,7 +42,7 @@ class AddButton extends Component {
       user,
       nowStation,
       switchEditLinkVisible,
-      clearStoryDetail
+      clearStoryDetail,
     } = this.props;
     const stationDomain = nowStation.domain;
     if (user.isGuest) {
@@ -63,13 +63,13 @@ class AddButton extends Component {
       case "album":
         history.push({
           pathname: `/${stationDomain}/editStory`,
-          search: "?type=new"
+          search: "?type=new",
         });
         break;
       case "article":
         history.push({
           pathname: `/${stationDomain}/editArticle`,
-          search: "?type=new"
+          search: "?type=new",
         });
         break;
       case "page":
@@ -81,7 +81,7 @@ class AddButton extends Component {
         break;
       case "link":
         history.push({
-          pathname: `/${stationDomain}/home`
+          pathname: `/${stationDomain}/home`,
         });
         clearStoryDetail();
         switchEditLinkVisible();
@@ -112,13 +112,13 @@ class AddButton extends Component {
       case "album":
         history.push({
           pathname: `/${stationDomain}/editStory`,
-          search: `?type=new&channel=${this.channelKey}`
+          search: `?type=new&channel=${this.channelKey}`,
         });
         break;
       case "article":
         history.push({
           pathname: `/${stationDomain}/editArticle`,
-          search: `?type=new&channel=${this.channelKey}`
+          search: `?type=new&channel=${this.channelKey}`,
         });
         break;
       case "page":
@@ -158,8 +158,8 @@ class AddButton extends Component {
         } else if (window.location.pathname.includes("/detail/")) {
           this.channelKey = window.location.pathname.split("/detail/")[1];
         } else {
-          this.setState(prevState => ({
-            showSelectChannel: !prevState.showSelectChannel
+          this.setState((prevState) => ({
+            showSelectChannel: !prevState.showSelectChannel,
           }));
           return;
         }
@@ -168,8 +168,8 @@ class AddButton extends Component {
       }
       this.handleSelectedChannel();
     } else {
-      this.setState(prevState => ({
-        showSelectChannel: !prevState.showSelectChannel
+      this.setState((prevState) => ({
+        showSelectChannel: !prevState.showSelectChannel,
       }));
     }
   }
@@ -179,7 +179,12 @@ class AddButton extends Component {
   }
 
   render() {
-    const { nowChannel = {}, nowStation, eidtLinkVisible } = this.props;
+    const {
+      location,
+      nowChannel = {},
+      nowStation,
+      eidtLinkVisible,
+    } = this.props;
     const { showSelectChannel } = this.state;
     const { isCareStar = 0, seriesInfo = [] } = nowStation;
 
@@ -194,7 +199,8 @@ class AddButton extends Component {
       channelList = seriesInfo;
     }
 
-    return (
+    return location.pathname.includes("/editArticle") ||
+      location.pathname.includes("/editStory") ? null : (
       <div className="multi-button">
         <Tooltip title="投稿" placement="left">
           <div
@@ -261,7 +267,7 @@ class AddButton extends Component {
                         >
                           <i></i>
                         </div>
-                      </Tooltip>
+                      </Tooltip>,
                     ]
                   : null}
               </div>

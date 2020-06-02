@@ -26,8 +26,8 @@ import { HOST_NAME } from "./global";
 
 export default function App() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
-  const nowStation = useSelector(state => state.station.nowStation);
-  const loading = useSelector(state => state.common.loading);
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const loading = useSelector((state) => state.common.loading);
 
   // 站点类型
   const stationType = nowStation ? nowStation.style || 1 : "";
