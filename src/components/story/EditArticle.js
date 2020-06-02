@@ -216,7 +216,6 @@ class EditArticle extends Component {
       finishCallback();
     } else {
       // 返回到首页
-      // history.push(`/${nowStation.domain}/home`);
       this.toHome = true;
     }
   }
@@ -462,13 +461,6 @@ class EditArticle extends Component {
 
   async componentDidMount() {
     const { location, story, getStoryDetail } = this.props;
-    if (location && !story._key) {
-      let storyKey = util.common.getSearchParamValue(location.search, "key");
-      if (storyKey) {
-        getStoryDetail(storyKey);
-      }
-    }
-
     // 获取七牛token
     let res = await api.auth.getUptoken(localStorage.getItem("TOKEN"));
     if (res.msg === "OK") {
@@ -476,7 +468,15 @@ class EditArticle extends Component {
     } else {
       message.info({ text: res.msg });
     }
-    api.story.applyEdit(story._key, story.updateTime);
+
+    if (location && !story._key) {
+      let storyKey = util.common.getSearchParamValue(location.search, "key");
+      if (storyKey) {
+        getStoryDetail(storyKey);
+      }
+    } else {
+      api.story.applyEdit(story._key, story.updateTime);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -491,6 +491,7 @@ class EditArticle extends Component {
       this.setState({
         story: story,
       });
+      api.story.applyEdit(story._key, story.updateTime);
     }
   }
 
