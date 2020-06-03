@@ -152,6 +152,7 @@ class EditArticle extends Component {
         break;
       }
     }
+
     const { tag, allowPublicTag } = channelInfo;
 
     if (tag && !story.tag && allowPublicTag) {
@@ -474,7 +475,8 @@ class EditArticle extends Component {
       if (storyKey) {
         getStoryDetail(storyKey);
       }
-    } else {
+    }
+    if (story._key && story.updateTime) {
       api.story.applyEdit(story._key, story.updateTime);
     }
   }
@@ -497,7 +499,9 @@ class EditArticle extends Component {
 
   componentWillUnmount() {
     const { story } = this.props;
-    api.story.exitEdit(story._key);
+    if (story._key) {
+      api.story.exitEdit(story._key);
+    }
   }
 }
 

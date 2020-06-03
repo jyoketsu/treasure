@@ -14,12 +14,12 @@ import {
   getStoryList,
   clearStoryList,
   seePlugin,
-  seeChannel
+  seeChannel,
 } from "../actions/app";
 
 const { Option } = Select;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   waiting: state.common.waiting,
   stationList: state.station.stationList,
@@ -34,7 +34,7 @@ const mapStateToProps = state => ({
   storyListLength: state.story.storyList.length,
   refresh: state.story.refresh,
   tag: state.story.tag,
-  statusTag: state.story.statusTag
+  statusTag: state.story.statusTag,
 });
 
 class Home extends Component {
@@ -46,7 +46,7 @@ class Home extends Component {
       showFilter: false,
       tag: props.tag,
       statusTag: props.statusTag,
-      showScrollTop: false
+      showScrollTop: false,
     };
     this.switchSortModal = this.switchSortModal.bind(this);
     this.handleMouseWheel = this.handleMouseWheel.bind(this);
@@ -69,7 +69,7 @@ class Home extends Component {
       storyNumber,
       sortType,
       sortOrder,
-      nowChannelKey
+      nowChannelKey,
     } = this.props;
     const { tag, statusTag } = this.state;
     let top = document.body.scrollTop || document.documentElement.scrollTop;
@@ -113,7 +113,7 @@ class Home extends Component {
       getStoryList,
       sortType,
       sortOrder,
-      nowChannelKey
+      nowChannelKey,
     } = this.props;
     const { tag, statusTag } = this.state;
     let curPage = sessionStorage.getItem("home-curpage")
@@ -140,12 +140,12 @@ class Home extends Component {
       getStoryList,
       clearStoryList,
       sortType,
-      sortOrder
+      sortOrder,
     } = this.props;
     sessionStorage.setItem("home-curpage", 1);
     this.setState({
       tag: undefined,
-      statusTag: undefined
+      statusTag: undefined,
     });
     clearStoryList();
     getStoryList(
@@ -163,8 +163,8 @@ class Home extends Component {
   }
 
   switchSortModal() {
-    this.setState(prevState => ({
-      showSort: !prevState.showSort
+    this.setState((prevState) => ({
+      showSort: !prevState.showSort,
     }));
   }
 
@@ -174,8 +174,8 @@ class Home extends Component {
       message.info("请在频道中筛选！");
       return;
     }
-    this.setState(prevState => ({
-      showFilter: !prevState.showFilter
+    this.setState((prevState) => ({
+      showFilter: !prevState.showFilter,
     }));
   }
 
@@ -184,7 +184,7 @@ class Home extends Component {
     const { tag, statusTag } = this.state;
     sessionStorage.setItem("home-curpage", 1);
     this.setState({
-      showSort: false
+      showSort: false,
     });
     getStoryList(
       1,
@@ -201,11 +201,17 @@ class Home extends Component {
   }
 
   handleFilter() {
-    const { getStoryList, nowStationKey, nowChannelKey } = this.props;
-    const { sortType, sortOrder, tag, statusTag } = this.state;
+    const {
+      getStoryList,
+      nowStationKey,
+      nowChannelKey,
+      sortType,
+      sortOrder,
+    } = this.props;
+    const { tag, statusTag } = this.state;
     sessionStorage.setItem("home-curpage", 1);
     this.setState({
-      showFilter: false
+      showFilter: false,
     });
     getStoryList(
       1,
@@ -244,7 +250,7 @@ class Home extends Component {
       sortOrder,
       nowChannelKey,
       seePlugin,
-      seeChannel
+      seeChannel,
     } = this.props;
     const { showSort, showFilter, tag, statusTag, showScrollTop } = this.state;
 
@@ -307,7 +313,7 @@ class Home extends Component {
       sortOrder,
       getStoryList,
       refresh,
-      storyListLength
+      storyListLength,
     } = this.props;
 
     if ((refresh && nowStation) || (!storyListLength && nowStation)) {
@@ -345,7 +351,7 @@ class Home extends Component {
       nowStation,
       getStoryList,
       sortType,
-      sortOrder
+      sortOrder,
     } = this.props;
     const { nowStation: prevStation } = prevProps;
     const prevStationKey = prevStation ? prevStation._key : "";
@@ -390,7 +396,7 @@ class Station extends React.Component {
       xAxis: 0,
       questionVisible: false,
       question: "",
-      answer: ""
+      answer: "",
     };
     this.handleClickChannel = this.handleClickChannel.bind(this);
     this.switchPluginVisible = this.switchPluginVisible.bind(this);
@@ -442,7 +448,7 @@ class Station extends React.Component {
       this.rightAnswer = nowChannel.answer;
       this.question = {
         type: "album",
-        param: { index: index, key: key }
+        param: { index: index, key: key },
       };
       this.switchPluginVisible(nowChannel.question, "");
       return;
@@ -469,16 +475,16 @@ class Station extends React.Component {
   }
 
   switchPluginVisible(question, answer) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       question: question ? question : "",
       answer: answer ? answer : "",
-      questionVisible: !prevState.questionVisible
+      questionVisible: !prevState.questionVisible,
     }));
   }
 
   handleInputAnswer(e) {
     this.setState({
-      answer: e.target.value
+      answer: e.target.value,
     });
   }
 
@@ -498,7 +504,7 @@ class Station extends React.Component {
         seeChannel(this.question.param.key);
       }
       this.setState({
-        questionVisible: false
+        questionVisible: false,
       });
     } else {
       message.error("回答错误");
@@ -526,7 +532,7 @@ class Station extends React.Component {
       handleFilter,
       showScrollTop,
       storyList,
-      storyNumber
+      storyNumber,
     } = this.props;
     const { seriesInfo = [], pluginInfo = [] } = content;
     const { isCareStar, showAll } = content;
@@ -551,12 +557,12 @@ class Station extends React.Component {
             const itemObj = JSON.parse(item);
             return {
               id: itemObj.id,
-              name: itemObj.name
+              name: itemObj.name,
             };
           } else {
             return {
               id: item,
-              name: item
+              name: item,
             };
           }
         })
@@ -594,7 +600,7 @@ class Station extends React.Component {
                 <div
                   className="station-cover"
                   style={{
-                    backgroundImage: `url(${cover.url})`
+                    backgroundImage: `url(${cover.url})`,
                   }}
                 ></div>
               </div>
@@ -620,7 +626,7 @@ class Station extends React.Component {
                 <i
                   style={{
                     backgroundImage:
-                      "url(https://i.loli.net/2020/02/11/ypWxKFCJk6b1wG7.png)"
+                      "url(https://i.loli.net/2020/02/11/ypWxKFCJk6b1wG7.png)",
                   }}
                 ></i>
                 <span>家庭树</span>
@@ -663,8 +669,8 @@ class Station extends React.Component {
                             type: "plugin",
                             param: {
                               url: `${plugin.url}/${content.domain}?token=${token}`,
-                              key: plugin._key
-                            }
+                              key: plugin._key,
+                            },
                           };
                           this.switchPluginVisible(plugin.question, "");
                         }
@@ -687,11 +693,11 @@ class Station extends React.Component {
           </div>
           <div
             className="series-container"
-            ref={node => (this.tabContainer = node)}
+            ref={(node) => (this.tabContainer = node)}
           >
             <div
               className="series-tabs"
-              ref={node => (this.tabs = node)}
+              ref={(node) => (this.tabs = node)}
               style={{ transform: `translate(${xAxis}px, 0)` }}
             >
               {showAll ? (
@@ -897,5 +903,5 @@ export default connect(mapStateToProps, {
   getStoryList,
   clearStoryList,
   seePlugin,
-  seeChannel
+  seeChannel,
 })(Home);
