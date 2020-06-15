@@ -28,7 +28,7 @@ import {
   CLEAR_COMMENT_LIST,
   ADD_SUB_STORY,
   VOTE,
-  EDIT_COMMENT
+  EDIT_COMMENT,
 } from "../actions/app";
 import { message } from "antd";
 
@@ -51,7 +51,7 @@ const defaultState = {
   commentList: [],
   // 以下为故事2
   storyList2: [],
-  storyNumber2: 0
+  storyNumber2: 0,
 };
 
 const story = (state = defaultState, action) => {
@@ -75,7 +75,7 @@ const story = (state = defaultState, action) => {
             nowChannelKey: action.channelKey,
             refresh: false,
             tag: action.tag,
-            statusTag: action.statusTag
+            statusTag: action.statusTag,
           };
         } else {
           return {
@@ -86,7 +86,7 @@ const story = (state = defaultState, action) => {
             sortOrder: action.sortOrder,
             nowChannelKey: action.channelKey,
             tag: action.tag,
-            statusTag: action.statusTag
+            statusTag: action.statusTag,
           };
         }
       } else {
@@ -99,7 +99,7 @@ const story = (state = defaultState, action) => {
         return {
           ...state,
           storyList2: storyList,
-          storyNumber2: action.payload.totalNumber
+          storyNumber2: action.payload.totalNumber,
         };
       } else {
         return state;
@@ -111,7 +111,7 @@ const story = (state = defaultState, action) => {
         return {
           ...state,
           storyList2: storyList,
-          storyNumber2: action.payload.totalNumber
+          storyNumber2: action.payload.totalNumber,
         };
       } else {
         return state;
@@ -124,13 +124,13 @@ const story = (state = defaultState, action) => {
         sortType: 1,
         sortOrder: 1,
         tag: action.tag,
-        statusTag: action.statusTag
+        statusTag: action.statusTag,
       };
     case READYTOREFRESH:
       return {
         ...state,
         storyList: [],
-        refresh: true
+        refresh: true,
       };
     case CLEAR_STORY_LIST:
       return {
@@ -138,13 +138,13 @@ const story = (state = defaultState, action) => {
         storyNumber: 0,
         storyList: [],
         tag: undefined,
-        statusTag: undefined
+        statusTag: undefined,
       };
     case CLEAR_STORY_LIST_2:
       return {
         ...state,
         storyNumber2: 0,
-        storyList2: []
+        storyList2: [],
       };
     case ADD_STORY:
       if (!action.error) {
@@ -157,7 +157,7 @@ const story = (state = defaultState, action) => {
 
         return {
           ...state,
-          storyList: storyList
+          storyList: storyList,
         };
       } else {
         return state;
@@ -173,7 +173,7 @@ const story = (state = defaultState, action) => {
         }
         return {
           ...state,
-          storyList: storyList
+          storyList: storyList,
         };
       } else {
         return state;
@@ -187,9 +187,19 @@ const story = (state = defaultState, action) => {
             break;
           }
         }
+        
+        let storyList2 = Object.assign([], state.storyList2);
+        for (let i = 0; i < storyList2.length; i++) {
+          if (storyList2[i]._key === action.storyKey) {
+            storyList2.splice(i, 1);
+            break;
+          }
+        }
         return {
           ...state,
-          storyList: storyList
+          storyList: storyList,
+          storyList2: storyList2,
+          story: {},
         };
       } else {
         return state;
@@ -199,7 +209,7 @@ const story = (state = defaultState, action) => {
         return {
           ...state,
           story: action.payload.result,
-          commentList: action.payload.result.commentList
+          commentList: action.payload.result.commentList,
         };
       } else {
         return state;
@@ -207,12 +217,12 @@ const story = (state = defaultState, action) => {
     case CLEAR_STORY_DETAIL:
       return {
         ...state,
-        story: {}
+        story: {},
       };
     case UPDATE_EXIF:
       return {
         ...state,
-        story: action.story
+        story: action.story,
       };
     case LIKE_STORY:
       if (!action.error) {
@@ -244,7 +254,7 @@ const story = (state = defaultState, action) => {
         return {
           ...state,
           story: story,
-          storyList: storyList
+          storyList: storyList,
         };
       } else {
         return state;
@@ -263,7 +273,7 @@ const story = (state = defaultState, action) => {
           }
           return {
             ...state,
-            storyList: storyList
+            storyList: storyList,
           };
         } else {
           let storyList = JSON.parse(JSON.stringify(state.storyList2));
@@ -277,7 +287,7 @@ const story = (state = defaultState, action) => {
           return {
             ...state,
             storyList2: storyList,
-            story: {}
+            story: {},
           };
         }
       } else {
@@ -294,7 +304,7 @@ const story = (state = defaultState, action) => {
         }
         return {
           ...state,
-          dynamicStoryList: storyList
+          dynamicStoryList: storyList,
         };
       } else {
         return state;
@@ -302,13 +312,13 @@ const story = (state = defaultState, action) => {
     case SWITCH_EDIT_LINK_VISIBLE:
       return {
         ...state,
-        eidtLinkVisible: !state.eidtLinkVisible
+        eidtLinkVisible: !state.eidtLinkVisible,
       };
     case PASS_ALL:
       if (!action.error) {
         return {
           ...state,
-          storyList2: []
+          storyList2: [],
         };
       } else {
         return state;
@@ -340,7 +350,7 @@ const story = (state = defaultState, action) => {
           ...state,
           story: story,
           storyList: storyList,
-          statusTagStats: statusTagStats
+          statusTagStats: statusTagStats,
         };
       } else {
         return state;
@@ -349,7 +359,7 @@ const story = (state = defaultState, action) => {
       if (!action.error && action.payload.result.length) {
         return {
           ...state,
-          statusTagStats: action.payload.result
+          statusTagStats: action.payload.result,
         };
       } else {
         return state;
@@ -357,24 +367,24 @@ const story = (state = defaultState, action) => {
     case SET_CHANNEL_KEY:
       return {
         ...state,
-        nowChannelKey: action.channelKey
+        nowChannelKey: action.channelKey,
       };
     case GET_HOME_STORIES:
       return {
         ...state,
-        homeStories: action.results
+        homeStories: action.results,
       };
     case SET_NOW_TAG:
       return {
         ...state,
         storyList: [],
-        tag: action.tag
+        tag: action.tag,
       };
     case GET_COMMENT_LIST:
       if (!action.error) {
         return {
           ...state,
-          commentList: action.payload.result
+          commentList: action.payload.result,
         };
       } else {
         return state;
@@ -382,7 +392,7 @@ const story = (state = defaultState, action) => {
     case CLEAR_COMMENT_LIST:
       return {
         ...state,
-        commentList: []
+        commentList: [],
       };
     case POST_COMMENT:
       if (!action.error) {
@@ -401,11 +411,11 @@ const story = (state = defaultState, action) => {
           targetContent: action.targetContent,
           targetCommentKey: action.targetCommentKey,
           etc: null,
-          targetTime: 1582707453864
+          targetTime: 1582707453864,
         });
         return {
           ...state,
-          commentList: commentList
+          commentList: commentList,
         };
       } else {
         return state;
@@ -421,7 +431,7 @@ const story = (state = defaultState, action) => {
         }
         return {
           ...state,
-          commentList: commentList
+          commentList: commentList,
         };
       } else {
         return state;
@@ -432,7 +442,7 @@ const story = (state = defaultState, action) => {
         commentList.unshift(action.payload.result);
         return {
           ...state,
-          commentList: commentList
+          commentList: commentList,
         };
       } else {
         return state;
@@ -458,7 +468,7 @@ const story = (state = defaultState, action) => {
         }
         return {
           ...state,
-          commentList: commentList
+          commentList: commentList,
         };
       } else {
         return state;
@@ -475,7 +485,7 @@ const story = (state = defaultState, action) => {
         }
         return {
           ...state,
-          commentList: commentList
+          commentList: commentList,
         };
       } else {
         return state;
