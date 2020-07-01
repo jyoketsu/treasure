@@ -20,12 +20,12 @@ export default function StoryAction({ children }) {
 function StatusTag() {
   const { Option } = Select;
   const dispath = useDispatch();
-  const nowStation = useSelector(state => state.station.nowStation);
-  const channelInfo = useSelector(state =>
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const channelInfo = useSelector((state) =>
     state.station.nowStation ? state.station.nowStation.seriesInfo : []
   );
-  const story = useSelector(state => state.story.story);
-  const stats = useSelector(state => state.story.statusTagStats);
+  const story = useSelector((state) => state.story.story);
+  const stats = useSelector((state) => state.story.statusTagStats);
   const nowChannelId =
     story && story.series
       ? story.series._key
@@ -57,7 +57,7 @@ function StatusTag() {
     <Select
       value={story.statusTag}
       style={{ width: 120 }}
-      onChange={value => setStatusTag(story._key, value, dispath)}
+      onChange={(value) => setStatusTag(story._key, value, dispath)}
     >
       <Option key="notag" value="">
         无
@@ -73,10 +73,10 @@ function StatusTag() {
 
 function Like() {
   const dispath = useDispatch();
-  const story = useSelector(state => state.story.story);
+  const story = useSelector((state) => state.story.story);
 
   function handleLike() {
-    like(story._key, dispath);
+    like(story._key, story.type, dispath);
   }
 
   return (
@@ -88,7 +88,7 @@ function Like() {
             story && story.islike
               ? "/image/icon/like.svg"
               : "/image/icon/like2.svg"
-          })`
+          })`,
         }}
         onClick={handleLike}
       ></i>

@@ -5,14 +5,14 @@ let token = "FLQ1K86TTORG4LUZ2I68TAPSWC69AR1ES55L9UPW4LWIRTYS1561345482667";
 const requests = {
   // post方法
   post(url, params) {
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       try {
         let result = await fetch(url, {
           method: "POST",
           body: JSON.stringify(params),
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const json = await result.json();
         resolve(json);
@@ -23,11 +23,11 @@ const requests = {
   },
   // post方法（multipart/form-data）
   postForm(url, data) {
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       try {
         let result = await fetch(url, {
           method: "POST",
-          body: data
+          body: data,
         });
         const json = await result.json();
         resolve(json);
@@ -49,10 +49,10 @@ const requests = {
       i++;
     }
 
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       try {
         let result = await fetch(url, {
-          method: "GET"
+          method: "GET",
         });
 
         const json = await result.json();
@@ -65,14 +65,14 @@ const requests = {
 
   // patch方法
   patch(url, param) {
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       try {
         let result = await fetch(url, {
           method: "PATCH",
           body: JSON.stringify(param),
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const json = await result.json();
         resolve(json);
@@ -84,14 +84,14 @@ const requests = {
 
   // delete方法
   delete(url, param) {
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
       try {
         let result = await fetch(url, {
           method: "DELETE",
           body: JSON.stringify(param),
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         const json = await result.json();
         resolve(json);
@@ -99,7 +99,7 @@ const requests = {
         reject(e);
       }
     });
-  }
+  },
 };
 
 const auth = {
@@ -116,7 +116,7 @@ const auth = {
       app: 3,
       deviceType: isMobile ? 1 : 4,
       deviceModel: isMobile ? "mobile" : "web",
-      appHigh: 26
+      appHigh: 26,
     };
     return requests.get(AUTH_URL + "/account", param);
   },
@@ -137,7 +137,7 @@ const auth = {
             mobileArea: params.mobileArea,
             mobile: params.mobile,
             code: params.code,
-            password: params.password
+            password: params.password,
           }
         );
         resolve(res);
@@ -156,7 +156,7 @@ const auth = {
     return requests.get(AUTH_URL + "/account/thirdLogin", {
       app: 3,
       uId: uId,
-      type: type
+      type: type,
     });
   },
 
@@ -177,7 +177,7 @@ const auth = {
       uId: uId,
       code: code,
       type: type,
-      familySearchInfo: fsInfo
+      familySearchInfo: fsInfo,
     });
   },
 
@@ -185,7 +185,7 @@ const auth = {
   getUptoken() {
     return requests.get(AUTH_URL + "/upTokenQiniu/getQiNiuUpToken", {
       token: token,
-      type: 2
+      type: 2,
     });
   },
 
@@ -201,14 +201,14 @@ const auth = {
   editAccount(profile) {
     return requests.patch(AUTH_URL + "/account", {
       token: token,
-      profile: profile
+      profile: profile,
     });
   },
 
   searchUser(keyword) {
     return requests.get(AUTH_URL + "/account/userSearchStar", {
       token: token,
-      searchCondition: keyword
+      searchCondition: keyword,
     });
   },
   // 获取登录用户信息
@@ -223,21 +223,21 @@ const auth = {
     return requests.get(APIURL + "/groupmember", {
       token: token,
       groupId: groupId,
-      starKey: stationKey
+      starKey: stationKey,
     });
   },
   addGroupMember(groupId, targetUidList) {
     return requests.post(APIURL + "/groupmember", {
       token: token,
       groupKey: groupId,
-      targetUidList: targetUidList
+      targetUidList: targetUidList,
     });
   },
   removeGroupMember(groupId, targetUKeyList) {
     return requests.delete(APIURL + "/groupmember/remove", {
       token: token,
       groupKey: groupId,
-      targetUKeyList: targetUKeyList
+      targetUKeyList: targetUKeyList,
     });
   },
   setMemberRole(groupId, targetUKey, role) {
@@ -245,7 +245,7 @@ const auth = {
       token: token,
       groupKey: groupId,
       targetUKey: targetUKey,
-      role: role
+      role: role,
     });
   },
   setMemberInfo(groupId, targetUKey, info) {
@@ -253,13 +253,13 @@ const auth = {
       token: token,
       groupKey: groupId,
       targetUKey: targetUKey,
-      patchData: info
+      patchData: info,
     });
   },
   getUserInfoByKey(key) {
     return requests.get(AUTH_URL + "/account/targetUserInfo", {
       token: token,
-      key: key
+      key: key,
     });
   },
   // 批量导入用户
@@ -267,14 +267,14 @@ const auth = {
     return requests.post(APIURL + "/starAddressBook", {
       token: token,
       starKey: stationKey,
-      targetUserArray
+      targetUserArray,
     });
   },
   // 获取导入用户列表
   getImportedUsers(stationKey) {
     return requests.post(APIURL + "/starAddressBook/getUserList", {
       token: token,
-      starKey: stationKey
+      starKey: stationKey,
     });
   },
   // 批次删除导入用户
@@ -282,7 +282,7 @@ const auth = {
     return requests.post(APIURL + "/starAddressBook/batchDeleteUser", {
       token: token,
       starKey: stationKey,
-      batchId: batchId
+      batchId: batchId,
     });
   },
   // 编辑导入用户
@@ -294,8 +294,8 @@ const auth = {
       mobile: mobile,
       patchData: {
         role: role,
-        safeCode: safeCode
-      }
+        safeCode: safeCode,
+      },
     });
   },
   // 签到
@@ -307,15 +307,15 @@ const auth = {
   signin(stationKey) {
     return requests.post(APIURL + "/starCheckIn", {
       token: token,
-      starKey: stationKey
+      starKey: stationKey,
     });
-  }
+  },
 };
 
 const station = {
   getStationName(url) {
     return requests.get(APIURL + "/star/siteName", {
-      url: url
+      url: url,
     });
   },
 
@@ -323,7 +323,7 @@ const station = {
   getStationList() {
     // return requests.get(APIURL + '/star/careAndMyList', {
     return requests.get(APIURL + "/star/careAndMyDetail", {
-      token: token
+      token: token,
     });
   },
 
@@ -366,14 +366,14 @@ const station = {
       inheritedMode: inheritedMode,
       showAll: showAll,
       style: style,
-      config: config
+      config: config,
     });
   },
 
   deleteStation(key) {
     return requests.delete(APIURL + "/star/deleteStar", {
       token: token,
-      starKey: key
+      starKey: key,
     });
   },
 
@@ -409,25 +409,25 @@ const station = {
       inheritedMode: inheritedMode,
       showAll: showAll,
       style: style,
-      config: config
+      config: config,
     });
   },
   getStationDetail(key) {
     return requests.get(APIURL + "/star/starDetail", {
       token: token,
-      starKey: key
+      starKey: key,
     });
   },
   getStationDetailByDomain(domain) {
     return requests.get(APIURL + "/star/starDetailByDomain", {
       token: token,
-      domain: domain.toLowerCase()
+      domain: domain.toLowerCase(),
     });
   },
   getStationKey(domain) {
     return requests.get(APIURL + "/star/getStarKeyByDomain", {
       token: token,
-      domain: domain
+      domain: domain,
     });
   },
 
@@ -437,7 +437,7 @@ const station = {
       searchCondition: keyword,
       searchType2: type ? type : "",
       curPage: curPage,
-      perPage: perPage
+      perPage: perPage,
     });
   },
 
@@ -446,7 +446,7 @@ const station = {
       token: token,
       seriesKeyArray: channelKeys,
       starKey: stationKey,
-      relationDesc: relationDesc ? relationDesc : ""
+      relationDesc: relationDesc ? relationDesc : "",
     });
   },
 
@@ -455,7 +455,7 @@ const station = {
       token: token,
       starKey: stationKey,
       status: checked,
-      relationDesc: relationDesc ? relationDesc : ""
+      relationDesc: relationDesc ? relationDesc : "",
     });
   },
 
@@ -472,20 +472,20 @@ const station = {
       type: type,
       starKey: stationKey,
       transferContent: transferContent,
-      targetUKey: targetUKey
+      targetUKey: targetUKey,
     });
   },
   cloneStation(stationKey) {
     return requests.post(APIURL + "/star/cloneStar", {
       token: token,
-      sourceStarKey: stationKey
+      sourceStarKey: stationKey,
     });
   },
   // 获取子站列表
   getSubStationList(stationKey) {
     return requests.get(APIURL + "/star/subStarList", {
       token: token,
-      starKey: stationKey
+      starKey: stationKey,
     });
   },
   // 添加子站
@@ -493,7 +493,7 @@ const station = {
     return requests.post(APIURL + "/star/addSubStar", {
       token: token,
       starKey: stationKey,
-      subStarKey: subStationKey
+      subStarKey: subStationKey,
     });
   },
   // 删除子站
@@ -501,7 +501,7 @@ const station = {
     return requests.post(APIURL + "/star/deleteSubStar", {
       token: token,
       starKey: stationKey,
-      subStarKey: subStationKey
+      subStarKey: subStationKey,
     });
   },
   // 最近访问用户
@@ -510,9 +510,9 @@ const station = {
       token: token,
       starKey: stationKey,
       curPage: 1,
-      perPage: 100
+      perPage: 100,
     });
-  }
+  },
 };
 
 const story = {
@@ -539,7 +539,7 @@ const story = {
       tag: tag ? tag : "",
       statusTag: statusTag ? statusTag : "",
       curPage: curPage,
-      perPage: perPage
+      perPage: perPage,
     });
   },
 
@@ -548,7 +548,7 @@ const story = {
     return requests.post(APIURL + "/album/applyEdit", {
       token: token,
       albumKey: key,
-      mobileTime: time
+      mobileTime: time,
     });
   },
 
@@ -556,7 +556,7 @@ const story = {
   exitEdit(key) {
     return requests.post(APIURL + "/album/exitEdit", {
       token: token,
-      albumKey: key
+      albumKey: key,
     });
   },
 
@@ -565,7 +565,7 @@ const story = {
       APIURL + "/album",
       Object.assign(story, {
         token: token,
-        time: new Date().getTime()
+        time: new Date().getTime(),
       })
     );
   },
@@ -578,21 +578,21 @@ const story = {
   deleteStory(storyKey) {
     return requests.delete(APIURL + "/album", {
       token: token,
-      key: storyKey
+      key: storyKey,
     });
   },
 
   getStoryDetail(storyKey) {
     return requests.get(APIURL + "/album/detailNew", {
       token: token,
-      key: storyKey
+      key: storyKey,
     });
   },
-  like(storyKey) {
+  like(storyKey, type) {
     return requests.post(APIURL + "/comment/like", {
       token: token,
-      type: 6,
-      key: storyKey
+      type: type ? type : 6,
+      key: storyKey,
     });
   },
 
@@ -603,7 +603,7 @@ const story = {
       ...story,
       fatherAlbumKey: fatherStoryKey,
       fatherAlbumStarName: fatherSiteName,
-      fatherSeriesKey: fatherChannelKey
+      fatherSeriesKey: fatherChannelKey,
     });
   },
   /**
@@ -615,7 +615,7 @@ const story = {
     return requests.post(APIURL + "/album/pollAlbum", {
       token: token,
       albumKey: storyKey,
-      status: status
+      status: status,
     });
   },
 
@@ -626,7 +626,7 @@ const story = {
       name: name,
       type: type,
       groupArray: [],
-      ...extParams
+      ...extParams,
     });
   },
   editChannel(channelKey, name, type, extParams) {
@@ -636,20 +636,20 @@ const story = {
       name: name,
       type: type,
       groupArray: [],
-      ...extParams
+      ...extParams,
     });
   },
   deleteChannel(channelKey) {
     return requests.delete(APIURL + "/series", {
       token: token,
-      key: channelKey
+      key: channelKey,
     });
   },
   sortChannel(stationKey, channelKeys) {
     return requests.patch(APIURL + "/star/setSeriesOrder", {
       token: token,
       starKey: stationKey,
-      seriesOrder: channelKeys
+      seriesOrder: channelKeys,
     });
   },
   /**
@@ -659,7 +659,7 @@ const story = {
   myStationLatestStory(curPage) {
     return requests.get(APIURL + "/star/myAndCareStarAlbumList", {
       token: token,
-      curPage: curPage
+      curPage: curPage,
     });
   },
 
@@ -674,7 +674,7 @@ const story = {
       token: token,
       key: storyKey,
       groupKey: groupKey,
-      passOrNot: passOrNot
+      passOrNot: passOrNot,
     });
   },
 
@@ -685,7 +685,7 @@ const story = {
   seeChannel(channelKey) {
     return requests.post(APIURL + "/series/seeSeries", {
       token: token,
-      seriesKey: channelKey
+      seriesKey: channelKey,
     });
   },
 
@@ -696,7 +696,7 @@ const story = {
   passAll(stationKey) {
     return requests.patch(APIURL + "/album/checkPassAll", {
       token: token,
-      starKey: stationKey
+      starKey: stationKey,
     });
   },
   /**
@@ -708,7 +708,7 @@ const story = {
     return requests.patch(APIURL + "/album/updateStatusTag", {
       token: token,
       albumKey: key,
-      statusTag: statusTag
+      statusTag: statusTag,
     });
   },
 
@@ -722,7 +722,7 @@ const story = {
       token: token,
       starKey: stationKey,
       seriesKey: channelKey,
-      statusTag: statusTag
+      statusTag: statusTag,
     });
   },
 
@@ -733,7 +733,7 @@ const story = {
       seriesKey: "subscribe",
       articleType: "[6, 9]",
       curPage: curPage,
-      perPage: perPage
+      perPage: perPage,
     });
   },
   /**
@@ -745,7 +745,7 @@ const story = {
     return requests.get(APIURL + "/comment/commentList", {
       token: token,
       key: storyKey,
-      type: type
+      type: type,
     });
   },
   // 发表评论
@@ -768,14 +768,14 @@ const story = {
       targetUkey: targetUkey,
       targetName: targetName,
       targetContent: targetContent,
-      targetTime: targetTime
+      targetTime: targetTime,
     });
   },
   // 删除评论
   deleteComment(commentKey) {
     return requests.delete(APIURL + "/comment", {
       token: token,
-      key: commentKey
+      key: commentKey,
     });
   },
 
@@ -783,7 +783,7 @@ const story = {
   getSubscribeChannels(seriesKey) {
     return requests.get(APIURL + "/series/subscribeList", {
       token: token,
-      seriesKey: seriesKey
+      seriesKey: seriesKey,
     });
   },
 
@@ -805,7 +805,7 @@ const story = {
       sourceSeriesKey: sourceSeriesKey,
       targetSeriesKey: targetSeriesKey,
       disOrSubType: disOrSubType,
-      selectOrNot: selectOrNot
+      selectOrNot: selectOrNot,
     });
   },
 
@@ -820,9 +820,9 @@ const story = {
       token: token,
       distributeApplyKey: distributeApplyKey,
       status: status,
-      feedKey: feedKey
+      feedKey: feedKey,
     });
-  }
+  },
 };
 
 const plugin = {
@@ -832,7 +832,7 @@ const plugin = {
       publishStarKey: stationKey,
       pluginName: name,
       icon: icon,
-      url: url
+      url: url,
     });
   },
   editPlugin(pluginKey, stationKey, name, icon, url) {
@@ -842,13 +842,13 @@ const plugin = {
       publishStarKey: stationKey,
       pluginName: name,
       icon: icon,
-      url: url
+      url: url,
     });
   },
   deletePlugin(pluginKey) {
     return requests.delete(APIURL + "/plugin", {
       token: token,
-      key: pluginKey
+      key: pluginKey,
     });
   },
 
@@ -857,7 +857,7 @@ const plugin = {
       token: token,
       starKey: stationKey,
       curPage: curPage,
-      perPage: perPage
+      perPage: perPage,
     });
   },
 
@@ -865,14 +865,14 @@ const plugin = {
     return requests.post(APIURL + "/plugin/quote", {
       token: token,
       starKey: stationKey,
-      pluginAppKeyList: pluginKeys
+      pluginAppKeyList: pluginKeys,
     });
   },
 
   cancelPlugin(pluginKey) {
     return requests.delete(APIURL + "/plugin/quote", {
       token: token,
-      key: pluginKey
+      key: pluginKey,
     });
   },
   setPlugin(
@@ -895,7 +895,7 @@ const plugin = {
       subscribePay: subscribePay,
       monthlyFee: monthlyFee,
       annualFee: annualFee,
-      lifelongFee: lifelongFee
+      lifelongFee: lifelongFee,
     });
   },
 
@@ -906,24 +906,24 @@ const plugin = {
   seePlugin(pluginKey) {
     return requests.post(APIURL + "/plugin/seePlugin", {
       token: token,
-      pluginKey: pluginKey
+      pluginKey: pluginKey,
     });
   },
   sortPlugin(stationKey, pluginKeys) {
     return requests.patch(APIURL + "/star/setPluginOrder", {
       token: token,
       starKey: stationKey,
-      pluginOrder: pluginKeys
+      pluginOrder: pluginKeys,
     });
-  }
+  },
 };
 
 const wechat = {
   signature(url) {
     return requests.post(AUTH_URL + "/account/getShareWXInfo", {
-      url: url
+      url: url,
     });
-  }
+  },
 };
 
 export default {
@@ -933,8 +933,8 @@ export default {
   story,
   plugin,
   wechat,
-  setToken: _token => {
+  setToken: (_token) => {
     window.localStorage.setItem("TOKEN", _token);
     token = _token;
-  }
+  },
 };

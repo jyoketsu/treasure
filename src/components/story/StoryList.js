@@ -7,18 +7,18 @@ import Waterfall from "react-waterfall-responsive";
 import { connect } from "react-redux";
 import { like } from "../../actions/app";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userKey: state.auth.user ? state.auth.user._key : "",
   waiting: state.common.waiting,
   flag: state.common.flag,
-  role: state.station.nowStation ? state.station.nowStation.role : null
+  role: state.station.nowStation ? state.station.nowStation.role : null,
 });
 
 class StoryList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnNum: null
+      columnNum: null,
     };
     this.setColumn = this.setColumn.bind(this);
   }
@@ -38,7 +38,7 @@ class StoryList extends Component {
       showMore,
       handleCoverClick,
       showSiteName,
-      inline
+      inline,
     } = this.props;
     const { columnNum } = this.state;
     const isMobile = util.common.isMobile();
@@ -60,7 +60,7 @@ class StoryList extends Component {
           <StoryCard
             key={index}
             story={story}
-            like={() => like(story._key)}
+            like={() => like(story._key, story.type)}
             showSetting={showSetting}
             width={290 + 5}
             height={height + 5}
@@ -75,7 +75,7 @@ class StoryList extends Component {
             userKey={userKey}
             showSiteName={showSiteName}
             story={story}
-            like={() => like(story._key)}
+            like={() => like(story._key, story.type)}
             showSetting={showSetting}
             role={role}
             inline={inline}
@@ -122,7 +122,7 @@ class StoryList extends Component {
     if (this.refs.container) {
       const containerWidth = this.refs.container.clientWidth;
       this.setState({
-        columnNum: Math.floor(containerWidth / 290)
+        columnNum: Math.floor(containerWidth / 290),
       });
     }
   }

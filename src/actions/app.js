@@ -666,8 +666,8 @@ export function deleteStory(storyKey) {
   };
 }
 
-export function like(storyKey, dispatch) {
-  let request = api.story.like(storyKey);
+export function like(storyKey, type, dispatch) {
+  let request = api.story.like(storyKey, type);
   const dispatchBody = {
     type: LIKE_STORY,
     storyKey: storyKey,

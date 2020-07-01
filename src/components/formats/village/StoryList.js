@@ -13,14 +13,14 @@ import { getStoryList, like, setNowTag } from "../../../actions/app";
 export default function StoryList() {
   const perPage = 20;
   const match = useRouteMatch();
-  const nowStation = useSelector(state => state.station.nowStation);
-  const storyList = useSelector(state => state.story.storyList);
-  const storyNumber = useSelector(state => state.story.storyNumber);
-  const sortType = useSelector(state => state.story.sortType);
-  const sortOrder = useSelector(state => state.story.sortOrder);
-  const tag = useSelector(state => state.story.tag);
-  const waiting = useSelector(state => state.common.waiting);
-  const statusTag = useSelector(state => state.story.statusTag);
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const storyList = useSelector((state) => state.story.storyList);
+  const storyNumber = useSelector((state) => state.story.storyNumber);
+  const sortType = useSelector((state) => state.story.sortType);
+  const sortOrder = useSelector((state) => state.story.sortOrder);
+  const tag = useSelector((state) => state.story.tag);
+  const waiting = useSelector((state) => state.common.waiting);
+  const statusTag = useSelector((state) => state.story.statusTag);
 
   const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ export default function StoryList() {
     sortOrder,
     tag,
     statusTag,
-    dispatch
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function StoryList() {
     sortOrder,
     tag,
     statusTag,
-    dispatch
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function StoryList() {
     } else {
       tagObjList.push({
         id: tagList[i],
-        name: tagList[i]
+        name: tagList[i],
       });
     }
   }
@@ -170,7 +170,7 @@ export default function StoryList() {
       <StoryCard
         key={index}
         story={story}
-        like={() => like(story._key, dispatch)}
+        like={() => like(story._key, story.type, dispatch)}
         showSetting={nowChannel.showSetting}
         width={290 + 5}
         height={height + 5}
@@ -219,7 +219,7 @@ function Head({ nowChannel, titleList, onClick }) {
       const element = titleList[index];
       data.push({
         id: element.id,
-        name: element.name
+        name: element.name,
       });
     }
     data = [...data, ...data, ...data];
@@ -229,7 +229,7 @@ function Head({ nowChannel, titleList, onClick }) {
     <div
       className="village-stories-banner"
       style={{
-        backgroundImage: `url(${nowChannel ? nowChannel.cover : ""})`
+        backgroundImage: `url(${nowChannel ? nowChannel.cover : ""})`,
       }}
     >
       <div className="village-banner-head" style={{ height: "45px" }}>
@@ -245,7 +245,7 @@ function Head({ nowChannel, titleList, onClick }) {
               width: "200px",
               height: "200px",
               marginRight: "30px",
-              boxSizing: "content-box"
+              boxSizing: "content-box",
             }}
           >
             <TagCloud tagName={data} radius={150} onClick={onClick} />
