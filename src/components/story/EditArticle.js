@@ -137,8 +137,10 @@ class EditArticle extends Component {
       seriesInfo,
       finishCallback,
     } = this.props;
-    const { story } = this.state;
+    const { story: orginal } = this.state;
     e.preventDefault();
+
+    let story = JSON.parse(JSON.stringify(orginal));
 
     if (!story.series._key) {
       return message.info("请选择投稿主题！");
@@ -183,11 +185,6 @@ class EditArticle extends Component {
       story.cover = null;
       story.size = null;
     }
-    // memo
-    // 去除标签
-    let sectionStr = str.replace(/<\/?.+?>/g, "");
-    sectionStr = sectionStr.replace(/&nbsp;/g, "");
-    story.memo = sectionStr.substr(0, 200);
 
     // 文章标题（文章内容的第1行为标题）
     let title = util.common.getDomFirstChild(story.content);
@@ -195,6 +192,13 @@ class EditArticle extends Component {
       story.title = title.innerText;
       story.content = story.content.replace(title.htmlStr, "");
     }
+
+    // memo
+    // 去除标签
+    str = story.content;
+    let sectionStr = str.replace(/<\/?.+?>/g, "");
+    sectionStr = sectionStr.replace(/&nbsp;/g, "");
+    story.memo = sectionStr.substr(0, 200);
 
     if (typeof story.series === "object") {
       story.series = story.series._key;
@@ -212,6 +216,7 @@ class EditArticle extends Component {
       });
       addStory(story);
     }
+
     // 跳转
     if (finishCallback) {
       finishCallback();
@@ -493,7 +498,7 @@ class EditArticle extends Component {
       this.setState({
         story: story,
       });
-      api.story.applyEdit(story._key, story.updateTime);
+      // api.story.applyEdit(story._key, story.updateTime);
     }
   }
 
