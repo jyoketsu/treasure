@@ -15,17 +15,17 @@ import {
   getImportedUsers,
   importUser,
   batchDeleteUser,
-  editImportedUser
+  editImportedUser,
 } from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 const Search = Input.Search;
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   nowStation: state.station.nowStation,
   searchUserList: state.station.searchUserList,
   userList: state.station.userList,
   importedUsers: state.station.importedUsers,
-  groupKey: state.station.nowStation.intimateGroupKey
+  groupKey: state.station.nowStation.intimateGroupKey,
 });
 
 class StationGroup extends Component {
@@ -35,7 +35,7 @@ class StationGroup extends Component {
       batchImportVisible: false,
       batchDeleteVisible: false,
       importData: [],
-      seletedBatchId: undefined
+      seletedBatchId: undefined,
     };
     this.importUser = this.importUser.bind(this);
     this.handleBatchDeleteUser = this.handleBatchDeleteUser.bind(this);
@@ -54,13 +54,13 @@ class StationGroup extends Component {
       },
       onCancel() {
         console.log("Cancel");
-      }
+      },
     });
   }
 
   downloadSample() {
-    fetch("https://baoku.qingtime.cn/站点人员批量导入模版.xlsx").then(res =>
-      res.blob().then(blob => {
+    fetch("https://baoku.qingtime.cn/站点人员批量导入模版.xlsx").then((res) =>
+      res.blob().then((blob) => {
         let a = document.createElement("a");
         let url = window.URL.createObjectURL(blob);
         let filename = "站点人员批量导入模版";
@@ -87,7 +87,7 @@ class StationGroup extends Component {
         position: element["角色职位"],
         from: element["籍贯"],
         role: element["角色"],
-        safeCode: element["安全码"]
+        safeCode: element["安全码"],
       });
     }
     importUser(nowStation._key, targetUserArray);
@@ -116,14 +116,14 @@ class StationGroup extends Component {
       groupKey,
       nowStation,
       transferStation,
-      editImportedUser
+      editImportedUser,
     } = this.props;
 
     const {
       importData,
       batchImportVisible,
       batchDeleteVisible,
-      seletedBatchId
+      seletedBatchId,
     } = this.state;
 
     const roleMap = {
@@ -131,64 +131,64 @@ class StationGroup extends Component {
       2: "管理员",
       3: "编辑",
       4: "作者",
-      5: "成员"
+      5: "成员",
     };
 
     const codeMap = {
       1: "绿码",
       2: "黄码",
       3: "红码",
-      4: "黑码"
+      4: "黑码",
     };
 
     const columns = [
       {
         title: "手机区号",
         dataIndex: "手机区号",
-        key: "手机区号"
+        key: "手机区号",
       },
       {
         title: "手机号",
         dataIndex: "手机号",
-        key: "手机号"
+        key: "手机号",
       },
       {
         title: "姓名",
         dataIndex: "姓名",
-        key: "姓名"
+        key: "姓名",
       },
       {
         title: "身份证号",
         dataIndex: "身份证号",
-        key: "身份证号"
+        key: "身份证号",
       },
       {
         title: "工作单位",
         dataIndex: "工作单位",
-        key: "工作单位"
+        key: "工作单位",
       },
       {
         title: "角色职位",
         dataIndex: "角色职位",
-        key: "角色职位"
+        key: "角色职位",
       },
       {
         title: "籍贯",
         dataIndex: "籍贯",
-        key: "籍贯"
+        key: "籍贯",
       },
       {
         title: "角色",
         dataIndex: "角色",
         key: "角色",
-        render: text => roleMap[text]
+        render: (text) => roleMap[text],
       },
       {
         title: "安全码",
         dataIndex: "安全码",
         key: "安全码",
-        render: text => codeMap[text]
-      }
+        render: (text) => codeMap[text],
+      },
     ];
 
     let batchs = [];
@@ -206,7 +206,7 @@ class StationGroup extends Component {
         <div className="add-member-wrapper">
           <Search
             placeholder="请搜索要添加的人员"
-            onSearch={value => searchUser(value)}
+            onSearch={(value) => searchUser(value)}
             style={{ width: 200 }}
           />
           <Button onClick={() => this.setState({ batchImportVisible: true })}>
@@ -253,6 +253,7 @@ class StationGroup extends Component {
               role={user.role}
               safeCode={user.safeCode}
               userRole={nowStation.role}
+              isClockIn={nowStation.isClockIn}
               setMemberRole={setMemberRole}
               setMemberInfo={setMemberInfo}
               transferStation={transferStation}
@@ -309,7 +310,7 @@ class StationGroup extends Component {
             <ReadExcel
               className="ant-btn batch-import-button"
               text="上传Excel"
-              handleChange={data => this.setState({ importData: data })}
+              handleChange={(data) => this.setState({ importData: data })}
             />
           </div>
           <Table
@@ -330,7 +331,7 @@ class StationGroup extends Component {
             placeholder="请选择要删除的批次"
             value={seletedBatchId}
             style={{ width: "180px" }}
-            onChange={value => this.setState({ seletedBatchId: value })}
+            onChange={(value) => this.setState({ seletedBatchId: value })}
           >
             {batchs.map((batch, index) => (
               <Option key={index} value={batch}>
@@ -361,5 +362,5 @@ export default connect(mapStateToProps, {
   getImportedUsers,
   importUser,
   batchDeleteUser,
-  editImportedUser
+  editImportedUser,
 })(StationGroup);

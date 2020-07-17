@@ -349,7 +349,8 @@ const station = {
     inheritedMode,
     showAll,
     style,
-    config
+    config,
+    isClockIn
   ) {
     return requests.post(APIURL + "/star/createStar", {
       token: token,
@@ -367,6 +368,7 @@ const station = {
       showAll: showAll,
       style: style,
       config: config,
+      isClockIn: isClockIn,
     });
   },
 
@@ -391,7 +393,8 @@ const station = {
     inheritedMode,
     showAll,
     style,
-    config
+    config,
+    isClockIn
   ) {
     return requests.patch(APIURL + "/star/setStarProperty", {
       token: token,
@@ -410,6 +413,7 @@ const station = {
       showAll: showAll,
       style: style,
       config: config,
+      isClockIn: isClockIn,
     });
   },
   getStationDetail(key) {

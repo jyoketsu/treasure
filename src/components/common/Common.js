@@ -103,6 +103,7 @@ class MemberCard extends Component {
       handleClick,
       handleDelete,
       count,
+      isClockIn,
     } = this.props;
     const { role, safeCode } = this.state;
     let roleName = "";
@@ -184,20 +185,23 @@ class MemberCard extends Component {
                 <Option value={4}>作者</Option>
                 <Option value={5}>成员</Option>
               </Select>
-              <Select
-                value={safeCode}
-                style={{ width: 80 }}
-                ref={(node) => (this.select = node)}
-                onChange={this.handleChangeSafeCode}
-                disabled={
-                  userRole && userRole <= 2 && userRole < role ? false : true
-                }
-              >
-                <Option value={1}>绿码</Option>
-                <Option value={2}>黄码</Option>
-                <Option value={3}>红码</Option>
-                <Option value={4}>黑码</Option>
-              </Select>
+
+              {isClockIn ? (
+                <Select
+                  value={safeCode}
+                  style={{ width: 80 }}
+                  ref={(node) => (this.select = node)}
+                  onChange={this.handleChangeSafeCode}
+                  disabled={
+                    userRole && userRole <= 2 && userRole < role ? false : true
+                  }
+                >
+                  <Option value={1}>绿码</Option>
+                  <Option value={2}>黄码</Option>
+                  <Option value={3}>红码</Option>
+                  <Option value={4}>黑码</Option>
+                </Select>
+              ) : null}
             </div>
           )}
         </div>

@@ -199,7 +199,8 @@ export function createStation(
   inheritedMode,
   showAll,
   style,
-  config
+  config,
+  isClockIn
 ) {
   let request = api.station.createStation(
     name,
@@ -214,7 +215,8 @@ export function createStation(
     inheritedMode,
     showAll,
     style,
-    config
+    config,
+    isClockIn
   );
   return { type: CREATE_STATION, flag: "createStation", payload: request };
 }
@@ -238,7 +240,8 @@ export function editStation(
   inheritedMode,
   showAll,
   style,
-  config
+  config,
+  isClockIn
 ) {
   let request = api.station.editStation(
     key,
@@ -254,7 +257,8 @@ export function editStation(
     inheritedMode,
     showAll,
     style,
-    config
+    config,
+    isClockIn
   );
   return {
     type: EDIT_STATION,

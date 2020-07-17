@@ -10,11 +10,11 @@ import { editStation, createStation } from "../../actions/app";
 
 const { TextArea } = Input;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   stationList: state.station.stationList,
   loading: state.common.loading,
   flag: state.common.flag,
-  nowStation: state.station.nowStation
+  nowStation: state.station.nowStation,
 });
 
 const CustomizedForm = Form.create({
@@ -26,39 +26,43 @@ const CustomizedForm = Form.create({
     return {
       name: Form.createFormField({
         ...props.name,
-        value: props.name.value
+        value: props.name.value,
       }),
       domain: Form.createFormField({
         ...props.domain,
-        value: props.domain.value
+        value: props.domain.value,
       }),
       url: Form.createFormField({
         ...props.url,
-        value: props.url.value
+        value: props.url.value,
       }),
       recordNumber: Form.createFormField({
         ...props.recordNumber,
-        value: props.recordNumber.value
+        value: props.recordNumber.value,
       }),
       memo: Form.createFormField({
         ...props.memo,
-        value: props.memo.value
+        value: props.memo.value,
       }),
       inheritedMode: Form.createFormField({
         ...props.inheritedMode,
-        value: props.inheritedMode.value
+        value: props.inheritedMode.value,
       }),
       showAll: Form.createFormField({
         ...props.showAll,
-        value: props.showAll.value
+        value: props.showAll.value,
+      }),
+      isClockIn: Form.createFormField({
+        ...props.isClockIn,
+        value: props.isClockIn.value,
       }),
       style: Form.createFormField({
         ...props.style,
-        value: props.style.value
-      })
+        value: props.style.value,
+      }),
     };
-  }
-})(props => {
+  },
+})((props) => {
   const { getFieldDecorator } = props.form;
   const customBk = props.config.customBk;
   return (
@@ -67,8 +71,8 @@ const CustomizedForm = Form.create({
         {getFieldDecorator("name", {
           rules: [
             { required: true, message: "请输入微站名！" },
-            { max: 20, message: "不能超过20个字符！" }
-          ]
+            { max: 20, message: "不能超过20个字符！" },
+          ],
         })(<Input />)}
       </Form.Item>
       <Form.Item label="网站地址">
@@ -76,34 +80,34 @@ const CustomizedForm = Form.create({
           rules: [
             { required: true, message: "请输入微站域名！" },
             { pattern: /^[A-Za-z0-9]+$/, message: "请输入英文数字！" },
-            { max: 20, message: "不能超过20个字符！" }
-          ]
+            { max: 20, message: "不能超过20个字符！" },
+          ],
         })(<Input addonBefore={`https://${HOST_NAME}/`} />)}
       </Form.Item>
       <Form.Item label="自定义域名">
         {getFieldDecorator("url", {
           rules: [
             { pattern: /^[A-Za-z0-9.]+$/, message: "请输入正确的域名！" },
-            { max: 50, message: "不能超过50个字符！" }
-          ]
+            { max: 50, message: "不能超过50个字符！" },
+          ],
         })(<Input addonBefore={`https://`} />)}
       </Form.Item>
       <Form.Item label="版权声明与备案号">
         {getFieldDecorator("recordNumber", {
-          rules: [{ max: 150, message: "不能超过150个字符！" }]
+          rules: [{ max: 150, message: "不能超过150个字符！" }],
         })(<Input />)}
       </Form.Item>
       <Form.Item label="概述">
         {getFieldDecorator("memo", {
           rules: [
             { required: true, message: "请输入微站概述！" },
-            { max: 1000, message: "不能超过1000个字符！" }
-          ]
+            { max: 1000, message: "不能超过1000个字符！" },
+          ],
         })(<TextArea rows={6} />)}
       </Form.Item>
       <Form.Item label="网站风格">
         {getFieldDecorator("style", {
-          rules: [{ required: true, message: "请选择网站风格！" }]
+          rules: [{ required: true, message: "请选择网站风格！" }],
         })(
           <Radio.Group>
             <Radio value={1}>普通网站</Radio>
@@ -125,7 +129,7 @@ const CustomizedForm = Form.create({
               <div className="bk-type">
                 <label className="form-label">背景类型：</label>
                 <Radio.Group
-                  onChange={e =>
+                  onChange={(e) =>
                     props.handleBkTypeChange("one", e.target.value)
                   }
                   value={customBk.one ? customBk.one.type || 1 : 1}
@@ -145,7 +149,7 @@ const CustomizedForm = Form.create({
               <div className="bk-type">
                 <label className="form-label">背景类型：</label>
                 <Radio.Group
-                  onChange={e =>
+                  onChange={(e) =>
                     props.handleBkTypeChange("two", e.target.value)
                   }
                   value={customBk.two ? customBk.two.type || 1 : 1}
@@ -165,7 +169,7 @@ const CustomizedForm = Form.create({
               <div className="bk-type">
                 <label className="form-label">背景类型：</label>
                 <Radio.Group
-                  onChange={e =>
+                  onChange={(e) =>
                     props.handleBkTypeChange("three", e.target.value)
                   }
                   value={customBk.three ? customBk.three.type || 1 : 1}
@@ -185,7 +189,7 @@ const CustomizedForm = Form.create({
               <div className="bk-type">
                 <label className="form-label">背景类型：</label>
                 <Radio.Group
-                  onChange={e =>
+                  onChange={(e) =>
                     props.handleBkTypeChange("four", e.target.value)
                   }
                   value={customBk.four ? customBk.four.type || 1 : 1}
@@ -205,7 +209,7 @@ const CustomizedForm = Form.create({
 
       <Form.Item label="管理模式">
         {getFieldDecorator("inheritedMode", {
-          rules: [{ required: true, message: "请选择管理模式！" }]
+          rules: [{ required: true, message: "请选择管理模式！" }],
         })(
           <Radio.Group>
             <Radio value={1}>全站统一</Radio>
@@ -217,6 +221,11 @@ const CustomizedForm = Form.create({
       </Form.Item>
       <Form.Item label="显示全部故事">
         {getFieldDecorator("showAll", { valuePropName: "checked" })(<Switch />)}
+      </Form.Item>
+      <Form.Item label="显示打卡二维码">
+        {getFieldDecorator("isClockIn", { valuePropName: "checked" })(
+          <Switch />
+        )}
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
@@ -241,8 +250,8 @@ class StationBasicInfo extends Component {
           ? [
               {
                 url: stationInfo.cover,
-                size: stationInfo.size
-              }
+                size: stationInfo.size,
+              },
             ]
           : []
         : [],
@@ -255,33 +264,36 @@ class StationBasicInfo extends Component {
         : { customBk: {} },
       fields: {
         name: {
-          value: stationInfo ? stationInfo.name : ""
+          value: stationInfo ? stationInfo.name : "",
         },
         domain: {
-          value: stationInfo ? stationInfo.domain : ""
+          value: stationInfo ? stationInfo.domain : "",
         },
         url: {
-          value: stationInfo ? stationInfo.url : ""
+          value: stationInfo ? stationInfo.url : "",
         },
         recordNumber: {
           value:
             stationInfo && stationInfo.recordNumber
               ? stationInfo.recordNumber
-              : "苏ICP备15006448号"
+              : "苏ICP备15006448号",
         },
         memo: {
-          value: stationInfo ? stationInfo.memo : ""
+          value: stationInfo ? stationInfo.memo : "",
         },
         inheritedMode: {
-          value: stationInfo ? stationInfo.inheritedMode : ""
+          value: stationInfo ? stationInfo.inheritedMode : "",
         },
         showAll: {
-          value: stationInfo ? stationInfo.showAll : true
+          value: stationInfo ? stationInfo.showAll : true,
+        },
+        isClockIn: {
+          value: stationInfo ? stationInfo.isClockIn : true,
         },
         style: {
-          value: stationInfo ? stationInfo.style : 1
-        }
-      }
+          value: stationInfo ? stationInfo.style : 1,
+        },
+      },
     };
     this.uploadAvatarCallback = this.uploadAvatarCallback.bind(this);
     this.uploadConfigImageCallback = this.uploadConfigImageCallback.bind(this);
@@ -292,20 +304,20 @@ class StationBasicInfo extends Component {
   async uploadAvatarCallback(imageUrl, columnName) {
     if (columnName === "cover" && imageUrl && imageUrl[0]) {
       const size = await util.common.getImageInfo(imageUrl[0]);
-      this.setState(prevState => {
+      this.setState((prevState) => {
         let cover = prevState.cover;
         cover.push({ url: imageUrl[0], size: size });
         return { cover: cover };
       });
     } else {
       this.setState({
-        [columnName]: imageUrl[0]
+        [columnName]: imageUrl[0],
       });
     }
   }
 
   handleRemoveCover(index) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let cover = prevState.cover;
       cover.splice(index, 1);
       return { cover: cover };
@@ -313,40 +325,40 @@ class StationBasicInfo extends Component {
   }
 
   uploadConfigImageCallback(imageUrl, columnName) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let customBk = prevState.config.customBk;
       let bk = customBk[columnName] || { type: 1 };
       bk = { ...bk, ...{ url: imageUrl[0] } };
 
       customBk = {
         ...customBk,
-        ...{ [columnName]: bk }
+        ...{ [columnName]: bk },
       };
       return { config: { ...prevState.config, ...{ customBk: customBk } } };
     });
   }
 
   handleBkTypeChange(columnName, value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let customBk = prevState.config.customBk;
       let bk = customBk[columnName] || {};
       bk = { ...bk, ...{ type: value } };
 
       customBk = {
         ...customBk,
-        ...{ [columnName]: bk }
+        ...{ [columnName]: bk },
       };
       return { config: { ...prevState.config, ...{ customBk: customBk } } };
     });
   }
 
-  handleFormChange = changedFields => {
+  handleFormChange = (changedFields) => {
     this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields }
+      fields: { ...fields, ...changedFields },
     }));
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { editStation, createStation } = this.props;
     const {
@@ -356,7 +368,7 @@ class StationBasicInfo extends Component {
       isMainStar,
       cover,
       logo,
-      config
+      config,
     } = this.state;
 
     this.form.validateFields(async (err, values) => {
@@ -381,7 +393,8 @@ class StationBasicInfo extends Component {
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
-            config
+            config,
+            fields.isClockIn.value
           );
         } else {
           createStation(
@@ -397,7 +410,8 @@ class StationBasicInfo extends Component {
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
-            config
+            config,
+            fields.isClockIn.value
           );
         }
       }
@@ -443,7 +457,7 @@ class StationBasicInfo extends Component {
           coverUrl={cover}
         /> */}
         <CustomizedForm
-          ref={node => (this.form = node)}
+          ref={(node) => (this.form = node)}
           {...fields}
           config={config}
           onChange={this.handleFormChange}

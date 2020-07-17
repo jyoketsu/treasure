@@ -11,9 +11,9 @@ import QRCode from "qrcode.react";
 import { connect } from "react-redux";
 import { changeStation } from "../actions/app";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
-  nowStation: state.station.nowStation
+  nowStation: state.station.nowStation,
 });
 
 class Header extends Component {
@@ -29,7 +29,7 @@ class Header extends Component {
       showMenu: false,
       showSubscribe: false,
       showQrCode: false,
-      signinQR: false
+      signinQR: false,
     };
     this.perPage = 32;
   }
@@ -49,7 +49,7 @@ class Header extends Component {
     }
 
     if (user && !user.isGuest) {
-      this.setState(prevState => {
+      this.setState((prevState) => {
         return { showMenu: !prevState.showMenu };
       });
     } else {
@@ -60,7 +60,7 @@ class Header extends Component {
   }
 
   switchSubscribe() {
-    this.setState(prevState => ({ showSubscribe: !prevState.showSubscribe }));
+    this.setState((prevState) => ({ showSubscribe: !prevState.showSubscribe }));
   }
 
   changeStation(key, domain) {
@@ -88,7 +88,7 @@ class Header extends Component {
       showMenu,
       showSubscribe,
       showQrCode,
-      signinQR
+      signinQR,
     } = this.state;
     const pathname = location.pathname;
     const stationDomain = nowStation ? nowStation.domain : "";
@@ -103,10 +103,10 @@ class Header extends Component {
             pathname === "/account/register" ||
             pathname === "/account/reset"
               ? "none"
-              : "flex"
+              : "flex",
         }}
       >
-        <ul className="app-menu" ref={elem => (this.nv = elem)}>
+        <ul className="app-menu" ref={(elem) => (this.nv = elem)}>
           {logoSize ? (
             <li
               className={`menu-logo`}
@@ -116,7 +116,9 @@ class Header extends Component {
                     ? nowStation.logo
                     : "/image/background/logo.svg"
                 })`,
-                width: `${Math.ceil(35 * (logoSize.width / logoSize.height))}px`
+                width: `${Math.ceil(
+                  35 * (logoSize.width / logoSize.height)
+                )}px`,
               }}
             >
               <Link to={`/${stationDomain}/home`}></Link>
@@ -126,7 +128,7 @@ class Header extends Component {
               className={`menu-logo`}
               style={{
                 backgroundImage: `url(/image/background/logo.svg)`,
-                width: "35px"
+                width: "35px",
               }}
             >
               <Link to={`/${stationDomain}/home`}></Link>
@@ -150,12 +152,14 @@ class Header extends Component {
               ></li>
             </Tooltip>
           ) : null}
-          <Tooltip title="本站二维码" placement="bottom">
-            <li
-              className={`head-icon qrCode`}
-              onClick={() => this.setState({ showQrCode: true })}
-            ></li>
-          </Tooltip>
+          {nowStation && nowStation.isClockIn ? (
+            <Tooltip title="本站二维码" placement="bottom">
+              <li
+                className={`head-icon qrCode`}
+                onClick={() => this.setState({ showQrCode: true })}
+              ></li>
+            </Tooltip>
+          ) : null}
           {user &&
           !user.isGuest &&
           nowStation &&
@@ -186,7 +190,7 @@ class Header extends Component {
                 width:
                   user && user.profile && user.profile.avatar ? "50px" : "24px",
                 height:
-                  user && user.profile && user.profile.avatar ? "50px" : "24px"
+                  user && user.profile && user.profile.avatar ? "50px" : "24px",
               }}
               onClick={this.switchMenu}
             ></li>
@@ -243,7 +247,7 @@ class Header extends Component {
               <Checkbox
                 name="signinQR"
                 checked={signinQR}
-                onChange={e => this.setState({ signinQR: e.target.checked })}
+                onChange={(e) => this.setState({ signinQR: e.target.checked })}
               >
                 签到二维码
               </Checkbox>
@@ -257,7 +261,7 @@ class Header extends Component {
   async componentDidMount() {
     this.nv.addEventListener(
       "touchmove",
-      function(e) {
+      function (e) {
         //阻止默认的处理方式(阻止下拉滑动的效果)
         e.preventDefault();
       },
@@ -269,7 +273,7 @@ class Header extends Component {
     if (nowStation) {
       let size = await util.common.getImageInfo(nowStation.logo);
       this.setState({
-        logoSize: size
+        logoSize: size,
       });
     }
   }
@@ -289,7 +293,7 @@ class Header extends Component {
       // 获取logo大小
       let size = await util.common.getImageInfo(nowStation.logo);
       this.setState({
-        logoSize: size
+        logoSize: size,
       });
     }
   }
@@ -297,6 +301,6 @@ class Header extends Component {
 
 export default withRouter(
   connect(mapStateToProps, {
-    changeStation
+    changeStation,
   })(Header)
 );
