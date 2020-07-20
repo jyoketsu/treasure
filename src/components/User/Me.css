@@ -72,7 +72,9 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  color: #1890ff;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 .user-logout:hover {
   cursor: pointer;

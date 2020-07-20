@@ -74,7 +74,7 @@ const CustomizedForm = Form.create({
                         <Option value={1}>公开</Option>
                         <Option value={2}>隐私，仅管理员以上可见</Option>
                         <Option value={3}>需要回答问题</Option>
-                        <Option value={4}>需要同意</Option>
+                        {/* <Option value={4}>需要同意</Option> */}
                     </Select>)}
             </Form.Item>
             {
