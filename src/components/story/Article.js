@@ -65,6 +65,12 @@ class Article extends Component {
     }
     const { commentType } = nowChannel;
 
+    // 仅显示文章内容
+    const onlyContent = util.common.getSearchParamValue(
+      window.location.search,
+      "onlyContent"
+    );
+
     return (
       <div
         className={`app-content story-container article-display  ${
@@ -100,6 +106,7 @@ class Article extends Component {
                 hideMenu={hideMenu}
                 data={str}
                 inline={inline}
+                onlyContent={onlyContent}
                 commentType={commentType}
                 story={story}
               >

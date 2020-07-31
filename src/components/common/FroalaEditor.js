@@ -53,7 +53,7 @@ let qiniuConfig = {
   useCdnDomain: true,
   disableStatisticsReport: false,
   retryCount: 5,
-  region: qiniu.region.z0
+  region: qiniu.region.z0,
 };
 
 let putExtra = {
@@ -62,7 +62,7 @@ let putExtra = {
   // 自定义变量
   params: {},
   // 限制上传文件类型
-  mimeType: ["image/png", "image/jpeg", "image/svg+xml", "video/mp4"]
+  mimeType: ["image/png", "image/jpeg", "image/svg+xml", "video/mp4"],
 };
 
 class MyFroalaEditor extends Component {
@@ -70,7 +70,7 @@ class MyFroalaEditor extends Component {
     super(props);
     this.state = {
       typeArr: [],
-      top: 70
+      top: 70,
     };
     this.createMenu = this.createMenu.bind(this);
     this.recursionMenu = this.recursionMenu.bind(this);
@@ -121,7 +121,7 @@ class MyFroalaEditor extends Component {
             name: temp[i].innerText,
             submenuItem: [],
             num: h1Num,
-            type: "h1"
+            type: "h1",
           });
           h1Num++;
           break;
@@ -142,7 +142,7 @@ class MyFroalaEditor extends Component {
             name: temp[i].innerText,
             submenuItem: [],
             num: h2Num,
-            type: "h2"
+            type: "h2",
           });
           h2Num++;
           break;
@@ -175,7 +175,7 @@ class MyFroalaEditor extends Component {
             name: temp[i].innerText,
             submenuItem: [],
             num: h3Num,
-            type: "h3"
+            type: "h3",
           });
           h3Num++;
           break;
@@ -191,7 +191,7 @@ class MyFroalaEditor extends Component {
 
     this.setState({
       typeArr: typeArr,
-      subs: subs
+      subs: subs,
     });
   }
 
@@ -239,7 +239,7 @@ class MyFroalaEditor extends Component {
         } else {
           target.src = url;
         }
-      }
+      },
     };
     // 上传
     let observable = qiniu.upload(
@@ -265,23 +265,24 @@ class MyFroalaEditor extends Component {
       inline,
       commentType,
       story = {},
-      children
+      children,
+      onlyContent,
     } = this.props;
     const { typeArr, subs, top } = this.state;
     const that = this;
     const events = {
-      "image.inserted": async function($img, response) {
+      "image.inserted": async function ($img, response) {
         // get a file or blob from an blob url
-        let blob = await fetch($img[0].src).then(r => r.blob());
+        let blob = await fetch($img[0].src).then((r) => r.blob());
         that.qiniuUpload(uptoken, $img[0], blob, false);
       },
-      "video.beforeUpload": function(videos) {
+      "video.beforeUpload": function (videos) {
         // Return false if you want to stop the video upload.
         selectedFile = videos[0];
       },
-      "video.inserted": function($video) {
+      "video.inserted": function ($video) {
         that.qiniuUpload(uptoken, $video[0], selectedFile, true);
-      }
+      },
     };
 
     const config = {
@@ -316,7 +317,7 @@ class MyFroalaEditor extends Component {
         "table",
         "url",
         "video",
-        "wordPaste"
+        "wordPaste",
       ],
       // Set custom buttons.
       toolbarButtons: {
@@ -334,8 +335,8 @@ class MyFroalaEditor extends Component {
             "backgroundColor",
             "inlineClass",
             "inlineStyle",
-            "clearFormatting"
-          ]
+            "clearFormatting",
+          ],
         },
         moreParagraph: {
           buttons: [
@@ -351,8 +352,8 @@ class MyFroalaEditor extends Component {
             "lineHeight",
             "outdent",
             "indent",
-            "quote"
-          ]
+            "quote",
+          ],
         },
         moreRich: {
           buttons: [
@@ -365,14 +366,14 @@ class MyFroalaEditor extends Component {
             "specialCharacters",
             "embedly",
             "insertFile",
-            "insertHR"
-          ]
+            "insertHR",
+          ],
         },
         moreMisc: {
           buttons: inline
             ? ["codeEditor"]
-            : ["codeEditor", "alert", "moreStyle"]
-        }
+            : ["codeEditor", "alert", "moreStyle"],
+        },
       },
 
       // Change buttons for XS screen.
@@ -380,8 +381,8 @@ class MyFroalaEditor extends Component {
         ["bold", "italic", "underline"],
         ["paragraphFormat"],
         ["insertImage", "insertVideo"],
-        inline ? ["codeEditor"] : ["codeEditor", "alert", "moreStyle"]
-      ]
+        inline ? ["codeEditor"] : ["codeEditor", "alert", "moreStyle"],
+      ],
     };
 
     const { title, creator = {} } = story;
@@ -400,7 +401,7 @@ class MyFroalaEditor extends Component {
                 position: "fixed",
                 width: "350px",
                 top: `${top}px`,
-                height: `${window.innerHeight - top}px`
+                height: `${window.innerHeight - top}px`,
               }}
               mode="inline"
               inlineCollapsed={false}
@@ -420,47 +421,50 @@ class MyFroalaEditor extends Component {
             {previewMode ? (
               <div className="story-head-title" style={{ border: "unset" }}>
                 <div className="story-title">{title}</div>
-                <div className="story-head-info">
-                  <div className="story-head-other">
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <i
-                        className="story-head-avatar"
-                        style={{
-                          backgroundImage: `url('${avatar ||
-                            "/image/icon/avatar.svg"}')`
-                        }}
-                        onClick={() =>
-                          (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-                        }
-                      ></i>
+                {!onlyContent ? (
+                  <div className="story-head-info">
+                    <div className="story-head-other">
                       <div
-                        className="story-card-name"
-                        onClick={() =>
-                          (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
-                        }
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
-                        {`${creator.name || ""}${
-                          story.creator && story.creator.relationDesc
-                            ? `（${story.creator.relationDesc}）`
-                            : ""
-                        }`}
+                        <i
+                          className="story-head-avatar"
+                          style={{
+                            backgroundImage: `url('${
+                              avatar || "/image/icon/avatar.svg"
+                            }')`,
+                          }}
+                          onClick={() =>
+                            (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                          }
+                        ></i>
+                        <div
+                          className="story-card-name"
+                          onClick={() =>
+                            (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
+                          }
+                        >
+                          {`${creator.name || ""}${
+                            story.creator && story.creator.relationDesc
+                              ? `（${story.creator.relationDesc}）`
+                              : ""
+                          }`}
+                        </div>
+                        <div className="story-card-time">
+                          {util.common.timestamp2DataStr(
+                            story.updateTime,
+                            "yyyy-MM-dd"
+                          )}
+                        </div>
+                        <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                       </div>
-                      <div className="story-card-time">
-                        {util.common.timestamp2DataStr(
-                          story.updateTime,
-                          "yyyy-MM-dd"
-                        )}
-                      </div>
-                      <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                     </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             ) : null}
 
@@ -474,7 +478,7 @@ class MyFroalaEditor extends Component {
               />
             )}
           </div>
-          {previewMode ? (
+          {previewMode && !onlyContent ? (
             <div className={`article-ext-wrapper ${inline ? "inline" : ""}`}>
               <StoryAction>{children}</StoryAction>
 
@@ -508,7 +512,7 @@ class MyFroalaEditor extends Component {
     const {
       handleClickMore,
       handleClickMoreStyle,
-      openCodeEditor
+      openCodeEditor,
     } = this.props;
     document.body.addEventListener("wheel", this.handleMouseWheel);
 
@@ -519,9 +523,9 @@ class MyFroalaEditor extends Component {
       focus: false,
       undo: false,
       refreshAfterCallback: false,
-      callback: function() {
+      callback: function () {
         handleClickMore();
-      }
+      },
     });
 
     // SVG_KEY在https://github.com/froala/wysiwyg-editor/issues/3478
@@ -532,24 +536,24 @@ class MyFroalaEditor extends Component {
       focus: false,
       undo: false,
       refreshAfterCallback: false,
-      callback: function() {
+      callback: function () {
         handleClickMoreStyle(true);
-      }
+      },
     });
 
     // 代码编辑
     Froalaeditor.DefineIcon("codeEditor", {
       NAME: "star",
-      SVG_KEY: "editLink"
+      SVG_KEY: "editLink",
     });
     Froalaeditor.RegisterCommand("codeEditor", {
       title: "文章源码编辑",
       focus: false,
       undo: false,
       refreshAfterCallback: false,
-      callback: function() {
+      callback: function () {
         openCodeEditor();
-      }
+      },
     });
 
     this.createMenu(this.props.data);
@@ -569,7 +573,7 @@ class MyFroalaEditor extends Component {
 MyFroalaEditor.propTypes = {
   data: PropTypes.string,
   previewMode: PropTypes.bool,
-  handleChange: PropTypes.func
+  handleChange: PropTypes.func,
 };
 
 export default MyFroalaEditor;
