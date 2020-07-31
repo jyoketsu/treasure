@@ -199,17 +199,26 @@ class AddButton extends Component {
       channelList = seriesInfo;
     }
 
+    // 仅显示文章内容
+    const onlyContent = util.common.getSearchParamValue(
+      window.location.search,
+      "onlyContent"
+    );
+
     return location.pathname.includes("/editArticle") ||
       location.pathname.includes("/editStory") ? null : (
       <div className="multi-button">
-        <Tooltip title="投稿" placement="left">
-          <div
-            className="story-tool add-story-multi"
-            onClick={this.switchChannelVisible}
-          >
-            <i></i>
-          </div>
-        </Tooltip>
+        {!onlyContent ? (
+          <Tooltip title="投稿" placement="left">
+            <div
+              className="story-tool add-story-multi"
+              onClick={this.switchChannelVisible}
+            >
+              <i></i>
+            </div>
+          </Tooltip>
+        ) : null}
+
         <ReactCSSTransitionGroup
           transitionName="myFade"
           transitionEnterTimeout={300}
