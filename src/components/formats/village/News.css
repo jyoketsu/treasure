@@ -3,7 +3,7 @@
   background: #fff;
 }
 .news-item {
-  height: 100px;
+  height: 80px;
   border-bottom: 1px solid #eeeeee;
   display: flex;
   justify-content: space-between;

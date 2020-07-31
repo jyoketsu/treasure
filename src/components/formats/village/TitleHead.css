@@ -16,8 +16,7 @@
 .village-title-head > div > i {
   width: 30px;
   height: 30px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
   margin-right: 15px;
 }

@@ -5644,7 +5644,7 @@ class Profile extends Component {
       <div className="user-profile">
         <UploadAvatar
           imgUrl={avatar}
-          maxSize={1000000}
+          maxSize={5000000}
           callback={this.handleUpload}
         />
         <CustomizedForm

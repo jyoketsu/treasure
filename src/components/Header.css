@@ -20,6 +20,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
   z-index: 2;
 }
 
@@ -116,7 +117,7 @@
 .head-icon .ant-dropdown-link {
   opacity: 0;
 }
-.head-icon.qrCode{
+.head-icon.qrCode {
   background-image: url(/image/icon/qr_code.svg);
 }
 
@@ -129,7 +130,7 @@
 .ant-dropdown-menu > .ant-divider-horizontal {
   margin: 5px 0;
 }
-.qrcode-wrapper{
+.qrcode-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -139,6 +140,7 @@
 @media screen and (max-width: 768px) {
   .app-menu {
     padding: 0 15px;
+    height: 60px;
   }
 
   .header-dorpdown {

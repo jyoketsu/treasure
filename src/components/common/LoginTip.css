@@ -1,17 +1,21 @@
 .login-tip {
-    position: fixed;
-    bottom: 15px;
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: #FFF;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
-.login-tip>.menu-logo>a {
-    width: 35px;
-    height: 50px;
-    display: block;
+.login-tip > .menu-logo > a {
+  width: 35px;
+  height: 50px;
+  display: block;
+}
+.login-tip > a {
+  color: rgba(0, 0, 0, 0.8);
 }
