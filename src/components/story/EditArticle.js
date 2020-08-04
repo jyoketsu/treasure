@@ -41,7 +41,7 @@ class EditArticle extends Component {
       type === "new"
         ? {
             content:
-              '<p><span class="text-huge"><strong>请输入标题</strong></span></p>',
+              '<p><span class="text-huge"><strong><span style="font-size: 36px;">请输入标题</span></strong></span></p><hr><p>请输入正文</p>',
             series: {
               _key:
                 util.common.getSearchParamValue(
@@ -52,7 +52,7 @@ class EditArticle extends Component {
           }
         : props.story;
     if (story._key) {
-      story.content = `<p style="text-align:center;"><span class="text-huge"><strong>${story.title}</strong></span></p>${story.content}`;
+      story.content = `<p style="text-align:center;"><span class="text-huge"><strong><span style="font-size: 36px;">${story.title}</span></strong></span></p>${story.content}`;
     }
     this.state = {
       story: story,
