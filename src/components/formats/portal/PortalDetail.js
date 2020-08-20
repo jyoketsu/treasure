@@ -9,13 +9,13 @@ import {
   clearStoryList,
   setStoryList,
   asyncStart,
-  asyncEnd
+  asyncEnd,
 } from "../../../actions/app";
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   nowStation: state.station.nowStation,
   storyList: state.story.storyList,
   sortType: state.story.sortType,
-  sortOrder: state.story.sortOrder
+  sortOrder: state.story.sortOrder,
 });
 
 class PortalDetail extends Component {
@@ -33,7 +33,7 @@ class PortalDetail extends Component {
       nowStation,
       asyncStart,
       asyncEnd,
-      setStoryList
+      setStoryList,
     } = this.props;
     const channelKey = match.params.id;
     asyncStart();
@@ -48,7 +48,7 @@ class PortalDetail extends Component {
       setStoryList(result.result, result.total, tag.id, "");
       history.push({
         pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
-        state: { tagId: tag.id, tagName: tag.name }
+        state: { tagId: tag.id, tagName: tag.name },
       });
     }
   }
@@ -73,7 +73,7 @@ class PortalDetail extends Component {
 
   render() {
     const { storyList, location, nowStation, match } = this.props;
-    const { tagId, tagName } = location.state;
+    const { tagId, tagName } = location.state || {};
     const channelList = nowStation ? nowStation.seriesInfo : [];
     const channelkey = match.params.id;
     const articleKey = util.common.getSearchParamValue(location.search, "id");
@@ -125,7 +125,7 @@ class PortalDetail extends Component {
 
   componentDidMount() {
     const { location, storyList } = this.props;
-    const { tagId } = location.state;
+    const { tagId } = location.state || {};
     if (!storyList.length) {
       this.getStoryList(tagId);
     }
@@ -141,7 +141,7 @@ export default connect(mapStateToProps, {
   clearStoryList,
   setStoryList,
   asyncStart,
-  asyncEnd
+  asyncEnd,
 })(PortalDetail);
 
 class CatalogBanner extends Component {
@@ -157,7 +157,7 @@ class CatalogBanner extends Component {
           <div
             className="channel-station-logo"
             style={{
-              backgroundImage: `url(${stationLogo})`
+              backgroundImage: `url(${stationLogo})`,
             }}
           ></div>
         </div>

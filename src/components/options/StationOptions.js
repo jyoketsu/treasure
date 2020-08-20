@@ -4,6 +4,8 @@ import { Link, Route } from "react-router-dom";
 import Station from "./Station";
 import Channel from "./Channel";
 import Plugin from "./Plugin";
+import MenuTreeList from "./MenuTreeList";
+import MenuTree from "./MenuTree";
 import Content from "./Content";
 import MemberList from "./MemberList";
 import { connect } from "react-redux";
@@ -18,8 +20,8 @@ import PluginSystem from "./PluginSystem";
 import MemberStoryList from "./MemberStoryList";
 import Header from "../Header";
 import { clearPluginList } from "./../../actions/app";
-const mapStateToProps = state => ({
-  nowStation: state.station.nowStation
+const mapStateToProps = (state) => ({
+  nowStation: state.station.nowStation,
 });
 
 class StationOptions extends Component {
@@ -27,7 +29,7 @@ class StationOptions extends Component {
     super(props);
     this.state = {
       showMenu: false,
-      minHeight: `${window.innerHeight}px`
+      minHeight: `${window.innerHeight}px`,
     };
     this.handleTriggerClick = this.handleTriggerClick.bind(this);
     this.handleResize = this.handleResize.bind(this);
@@ -35,13 +37,13 @@ class StationOptions extends Component {
 
   handleResize() {
     this.setState({
-      minHeight: `${window.innerHeight}px`
+      minHeight: `${window.innerHeight}px`,
     });
   }
 
   handleTriggerClick() {
-    this.setState(prevState => ({
-      showMenu: !prevState.showMenu
+    this.setState((prevState) => ({
+      showMenu: !prevState.showMenu,
     }));
   }
 
@@ -62,7 +64,7 @@ class StationOptions extends Component {
           className="main-content station-options"
           style={{
             minHeight: minHeight,
-            backgroundImage: `url(${cover})`
+            backgroundImage: `url(${cover})`,
           }}
         >
           <ReactCSSTransitionGroup
@@ -82,7 +84,7 @@ class StationOptions extends Component {
                           <i
                             style={{
                               backgroundImage:
-                                "url(/image/icon/stationOptions/station-options.svg)"
+                                "url(/image/icon/stationOptions/station-options.svg)",
                             }}
                           ></i>
                           <Link
@@ -99,7 +101,7 @@ class StationOptions extends Component {
                           <i
                             style={{
                               backgroundImage:
-                                "url(/image/icon/stationOptions/channel-manage.svg)"
+                                "url(/image/icon/stationOptions/channel-manage.svg)",
                             }}
                           ></i>
                           <Link
@@ -116,7 +118,7 @@ class StationOptions extends Component {
                           <i
                             style={{
                               backgroundImage:
-                                "url(/image/icon/stationOptions/plugin-manage.svg)"
+                                "url(/image/icon/stationOptions/plugin-manage.svg)",
                             }}
                           ></i>
                           <Link
@@ -125,7 +127,24 @@ class StationOptions extends Component {
                           >
                             插件管理
                           </Link>
-                        </div>
+                        </div>,
+                        <div
+                          key="menutrees"
+                          className={pathname === "menutrees" ? "active" : ""}
+                        >
+                          <i
+                            style={{
+                              backgroundImage:
+                                "url(/image/icon/stationOptions/menu.svg)",
+                            }}
+                          ></i>
+                          <Link
+                            to={`${match.url}/menutrees${search}`}
+                            onClick={this.handleTriggerClick}
+                          >
+                            目录管理
+                          </Link>
+                        </div>,
                       ]
                     : null}
                   {nowStation && nowStation.role && nowStation.role <= 3
@@ -137,7 +156,7 @@ class StationOptions extends Component {
                           <i
                             style={{
                               backgroundImage:
-                                "url(/image/icon/stationOptions/article-manage.svg)"
+                                "url(/image/icon/stationOptions/article-manage.svg)",
                             }}
                           ></i>
                           <Link
@@ -154,7 +173,7 @@ class StationOptions extends Component {
                           <i
                             style={{
                               backgroundImage:
-                                "url(/image/icon/stationOptions/article-manage.svg)"
+                                "url(/image/icon/stationOptions/fans.svg)",
                             }}
                           ></i>
                           <Link
@@ -163,7 +182,7 @@ class StationOptions extends Component {
                           >
                             粉丝列表
                           </Link>
-                        </div>
+                        </div>,
                       ]
                     : null}
                 </div>
@@ -179,6 +198,10 @@ class StationOptions extends Component {
             )}
             <Route path={`${match.path}/channel`} component={Channel}></Route>
             <Route path={`${match.path}/plugin`} component={Plugin}></Route>
+            <Route
+              path={`${match.path}/menutrees`}
+              component={MenuTreeList}
+            ></Route>
             <Route path={`${match.path}/content`} component={Content}></Route>
             <Route
               path={`${match.path}/memberList`}
@@ -208,6 +231,7 @@ class StationOptions extends Component {
               path={`${match.path}/memberStory`}
               component={MemberStoryList}
             ></Route>
+            <Route path={`${match.path}/menutree`} component={MenuTree}></Route>
           </div>
         </div>
       </div>

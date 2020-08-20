@@ -6,13 +6,13 @@ import { Pagination } from "antd";
 import { connect } from "react-redux";
 import { getStoryList } from "../../../actions/app";
 import Util from "../../../services/Util";
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
   storyNumber: state.story.storyNumber,
   sortType: state.story.sortType,
   sortOrder: state.story.sortOrder,
-  waiting: state.common.waiting
+  waiting: state.common.waiting,
 });
 
 class PortalArticleList extends Component {
@@ -27,14 +27,14 @@ class PortalArticleList extends Component {
 
   viewArticle(story) {
     const { history, location } = this.props;
-    const { tagId, tagName } = location.state;
+    const { tagId, tagName } = location.state || {};
     switch (story.type) {
       case 6:
       case 9:
         history.push({
           pathname: location.pathname,
           state: { tagId: tagId, tagName: tagName },
-          search: `?id=${story._key}`
+          search: `?id=${story._key}`,
         });
         break;
       case 12:
@@ -60,17 +60,17 @@ class PortalArticleList extends Component {
     }
   }
 
-  onChange = page => {
+  onChange = (page) => {
     const {
       location,
       match,
       sortType,
       sortOrder,
       nowStationKey,
-      getStoryList
+      getStoryList,
     } = this.props;
     const channelKey = match.params.id;
-    const { tagName } = location.state;
+    const { tagName } = location.state || {};
     sessionStorage.setItem("portal-curpage", page);
     this.curPage = page;
 
@@ -139,7 +139,7 @@ class ArticleItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scale: 1
+      scale: 1,
     };
   }
 
@@ -157,7 +157,7 @@ class ArticleItem extends Component {
           <img
             src={article.cover || "/image/background/Bitmap@1x.png"}
             style={{
-              transform: `scale(${scale})`
+              transform: `scale(${scale})`,
             }}
             alt="文章封面"
           />

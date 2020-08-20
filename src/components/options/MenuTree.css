@@ -1,0 +1,22 @@
+.menu-tree-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.menu-tree-body {
+  display: flex;
+  flex: 1;
+}
+.tree-wrapper {
+  width: 260px;
+}
+.article-wrapper {
+  flex: 1;
+  background-color: #fff;
+}
+.menu-tree-toolbar {
+  margin-bottom: 15px;
+}
+.menu-tree-toolbar > button {
+  margin-right: 8px;
+}

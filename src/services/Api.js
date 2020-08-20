@@ -930,6 +930,54 @@ const wechat = {
   },
 };
 
+const menu = {
+  getMenuTree(seriesKey) {
+    return requests.post(APIURL + "/series/getSeriesTreeNode", {
+      token,
+      seriesKey,
+    });
+  },
+  addMenuTree(seriesKey) {
+    return requests.post(APIURL + "/series/addSeriesTree", {
+      token,
+      seriesKey,
+    });
+  },
+  /**
+   * 加频道树节点（儿子/兄弟）
+   * @param {*} seriesKey
+   * @param {*} type  1 儿子 2 兄弟
+   * @param {*} targetNodeKey
+   */
+  addMenu(seriesKey, type, targetNodeKey) {
+    return requests.post(APIURL + "/series/addSeriesTreeNode", {
+      token,
+      seriesKey,
+      type,
+      targetNodeKey,
+    });
+  },
+  /**
+   * 更新频道树节点
+   * @param {*} targetNodeKey
+   * @param {*} patchData  {name, albumKey}
+   */
+  updateMenu(targetNodeKey, patchData) {
+    return requests.post(APIURL + "/series/updateSeriesTreeNode", {
+      token,
+      targetNodeKey,
+      patchData,
+    });
+  },
+  deleteMenu(seriesKey, targetNodeKey) {
+    return requests.post(APIURL + "/series/deleteSeriesTreeNode", {
+      token,
+      seriesKey,
+      targetNodeKey,
+    });
+  },
+};
+
 export default {
   requests,
   auth,
@@ -937,6 +985,7 @@ export default {
   story,
   plugin,
   wechat,
+  menu,
   setToken: (_token) => {
     window.localStorage.setItem("TOKEN", _token);
     token = _token;

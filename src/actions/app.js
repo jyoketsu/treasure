@@ -1071,3 +1071,41 @@ export function sortPlugin(index, isUp, keys, nowStationKey) {
     request: request,
   };
 }
+
+// 目录树
+export const GET_MENU_TREE = "GET_MENU_TREE";
+export const ADD_MENU_TREE = "ADD_MENU_TREE";
+export const DEL_MENU_TREE = "DEL_MENU_TREE";
+export const ADD_MENU = "ADD_MENU";
+export const UPDATE_MENU = "UPDATE_MENU";
+export const DEL_MENU = "DEL_MENU";
+
+export function getMenuTree(seriesKey) {
+  let request = api.menu.getMenuTree(seriesKey);
+  return { type: GET_MENU_TREE, payload: request };
+}
+
+export function addMenuTree(seriesKey) {
+  let request = api.menu.addMenuTree(seriesKey);
+  return { type: ADD_MENU_TREE, seriesKey, payload: request };
+}
+
+export function delMenuTree(seriesKey, rootKey) {
+  let request = api.menu.deleteMenu(seriesKey, rootKey);
+  return { type: DEL_MENU_TREE, seriesKey, payload: request };
+}
+
+export function addMenu(seriesKey, type, targetNodeKey) {
+  let request = api.menu.addMenu(seriesKey, type, targetNodeKey);
+  return { type: ADD_MENU, addType: type, targetNodeKey, payload: request };
+}
+
+export function updateMenu(targetNodeKey, patchData) {
+  let request = api.menu.updateMenu(targetNodeKey, patchData);
+  return { type: UPDATE_MENU, targetNodeKey, patchData, payload: request };
+}
+
+export function deleteMenu(seriesKey, targetNodeKey) {
+  let request = api.menu.deleteMenu(seriesKey, targetNodeKey);
+  return { type: DEL_MENU, targetNodeKey, payload: request };
+}

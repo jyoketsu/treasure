@@ -41,7 +41,13 @@ import {
   EDIT_IMPORTED_USER,
   SUBSCRIBE_CHANNEL,
   GET_SUBSCRIBE_CHANNELS,
-  CLEAR_SUBSCRIBE_CHANNELS
+  CLEAR_SUBSCRIBE_CHANNELS,
+  ADD_MENU_TREE,
+  DEL_MENU_TREE,
+  GET_MENU_TREE,
+  ADD_MENU,
+  DEL_MENU,
+  UPDATE_MENU,
 } from "../actions/app";
 import { message } from "antd";
 
@@ -57,7 +63,9 @@ const defaultState = {
   subStationList: [],
   latestVisitors: [],
   importedUsers: [],
-  subscribeChannels: []
+  subscribeChannels: [],
+  treeMembers: null,
+  rootKey: null,
 };
 
 const station = (state = defaultState, action) => {
@@ -68,7 +76,7 @@ const station = (state = defaultState, action) => {
         ...state,
         // nowStationKey: null,
         // nowStation: null,
-        stationList: []
+        stationList: [],
       };
     case GET_STATION_LIST:
       if (!action.error) {
@@ -83,7 +91,7 @@ const station = (state = defaultState, action) => {
         stationList.sort((a, b) => (a.isMainStar ? -1 : 0));
         return {
           ...state,
-          stationList: stationList
+          stationList: stationList,
         };
       } else {
         return state;
@@ -95,7 +103,7 @@ const station = (state = defaultState, action) => {
         stationList.push(res);
         return {
           ...state,
-          stationList: stationList
+          stationList: stationList,
         };
       } else {
         return state;
@@ -115,7 +123,7 @@ const station = (state = defaultState, action) => {
           nowStationKey:
             state.nowStationKey === action.stationKey
               ? stationList[0]
-              : state.nowStationKey
+              : state.nowStationKey,
         };
       } else {
         return state;
@@ -136,7 +144,7 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           nowStation: Object.assign(nowStation, action.payload.result),
-          stationList: stationList
+          stationList: stationList,
         };
       } else {
         return state;
@@ -147,19 +155,19 @@ const station = (state = defaultState, action) => {
           return {
             ...state,
             nowStationKey: action.stationKey,
-            nowStation: null
+            nowStation: null,
           };
         } else {
           return {
             ...state,
             nowStationKey: action.payload.result,
-            nowStation: null
+            nowStation: null,
           };
         }
       } else {
         return {
           ...state,
-          nowStationKey: "notFound"
+          nowStationKey: "notFound",
         };
       }
     case GET_STATION_DETAIL:
@@ -167,7 +175,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          nowStation: action.payload.result
+          nowStation: action.payload.result,
         };
       } else {
         return state;
@@ -179,7 +187,7 @@ const station = (state = defaultState, action) => {
         channels.unshift(action.payload.result);
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -196,7 +204,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -213,7 +221,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -222,7 +230,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          searchUserList: action.payload.result
+          searchUserList: action.payload.result,
         };
       } else {
         return state;
@@ -231,7 +239,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          userList: action.payload.result
+          userList: action.payload.result,
         };
       } else {
         return state;
@@ -239,7 +247,7 @@ const station = (state = defaultState, action) => {
     case CLEAR_GROUP_MEMBER:
       return {
         ...state,
-        userList: []
+        userList: [],
       };
     case ADD_GROUP_MEMBER:
       if (!action.error) {
@@ -253,7 +261,7 @@ const station = (state = defaultState, action) => {
               if (element.userId === newMember.userKey) {
                 userList[index] = {
                   ...element,
-                  ...newMember
+                  ...newMember,
                 };
                 break;
               }
@@ -264,7 +272,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          userList: userList
+          userList: userList,
         };
       } else {
         return state;
@@ -280,7 +288,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          userList: userList
+          userList: userList,
         };
       } else {
         return state;
@@ -296,7 +304,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          userList: userList
+          userList: userList,
         };
       } else {
         return state;
@@ -312,7 +320,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          userList: userList
+          userList: userList,
         };
       } else {
         return state;
@@ -331,7 +339,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          importedUsers: importedUsers
+          importedUsers: importedUsers,
         };
       } else {
         return state;
@@ -344,7 +352,7 @@ const station = (state = defaultState, action) => {
         nowStation.pluginInfo = res;
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -359,7 +367,7 @@ const station = (state = defaultState, action) => {
         );
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -378,7 +386,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -388,7 +396,7 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           matchedStationList: action.payload.result,
-          matchedNumber: action.payload.totalNumber
+          matchedNumber: action.payload.totalNumber,
         };
       } else {
         return state;
@@ -398,7 +406,7 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           matchedStationList: [],
-          matchedNumber: 0
+          matchedNumber: 0,
         };
       } else {
         return state;
@@ -441,7 +449,7 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           nowStation: nowStation,
-          stationList: stationList
+          stationList: stationList,
         };
       } else {
         return state;
@@ -471,7 +479,7 @@ const station = (state = defaultState, action) => {
         return {
           ...state,
           nowStation: nowStation,
-          stationList: stationList
+          stationList: stationList,
         };
       } else {
         return state;
@@ -480,7 +488,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         message.success("已发送移交请求，等待对方确认。");
         return {
-          ...state
+          ...state,
         };
       } else {
         return state;
@@ -497,7 +505,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -516,7 +524,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -533,7 +541,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -552,7 +560,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          nowStation: nowStation
+          nowStation: nowStation,
         };
       } else {
         return state;
@@ -568,7 +576,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          subStationList: action.payload.result
+          subStationList: action.payload.result,
         };
       } else {
         return state;
@@ -579,7 +587,7 @@ const station = (state = defaultState, action) => {
         subStationList.push(action.subStation);
         return {
           ...state,
-          subStationList: subStationList
+          subStationList: subStationList,
         };
       } else {
         return state;
@@ -595,7 +603,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          subStationList: subStationList
+          subStationList: subStationList,
         };
       } else {
         return state;
@@ -604,7 +612,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          latestVisitors: action.payload.result
+          latestVisitors: action.payload.result,
         };
       } else {
         return state;
@@ -615,7 +623,7 @@ const station = (state = defaultState, action) => {
         importedUsers = [...importedUsers, ...action.payload.result];
         return {
           ...state,
-          importedUsers: importedUsers
+          importedUsers: importedUsers,
         };
       } else {
         return state;
@@ -624,7 +632,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          importedUsers: action.payload.result
+          importedUsers: action.payload.result,
         };
       } else {
         return state;
@@ -641,7 +649,7 @@ const station = (state = defaultState, action) => {
         }
         return {
           ...state,
-          importedUsers: temp
+          importedUsers: temp,
         };
       } else {
         return state;
@@ -674,7 +682,7 @@ const station = (state = defaultState, action) => {
           }
           return {
             ...state,
-            matchedStationList: matchedStationList
+            matchedStationList: matchedStationList,
           };
         } else if (action.subscribeType === "result") {
           let subscribeChannels = JSON.parse(
@@ -701,7 +709,7 @@ const station = (state = defaultState, action) => {
           }
           return {
             ...state,
-            subscribeChannels: subscribeChannels
+            subscribeChannels: subscribeChannels,
           };
         } else {
           return state;
@@ -713,7 +721,7 @@ const station = (state = defaultState, action) => {
       if (!action.error) {
         return {
           ...state,
-          subscribeChannels: action.payload.result
+          subscribeChannels: action.payload.result,
         };
       } else {
         return state;
@@ -721,8 +729,98 @@ const station = (state = defaultState, action) => {
     case CLEAR_SUBSCRIBE_CHANNELS:
       return {
         ...state,
-        subscribeChannels: []
+        subscribeChannels: [],
       };
+    case ADD_MENU_TREE: {
+      let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+      let channels = nowStation.seriesInfo;
+      const channelIndex = channels.findIndex(
+        (item) => item._key === action.seriesKey
+      );
+      if (channelIndex !== -1) {
+        channels[channelIndex].seriesTreeRootNode = action.payload.result;
+      }
+      return {
+        ...state,
+        nowStation,
+      };
+    }
+    case DEL_MENU_TREE: {
+      let nowStation = JSON.parse(JSON.stringify(state.nowStation));
+      let channels = nowStation.seriesInfo;
+      const channelIndex = channels.findIndex(
+        (item) => item._key === action.seriesKey
+      );
+      if (channelIndex !== -1) {
+        channels[channelIndex].seriesTreeRootNode = null;
+      }
+      return {
+        ...state,
+        nowStation,
+      };
+    }
+    case GET_MENU_TREE: {
+      return {
+        ...state,
+        treeMembers: action.payload.result.members,
+        rootKey: action.payload.result.root,
+      };
+    }
+    case ADD_MENU: {
+      let treeMembers = { ...state.treeMembers };
+      let targetNode = treeMembers[action.targetNodeKey];
+      const addedKey = action.payload.result;
+      // 添加子节点
+      if (action.addType === 1) {
+        treeMembers[addedKey] = {
+          f: action.targetNodeKey,
+          name: "",
+          children: [],
+        };
+        let targetNodeChildren = targetNode.children;
+        targetNodeChildren.push(addedKey);
+      } else if (action.addType === 2) {
+        // 添加兄弟节点
+        treeMembers[addedKey] = {
+          f: targetNode.f,
+          name: "",
+          children: [],
+        };
+        let fatherNode = treeMembers[targetNode.f];
+        let fatherNodeChildren = fatherNode.children;
+        fatherNodeChildren.push(addedKey);
+      }
+      return {
+        ...state,
+        treeMembers,
+      };
+    }
+    case DEL_MENU: {
+      let treeMembers = { ...state.treeMembers };
+      let targetNode = treeMembers[action.targetNodeKey];
+      let fatherNode = treeMembers[targetNode.f];
+      let fatherNodeChildren = fatherNode.children;
+      fatherNodeChildren.splice(
+        fatherNodeChildren.indexOf(action.targetNodeKey),
+        1
+      );
+      delete treeMembers[action.targetNodeKey];
+      return {
+        ...state,
+        treeMembers,
+      };
+    }
+    case UPDATE_MENU: {
+      let treeMembers = { ...state.treeMembers };
+      treeMembers[action.targetNodeKey] = {
+        ...treeMembers[action.targetNodeKey],
+        ...action.patchData,
+      };
+      return {
+        ...state,
+        treeMembers,
+      };
+    }
     default:
       return state;
   }
