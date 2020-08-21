@@ -6,23 +6,39 @@ import {
   getMenuTree,
   deleteMenu,
   updateMenu,
+  getChannelStoryList,
+  getStoryDetail,
+  clearStoryDetail,
 } from "../../actions/app";
-import { Tree, Button, Modal, Input, message } from "antd";
+import { Tree, Button, Modal, Input, message, List, Switch } from "antd";
 import util from "../../services/Util";
+import Story from "../story/Story";
+import ArticlePreview from "../story/Article";
 
 const confirm = Modal.confirm;
 
 export default function MenuTree() {
   const seriesKey = util.common.getQueryString("key");
   const dispatch = useDispatch();
+
   const [treeData, settreeData] = useState([]);
   const [selectedKey, setselectedKey] = useState(null);
+  const [curPage, setcurPage] = useState(1);
+  const [selectedArticleKey, setselectedArticleKey] = useState(null);
+
+  const nowStation = useSelector((state) => state.station.nowStation);
   const treeMembers = useSelector((state) => state.station.treeMembers);
   const rootKey = useSelector((state) => state.station.rootKey);
+  const story = useSelector((state) => state.story.story);
 
   useEffect(() => {
+    dispatch(clearStoryDetail());
     dispatch(getMenuTree(seriesKey));
   }, [dispatch, seriesKey]);
+
+  useEffect(() => {
+    dispatch(getChannelStoryList(nowStation._key, seriesKey, curPage, 20));
+  }, [dispatch, nowStation._key, seriesKey, curPage]);
 
   useEffect(() => {
     if (!treeMembers || !rootKey) {
@@ -60,17 +76,51 @@ export default function MenuTree() {
     settreeData(data);
   }, [treeMembers, rootKey]);
 
+  function handleMenuSelect(selectedKeys) {
+    const node = treeMembers[selectedKeys[0]];
+    if (node) {
+      setselectedKey(selectedKeys[0]);
+      setselectedArticleKey(node.albumKey);
+      if (node.albumKey) {
+        dispatch(getStoryDetail(node.albumKey));
+      } else {
+        dispatch(clearStoryDetail());
+      }
+    }
+  }
+
+  let article = null;
+  const storyType = story ? story.type : null;
+  switch (storyType) {
+    case 6:
+      article = <Story readOnly={true} inline={true} />;
+      break;
+    case 9:
+      article = (
+        <ArticlePreview readOnly={true} hideMenu={true} inline={true} />
+      );
+      break;
+    default:
+      break;
+  }
+
   return (
     <div className="menu-tree-wrapper">
       <div className="menu-tree-toolbar">
-        <Toolbar selectedKey={selectedKey} />
+        <Toolbar
+          selectedKey={selectedKey}
+          curPage={curPage}
+          setcurPage={setcurPage}
+          selectedArticleKey={selectedArticleKey}
+          setselectedArticleKey={setselectedArticleKey}
+        />
       </div>
       <div className="menu-tree-body">
         <div className="tree-wrapper">
           {treeData.length ? (
             <Tree
               defaultExpandAll
-              onSelect={(selectedKeys) => setselectedKey(selectedKeys[0])}
+              onSelect={(selectedKeys) => handleMenuSelect(selectedKeys)}
               // onCheck={onCheck}
               treeData={treeData}
             />
@@ -78,20 +128,37 @@ export default function MenuTree() {
             <div>暂无数据</div>
           )}
         </div>
-        <div className="article-wrapper">文章显示</div>
+        <div className="article-wrapper">
+          {story && story._key ? (
+            article
+          ) : (
+            <div className="menu-no-story">还没有关联文章</div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function Toolbar({ selectedKey }) {
+function Toolbar({
+  selectedKey,
+  curPage,
+  setcurPage,
+  selectedArticleKey,
+  setselectedArticleKey,
+}) {
   const seriesKey = util.common.getQueryString("key");
 
   const [visible, setvisible] = useState(false);
+  const [articleVisible, setarticleVisible] = useState(false);
   const [name, setname] = useState();
 
   const rootKey = useSelector((state) => state.station.rootKey);
   const treeMembers = useSelector((state) => state.station.treeMembers);
+  const channelStoryList = useSelector((state) => state.story.channelStoryList);
+  const channelStoryNumber = useSelector(
+    (state) => state.story.channelStoryNumber
+  );
 
   const dispatch = useDispatch();
 
@@ -132,9 +199,34 @@ function Toolbar({ selectedKey }) {
     }
   }
 
+  function handleOpenArticleModal() {
+    if (selectedKey) {
+      setarticleVisible(true);
+    } else {
+      message.error("请先选中节点！");
+    }
+  }
+
   function handleUpdate() {
     dispatch(updateMenu(selectedKey, { name }));
     setvisible(false);
+  }
+
+  function handleCheck(checked, articleKey) {
+    if (checked) {
+      setselectedArticleKey(articleKey);
+    } else {
+      setselectedArticleKey(null);
+    }
+  }
+
+  function handleLink() {
+    if (selectedArticleKey) {
+      dispatch(updateMenu(selectedKey, { albumKey: selectedArticleKey }));
+      setarticleVisible(false);
+    } else {
+      message.error("没有选择任何文章！");
+    }
   }
 
   return (
@@ -147,6 +239,9 @@ function Toolbar({ selectedKey }) {
       </Button>
       <Button icon="edit" shape="round" onClick={handleOpenModal}>
         目录改名
+      </Button>
+      <Button icon="file-text" shape="round" onClick={handleOpenArticleModal}>
+        关联文章
       </Button>
       <Button icon="delete" shape="round" onClick={showDeleteConfirm}>
         删除目录
@@ -163,6 +258,50 @@ function Toolbar({ selectedKey }) {
           placeholder="请输入目录名"
           value={name}
           onChange={(e) => setname(e.target.value)}
+        />
+      </Modal>
+      <Modal
+        wrapClassName="link-article-wrap"
+        title="关联文章"
+        visible={articleVisible}
+        onOk={handleLink}
+        okText="关联"
+        cancelText="取消"
+        onCancel={() => setarticleVisible(false)}
+        width={960}
+        style={{ top: "50px" }}
+        bodyStyle={{
+          maxHeight: document.body.clientHeight - 200,
+          overflow: "auto",
+        }}
+        maskStyle={{ zIndex: 500 }}
+      >
+        <List
+          itemLayout="horizontal"
+          dataSource={channelStoryList}
+          pagination={{
+            current: curPage,
+            total: channelStoryNumber,
+            pageSize: 20,
+            onChange: (page) => setcurPage(page),
+          }}
+          renderItem={(item) => (
+            <List.Item
+              actions={[
+                <Switch
+                  key={`switch-${item._key}`}
+                  size="small"
+                  checked={item._key === selectedArticleKey ? true : false}
+                  onChange={(checked) => handleCheck(checked, item._key)}
+                />,
+              ]}
+            >
+              <List.Item.Meta
+                title={item.title}
+                description={`${item.memo}...`}
+              />
+            </List.Item>
+          )}
         />
       </Modal>
     </div>

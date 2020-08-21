@@ -9,14 +9,27 @@
 }
 .tree-wrapper {
   width: 260px;
+  flex-shrink: 0;
 }
 .article-wrapper {
   flex: 1;
   background-color: #fff;
+  overflow-x: hidden;
 }
 .menu-tree-toolbar {
   margin-bottom: 15px;
 }
 .menu-tree-toolbar > button {
   margin-right: 8px;
+}
+.link-article-wrap {
+  z-index: 500;
+}
+.menu-no-story {
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 100%;
+  padding-top: 50px;
 }

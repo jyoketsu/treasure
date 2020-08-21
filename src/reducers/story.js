@@ -29,6 +29,7 @@ import {
   ADD_SUB_STORY,
   VOTE,
   EDIT_COMMENT,
+  GET_CHANNEL_STORY_LIST,
 } from "../actions/app";
 import { message } from "antd";
 
@@ -52,6 +53,9 @@ const defaultState = {
   // 以下为故事2
   storyList2: [],
   storyNumber2: 0,
+  // 频道故事列表（关联目录树）
+  channelStoryList: [],
+  channelStoryNumber: 0,
 };
 
 const story = (state = defaultState, action) => {
@@ -187,7 +191,7 @@ const story = (state = defaultState, action) => {
             break;
           }
         }
-        
+
         let storyList2 = Object.assign([], state.storyList2);
         for (let i = 0; i < storyList2.length; i++) {
           if (storyList2[i]._key === action.storyKey) {
@@ -490,6 +494,17 @@ const story = (state = defaultState, action) => {
       } else {
         return state;
       }
+    case GET_CHANNEL_STORY_LIST: {
+      if (!action.error) {
+        return {
+          ...state,
+          channelStoryList: action.payload.result,
+          channelStoryNumber: action.payload.totalNumber,
+        };
+      } else {
+        return state;
+      }
+    }
     default:
       return state;
   }

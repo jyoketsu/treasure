@@ -1079,6 +1079,7 @@ export const DEL_MENU_TREE = "DEL_MENU_TREE";
 export const ADD_MENU = "ADD_MENU";
 export const UPDATE_MENU = "UPDATE_MENU";
 export const DEL_MENU = "DEL_MENU";
+export const GET_CHANNEL_STORY_LIST = "GET_CHANNEL_STORY_LIST";
 
 export function getMenuTree(seriesKey) {
   let request = api.menu.getMenuTree(seriesKey);
@@ -1108,4 +1109,20 @@ export function updateMenu(targetNodeKey, patchData) {
 export function deleteMenu(seriesKey, targetNodeKey) {
   let request = api.menu.deleteMenu(seriesKey, targetNodeKey);
   return { type: DEL_MENU, targetNodeKey, payload: request };
+}
+
+export function getChannelStoryList(starKey, seriesKey, curPage, perPage) {
+  let request = api.story.getStoryList(
+    1,
+    starKey,
+    null,
+    seriesKey,
+    1,
+    1,
+    undefined,
+    undefined,
+    curPage,
+    perPage
+  );
+  return { type: GET_CHANNEL_STORY_LIST, payload: request };
 }

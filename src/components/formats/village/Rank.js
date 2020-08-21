@@ -3,11 +3,11 @@ import "./Rank.css";
 import TitleHead from "./TitleHead";
 import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { getSubStationList, changeStation } from "../../../actions/app";
+import { getSubStationList } from "../../../actions/app";
 
 export default function Rank() {
-  const subStationList = useSelector(state => state.station.subStationList);
-  const nowStation = useSelector(state => state.station.nowStation);
+  const subStationList = useSelector((state) => state.station.subStationList);
+  const nowStation = useSelector((state) => state.station.nowStation);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -37,12 +37,10 @@ export default function Rank() {
 }
 
 function SubSite({ station }) {
-  const dispatch = useDispatch();
-  const history = useHistory();
   function toStation(station) {
-    history.push(`/${station.domain}/home`);
-    changeStation(station._key, station.domain, dispatch);
+    window.location.href = `${window.location.origin}/${station.domain}/home`;
   }
+
   return (
     <div className="sub-site-wrapper">
       <div className="sub-site-list-logo">
@@ -50,7 +48,7 @@ function SubSite({ station }) {
           style={{
             backgroundImage: `url(${
               station.logo ? station.logo : "/image/background/logo.svg"
-            })`
+            })`,
           }}
           onClick={() => toStation(station)}
         ></i>
