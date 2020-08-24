@@ -8,17 +8,18 @@ import {
   deleteStory,
   switchEditLinkVisible,
   getStoryDetail,
-  auditStory
+  auditStory,
 } from "../../actions/app";
 const confirm = Modal.confirm;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  nowStation: state.station.nowStation,
   userKey: state.auth.user ? state.auth.user._key : "",
   role: state.station.nowStation ? state.station.nowStation.role : null,
   nowChannelKey: state.story.nowChannelKey,
   groupKey: state.station.nowStation
     ? state.station.nowStation.intimateGroupKey
-    : null
+    : null,
 });
 
 class Card extends Component {
@@ -31,27 +32,44 @@ class Card extends Component {
 
   handleClick(story) {
     const { _key, type, openType, url } = story;
-    const { history, match } = this.props;
+    const { history, match, nowStation } = this.props;
+    const token = localStorage.getItem("TOKEN");
     switch (type) {
       case 12:
-        const token = localStorage.getItem("TOKEN");
         window.open(
           `https://editor.qingtime.cn?token=${token}&key=${_key}`,
           "_blank"
         );
         break;
-      case 15:
+      case 15: {
+        let targetUri = url;
+        if (
+          targetUri.includes("puku.qingtime.cn") ||
+          targetUri.includes("bless.qingtime.cn") ||
+          targetUri.includes("exp.qingtime.cn")
+        ) {
+          if (targetUri.includes("puku.qingtime.cn")) {
+            targetUri = `${url}/${nowStation.domain}/genealogySearch?token=${token}`;
+          } else {
+            targetUri = `${url}/${nowStation.domain}?token=${token}`;
+          }
+        }
+        if (url.includes("treesite.qingtime.cn")) {
+          targetUri = `https://treesite.qingtime.cn/login?token=${token}`;
+        }
+
         if (openType === 1) {
-          window.open(url, "_blank");
+          window.open(targetUri, "_blank");
         } else {
-          window.location.href = url;
+          window.location.href = targetUri;
         }
         break;
+      }
       default: {
         const path = type === 9 ? "article" : "story";
         history.push({
           pathname: `/${match.params.id}/${path}`,
-          search: `?key=${_key}`
+          search: `?key=${_key}`,
         });
         break;
       }
@@ -69,7 +87,7 @@ class Card extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(story._key);
-      }
+      },
     });
   }
 
@@ -91,7 +109,7 @@ class Card extends Component {
       nowChannelKey,
       handleCoverClick,
       auditStory,
-      groupKey
+      groupKey,
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
@@ -135,7 +153,7 @@ class Card extends Component {
     let coverStyle = {
       backgroundImage: `url('${coverUrl}')`,
       backgroundSize: story.cover ? "cover" : "30%",
-      height: `${height - 85}px`
+      height: `${height - 85}px`,
     };
     let storyType =
       story.type === 6 ? "story" : story.type === 9 ? "article" : "page";
@@ -173,13 +191,15 @@ class Card extends Component {
               : this.handleClick.bind(this, story)
           }
         >
-          {// 图片数量
-          story.type === 6 ? (
-            <span className="picture-count">
-              <i className="picture-count-icon"></i>
-              <span>{story.pictureCount}</span>
-            </span>
-          ) : null}
+          {
+            // 图片数量
+            story.type === 6 ? (
+              <span className="picture-count">
+                <i className="picture-count-icon"></i>
+                <span>{story.pictureCount}</span>
+              </span>
+            ) : null
+          }
           <div
             className="story-card-mask"
             style={{ height: `${height - 85}px` }}
@@ -202,7 +222,7 @@ class Card extends Component {
               <Tooltip title="点击快速通过" placement="bottom">
                 <span
                   style={statusStyle}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     auditStory(story._key, groupKey, 2, true);
                   }}
@@ -231,8 +251,9 @@ class Card extends Component {
               <i
                 className="story-card-avatar"
                 style={{
-                  backgroundImage: `url('${avatar ||
-                    "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
+                  backgroundImage: `url('${
+                    avatar || "/image/icon/avatar.svg"
+                  }?imageView2/1/w/60/h/60')`,
                 }}
                 onClick={() =>
                   (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
@@ -257,7 +278,7 @@ class Card extends Component {
                   className="story-card-icon"
                   style={{
                     backgroundImage: "url(/image/icon/readNum.svg)",
-                    width: "18px"
+                    width: "18px",
                   }}
                 ></i>
                 <span>{story.clickNumber || 1}</span>
@@ -271,7 +292,7 @@ class Card extends Component {
                   style={{
                     backgroundImage: `url(/image/icon/${
                       story.islike ? "like" : "like2"
-                    }.svg)`
+                    }.svg)`,
                   }}
                 ></i>
                 <span>{story.likeNumber}</span>
@@ -320,7 +341,7 @@ const StoryCard = withRouter(
     deleteStory,
     switchEditLinkVisible,
     getStoryDetail,
-    auditStory
+    auditStory,
   })(Card)
 );
 

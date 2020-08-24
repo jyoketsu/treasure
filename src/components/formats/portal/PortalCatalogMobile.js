@@ -5,7 +5,7 @@ import util from "../../../services/Util";
 import { asyncStart, asyncEnd } from "../../../actions/app";
 import { useSelector, useDispatch } from "react-redux";
 
-export default function PortalCatalogMobile({ tagList }) {
+export default function PortalCatalogMobile({ tagList, user }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const match = useRouteMatch();
@@ -18,7 +18,8 @@ export default function PortalCatalogMobile({ tagList }) {
       nowStation._key,
       nowStation.domain,
       channelKey,
-      tag.id
+      tag.id,
+      user
     );
     asyncEnd(dispatch);
 

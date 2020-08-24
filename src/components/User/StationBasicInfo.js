@@ -256,6 +256,7 @@ class StationBasicInfo extends Component {
           : []
         : [],
       logo: stationInfo ? stationInfo.logo : "",
+      logo2: stationInfo ? stationInfo.logo2 : "",
       size: stationInfo ? stationInfo.size : "",
       type: stationInfo ? stationInfo.type : "",
       isMainStar: stationInfo ? stationInfo.isMainStar : "",
@@ -368,6 +369,7 @@ class StationBasicInfo extends Component {
       isMainStar,
       cover,
       logo,
+      logo2,
       config,
     } = this.state;
 
@@ -390,6 +392,7 @@ class StationBasicInfo extends Component {
             isMainStar,
             cover,
             logo,
+            logo2,
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
@@ -407,6 +410,7 @@ class StationBasicInfo extends Component {
             false,
             cover,
             logo,
+            logo2,
             fields.inheritedMode.value,
             fields.showAll.value,
             fields.style.value,
@@ -419,7 +423,7 @@ class StationBasicInfo extends Component {
   };
 
   render() {
-    const { cover, logo, config, fields } = this.state;
+    const { cover, logo, logo2, config, fields } = this.state;
 
     return (
       <div>
@@ -430,6 +434,14 @@ class StationBasicInfo extends Component {
           uploadAvatarCallback={this.uploadAvatarCallback}
           extParam={"logo"}
           coverUrl={logo}
+        />
+        <label className="ant-form-item-required form-label">
+          logo：（用于门户版式第二屏）
+        </label>
+        <UploadStationCover
+          uploadAvatarCallback={this.uploadAvatarCallback}
+          extParam={"logo2"}
+          coverUrl={logo2}
         />
         <label className="ant-form-item-required form-label">
           Banner图：（推荐分辨率：1920*523）

@@ -529,7 +529,8 @@ const operation = {
   isPortalDetail(pathname) {
     return pathname.split("/")[3] === "detail";
   },
-  async handleClickTag(stationKey, domain, channelkey, tagId) {
+
+  async handleClickTag(stationKey, domain, channelkey, tagId, user) {
     sessionStorage.setItem("portal-curpage", 1);
     const result = await api.story.getStoryList(
       1,
@@ -553,6 +554,13 @@ const operation = {
             break;
           case 15:
             let url = story.url;
+            // 如果url包含qingtime.cn，则要求登录
+            if (url.includes("qingtime.cn") && user && user.isGuest) {
+              alert("请先登录！");
+              const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+              window.location.href = `https://account.qingtime.cn?apphigh=26&redirect=${redirect}`;
+              break;
+            }
             if (
               url.includes("puku.qingtime.cn") ||
               url.includes("bless.qingtime.cn") ||
@@ -563,6 +571,9 @@ const operation = {
               } else {
                 url = `${url}/${domain}?token=${token}`;
               }
+            }
+            if (url.includes("treesite.qingtime.cn")) {
+              url = `https://treesite.qingtime.cn/login?token=${token}`;
             }
             // 打开新标签页
             if (common.isMobile()) {

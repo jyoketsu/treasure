@@ -289,7 +289,7 @@ class EditArticle extends Component {
   }
 
   render() {
-    const { seriesInfo, inline, hideMenu } = this.props;
+    const { seriesInfo, inline, hideMenu, nowStation } = this.props;
     const { story = {}, uptoken } = this.state;
     let channelInfo = {};
     const nowChannelId = story.series
@@ -432,12 +432,17 @@ class EditArticle extends Component {
             <Option key={0} value="album">
               图文
             </Option>
-            {isMobile ? null : (
+            {/* 手机端、非站长、主站隐藏链接和网站 */}
+            {isMobile ||
+            (nowStation && nowStation.role > 1) ||
+            (nowStation && nowStation.isMainStar) ? null : (
               <Option key={0} value="link">
                 链接
               </Option>
             )}
-            {isMobile ? null : (
+            {isMobile ||
+            (nowStation && nowStation.role > 1) ||
+            (nowStation && nowStation.isMainStar) ? null : (
               <Option key={0} value="page">
                 网页
               </Option>

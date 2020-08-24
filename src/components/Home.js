@@ -616,12 +616,16 @@ class Station extends React.Component {
             {content.openFamilyTree ? (
               <div
                 className="station-plugin"
-                onClick={() =>
-                  window.open(
-                    `https://treesite.qingtime.cn/login?token=${token}&t=${content.familyTree._key}`,
-                    "_blank"
-                  )
-                }
+                onClick={() => {
+                  if (user && user.isGuest) {
+                    return message.info("请先登录");
+                  } else {
+                    window.open(
+                      `https://treesite.qingtime.cn/login?token=${token}&t=${content.familyTree._key}`,
+                      "_blank"
+                    );
+                  }
+                }}
               >
                 <i
                   style={{
@@ -638,46 +642,50 @@ class Station extends React.Component {
                 key={index}
                 className="station-plugin"
                 onClick={() => {
-                  switch (plugin.publish) {
-                    case 1:
-                      window.open(
-                        `${plugin.url}/${content.domain}?token=${token}`,
-                        "_blank"
-                      );
-                      break;
-                    case 2:
-                      content.role > 2
-                        ? message.info("没有权限访问！")
-                        : window.open(
-                            `${plugin.url}/${content.domain}?token=${token}`,
-                            "_blank"
-                          );
-                      break;
-                    case 3:
-                      if (content.role || plugin.isSeePlugin) {
+                  if (user && user.isGuest) {
+                    return message.info("请先登录");
+                  } else {
+                    switch (plugin.publish) {
+                      case 1:
                         window.open(
                           `${plugin.url}/${content.domain}?token=${token}`,
                           "_blank"
                         );
-                      } else {
-                        if (user.isGuest) {
-                          message.info("请登录");
-                          return;
+                        break;
+                      case 2:
+                        content.role > 2
+                          ? message.info("没有权限访问！")
+                          : window.open(
+                              `${plugin.url}/${content.domain}?token=${token}`,
+                              "_blank"
+                            );
+                        break;
+                      case 3:
+                        if (content.role || plugin.isSeePlugin) {
+                          window.open(
+                            `${plugin.url}/${content.domain}?token=${token}`,
+                            "_blank"
+                          );
                         } else {
-                          this.rightAnswer = plugin.answer;
-                          this.question = {
-                            type: "plugin",
-                            param: {
-                              url: `${plugin.url}/${content.domain}?token=${token}`,
-                              key: plugin._key,
-                            },
-                          };
-                          this.switchPluginVisible(plugin.question, "");
+                          if (user.isGuest) {
+                            message.info("请登录");
+                            return;
+                          } else {
+                            this.rightAnswer = plugin.answer;
+                            this.question = {
+                              type: "plugin",
+                              param: {
+                                url: `${plugin.url}/${content.domain}?token=${token}`,
+                                key: plugin._key,
+                              },
+                            };
+                            this.switchPluginVisible(plugin.question, "");
+                          }
                         }
-                      }
-                      break;
-                    default:
-                      break;
+                        break;
+                      default:
+                        break;
+                    }
                   }
                 }}
               >

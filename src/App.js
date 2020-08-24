@@ -22,26 +22,36 @@ import NotFound from "./components/NotFound";
 import PortalHome from "./components/formats/portal/Portal";
 import Village from "./components/formats/village/Village";
 // import Im from "./components/common/Im";
+import util from "./services/Util";
 import { HOST_NAME } from "./global";
 
 export default function App() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
-  const nowStation = useSelector(state => state.station.nowStation);
-  const loading = useSelector(state => state.common.loading);
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const loading = useSelector((state) => state.common.loading);
+
+  const isMobile = util.common.isMobile();
 
   // 站点类型
   const stationType = nowStation ? nowStation.style || 1 : "";
   // 主页
   let home;
   switch (stationType) {
-    // 普通站
+    // 普通版式
     case 1:
       home = <Route path="/:id/home" component={Home} />;
       break;
-    // 门户站
-    case 2:
-      home = <Route path="/:id/home" component={PortalHome} />;
+    // 门户版式
+    case 2: {
+      // 如果是手机端，使用乡村版式
+      if (isMobile) {
+        home = <Route path="/:id/home" component={Village} />;
+      } else {
+        home = <Route path="/:id/home" component={PortalHome} />;
+      }
       break;
+    }
+    // 乡村版式
     case 3:
       home = <Route path="/:id/home" component={Village} />;
       break;

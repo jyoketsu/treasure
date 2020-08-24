@@ -13,6 +13,7 @@ import {
 } from "../../../actions/app";
 const mapStateToProps = (state) => ({
   nowStation: state.station.nowStation,
+  user: state.auth.user,
   storyList: state.story.storyList,
   sortType: state.story.sortType,
   sortOrder: state.story.sortOrder,
@@ -34,6 +35,7 @@ class PortalDetail extends Component {
       asyncStart,
       asyncEnd,
       setStoryList,
+      user,
     } = this.props;
     const channelKey = match.params.id;
     asyncStart();
@@ -41,7 +43,8 @@ class PortalDetail extends Component {
       nowStation._key,
       nowStation.domain,
       channelKey,
-      tag.id
+      tag.id,
+      user
     );
     asyncEnd();
     if (result) {

@@ -6,8 +6,9 @@ import PortalCatalogMobile from "./PortalCatalogMobile";
 import { Button } from "antd";
 import { connect } from "react-redux";
 import { asyncStart, asyncEnd } from "../../../actions/app";
-const mapStateToProps = state => ({
-  nowStation: state.station.nowStation
+const mapStateToProps = (state) => ({
+  nowStation: state.station.nowStation,
+  user: state.auth.user,
 });
 
 class Catalog extends Component {
@@ -17,27 +18,35 @@ class Catalog extends Component {
   }
 
   async handleClick(tag) {
-    const { history, match, nowStation, asyncStart, asyncEnd } = this.props;
+    const {
+      user,
+      history,
+      match,
+      nowStation,
+      asyncStart,
+      asyncEnd,
+    } = this.props;
     const channelKey = match.params.id;
     asyncStart();
     const result = await util.operation.handleClickTag(
       nowStation._key,
       nowStation.domain,
       channelKey,
-      tag.id
+      tag.id,
+      user
     );
     asyncEnd();
 
     if (result) {
       history.push({
         pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
-        state: { tagId: tag.id, tagName: tag.name }
+        state: { tagId: tag.id, tagName: tag.name },
       });
     }
   }
 
   render() {
-    const { nowStation, match } = this.props;
+    const { nowStation, match, user } = this.props;
     const channelList = nowStation ? nowStation.seriesInfo : [];
     const channelkey = match.params.id;
     let nowChannel;
@@ -70,7 +79,7 @@ class Catalog extends Component {
                 ))}
               </Carousel>
             ) : (
-              <PortalCatalogMobile tagList={tagList} />
+              <PortalCatalogMobile tagList={tagList} user={user} />
             )
           ) : (
             <div className="no-tag">暂无内容</div>
@@ -87,7 +96,7 @@ class CatalogCover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scale: 1
+      scale: 1,
     };
   }
 
@@ -111,7 +120,7 @@ class CatalogCover extends React.Component {
           className="catalog-cover"
           style={{
             backgroundImage: `url(${obj.logo})`,
-            transform: `scale(${scale})`
+            transform: `scale(${scale})`,
           }}
         ></div>
         <div className="catalog-name">{obj.name}</div>

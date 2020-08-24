@@ -11,8 +11,8 @@ moment.locale("zh-cn");
 export default function Visitors() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const nowStation = useSelector(state => state.station.nowStation);
-  const latestVisitors = useSelector(state => state.station.latestVisitors);
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const latestVisitors = useSelector((state) => state.station.latestVisitors);
   useEffect(() => {
     getLatestVisitors(nowStation._key, dispatch);
   }, [nowStation, dispatch]);
@@ -44,13 +44,15 @@ function User({ user }) {
         style={{
           backgroundImage: `url(${
             user.avatar
-              ? `${user.avatar}?imageView2/1/w/80/h/80`
+              ? user.avatar.indexOf("imageMogr2") === -1
+                ? `${user.avatar}?imageView2/1/w/80/h/80`
+                : user.avatar
               : "/image/icon/avatar.svg"
           })`,
           backgroundSize: "cover",
           borderRadius: "30px",
           width: "60px",
-          height: "60px"
+          height: "60px",
         }}
         onClick={() => {
           if (user.domain) {

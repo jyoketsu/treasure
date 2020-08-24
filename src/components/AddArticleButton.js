@@ -206,7 +206,9 @@ class AddButton extends Component {
     );
 
     return location.pathname.includes("/editArticle") ||
-      location.pathname.includes("/editStory") ? null : (
+      location.pathname.includes("/editStory") ||
+      location.pathname.includes("/stationOptions") ||
+      location.pathname.includes("/create") ? null : (
       <div className="multi-button">
         {!onlyContent ? (
           <Tooltip title="投稿" placement="left">
@@ -214,7 +216,8 @@ class AddButton extends Component {
               className="story-tool add-story-multi"
               onClick={this.switchChannelVisible}
             >
-              <i></i>
+              {/* <i></i> */}
+              投稿
             </div>
           </Tooltip>
         ) : null}

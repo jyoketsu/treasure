@@ -40,3 +40,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@media screen and (max-width: 768px) {
+  .village-fans-item {
+    width: 80px;
+  }
+}

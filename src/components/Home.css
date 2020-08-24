@@ -100,7 +100,7 @@
   align-items: flex-end;
   z-index: 2;
 }
-.operation-panel-wrapper{
+.operation-panel-wrapper {
   position: fixed;
   bottom: 65px;
   right: 20px;
@@ -179,6 +179,7 @@
 .add-story,
 .add-story-multi {
   background-color: #1890ff;
+  color: #fff;
 }
 
 .add-story > i,
@@ -334,7 +335,7 @@
   align-items: center;
   height: 150px;
 }
-.station-home-head-wrapper{
+.station-home-head-wrapper {
   width: 100%;
   position: absolute;
   top: 0;
@@ -398,7 +399,7 @@
     height: 30px;
     margin-bottom: unset;
   }
-  .operation-panel-wrapper{
+  .operation-panel-wrapper {
     right: 5px;
   }
 }

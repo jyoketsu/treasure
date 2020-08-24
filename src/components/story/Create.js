@@ -11,10 +11,10 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Create() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const eidtLinkVisible = useSelector(state => state.story.eidtLinkVisible);
-  const user = useSelector(state => state.auth.user);
-  const nowStation = useSelector(state => state.station.nowStation);
-  const nowChannelKey = useSelector(state =>
+  const eidtLinkVisible = useSelector((state) => state.story.eidtLinkVisible);
+  const user = useSelector((state) => state.auth.user);
+  const nowStation = useSelector((state) => state.station.nowStation);
+  const nowChannelKey = useSelector((state) =>
     state.story.nowChannelKey !== "allSeries"
       ? state.story.nowChannelKey
       : undefined
@@ -69,14 +69,14 @@ export default function Create() {
         {
           _id: util.common.randomStr(false, 12),
           metaType: "html",
-          memo: value
+          memo: value,
         },
         ...images.map((image, index) => ({
           _id: util.common.randomStr(false, 12),
           metaType: "image",
-          url: image
-        }))
-      ]
+          url: image,
+        })),
+      ],
     };
     addStory(story, dispatch);
     history.push(`/${nowStation.domain}/home`);
@@ -111,11 +111,11 @@ function Head({
   handleCommit,
   onChange,
   setStoryTag,
-  channelInfo
+  channelInfo,
 }) {
   const Option = Select.Option;
   const history = useHistory();
-  const seriesInfo = useSelector(state =>
+  const seriesInfo = useSelector((state) =>
     state.station.nowStation ? state.station.nowStation.seriesInfo : []
   );
   const { tag, allowPublicTag, role } = channelInfo;
@@ -149,7 +149,7 @@ function Head({
                   ? nowChannelKey
                   : undefined
               }
-              onChange={value => onChange(value)}
+              onChange={(value) => onChange(value)}
             >
               {seriesInfo.map((item, index) =>
                 (item.role && item.role < 5) || item.allowPublicUpload ? (
@@ -165,7 +165,7 @@ function Head({
               style={{ width: selectWidth }}
               placeholder="请选择标签"
               value={storyTag}
-              onChange={value => setStoryTag(value)}
+              onChange={(value) => setStoryTag(value)}
             >
               {tag.split(" ").map((item, index) => {
                 let tagName = item;
@@ -259,7 +259,7 @@ function Content({ value, setValue, images, setImages }) {
             placeholder="这一刻的想法..."
             value={value}
             style={{ height: `${textareaHeight}px` }}
-            onChange={e => handleChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           ></textarea>
         </div>
       </div>
@@ -267,7 +267,7 @@ function Content({ value, setValue, images, setImages }) {
         className="images-wrapper"
         ref={imagesWrapperEl}
         style={{
-          maxHeight: `${window.innerHeight / 2}px`
+          maxHeight: `${window.innerHeight / 2}px`,
           // opacity: images.length ? 1 : 0
         }}
       >
@@ -298,7 +298,7 @@ function Image({ index, image, itemWidth, handleRemove }) {
       className="create-image-item"
       style={{
         width: itemWidth,
-        height: itemWidth
+        height: itemWidth,
       }}
     >
       <img src={`${image}?imageView2/2/w/200`} alt="上传图片"></img>
@@ -312,7 +312,7 @@ function More({ visible, setVisible }) {
   const history = useHistory();
   const match = useRouteMatch();
   const dispatch = useDispatch();
-  const nowStation = useSelector(state => state.station.nowStation);
+  const nowStation = useSelector((state) => state.station.nowStation);
   const stationDomain = nowStation ? nowStation.domain : "";
   let type;
   function handleSelect(value) {
@@ -328,13 +328,13 @@ function More({ visible, setVisible }) {
       case "album":
         history.push({
           pathname: `/${stationDomain}/editStory`,
-          search: `?type=new&channel=${channelKey}`
+          search: `?type=new&channel=${channelKey}`,
         });
         break;
       case "article":
         history.push({
           pathname: `/${stationDomain}/editArticle`,
-          search: `?type=new&channel=${channelKey}`
+          search: `?type=new&channel=${channelKey}`,
         });
         break;
       case "page":
@@ -373,12 +373,17 @@ function More({ visible, setVisible }) {
         <Option key={0} value="article">
           文章
         </Option>
-        {isMobile ? null : (
+        {/* 手机端、非站长、主站隐藏链接和网站 */}
+        {isMobile ||
+        (nowStation && nowStation.role > 1) ||
+        (nowStation && nowStation.isMainStar) ? null : (
           <Option key={0} value="link">
             链接
           </Option>
         )}
-        {isMobile ? null : (
+        {isMobile ||
+        (nowStation && nowStation.role > 1) ||
+        (nowStation && nowStation.isMainStar) ? null : (
           <Option key={0} value="page">
             网页
           </Option>

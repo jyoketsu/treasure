@@ -320,68 +320,83 @@ class MyFroalaEditor extends Component {
         "wordPaste",
       ],
       // Set custom buttons.
-      toolbarButtons: {
-        moreText: {
-          buttons: [
-            "bold",
-            "italic",
-            "underline",
-            "strikeThrough",
-            "subscript",
-            "superscript",
-            "fontFamily",
-            "fontSize",
-            "textColor",
-            "backgroundColor",
-            "inlineClass",
-            "inlineStyle",
-            "clearFormatting",
-          ],
-        },
-        moreParagraph: {
-          buttons: [
-            "paragraphFormat",
-            "paragraphStyle",
-            "alignLeft",
-            "alignCenter",
-            "formatOLSimple",
-            "alignRight",
-            "alignJustify",
-            "formatOL",
-            "formatUL",
-            "lineHeight",
-            "outdent",
-            "indent",
-            "quote",
-          ],
-        },
-        moreRich: {
-          buttons: [
-            "insertImage",
-            "insertVideo",
-            "insertLink",
-            "insertTable",
-            "emoticons",
-            "fontAwesome",
-            "specialCharacters",
-            "embedly",
-            "insertFile",
-            "insertHR",
-          ],
-        },
-        moreMisc: {
-          buttons: inline
-            ? ["codeEditor"]
-            : ["codeEditor", "alert", "moreStyle"],
-        },
-      },
+      // toolbarButtons: {
+      //   moreText: {
+      //     buttons: [
+      //       "bold",
+      //       "italic",
+      //       "underline",
+      //       "strikeThrough",
+      //       "subscript",
+      //       "superscript",
+      //       "fontFamily",
+      //       "fontSize",
+      //       "textColor",
+      //       "backgroundColor",
+      //       "inlineClass",
+      //       "inlineStyle",
+      //       "clearFormatting",
+      //     ],
+      //   },
+      //   moreParagraph: {
+      //     buttons: [
+      //       "paragraphFormat",
+      //       "paragraphStyle",
+      //       "alignLeft",
+      //       "alignCenter",
+      //       "formatOLSimple",
+      //       "alignRight",
+      //       "alignJustify",
+      //       "formatOL",
+      //       "formatUL",
+      //       "lineHeight",
+      //       "outdent",
+      //       "indent",
+      //       "quote",
+      //     ],
+      //   },
+      //   moreRich: {
+      //     buttons: [
+      //       "insertImage",
+      //       "insertVideo",
+      //       "insertLink",
+      //       "insertTable",
+      //       "emoticons",
+      //       "fontAwesome",
+      //       "specialCharacters",
+      //       "embedly",
+      //       "insertFile",
+      //       "insertHR",
+      //     ],
+      //   },
+      //   moreMisc: {
+      //     buttons: inline
+      //       ? ["codeEditor"]
+      //       : ["codeEditor", "alert", "moreStyle"],
+      //   },
+      // },
+
+      toolbarButtons: [
+        ["undo", "redo"],
+        ["paragraphFormat", "fontFamily", "fontSize"],
+        [
+          "bold",
+          "italic",
+          "underline",
+          "strikeThrough",
+          "textColor",
+          "backgroundColor",
+        ],
+        ["formatOL", "formatUL", "align"],
+        ["insertImage", "insertVideo", "insertTable", "insertLink"],
+        ["选择频道", "codeEditor", "moreStyle"],
+      ],
 
       // Change buttons for XS screen.
       toolbarButtonsXS: [
-        ["bold", "italic", "underline"],
-        ["paragraphFormat"],
-        ["insertImage", "insertVideo"],
-        inline ? ["codeEditor"] : ["codeEditor", "alert", "moreStyle"],
+        ["undo", "redo"],
+        ["bold", "insertImage", "insertVideo"],
+        inline ? ["codeEditor"] : ["选择频道", "codeEditor", "moreStyle"],
       ],
     };
 
@@ -517,9 +532,9 @@ class MyFroalaEditor extends Component {
     document.body.addEventListener("wheel", this.handleMouseWheel);
 
     // 设定标签
-    Froalaeditor.DefineIcon("alert", { NAME: "info", SVG_KEY: "more" });
-    Froalaeditor.RegisterCommand("alert", {
-      title: "文章设定",
+    Froalaeditor.DefineIcon("", { NAME: "info", SVG_KEY: "info" });
+    Froalaeditor.RegisterCommand("选择频道", {
+      title: "选择频道",
       focus: false,
       undo: false,
       refreshAfterCallback: false,
@@ -530,7 +545,7 @@ class MyFroalaEditor extends Component {
 
     // SVG_KEY在https://github.com/froala/wysiwyg-editor/issues/3478
     // 切换投稿方式
-    Froalaeditor.DefineIcon("moreStyle", { NAME: "star", SVG_KEY: "add" });
+    Froalaeditor.DefineIcon("moreStyle", { NAME: "star", SVG_KEY: "more" });
     Froalaeditor.RegisterCommand("moreStyle", {
       title: "更多投稿方式",
       focus: false,
@@ -544,7 +559,7 @@ class MyFroalaEditor extends Component {
     // 代码编辑
     Froalaeditor.DefineIcon("codeEditor", {
       NAME: "star",
-      SVG_KEY: "editLink",
+      SVG_KEY: "codeView",
     });
     Froalaeditor.RegisterCommand("codeEditor", {
       title: "文章源码编辑",

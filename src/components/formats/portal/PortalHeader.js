@@ -11,16 +11,16 @@ import {
   setChannelKey,
   setStoryList,
   asyncStart,
-  asyncEnd
+  asyncEnd,
 } from "../../../actions/app";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
   stationList: state.station.stationList,
   nowStationKey: state.station.nowStationKey,
   nowStation: state.station.nowStation,
   sortType: state.story.sortType,
-  sortOrder: state.story.sortOrder
+  sortOrder: state.story.sortOrder,
 });
 
 class PortalHeader extends Component {
@@ -33,7 +33,7 @@ class PortalHeader extends Component {
     this.state = {
       logoSize: null,
       showMenu: false,
-      showSubscribe: false
+      showSubscribe: false,
     };
     this.perPage = 32;
   }
@@ -45,7 +45,7 @@ class PortalHeader extends Component {
   switchMenu() {
     const { user, nowStation } = this.props;
     if (user && !user.isGuest) {
-      this.setState(prevState => ({ showMenu: !prevState.showMenu }));
+      this.setState((prevState) => ({ showMenu: !prevState.showMenu }));
     } else {
       const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
       const logo = nowStation.logo;
@@ -54,7 +54,7 @@ class PortalHeader extends Component {
   }
 
   switchSubscribe() {
-    this.setState(prevState => ({ showSubscribe: !prevState.showSubscribe }));
+    this.setState((prevState) => ({ showSubscribe: !prevState.showSubscribe }));
   }
 
   handleClick(channelKey) {
@@ -73,25 +73,29 @@ class PortalHeader extends Component {
       history,
       setStoryList,
       asyncStart,
-      asyncEnd
+      asyncEnd,
     } = this.props;
     const { logoSize, showMenu, showSubscribe } = this.state;
     const pathname = location.pathname;
     const stationDomain = pathname.split("/")[1];
     const channelList = nowStation ? nowStation.seriesInfo : [];
+    const isPortaDetail = util.operation.isPortalDetail(
+      window.location.pathname
+    );
 
     return !window.location.pathname.includes("stationOptions") ? (
       <div
         className="app-menu-container"
         style={{
-          display: util.operation.hidePortalHeader(pathname) ? "none" : "flex"
+          display: util.operation.hidePortalHeader(pathname) ? "none" : "flex",
         }}
       >
-        <ul className="app-menu portal-menu" ref={elem => (this.nv = elem)}>
+        <ul className="app-menu portal-menu" ref={(elem) => (this.nv = elem)}>
           <div className="portal-head-left">
             {channelList.map((channel, index) => (
               <Channel
                 key={index}
+                user={user}
                 nowStation={nowStation}
                 channelKey={channel._key}
                 name={channel.name}
@@ -143,7 +147,7 @@ class PortalHeader extends Component {
                   borderRadius:
                     user && user.profile && user.profile.avatar
                       ? "25px"
-                      : "unset"
+                      : "unset",
                 }}
                 onClick={this.switchMenu}
               ></li>
@@ -155,12 +159,14 @@ class PortalHeader extends Component {
                   style={{
                     backgroundImage: `url(${
                       nowStation && nowStation.logo !== null
-                        ? nowStation.logo
+                        ? isPortaDetail
+                          ? nowStation.logo2 || nowStation.logo
+                          : nowStation.logo
                         : "/image/background/logo.svg"
                     })`,
                     width: `${Math.ceil(
                       55 * (logoSize.width / logoSize.height)
-                    )}px`
+                    )}px`,
                   }}
                   onClick={() => history.push(`/${stationDomain}/home`)}
                 ></li>
@@ -169,7 +175,7 @@ class PortalHeader extends Component {
                   className={`menu-logo`}
                   style={{
                     backgroundImage: `url(/image/background/logo.svg)`,
-                    width: "35px"
+                    width: "35px",
                   }}
                   onClick={() => history.push(`/${stationDomain}/home`)}
                 ></li>
@@ -198,7 +204,7 @@ class PortalHeader extends Component {
   async componentDidMount() {
     this.nv.addEventListener(
       "touchmove",
-      function(e) {
+      function (e) {
         //阻止默认的处理方式(阻止下拉滑动的效果)
         e.preventDefault();
       },
@@ -209,11 +215,28 @@ class PortalHeader extends Component {
 
     // 获取logo大小
     if (nowStation) {
-      let size = await util.common.getImageInfo(nowStation.logo);
+      const isPortaDetail = util.operation.isPortalDetail(
+        window.location.pathname
+      );
+      let size = await util.common.getImageInfo(
+        isPortaDetail ? nowStation.logo2 || nowStation.logo : nowStation.logo
+      );
       this.setState({
-        logoSize: size
+        logoSize: size,
       });
     }
+    // 监听路由变化，更新logo大小（PS：按道理不能这么做，即使logo不变也更新了logo大小，但是时间有限，不管啦）
+    this.props.history.listen(async (route, action) => {
+      const isPortaDetail = util.operation.isPortalDetail(
+        window.location.pathname
+      );
+      let size = await util.common.getImageInfo(
+        isPortaDetail ? nowStation.logo2 || nowStation.logo : nowStation.logo
+      );
+      this.setState({
+        logoSize: size,
+      });
+    });
   }
 
   async componentDidUpdate(prevProps) {
@@ -229,9 +252,14 @@ class PortalHeader extends Component {
       (nowStation && !prevStation && nowStation.logo)
     ) {
       // 获取logo大小
-      let size = await util.common.getImageInfo(nowStation.logo);
+      const isPortaDetail = util.operation.isPortalDetail(
+        window.location.pathname
+      );
+      let size = await util.common.getImageInfo(
+        isPortaDetail ? nowStation.logo2 || nowStation.logo : nowStation.logo
+      );
       this.setState({
-        logoSize: size
+        logoSize: size,
       });
     }
   }
@@ -249,7 +277,7 @@ class Channel extends Component {
           style={{
             color: util.operation.isPortalDetail(window.location.pathname)
               ? "#24374A"
-              : "#FFFFFF"
+              : "#FFFFFF",
           }}
           onClick={onClick}
         >
@@ -260,7 +288,7 @@ class Channel extends Component {
           style={{
             color: util.operation.isPortalDetail(window.location.pathname)
               ? "#24374A"
-              : "#FFFFFF"
+              : "#FFFFFF",
           }}
         >
           {tagList.map((catalog, index) => {
@@ -285,25 +313,27 @@ class Channel extends Component {
   }
   async handleClick(tag, channelKey) {
     const {
+      user,
       history,
       nowStation,
       asyncStart,
       asyncEnd,
-      setStoryList
+      setStoryList,
     } = this.props;
     asyncStart();
     const result = await util.operation.handleClickTag(
       nowStation._key,
       nowStation.domain,
       channelKey,
-      tag.id
+      tag.id,
+      user
     );
     asyncEnd();
     if (result) {
       setStoryList(result.result, result.total, tag.id, "");
       history.push({
         pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
-        state: { tagId: tag.id, tagName: tag.name }
+        state: { tagId: tag.id, tagName: tag.name },
       });
     }
   }
@@ -314,6 +344,6 @@ export default withRouter(
     setChannelKey,
     setStoryList,
     asyncStart,
-    asyncEnd
+    asyncEnd,
   })(PortalHeader)
 );

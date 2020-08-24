@@ -211,6 +211,7 @@ export default function StoryList() {
 }
 
 function Head({ nowChannel, titleList, onClick }) {
+  const isMobile = util.common.isMobile();
   const history = useHistory();
   let data = [];
 
@@ -238,20 +239,22 @@ function Head({ nowChannel, titleList, onClick }) {
           {nowChannel ? nowChannel.name : ""}
         </span>
       </div>
-      <div className="tag-cloud-wrapper">
-        {titleList.length > 2 ? (
-          <div
-            style={{
-              width: "200px",
-              height: "200px",
-              marginRight: "30px",
-              boxSizing: "content-box",
-            }}
-          >
-            <TagCloud tagName={data} radius={150} onClick={onClick} />
-          </div>
-        ) : null}
-      </div>
+      {!isMobile ? (
+        <div className="tag-cloud-wrapper">
+          {titleList.length > 2 ? (
+            <div
+              style={{
+                width: "200px",
+                height: "200px",
+                marginRight: "30px",
+                boxSizing: "content-box",
+              }}
+            >
+              <TagCloud tagName={data} radius={150} onClick={onClick} />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

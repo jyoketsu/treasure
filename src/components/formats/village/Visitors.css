@@ -21,3 +21,8 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+@media screen and (max-width: 768px) {
+  .latest-visitor-item {
+    width: 80px;
+  }
+}
