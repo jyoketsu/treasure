@@ -389,14 +389,14 @@ class MyFroalaEditor extends Component {
         ],
         ["formatOL", "formatUL", "align"],
         ["insertImage", "insertVideo", "insertTable", "insertLink"],
-        ["选择频道", "codeEditor", "moreStyle"],
+        ["codeEditor", "投稿主题", "更多投稿"],
       ],
 
       // Change buttons for XS screen.
       toolbarButtonsXS: [
         ["undo", "redo"],
         ["bold", "insertImage", "insertVideo"],
-        inline ? ["codeEditor"] : ["选择频道", "codeEditor", "moreStyle"],
+        inline ? ["codeEditor"] : ["codeEditor", "投稿主题", "更多投稿"],
       ],
     };
 
@@ -533,8 +533,8 @@ class MyFroalaEditor extends Component {
 
     // 设定标签
     Froalaeditor.DefineIcon("", { NAME: "info", SVG_KEY: "info" });
-    Froalaeditor.RegisterCommand("选择频道", {
-      title: "选择频道",
+    Froalaeditor.RegisterCommand("投稿主题", {
+      title: "投稿主题",
       focus: false,
       undo: false,
       refreshAfterCallback: false,
@@ -545,8 +545,8 @@ class MyFroalaEditor extends Component {
 
     // SVG_KEY在https://github.com/froala/wysiwyg-editor/issues/3478
     // 切换投稿方式
-    Froalaeditor.DefineIcon("moreStyle", { NAME: "star", SVG_KEY: "more" });
-    Froalaeditor.RegisterCommand("moreStyle", {
+    Froalaeditor.DefineIcon("", { NAME: "star", SVG_KEY: "more" });
+    Froalaeditor.RegisterCommand("更多投稿", {
       title: "更多投稿方式",
       focus: false,
       undo: false,

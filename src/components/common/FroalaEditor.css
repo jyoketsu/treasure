@@ -61,6 +61,15 @@
   border: unset !important;
 }
 
+#投稿主题-1,
+#更多投稿-1 {
+  margin-top: 8px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  padding: 0 8px;
+  height: 30px;
+}
+
 /* 隐藏版权信息 */
 .fr-wrapper > div:first-child,
 #logo,
