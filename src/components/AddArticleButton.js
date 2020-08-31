@@ -138,6 +138,7 @@ class AddButton extends Component {
         );
         break;
     }
+    this.setState({ showSelectChannel: false });
   }
 
   switchChannelVisible() {
@@ -151,8 +152,9 @@ class AddButton extends Component {
       return;
     }
     if (nowChannelKey !== "todoallSeries") {
+      const isMobile = util.common.isMobile();
       // 网站类型是门户类型
-      if (nowStation.style === 2) {
+      if (nowStation.style === 2 && !isMobile) {
         if (window.location.pathname.includes("/catalog/")) {
           this.channelKey = window.location.pathname.split("/catalog/")[1];
         } else if (window.location.pathname.includes("/detail/")) {

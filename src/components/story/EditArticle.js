@@ -130,6 +130,7 @@ class EditArticle extends Component {
 
   async handleCommit(e) {
     const {
+      nowStation,
       user,
       nowStationKey,
       addStory,
@@ -157,9 +158,18 @@ class EditArticle extends Component {
 
     const { tag, allowPublicTag } = channelInfo;
 
-    if (tag && !story.tag && allowPublicTag) {
-      message.info("请选择一个标签！");
-      return;
+    // 门户版式，标签为必填项
+    if (nowStation.style === 2) {
+      if (tag && !story.tag) {
+        message.info("请选择一个标签！");
+        return;
+      }
+    } else {
+      // 其他版式，当标签允许公众设置时，标签为必填项
+      if (tag && !story.tag && allowPublicTag) {
+        message.info("请选择一个标签！");
+        return;
+      }
     }
 
     let imgReg = /<img.*?(?:>|\/>)/gi; //匹配图片中的img标签

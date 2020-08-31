@@ -11,7 +11,7 @@ import { addStory, modifyStory, deleteStory } from "../../actions/app";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   seriesInfo: state.station.nowStation
     ? state.station.nowStation.seriesInfo
     : [],
@@ -25,7 +25,7 @@ const mapStateToProps = state => ({
   nowStationKey: state.station.nowStationKey,
   storyList: state.story.storyList,
   loading: state.common.loading,
-  flag: state.common.flag
+  flag: state.common.flag,
 });
 
 class StoryEdit extends Component {
@@ -40,8 +40,8 @@ class StoryEdit extends Component {
                 util.common.getSearchParamValue(
                   window.location.search,
                   "channel"
-                ) || props.nowChannelKey
-            }
+                ) || props.nowChannelKey,
+            },
           }
         : props.story;
     this.state = {
@@ -49,7 +49,7 @@ class StoryEdit extends Component {
       selectedItemId: null,
       selectedItemIndex: null,
       musicPanelvisible: false,
-      musicAddress: story.backGroundMusic
+      musicAddress: story.backGroundMusic,
     };
     this.addContent = this.addContent.bind(this);
     this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -74,8 +74,8 @@ class StoryEdit extends Component {
   }
 
   switchMusic() {
-    this.setState(prevState => ({
-      musicPanelvisible: !prevState.musicPanelvisible
+    this.setState((prevState) => ({
+      musicPanelvisible: !prevState.musicPanelvisible,
     }));
   }
 
@@ -97,7 +97,7 @@ class StoryEdit extends Component {
       addStory,
       modifyStory,
       seriesInfo,
-      finishCallback
+      finishCallback,
     } = this.props;
     const { story } = this.state;
 
@@ -160,7 +160,7 @@ class StoryEdit extends Component {
         starKey: nowStationKey,
         publish: 1,
         size: size,
-        isSimple: 0
+        isSimple: 0,
       });
       addStory(story);
     }
@@ -179,13 +179,13 @@ class StoryEdit extends Component {
    * @param {String} contentType 内容类型
    */
   addContent(index, metaType) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       prevContent.splice(index ? index + 1 : prevContent.length, 0, {
         _id: util.common.randomStr(false, 12),
         metaType: metaType,
-        memo: ""
+        memo: "",
       });
       prevStory.richContent = prevContent;
       this.scrollDown = true;
@@ -199,7 +199,7 @@ class StoryEdit extends Component {
    * @param {Object} extParams 参数
    */
   uploadImageCallback(images, extParams) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       let index =
@@ -216,7 +216,7 @@ class StoryEdit extends Component {
           metaType: "image",
           url: images[i],
           size: size,
-          memo: ""
+          memo: "",
         });
         if (typeof prevStory.pictureCount === "number") {
           prevStory.pictureCount = prevStory.pictureCount + 1;
@@ -242,7 +242,7 @@ class StoryEdit extends Component {
    */
   uploadVideoCallback(videoUrl, extParams) {
     if (videoUrl.length !== 0) videoUrl = videoUrl[0];
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
 
@@ -258,7 +258,7 @@ class StoryEdit extends Component {
         metaType: "video",
         url: videoUrl,
         thumbnailUrl: `${videoUrl}?vframe/jpg/offset/1`,
-        memo: ""
+        memo: "",
       });
       prevStory.richContent = prevContent;
       this.scrollDown = true;
@@ -282,7 +282,7 @@ class StoryEdit extends Component {
    * @param {Array} images 图片url数组
    */
   uploadCoverCallback(images) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       // 设置封面
       prevStory.cover = images[0];
@@ -291,7 +291,7 @@ class StoryEdit extends Component {
   }
 
   setMusic() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let regex1 = /<iframe.*?(?:>|\/>)/gi;
       if (regex1.test(prevState.musicAddress)) {
@@ -305,7 +305,7 @@ class StoryEdit extends Component {
   }
 
   handleSetTag(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.tag = value;
       return { story: prevStory };
@@ -313,7 +313,7 @@ class StoryEdit extends Component {
   }
 
   handleSetStatus(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.statusTag = value;
       return { story: prevStory };
@@ -321,7 +321,7 @@ class StoryEdit extends Component {
   }
 
   handleSelectChannel(value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       prevStory.series = { _key: value };
       prevStory.tag = undefined;
@@ -334,7 +334,7 @@ class StoryEdit extends Component {
    * @param {Number} index 要删除的位置
    */
   deleteContent(index, metaType) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let { richContent: prevContent = [] } = prevStory;
       prevContent.splice(index, 1);
@@ -361,7 +361,7 @@ class StoryEdit extends Component {
       cancelText: "No",
       onOk() {
         that.deleteContent(index, metaType, e);
-      }
+      },
     });
   }
 
@@ -413,12 +413,12 @@ class StoryEdit extends Component {
           // 返回到首页
           history.push(`/${nowStation.domain}/home`);
         }
-      }
+      },
     });
   }
 
   onSort(sortedList) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let { story: prevStory = {} } = prevState;
       let richContent = [];
       for (let i = 0; i < sortedList.length; i++) {
@@ -442,7 +442,7 @@ class StoryEdit extends Component {
       story = {},
       selectedItemId,
       selectedItemIndex,
-      musicAddress
+      musicAddress,
     } = this.state;
     const { cover, title = "", richContent = [], address, time } = story;
     let channelInfo = {};
@@ -461,7 +461,7 @@ class StoryEdit extends Component {
       statusTag,
       allowPublicStatus,
       allowPublicUpload,
-      role
+      role,
     } = channelInfo;
 
     let items = [];
@@ -476,7 +476,7 @@ class StoryEdit extends Component {
               handleDelete={this.showDeleteContentConfirm}
               selectedId={selectedItemId}
             />
-          )
+          ),
         });
       }
     } else {
@@ -484,7 +484,7 @@ class StoryEdit extends Component {
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap"
+            flexWrap: "wrap",
           }}
         >
           {richContent.map((item, index) => (
@@ -526,11 +526,11 @@ class StoryEdit extends Component {
               ? `url(${cover}?imageView2/2/w/960/)`
               : "url(/image/background/background.png)",
             backgroundSize: cover ? "cover" : "contain",
-            backgroundPosition: cover ? "center" : "bottom"
+            backgroundPosition: cover ? "center" : "bottom",
           }}
         >
           <div className="top-right-buttons">
-            {!inline && seriesInfo.length ? (
+            {seriesInfo.length ? (
               <Select
                 style={{ width: 120 }}
                 placeholder="请选择频道"
@@ -552,8 +552,7 @@ class StoryEdit extends Component {
             ) : null}
           </div>
           <div className="left-bottom-buttons">
-            {!inline &&
-            tag &&
+            {tag &&
             (allowPublicTag || (!allowPublicTag && role && role < 4)) ? (
               <Select
                 style={{ width: 120 }}
@@ -579,8 +578,7 @@ class StoryEdit extends Component {
           </div>
           <div className="left-top-buttons">
             {statusTag &&
-            ((!inline && allowPublicStatus) ||
-              (!allowPublicStatus && role && role < 4)) ? (
+            (allowPublicStatus || (!allowPublicStatus && role && role < 4)) ? (
               <Select
                 style={{ width: 120 }}
                 placeholder="请选择状态"
@@ -610,7 +608,7 @@ class StoryEdit extends Component {
                 borderColor: "#1890ff",
                 borderRadius: "4px",
                 fontStyle: "normal",
-                textAlign: "center"
+                textAlign: "center",
               }}
               text="设置封面"
               maxSize={10000000}
@@ -681,7 +679,7 @@ class StoryEdit extends Component {
       (story.address !== "获取位置失败" || story.address !== "")
     ) {
       util.common.getLocation(
-        data => {
+        (data) => {
           console.log("定位信息：", data);
           const address =
             data && data.addressComponent
@@ -706,7 +704,7 @@ class StoryEdit extends Component {
         selectedItemId: null,
         selectedItemIndex: null,
         musicPanelvisible: false,
-        musicAddress: props.story.backGroundMusic
+        musicAddress: props.story.backGroundMusic,
       };
     } else {
       return null;
@@ -754,7 +752,7 @@ class EditItem extends Component {
       handleSelect,
       selectedId,
       handleDelete,
-      index
+      index,
     } = this.props;
     const imageUrl =
       content.metaType !== "video"
@@ -768,7 +766,7 @@ class EditItem extends Component {
         className={`story-edit-item ${isSelected ? "selected" : "no-drag"}`}
         style={{
           backgroundImage: `url(${imageUrl})`,
-          backgroundSize: content.url ? "cover" : "50%"
+          backgroundSize: content.url ? "cover" : "50%",
         }}
         onClick={handleSelect.bind(this, index, content._id, isSelected)}
         onTouchStart={handleSelect.bind(this, index, content._id, isSelected)}
@@ -791,7 +789,7 @@ class ItemPreview extends Component {
       uploadImageCallback,
       uploadVideoCallback,
       itemContent,
-      handleInput
+      handleInput,
     } = this.props;
     let result;
     if (itemContent) {
@@ -887,7 +885,7 @@ class ItemPreview extends Component {
                   backgroundImage: "url(/image/icon/story-image.png)",
                   display: "block",
                   width: "24px",
-                  height: "24px"
+                  height: "24px",
                 }}
                 maxSize={10000000}
                 multiple="multiple"
@@ -905,7 +903,7 @@ class ItemPreview extends Component {
                   backgroundImage: "url(/image/icon/story-video.png)",
                   display: "block",
                   width: "24px",
-                  height: "24px"
+                  height: "24px",
                 }}
                 metaType="video"
                 maxSize={400000000}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Common.css";
 import util from "../../services/Util";
-import { Select, Modal } from "antd";
+import { Select, Modal, message } from "antd";
 const { Option } = Select;
 const confirm = Modal.confirm;
 
@@ -37,6 +37,7 @@ class MemberCard extends Component {
       groupKey,
       setMemberRole,
       setMemberInfo,
+      userRole,
     } = this.props;
     if (type === "import") {
       let bango = mobile ? mobile.split(" ") : ["", ""];
@@ -44,6 +45,10 @@ class MemberCard extends Component {
     } else {
       if (value === 1) {
         this.showConfirm();
+        return;
+      }
+      if (value <= userRole) {
+        message.info("没有权限执行此操作！");
         return;
       }
       setMemberRole(groupKey, userKey, value);
