@@ -5,7 +5,7 @@ import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
 import { getStoryDetail } from "../../actions/app";
-import lozad from "lozad";
+// import lozad from "lozad";
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
@@ -46,11 +46,11 @@ class Article extends Component {
     const { userKey } = story;
     const role = nowStation ? nowStation.role : 8;
 
-    let str;
-    if (story && story.content) {
-      let regex = /<img src=/gi;
-      str = story.content.replace(regex, "<img class='lozad' data-src=");
-    }
+    // let str;
+    // if (story && story.content) {
+    //   let regex = /<img src=/gi;
+    //   str = story.content.replace(regex, "<img class='lozad' data-src=");
+    // }
 
     // 文章所在频道
     const nowChannelId = story.series
@@ -104,7 +104,8 @@ class Article extends Component {
               <FroalaEditor
                 previewMode={true}
                 hideMenu={hideMenu}
-                data={str}
+                // data={str}
+                data={story.content}
                 inline={inline}
                 onlyContent={onlyContent}
                 commentType={commentType}
@@ -143,15 +144,16 @@ class Article extends Component {
     }
 
     if (story) {
-      const observer = lozad();
-      observer.observe();
+      // const observer = lozad();
+      // observer.observe();
     }
   }
 
   componentDidUpdate(prevPros) {
     // lazy loads elements with default selector as '.lozad'
-    const observer = lozad();
-    observer.observe();
+    // const observer = lozad();
+    // observer.observe();
+
     const { nowStation, story } = this.props;
     const prevStoryKey = prevPros.story ? prevPros.story._key : null;
     // 获取到故事详情后
