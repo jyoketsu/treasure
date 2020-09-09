@@ -881,7 +881,7 @@ class HomeFooter extends React.Component {
         {!isMobile ? (
           <span>
             <a
-              href="http://www.beian.miit.gov.cn"
+              href="http://beian.miit.gov.cn"
               target="_blank"
               tabIndex="0"
               rel="noopener noreferrer"
@@ -891,7 +891,7 @@ class HomeFooter extends React.Component {
           </span>
         ) : (
           <a
-            href="http://www.beian.miit.gov.cn"
+            href="http://beian.miit.gov.cn"
             target="_blank"
             tabIndex="0"
             rel="noopener noreferrer"

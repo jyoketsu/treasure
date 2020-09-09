@@ -6,15 +6,15 @@ import Catalog from "./PortalCatalog";
 import Detail from "./PortalDetail";
 import util from "../../../services/Util";
 import { connect } from "react-redux";
-const mapStateToProps = state => ({
-  nowStation: state.station.nowStation
+const mapStateToProps = (state) => ({
+  nowStation: state.station.nowStation,
 });
 
 class Portal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      winHeight: window.innerHeight
+      winHeight: window.innerHeight,
     };
     this.handleResize = this.handleResize.bind(this);
   }
@@ -75,14 +75,14 @@ class Portal extends Component {
                 ? "no-repeat"
                 : "repeat-x"
               : "unset",
-          backgroundSize: noRepeat ? "cover" : "unset"
+          backgroundSize: noRepeat ? "cover" : "unset",
         }}
       >
         <Header />
         <div
           className="portal-home-body"
           style={{
-            backgroundImage: pathname.split("/")[3] ? "unset" : `url(${cover})`
+            backgroundImage: pathname.split("/")[3] ? "unset" : `url(${cover})`,
           }}
         >
           <Route path={`${match.path}/catalog/:id`} component={Catalog}></Route>
@@ -129,7 +129,7 @@ class PortalFooter extends Component {
       <div className="portal-foot">
         <span>
           <a
-            href="http://www.beian.miit.gov.cn"
+            href="http://beian.miit.gov.cn"
             target="_blank"
             rel="noopener noreferrer"
           >
