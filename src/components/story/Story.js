@@ -127,14 +127,6 @@ class Story extends Component {
               <div className="story-title">{title}</div>
               <div className="story-head-info">
                 <div className="story-head-other">
-                  <div
-                    className="story-station-channel"
-                    onClick={this.handleClickSite}
-                  >
-                    {`${story ? story.starName : ""} / ${
-                      story.series ? story.series.name : ""
-                    }`}
-                  </div>
                   <div className="story-head-date">
                     {showAuthor
                       ? [
@@ -173,6 +165,14 @@ class Story extends Component {
                   </div>
                 </div>
                 {/* {story.tag ? <div>标签：{story.tag}</div> : null} */}
+                <div
+                  className="story-station-channel"
+                  onClick={this.handleClickSite}
+                >
+                  {`${story ? story.starName : ""} / ${
+                    story.series ? story.series.name : ""
+                  }`}
+                </div>
                 {address ? (
                   <div className="story-head-address">{address}</div>
                 ) : null}
