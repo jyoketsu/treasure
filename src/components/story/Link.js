@@ -127,7 +127,7 @@ const CustomizedForm = Form.create({
         })(
           <Select>
             {seriesInfo.map((item, index) =>
-              (item.role && item.role < 5) || item.allowPublicUpload ? (
+              (item.role && item.role <= 5) || item.allowPublicUpload ? (
                 <Option key={index} value={item._key}>
                   {item.name}
                 </Option>

@@ -373,12 +373,12 @@ class EditArticle extends Component {
             style={{ width: 200 }}
             placeholder="请选择频道"
             value={
-              (role && role < 5) || allowPublicUpload ? nowChannelId : undefined
+              (role && role <= 5) || allowPublicUpload ? nowChannelId : undefined
             }
             onChange={this.handleSelectChannel}
           >
             {seriesInfo.map((item, index) =>
-              (item.role && item.role < 5) || item.allowPublicUpload ? (
+              (item.role && item.role <= 5) || item.allowPublicUpload ? (
                 <Option key={index} value={item._key}>
                   {item.name}
                 </Option>

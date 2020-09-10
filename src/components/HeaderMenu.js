@@ -214,7 +214,7 @@ function StationList({ switchMenu }) {
                 handleStationClick(station._key, station.domain, station.url)
               }
             >{`${station.name}`}</span>
-            {station.role && station.role < 5 ? (
+            {station.role && station.role <= 5 ? (
               <i
                 className="menu-station-role"
                 style={{

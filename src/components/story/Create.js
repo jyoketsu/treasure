@@ -144,7 +144,7 @@ function Head({
               style={{ width: selectWidth, marginRight: "5px" }}
               placeholder="请选择频道"
               value={
-                (channelInfo.role && channelInfo.role < 5) ||
+                (channelInfo.role && channelInfo.role <= 5) ||
                 channelInfo.allowPublicUpload
                   ? nowChannelKey
                   : undefined
@@ -152,7 +152,7 @@ function Head({
               onChange={(value) => onChange(value)}
             >
               {seriesInfo.map((item, index) =>
-                (item.role && item.role < 5) || item.allowPublicUpload ? (
+                (item.role && item.role <= 5) || item.allowPublicUpload ? (
                   <Option key={index} value={item._key}>
                     {item.name}
                   </Option>

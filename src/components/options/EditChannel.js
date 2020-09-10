@@ -175,7 +175,7 @@ const CustomizedForm = Form.create({
         )}
       </Form.Item>
 
-      <Form.Item label="允许公众上传">
+      <Form.Item label="允许公众投稿">
         {getFieldDecorator("allowPublicUpload", { valuePropName: "checked" })(
           <Switch />
         )}

@@ -306,7 +306,7 @@ class AddButton extends Component {
               (channel.allowPublicUpload ||
                 (!channel.allowPublicUpload &&
                   channel.role &&
-                  channel.role < 5)) ? (
+                  channel.role <= 5)) ? (
                 <Option key={index} value={channel._key}>
                   {channel.name}
                 </Option>
