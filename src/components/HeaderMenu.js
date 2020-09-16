@@ -52,7 +52,7 @@ function Tab({ selected, onClick }) {
   const tabs = [
     { id: "sites", text: "站点" },
     { id: "aritcles", text: "文章" },
-    { id: "messages", text: "消息" },
+    // { id: "messages", text: "消息" },
     { id: "me", text: "我" }
   ];
   return (
