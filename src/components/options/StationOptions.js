@@ -128,23 +128,23 @@ class StationOptions extends Component {
                             插件管理
                           </Link>
                         </div>,
-                        <div
-                          key="menutrees"
-                          className={pathname === "menutrees" ? "active" : ""}
-                        >
-                          <i
-                            style={{
-                              backgroundImage:
-                                "url(/image/icon/stationOptions/menu.svg)",
-                            }}
-                          ></i>
-                          <Link
-                            to={`${match.url}/menutrees${search}`}
-                            onClick={this.handleTriggerClick}
-                          >
-                            目录管理
-                          </Link>
-                        </div>,
+                        // <div
+                        //   key="menutrees"
+                        //   className={pathname === "menutrees" ? "active" : ""}
+                        // >
+                        //   <i
+                        //     style={{
+                        //       backgroundImage:
+                        //         "url(/image/icon/stationOptions/menu.svg)",
+                        //     }}
+                        //   ></i>
+                        //   <Link
+                        //     to={`${match.url}/menutrees${search}`}
+                        //     onClick={this.handleTriggerClick}
+                        //   >
+                        //     目录管理
+                        //   </Link>
+                        // </div>,
                       ]
                     : null}
                   {nowStation && nowStation.role && nowStation.role <= 3
