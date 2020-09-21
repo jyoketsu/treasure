@@ -14,7 +14,7 @@ import {
   Divider,
   Checkbox,
   Modal,
-  Icon
+  Icon,
 } from "antd";
 import ChannelSubscribe from "./ChannelSubscribe";
 import { connect } from "react-redux";
@@ -22,11 +22,11 @@ import { addChannel, editChannel } from "../../actions/app";
 const Option = Select.Option;
 const { TextArea } = Input;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   stationList: state.station.stationList,
   loading: state.common.loading,
   nowStationKey: state.station.nowStationKey,
-  nowStation: state.station.nowStation
+  nowStation: state.station.nowStation,
 });
 
 const CustomizedForm = Form.create({
@@ -38,79 +38,79 @@ const CustomizedForm = Form.create({
     return {
       name: Form.createFormField({
         ...props.name,
-        value: props.name.value
+        value: props.name.value,
       }),
       publish: Form.createFormField({
         ...props.publish,
-        value: props.publish.value
+        value: props.publish.value,
       }),
       question: Form.createFormField({
         ...props.question,
-        value: props.question.value
+        value: props.question.value,
       }),
       answer: Form.createFormField({
         ...props.answer,
-        value: props.answer.value
+        value: props.answer.value,
       }),
       showStyle: Form.createFormField({
         ...props.showStyle,
-        value: props.showStyle.value
+        value: props.showStyle.value,
       }),
       allowPublicUpload: Form.createFormField({
         ...props.allowPublicUpload,
-        value: props.allowPublicUpload.value
+        value: props.allowPublicUpload.value,
       }),
       allowUploadVideo: Form.createFormField({
         ...props.allowUploadVideo,
-        value: props.allowUploadVideo.value
+        value: props.allowUploadVideo.value,
       }),
       showExif: Form.createFormField({
         ...props.showExif,
-        value: props.showExif.value
+        value: props.showExif.value,
       }),
       inHome: Form.createFormField({
         ...props.inHome,
-        value: props.inHome.value
+        value: props.inHome.value,
       }),
       contributeType: Form.createFormField({
         ...props.contributeType,
-        value: props.contributeType.value
+        value: props.contributeType.value,
       }),
       albumType: Form.createFormField({
         ...props.albumType,
-        value: props.albumType.value
+        value: props.albumType.value,
       }),
       showSetting: Form.createFormField({
         ...props.showSetting,
-        value: props.showSetting.value
+        value: props.showSetting.value,
       }),
       tag: Form.createFormField({
         ...props.tag,
-        value: props.tag.value
+        value: props.tag.value,
       }),
       allowPublicTag: Form.createFormField({
         ...props.allowPublicTag,
-        value: props.allowPublicTag.value
+        value: props.allowPublicTag.value,
       }),
       statusTag: Form.createFormField({
         ...props.statusTag,
-        value: props.statusTag.value
+        value: props.statusTag.value,
       }),
       allowPublicStatus: Form.createFormField({
         ...props.allowPublicStatus,
-        value: props.allowPublicStatus.value
+        value: props.allowPublicStatus.value,
       }),
       commentType: Form.createFormField({
         ...props.commentType,
-        value: props.commentType.value
+        value: props.commentType.value,
       }),
       votePercent: Form.createFormField({
         ...props.votePercent,
-        value: props.votePercent.value
-      })
+        value: props.votePercent.value,
+      }),
     };
-  }
-})(props => {
+  },
+})((props) => {
   const { switchModal } = props;
   const { getFieldDecorator } = props.form;
   const isAdvancedTag = props.tag.value
@@ -120,14 +120,14 @@ const CustomizedForm = Form.create({
     <Form>
       <Form.Item label="频道名">
         {getFieldDecorator("name", {
-          rules: [{ required: true, message: "请输入微站名！" }]
+          rules: [{ required: true, message: "请输入微站名！" }],
         })(<Input />)}
       </Form.Item>
 
       <Form.Item label="可见性">
         {getFieldDecorator("publish", {
           initialValue: 0,
-          rules: [{ required: true, message: "请设定可见性！" }]
+          rules: [{ required: true, message: "请设定可见性！" }],
         })(
           <Select>
             <Option value={1}>公开</Option>
@@ -144,14 +144,14 @@ const CustomizedForm = Form.create({
             </Form.Item>,
             <Form.Item label="答案" key="answer">
               {getFieldDecorator("answer")(<Input />)}
-            </Form.Item>
+            </Form.Item>,
           ]
         : null}
       <Divider />
 
       <Form.Item label="显示风格">
         {getFieldDecorator("showStyle", {
-          rules: [{ required: true, message: "请选择显示风格！" }]
+          rules: [{ required: true, message: "请选择显示风格！" }],
         })(
           <Radio.Group>
             <Radio value={1}>单列宽幅</Radio>
@@ -201,7 +201,7 @@ const CustomizedForm = Form.create({
       <Form.Item label="可投稿类型">
         {getFieldDecorator("contributeType", {
           // initialValue: [1, 2],
-          rules: [{ required: true, message: "请至少设定1个投稿类型！" }]
+          rules: [{ required: true, message: "请至少设定1个投稿类型！" }],
         })(
           <Checkbox.Group style={{ width: "100%" }}>
             <Checkbox value={1}>相册</Checkbox>
@@ -213,7 +213,7 @@ const CustomizedForm = Form.create({
       <Form.Item label="相册类型">
         {getFieldDecorator("albumType", {
           initialValue: 0,
-          rules: [{ required: true, message: "请设定相册类型！" }]
+          rules: [{ required: true, message: "请设定相册类型！" }],
         })(
           <Select>
             <Option value="normal">普通</Option>
@@ -227,7 +227,7 @@ const CustomizedForm = Form.create({
       <div style={{ display: isAdvancedTag ? "none" : "block" }}>
         <Form.Item label="分类标签">
           {getFieldDecorator("tag", {
-            initialValue: ""
+            initialValue: "",
           })(
             <TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />
           )}
@@ -251,7 +251,7 @@ const CustomizedForm = Form.create({
 
       <Form.Item label="状态标签">
         {getFieldDecorator("statusTag", {
-          initialValue: ""
+          initialValue: "",
         })(<TextArea rows={2} placeholder="可输入多个标签，按空格生成标签…" />)}
       </Form.Item>
       <Form.Item label="允许公众设置">
@@ -263,7 +263,7 @@ const CustomizedForm = Form.create({
       <Divider />
       <Form.Item label="评论类型">
         {getFieldDecorator("commentType", {
-          rules: [{ required: true, message: "请选择评论类型！" }]
+          rules: [{ required: true, message: "请选择评论类型！" }],
         })(
           <Radio.Group>
             <Radio value={1}>普通</Radio>
@@ -274,7 +274,7 @@ const CustomizedForm = Form.create({
       {props.commentType.value === 2 ? (
         <Form.Item label="票数比率（票数=子站数 * 票数比率）">
           {getFieldDecorator("votePercent", {
-            rules: [{ pattern: /[0-1]/, message: "请输入0-1间的小数！" }]
+            rules: [{ pattern: /[0-1]/, message: "请输入0-1间的小数！" }],
           })(<InputNumber min={0} max={1} step={0.1} />)}
         </Form.Item>
       ) : null}
@@ -307,93 +307,93 @@ class EditChannel extends Component {
       cover: channelInfo ? channelInfo.cover : "",
       fields: {
         key: {
-          value: channelInfo ? channelInfo._key : ""
+          value: channelInfo ? channelInfo._key : "",
         },
         name: {
-          value: channelInfo ? channelInfo.name : ""
+          value: channelInfo ? channelInfo.name : "",
         },
         publish: {
-          value: channelInfo ? channelInfo.publish : 1
+          value: channelInfo ? channelInfo.publish : 1,
         },
         question: {
-          value: channelInfo ? channelInfo.question : ""
+          value: channelInfo ? channelInfo.question : "",
         },
         answer: {
-          value: channelInfo ? channelInfo.answer : ""
+          value: channelInfo ? channelInfo.answer : "",
         },
         showStyle: {
-          value: channelInfo ? channelInfo.showStyle : 2
+          value: channelInfo ? channelInfo.showStyle : 2,
         },
         allowPublicUpload: {
-          value: channelInfo ? channelInfo.allowPublicUpload : true
+          value: channelInfo ? channelInfo.allowPublicUpload : true,
         },
         allowUploadVideo: {
-          value: channelInfo ? channelInfo.allowUploadVideo : true
+          value: channelInfo ? channelInfo.allowUploadVideo : true,
         },
         showExif: {
-          value: channelInfo ? channelInfo.showExif : true
+          value: channelInfo ? channelInfo.showExif : true,
         },
         inHome: {
-          value: channelInfo ? channelInfo.inHome : true
+          value: channelInfo ? channelInfo.inHome : true,
         },
         contributeType: {
           value: channelInfo
             ? channelInfo.contributeType instanceof Array
               ? channelInfo.contributeType
               : [1, 2]
-            : [1, 2]
+            : [1, 2],
         },
         showSetting: {
           value: channelInfo
             ? channelInfo.showSetting instanceof Array
               ? channelInfo.showSetting
               : ["author", "title", "like", "clickNumber"]
-            : ["author", "title", "like", "clickNumber"]
+            : ["author", "title", "like", "clickNumber"],
         },
         albumType: {
-          value: channelInfo ? channelInfo.albumType : "normal"
+          value: channelInfo ? channelInfo.albumType : "normal",
         },
         tag: {
-          value: channelInfo ? channelInfo.tag : ""
+          value: channelInfo ? channelInfo.tag : "",
         },
         allowPublicTag: {
-          value: channelInfo ? channelInfo.allowPublicTag : true
+          value: channelInfo ? channelInfo.allowPublicTag : true,
         },
         statusTag: {
-          value: channelInfo ? channelInfo.statusTag : ""
+          value: channelInfo ? channelInfo.statusTag : "",
         },
         allowPublicStatus: {
-          value: channelInfo ? channelInfo.allowPublicStatus : false
+          value: channelInfo ? channelInfo.allowPublicStatus : false,
         },
         commentType: {
-          value: channelInfo ? channelInfo.commentType || 1 : 1
+          value: channelInfo ? channelInfo.commentType || 1 : 1,
         },
         votePercent: {
-          value: channelInfo ? channelInfo.votePercent || 0.2 : 0.2
-        }
-      }
+          value: channelInfo ? channelInfo.votePercent || 0.2 : 0.2,
+        },
+      },
     };
   }
 
   switchModal() {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal
+    this.setState((prevState) => ({
+      showModal: !prevState.showModal,
     }));
   }
 
-  handleFormChange = changedFields => {
+  handleFormChange = (changedFields) => {
     this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields }
+      fields: { ...fields, ...changedFields },
     }));
   };
 
   uploadAvatarCallback(imageUrl, columnName) {
     this.setState({
-      [columnName]: imageUrl[0]
+      [columnName]: imageUrl[0],
     });
   }
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const { addChannel, nowStationKey, editChannel } = this.props;
     const { fields, logo, cover } = this.state;
@@ -453,7 +453,7 @@ class EditChannel extends Component {
   handleSetTag(tag) {
     this.setState(({ fields }) => ({
       fields: { ...fields, ...{ tag: { value: tag } } },
-      showModal: false
+      showModal: false,
     }));
   }
   render() {
@@ -480,7 +480,7 @@ class EditChannel extends Component {
           coverUrl={cover}
         />
         <CustomizedForm
-          ref={node => (this.form = node)}
+          ref={(node) => (this.form = node)}
           {...fields}
           onChange={this.handleFormChange}
           onSubmit={this.handleSubmit}
@@ -540,7 +540,7 @@ class TagOptionList extends Component {
           id: util.common.guid(),
           name: tagList[i],
           logo: null,
-          info: null
+          info: null,
         });
       }
     }
@@ -590,7 +590,7 @@ class TagOptionList extends Component {
       id: util.common.guid(),
       name: "",
       logo: null,
-      info: null
+      info: null,
     });
     this.setState({ objList: list });
   }
@@ -636,7 +636,7 @@ class TagOption extends Component {
       onChange,
       uploadCallback,
       addItem,
-      removeItem
+      removeItem,
     } = this.props;
     return (
       <div className="tag-option">
@@ -645,15 +645,23 @@ class TagOption extends Component {
             name="name"
             value={tag.name}
             placeholder="请输入标签名"
-            onChange={e => onChange(tag.id, e.target.value, e.target.name)}
+            onChange={(e) => onChange(tag.id, e.target.value, e.target.name)}
           />
           <TextArea
             name="info"
             rows={3}
             value={tag.info}
             placeholder="请输入标签描述"
-            onChange={e => onChange(tag.id, e.target.value, e.target.name)}
+            onChange={(e) => onChange(tag.id, e.target.value, e.target.name)}
           />
+          <div>
+            <span>禁止投稿：</span>
+            <Switch
+              style={{ width: "40px" }}
+              checked={tag.disabled}
+              onChange={(checked) => onChange(tag.id, checked, "disabled")}
+            />
+          </div>
         </div>
         <UploadStationCover
           uploadAvatarCallback={uploadCallback}
