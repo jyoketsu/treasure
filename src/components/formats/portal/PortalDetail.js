@@ -48,7 +48,7 @@ class PortalDetail extends Component {
     );
     asyncEnd();
     if (result) {
-      setStoryList(result.result, result.total, tag.id, "");
+      setStoryList(result.result, result.totalNumber, tag.id, "");
       history.push({
         pathname: `/${nowStation.domain}/home/detail/${channelKey}`,
         state: { tagId: tag.id, tagName: tag.name },

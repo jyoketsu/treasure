@@ -35,7 +35,7 @@ import "froala-editor/js/plugins/table.min";
 import "froala-editor/js/plugins/url.min";
 import "froala-editor/js/plugins/video.min";
 import "froala-editor/js/plugins/word_paste.min";
-
+import "froala-editor/js/plugins/print.min";
 // Require Editor CSS files.
 import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
@@ -389,6 +389,7 @@ class MyFroalaEditor extends Component {
         ],
         ["formatOL", "formatUL", "align"],
         ["insertImage", "insertVideo", "insertTable", "insertLink"],
+        // ["getPDF"],
         ["codeEditor", "投稿主题", "更多投稿"],
       ],
 

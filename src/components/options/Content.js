@@ -37,7 +37,7 @@ const mapStateToProps = (state) => ({
 class Content extends Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false, isEdit: false };
+    this.state = { visible: false, isEdit: false, active: "wait" };
     this.curPage = 1;
     this.perPage = 30;
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -126,6 +126,7 @@ class Content extends Component {
     } = this.props;
     clearStoryList2();
     this.curPage = 1;
+    this.setState({ active: key });
     switch (key) {
       case "wait":
         this.filterType = 7;
@@ -280,10 +281,18 @@ class Content extends Component {
           ref={(node) => (this.contentRef = node)}
         >
           <h2>{singleColumn ? null : "内容管理"}</h2>
-          <Tabs defaultActiveKey="wait" onChange={this.handleTabChange}>
+          <Tabs
+            defaultActiveKey={this.state.active}
+            onChange={this.handleTabChange}
+          >
             {!singleColumn
               ? [
-                  <TabPane tab="待审核" key="wait">
+                  <TabPane
+                    tab={`待审核${
+                      this.state.active === "wait" ? `(${storyNumber})` : ""
+                    }`}
+                    key="wait"
+                  >
                     <span className="pass-all" onClick={this.confirmPassAll}>
                       全部通过
                     </span>
@@ -296,7 +305,12 @@ class Content extends Component {
                       inline={true}
                     />
                   </TabPane>,
-                  <TabPane tab="已审核" key="passed">
+                  <TabPane
+                    tab={`已审核${
+                      this.state.active === "passed" ? `(${storyNumber})` : ""
+                    }`}
+                    key="passed"
+                  >
                     <StoryList
                       storyList={storyList}
                       storyNumber={storyNumber}
@@ -306,7 +320,12 @@ class Content extends Component {
                       inline={true}
                     />
                   </TabPane>,
-                  <TabPane tab="审核不通过" key="unpass">
+                  <TabPane
+                    tab={`审核不通过${
+                      this.state.active === "unpass" ? `(${storyNumber})` : ""
+                    }`}
+                    key="unpass"
+                  >
                     <StoryList
                       storyList={storyList}
                       storyNumber={storyNumber}

@@ -70,7 +70,7 @@ class PortalArticleList extends Component {
       getStoryList,
     } = this.props;
     const channelKey = match.params.id;
-    const { tagName } = location.state || {};
+    const { tagId } = location.state || {};
     sessionStorage.setItem("portal-curpage", page);
     this.curPage = page;
 
@@ -87,7 +87,7 @@ class PortalArticleList extends Component {
       channelKey,
       sortType,
       sortOrder,
-      tagName,
+      tagId,
       "",
       page,
       this.perPage,
