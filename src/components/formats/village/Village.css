@@ -22,7 +22,6 @@
 .village-content {
   max-width: 810px;
   margin: auto;
-  padding-bottom: 50px;
 }
 .village-content > div {
   margin-top: 15px;
@@ -50,6 +49,13 @@
   width: 24px;
   height: 24px;
   background-size: contain;
+}
+.ICPLicensing {
+  color: #80807e;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+  padding: 25px 0;
 }
 @media screen and (max-width: 768px) {
   .village-banner-wrapper,

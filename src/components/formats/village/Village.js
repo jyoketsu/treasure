@@ -21,7 +21,7 @@ import {
   Route,
   useRouteMatch,
   useHistory,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -29,7 +29,7 @@ export default function Village() {
   const [minHeight, setMinHeight] = useState(window.innerHeight);
   const match = useRouteMatch();
   const location = useLocation();
-  const nowStation = useSelector(state => state.station.nowStation);
+  const nowStation = useSelector((state) => state.station.nowStation);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -61,7 +61,7 @@ export default function Village() {
     <div
       className="village"
       style={{
-        minHeight: `${minHeight}px`
+        minHeight: `${minHeight}px`,
       }}
     >
       <div>
@@ -86,7 +86,7 @@ export default function Village() {
 }
 
 function Home() {
-  const nowStation = useSelector(state => state.station.nowStation);
+  const nowStation = useSelector((state) => state.station.nowStation);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -106,6 +106,12 @@ function Home() {
         <Fans />
         <Rank />
       </div>
+      <div
+        className="ICPLicensing"
+        onClick={() => window.open("https://beian.miit.gov.cn", "_blank")}
+      >
+        {`@${new Date().getFullYear()} 江苏时光信息科技有限公司 Qingtime All Rights Reserved 苏ICP备15006448号`}
+      </div>
     </div>
   );
 }
@@ -124,7 +130,7 @@ function Banner({ nowStation }) {
             <div
               className="village-banner"
               style={{
-                backgroundImage: `url(${cover.url})`
+                backgroundImage: `url(${cover.url})`,
               }}
             ></div>
           </div>
@@ -138,7 +144,7 @@ function Banner({ nowStation }) {
 function FootNavi() {
   const location = useLocation();
   const history = useHistory();
-  const nowStation = useSelector(state => state.station.nowStation);
+  const nowStation = useSelector((state) => state.station.nowStation);
   return (
     <div className="village-navi">
       <i
@@ -146,7 +152,7 @@ function FootNavi() {
           backgroundImage:
             location.pathname === `/${nowStation.domain}/home`
               ? "url(/image/icon/village/home-fill.svg)"
-              : "url(/image/icon/village/home.svg)"
+              : "url(/image/icon/village/home.svg)",
         }}
         onClick={() => history.push(`/${nowStation.domain}/home`)}
       ></i>
@@ -155,7 +161,7 @@ function FootNavi() {
           backgroundImage:
             location.pathname === `/${nowStation.domain}/home/invite`
               ? "url(/image/icon/village/invite-fill.svg)"
-              : "url(/image/icon/village/invite.svg)"
+              : "url(/image/icon/village/invite.svg)",
         }}
         onClick={() => history.push(`/${nowStation.domain}/home/invite`)}
       ></i>
@@ -165,7 +171,7 @@ function FootNavi() {
           backgroundImage:
             location.pathname === `/${nowStation.domain}/home/checkin`
               ? "url(/image/icon/village/sign-fill.svg)"
-              : "url(/image/icon/village/sign.svg)"
+              : "url(/image/icon/village/sign.svg)",
         }}
         onClick={() => history.push(`/${nowStation.domain}/home/checkin`)}
       ></i>

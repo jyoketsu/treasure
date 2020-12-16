@@ -170,11 +170,14 @@ function Head({
               {tag.split(" ").map((item, index) => {
                 let tagName = item;
                 let tagValue = item;
+                let disabled = false;
                 if (util.common.isJSON(item)) {
-                  tagName = JSON.parse(item).name;
-                  tagValue = JSON.parse(item).id;
+                  const obj = JSON.parse(item);
+                  tagName = obj.name;
+                  tagValue = obj.id;
+                  disabled = obj.disabled;
                 }
-                return (
+                return disabled ? null : (
                   <Option key={index} index={index} value={tagValue}>
                     {tagName}
                   </Option>
