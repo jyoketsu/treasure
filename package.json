@@ -23,6 +23,7 @@
     "react_carousel_comp_xujie": "^1.0.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "swiper": "^6.4.1",
     "weixin-js-sdk": "^1.4.0-test",
     "xlsx": "^0.15.5"
   },

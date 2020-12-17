@@ -1,372 +1,375 @@
+.story-edit {
+  min-height: 100vh;
+}
 .story-edit.inline {
-    position: relative;
-    top: 0;
+  position: relative;
+  top: 0;
 }
 
-.story-edit.inline>.main-content,
-.story-edit.inline>.story-content,
-.story-edit.inline>.story-edit-head,
-.story-edit.inline>.story-edit-title {
-    width: unset;
+.story-edit.inline > .main-content,
+.story-edit.inline > .story-content,
+.story-edit.inline > .story-edit-head,
+.story-edit.inline > .story-edit-title {
+  width: unset;
 }
 
-.story-edit.inline>.story-edit-container {
-    width: unset;
-    grid-template-columns: repeat(2, 50%);
+.story-edit.inline > .story-edit-container {
+  width: unset;
+  grid-template-columns: repeat(2, 50%);
 }
 
-.story-edit.inline>.story-content>.drag-item-container,
-.story-edit.inline>.story-content>.item-preview {
-    width: 100%;
+.story-edit.inline > .story-content > .drag-item-container,
+.story-edit.inline > .story-content > .item-preview {
+  width: 100%;
 }
 
 .story-edit-head {
-    position: relative;
-    width: 810px;
-    height: 300px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-color: rgb(243, 239, 232);
-    margin: auto;
+  position: relative;
+  width: 810px;
+  height: 300px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: rgb(243, 239, 232);
+  margin: auto;
 }
 
 .story-edit-head-buttons {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 810px;
-    height: 50px;
-    align-items: center;
-    margin: auto;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 2;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 810px;
+  height: 50px;
+  align-items: center;
+  margin: auto;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
 }
 
 .story-edit-head-buttons .ant-btn {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 .top-right-buttons {
-    position: absolute;
-    right: 15px;
-    top: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  right: 15px;
+  top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .left-bottom-buttons {
-    position: absolute;
-    left: 15px;
-    bottom: -16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  left: 15px;
+  bottom: -16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .left-top-buttons {
-    position: absolute;
-    left: 15px;
-    top: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  left: 15px;
+  top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .story-edit-cover-buttons {
-    position: absolute;
-    right: 15px;
-    bottom: -16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  right: 15px;
+  bottom: -16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.story-edit-cover-buttons>i {
-    margin-right: 15px;
+.story-edit-cover-buttons > i {
+  margin-right: 15px;
 }
 
 .story-text-title {
-    width: 100%;
-    font-size: 20px;
-    font-weight: 18px;
-    color: #333333;
-    background: unset;
-    border: none;
-    text-align: center;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 18px;
+  color: #333333;
+  background: unset;
+  border: none;
+  text-align: center;
 }
 
 .story-edit-title {
-    width: 810px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #FAFAFA;
-    margin: auto;
+  width: 810px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fafafa;
+  margin: auto;
 }
 
 .story-edit-title-ext {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .story-edit-icon {
-    width: 14px;
-    height: 14px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-repeat: no-repeat;
-    margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  margin-right: 5px;
 }
 
 .time-icon {
-    background-image: url(/image/icon/story/time.png);
+  background-image: url(/image/icon/story/time.png);
 }
 
 .address-icon {
-    background-image: url(/image/icon/story/address.png);
+  background-image: url(/image/icon/story/address.png);
 }
 
-.story-edit-title-ext>div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.story-edit-title-ext > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.story-edit-title-ext>div:first-child {
-    margin-right: 35px;
+.story-edit-title-ext > div:first-child {
+  margin-right: 35px;
 }
 
 .story-edit-item {
-    position: relative;
-    width: 119px;
-    height: 119px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #F8F8F8;
+  position: relative;
+  width: 119px;
+  height: 119px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
 }
 
 .story-edit-item:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .story-edit-container {
-    display: grid;
-    grid-template-columns: 53% 47%;
-    justify-items: center;
-    align-items: top;
+  display: grid;
+  grid-template-columns: 53% 47%;
+  justify-items: center;
+  align-items: top;
 }
 
 .story-edit-item.selected {
-    border: 2px solid #40a9ff;
-    box-shadow: 0 2px 3px 0 rgba(87, 87, 87, 0.37);
+  border: 2px solid #40a9ff;
+  box-shadow: 0 2px 3px 0 rgba(87, 87, 87, 0.37);
 }
 
 .dragged {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .placeholderContent {
-    width: 119px;
-    height: 119px;
-    background-color: #40a9ff;
-    text-align: center;
-    line-height: 119px;
-    color: #FFFFFF;
+  width: 119px;
+  height: 119px;
+  background-color: #40a9ff;
+  text-align: center;
+  line-height: 119px;
+  color: #ffffff;
 }
 
 .delete-story-item {
-    width: 22px;
-    height: 22px;
-    border-radius: 11px;
-    position: absolute;
-    top: -11px;
-    right: -11px;
-    background-color: #FFFFFF;
-    border: 2px solid #FFFFFF;
-    background-image: url(/image/icon/story/delete-item.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  position: absolute;
+  top: -11px;
+  right: -11px;
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
+  background-image: url(/image/icon/story/delete-item.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .item-preview {
-    display: flex;
-    flex-direction: column;
-    background: #FAFAFA;
-    border: 1px solid #DDDDDD;
-    width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  border: 1px solid #dddddd;
+  width: 360px;
 }
 
 .item-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 65px;
-    border-bottom: 1px solid #DDDDDD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  border-bottom: 1px solid #dddddd;
 }
 
 .item-preview-editor {
-    min-height: 300px;
-    background-position: top;
-    background-size: contain;
-    background-repeat: no-repeat;
+  min-height: 300px;
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .story-edit-button {
-    display: inline-block;
-    width: 34px;
-    height: 46px;
-    text-align: center;
-    margin: 0 5px;
+  display: inline-block;
+  width: 34px;
+  height: 46px;
+  text-align: center;
+  margin: 0 5px;
 }
 
-.story-edit-button>i {
-    position: relative;
-    display: block;
-    width: 24px;
-    height: 24px;
-    left: 50%;
-    margin-left: -12px;
+.story-edit-button > i {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+  left: 50%;
+  margin-left: -12px;
 }
 
-.story-edit-button>i:hover {
-    cursor: pointer;
+.story-edit-button > i:hover {
+  cursor: pointer;
 }
 
-.story-edit-button>span {
-    font-size: 12px;
+.story-edit-button > span {
+  font-size: 12px;
 }
 
 .story-content-textArea {
-    width: 100%;
-    border: unset;
-    background: unset;
-    padding: 15px;
-    margin: 0;
-    resize: none;
-    height: 300px;
+  width: 100%;
+  border: unset;
+  background: unset;
+  padding: 15px;
+  margin: 0;
+  resize: none;
+  height: 300px;
 }
 
 .drag-item-container {
-    width: 414px;
-    padding: 5px 0;
+  width: 414px;
+  padding: 5px 0;
 }
 
 .inline .drag-item-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .no-selected-item {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+}
+
+@media screen and (max-width: 768px) {
+  .story-edit {
+    padding-bottom: 265px;
+  }
+
+  .item-preview-editor .story-image,
+  .item-preview-editor .story-video {
+    width: unset;
+    height: 150px;
+    margin: auto;
+  }
+
+  .item-preview-editor {
+    min-height: 200px;
+    height: 200px;
+  }
+
+  .item-preview {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0px -3px 4px 0 rgba(71, 110, 87, 0.25);
+  }
+
+  .story-edit-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
+    flex-direction: column;
+  }
+
+  .story-edit-head,
+  .story-edit-head-buttons,
+  .story-edit-title {
+    width: 100%;
+  }
+
+  .story-edit-title-ext > div:first-child > span {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .story-edit-container {
+    grid-template-rows: 375px 365px;
+    grid-template-columns: 100%;
+  }
+
+  .drag-item-container,
+  .item-preview {
+    width: 100%;
+  }
+
+  .story-image-box {
+    text-align: center;
+  }
 }
 
-@media screen and (max-width:768px) {
-    .story-edit {
-        padding-bottom: 265px;
-    }
+@media screen and (max-width: 414px) {
+  .story-edit-item {
+    width: 115px;
+    height: 115px;
+  }
 
-    .item-preview-editor .story-image,
-    .item-preview-editor .story-video {
-        width: unset;
-        height: 150px;
-        margin: auto;
-    }
-
-    .item-preview-editor {
-        min-height: 200px;
-        height: 200px;
-    }
-
-    .item-preview {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        box-shadow: 0px -3px 4px 0 rgba(71, 110, 87, 0.25)
-    }
-
-    .story-edit-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .story-edit-head,
-    .story-edit-head-buttons,
-    .story-edit-title {
-        width: 100%;
-    }
-
-    .story-edit-title-ext>div:first-child>span {
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .story-edit-container {
-        grid-template-rows: 375px 365px;
-        grid-template-columns: 100%;
-    }
-
-    .drag-item-container,
-    .item-preview {
-        width: 100%;
-    }
-
-    .story-image-box {
-        text-align: center;
-    }
+  .drag-item-container {
+    width: 385px;
+  }
 }
 
-@media screen and (max-width:414px) {
-    .story-edit-item {
-        width: 115px;
-        height: 115px;
-    }
+@media screen and (max-width: 375px) {
+  .story-edit-item {
+    width: 100px;
+    height: 100px;
+  }
 
-    .drag-item-container {
-        width: 385px;
-    }
+  .drag-item-container {
+    width: 340px;
+  }
 }
 
-@media screen and (max-width:375px) {
-    .story-edit-item {
-        width: 100px;
-        height: 100px;
-    }
+@media screen and (max-width: 320px) {
+  .story-edit-item {
+    width: 85px;
+    height: 85px;
+  }
 
-    .drag-item-container {
-        width: 340px;
-    }
-}
-
-@media screen and (max-width:320px) {
-    .story-edit-item {
-        width: 85px;
-        height: 85px;
-    }
-
-    .drag-item-container {
-        width: 295px;
-    }
+  .drag-item-container {
+    width: 295px;
+  }
 }

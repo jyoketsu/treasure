@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./StoryEdit.css";
 import { withRouter } from "react-router-dom";
-import { Button, Tooltip, message, Input, Modal, Select } from "antd";
+import { Button, Tooltip, message, Input, Modal, Select, Spin } from "antd";
 import { FileUpload } from "../common/Form";
 import util from "../../services/Util";
 import api from "../../services/Api";
@@ -50,6 +50,7 @@ class StoryEdit extends Component {
       selectedItemIndex: null,
       musicPanelvisible: false,
       musicAddress: story.backGroundMusic,
+      ready: false,
     };
     this.addContent = this.addContent.bind(this);
     this.uploadImageCallback = this.uploadImageCallback.bind(this);
@@ -622,35 +623,41 @@ class StoryEdit extends Component {
             </Button>
           </div>
         </div>
-        <StoryEditTitle
-          title={title}
-          address={address}
-          time={time}
-          handleInput={this.handleInput}
-        />
-        <div className="main-content story-content story-edit-container">
-          <div className="drag-item-container">
-            {inline ? (
-              items
-            ) : (
-              <DragSortableList
-                items={items}
-                dropBackTransitionDuration={0.3}
-                onSort={this.onSort}
-                type="grid"
-                placeholder={placeholder}
+        {this.state.ready ? (
+          <div>
+            <StoryEditTitle
+              title={title}
+              address={address}
+              time={time}
+              handleInput={this.handleInput}
+            />
+            <div className="main-content story-content story-edit-container">
+              <div className="drag-item-container">
+                {inline ? (
+                  items
+                ) : (
+                  <DragSortableList
+                    items={items}
+                    dropBackTransitionDuration={0.3}
+                    onSort={this.onSort}
+                    type="grid"
+                    placeholder={placeholder}
+                  />
+                )}
+              </div>
+              <ItemPreview
+                addContent={this.addContent}
+                uploadImageCallback={this.uploadImageCallback}
+                uploadVideoCallback={this.uploadVideoCallback}
+                index={selectedItemIndex}
+                itemContent={richContent[selectedItemIndex]}
+                handleInput={this.handleInput}
               />
-            )}
+            </div>
           </div>
-          <ItemPreview
-            addContent={this.addContent}
-            uploadImageCallback={this.uploadImageCallback}
-            uploadVideoCallback={this.uploadVideoCallback}
-            index={selectedItemIndex}
-            itemContent={richContent[selectedItemIndex]}
-            handleInput={this.handleInput}
-          />
-        </div>
+        ) : (
+          <Loading />
+        )}
         <Modal
           title="设置音乐"
           visible={this.state.musicPanelvisible}
@@ -667,14 +674,17 @@ class StoryEdit extends Component {
     );
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { seriesInfo, history, story } = this.props;
     if (seriesInfo.length === 0) {
       history.push(`/${window.location.search}`);
     }
     // 申请编辑
     if (story._key) {
-      api.story.applyEdit(story._key, story.updateTime);
+      const res = await api.story.applyEdit(story._key, story.updateTime);
+      if (res.statusCode === "200") {
+        this.setState({ ready: true });
+      }
     }
     // 位置定位
     if (
@@ -926,3 +936,11 @@ class ItemPreview extends Component {
 export default withRouter(
   connect(mapStateToProps, { addStory, modifyStory, deleteStory })(StoryEdit)
 );
+
+function Loading() {
+  return (
+    <div className="story-loading">
+      <Spin size="large" />
+    </div>
+  );
+}

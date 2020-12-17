@@ -60,6 +60,7 @@ class EditArticle extends Component {
       moreVisible: false,
       postVisible: false,
       codeEditorVisible: false,
+      ready: false,
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -300,7 +301,7 @@ class EditArticle extends Component {
 
   render() {
     const { seriesInfo, inline, hideMenu, nowStation } = this.props;
-    const { story = {}, uptoken } = this.state;
+    const { story = {}, uptoken, ready } = this.state;
     let channelInfo = {};
     const nowChannelId = story.series
       ? story.series._key
@@ -335,7 +336,7 @@ class EditArticle extends Component {
             className="editor-container"
             ref={(node) => (this.editorRef = node)}
           >
-            {uptoken ? (
+            {uptoken && ready ? (
               <FroalaEditor
                 data={story ? story.content : ""}
                 handleChange={this.handleAticleChange}
@@ -502,7 +503,10 @@ class EditArticle extends Component {
       }
     }
     if (story._key && story.updateTime) {
-      api.story.applyEdit(story._key, story.updateTime);
+      const res = await api.story.applyEdit(story._key, story.updateTime);
+      if (res.statusCode === "200") {
+        this.setState({ ready: true });
+      }
     }
   }
 

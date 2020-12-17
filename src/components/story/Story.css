@@ -88,6 +88,22 @@
   cursor: pointer;
 }
 
+.play-images {
+  color: #3a94cc;
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  display: block;
+  width: 50px;
+  height: 30px;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 30px;
+}
+.play-images:hover {
+  cursor: pointer;
+}
+
 .img-exif {
   position: absolute;
   overflow: hidden;
@@ -248,6 +264,25 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.carousel-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+}
+.carousel-item {
+  width: 100vw;
+  height: 100vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: "#FFF";
 }
 
 @media screen and (max-width: 768px) {

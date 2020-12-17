@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Story.css";
+import "swiper/swiper-bundle.min.css";
 import LoginTip from "../common/LoginTip";
 import StoryAction from "./StoryActions";
 import Comments from "./Comments";
@@ -9,11 +10,23 @@ import util from "../../services/Util";
 import api from "../../services/Api";
 import moment from "moment";
 import { connect } from "react-redux";
+import { Icon } from "antd";
+//https://swiperjs.com/react/#usage
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from "swiper";
 import {
   getStoryDetail,
   updateExif,
   statisticsStatusTag,
 } from "../../actions/app";
+
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
@@ -33,7 +46,7 @@ class Story extends Component {
     this.handleClickImage = this.handleClickImage.bind(this);
     this.handleToEdit = this.handleToEdit.bind(this);
     this.handleClickSite = this.handleClickSite.bind(this);
-    this.state = { propsKey: null };
+    this.state = { propsKey: null, playMode: false };
   }
 
   handleClickImage(url) {
@@ -107,11 +120,21 @@ class Story extends Component {
         : true
       : true;
 
+    let images = [];
+    for (let index = 0; index < richContent.length; index++) {
+      const element = richContent[index];
+      if (element.metaType === "image") {
+        images.push(element);
+      }
+    }
+
     return (
       <div
         className={`app-content story-container ${inline ? "inline" : ""}`}
         style={{
           backgroundColor: inline ? "unset" : "#f5f5f5",
+          overflow: this.state.playMode ? "hidden" : "auto",
+          height: this.state.playMode ? "100%" : "unset",
         }}
       >
         {!loading ? (
@@ -191,6 +214,12 @@ class Story extends Component {
                 编辑
               </span>
             ) : null}
+            <span
+              className="play-images"
+              onClick={() => this.setState({ playMode: true })}
+            >
+              播放
+            </span>
             {story.statusTag ? (
               <span className="preview-status">{story.statusTag}</span>
             ) : null}
@@ -284,6 +313,41 @@ class Story extends Component {
           </div>
         ) : null}
         {user && user.isGuest && util.common.isMobile() ? <LoginTip /> : null}
+        {this.state.playMode ? (
+          <div className="carousel-wrapper">
+            {images.length ? (
+              <Swiper
+                navigation
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+              >
+                {images.map((content, index) => (
+                  <SwiperSlide key={index} pagination={{ clickable: true }}>
+                    <div
+                      className="carousel-item"
+                      style={{
+                        backgroundImage: `url(${content.url}?imageView2/2/h/${window.innerHeight})`,
+                      }}
+                    ></div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : null}
+            <Icon
+              type="close"
+              style={{
+                color: "#FFF",
+                fontSize: "18px",
+                position: "absolute",
+                top: "15px",
+                right: "15px",
+                zIndex: 999,
+              }}
+              onClick={() => this.setState({ playMode: false })}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
