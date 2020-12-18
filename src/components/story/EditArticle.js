@@ -60,7 +60,7 @@ class EditArticle extends Component {
       moreVisible: false,
       postVisible: false,
       codeEditorVisible: false,
-      ready: false,
+      ready: type === "new" ? true : false,
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);

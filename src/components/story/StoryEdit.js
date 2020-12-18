@@ -50,7 +50,7 @@ class StoryEdit extends Component {
       selectedItemIndex: null,
       musicPanelvisible: false,
       musicAddress: story.backGroundMusic,
-      ready: false,
+      ready: type === "new" ? true : false,
     };
     this.addContent = this.addContent.bind(this);
     this.uploadImageCallback = this.uploadImageCallback.bind(this);
