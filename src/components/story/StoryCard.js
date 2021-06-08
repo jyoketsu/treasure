@@ -236,7 +236,10 @@ class Card extends Component {
 
             {showDate ? (
               <span className="story-card-time">
-                {util.common.timestamp2DataStr(story.updateTime, "yyyy-MM-dd")}
+                {util.common.timestamp2DataStr(
+                  story.time || story.updateTime,
+                  "yyyy-MM-dd"
+                )}
               </span>
             ) : null}
           </div>

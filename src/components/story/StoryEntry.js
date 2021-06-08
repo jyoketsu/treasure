@@ -8,13 +8,13 @@ import {
   deleteStory,
   switchEditLinkVisible,
   getStoryDetail,
-  auditStory
+  auditStory,
 } from "../../actions/app";
 const confirm = Modal.confirm;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userKey: state.auth.user ? state.auth.user._key : "",
-  role: state.station.nowStation ? state.station.nowStation.role : null
+  role: state.station.nowStation ? state.station.nowStation.role : null,
 });
 
 class StoryEntry extends Component {
@@ -47,7 +47,7 @@ class StoryEntry extends Component {
         const path = type === 9 ? "article" : "story";
         history.push({
           pathname: `/${match.params.id}/${path}`,
-          search: `?key=${_key}`
+          search: `?key=${_key}`,
         });
         break;
       }
@@ -72,7 +72,7 @@ class StoryEntry extends Component {
       cancelText: "No",
       onOk() {
         deleteStory(story._key);
-      }
+      },
     });
   }
 
@@ -86,7 +86,7 @@ class StoryEntry extends Component {
       showSiteName,
       inline,
       auditStory,
-      groupKey
+      groupKey,
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
@@ -101,7 +101,7 @@ class StoryEntry extends Component {
       : "/image/icon/icon-article.svg";
     let coverStyle = {
       backgroundImage: `url('${coverUrl}')`,
-      backgroundSize: story.cover ? "cover" : "30%"
+      backgroundSize: story.cover ? "cover" : "30%",
     };
     let storyType =
       story.type === 6 ? "story" : story.type === 9 ? "article" : null;
@@ -173,7 +173,7 @@ class StoryEntry extends Component {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               {!inline &&
@@ -207,7 +207,11 @@ class StoryEntry extends Component {
           </div>
 
           <div className="story-entry-memo">
-            {showSiteName ? story.starName : story.memo}
+            {showSiteName
+              ? story.starName
+              : story.memo
+              ? story.memo.replace("Powered by Froala Editor", "")
+              : ""}
           </div>
 
           <div className="story-entry-stat">
@@ -216,8 +220,9 @@ class StoryEntry extends Component {
                 <i
                   className="story-card-avatar"
                   style={{
-                    backgroundImage: `url('${avatar ||
-                      "/image/icon/avatar.svg"}?imageView2/1/w/60/h/60')`
+                    backgroundImage: `url('${
+                      avatar || "/image/icon/avatar.svg"
+                    }?imageView2/1/w/60/h/60')`,
                   }}
                   onClick={() =>
                     (window.location.href = `https://baoku.qingtime.cn/${story.creator.domain}/home`)
@@ -240,7 +245,7 @@ class StoryEntry extends Component {
                 <Tooltip title="点击快速通过" placement="bottom">
                   <span
                     style={statusStyle}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       auditStory(story._key, groupKey, 2, true);
                     }}
@@ -258,7 +263,7 @@ class StoryEntry extends Component {
                     className="story-card-icon"
                     style={{
                       backgroundImage: "url(/image/icon/readNum.svg)",
-                      width: "18px"
+                      width: "18px",
                     }}
                   ></i>
                   <span>{story.clickNumber}</span>
@@ -272,7 +277,7 @@ class StoryEntry extends Component {
                     style={{
                       backgroundImage: `url(/image/icon/${
                         story.islike ? "like" : "like2"
-                      }.svg)`
+                      }.svg)`,
                     }}
                   ></i>
                   <span>{story.likeNumber}</span>
@@ -300,6 +305,6 @@ export default withRouter(
     deleteStory,
     switchEditLinkVisible,
     getStoryDetail,
-    auditStory
+    auditStory,
   })(StoryEntry)
 );

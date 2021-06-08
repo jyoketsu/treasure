@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./EditArticle.css";
 import api from "../../services/Api";
 import { withRouter } from "react-router-dom";
-import { Form, Button, Input, message, Modal, Select } from "antd";
+import { Form, Button, Input, message, Modal, Select, Calendar } from "antd";
 import FroalaEditor from "../common/FroalaEditor";
 import util from "../../services/Util";
 import { connect } from "react-redux";
@@ -13,6 +13,7 @@ import {
   deleteStory,
   switchEditLinkVisible,
 } from "../../actions/app";
+import moment from "moment";
 const confirm = Modal.confirm;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -60,7 +61,9 @@ class EditArticle extends Component {
       moreVisible: false,
       postVisible: false,
       codeEditorVisible: false,
+      customTimeVisible: false,
       ready: type === "new" ? true : false,
+      customTime: null,
     };
     this.handleCommit = this.handleCommit.bind(this);
     this.showDeleteConfirm = this.showDeleteConfirm.bind(this);
@@ -70,6 +73,7 @@ class EditArticle extends Component {
     this.switchMoreVisible = this.switchMoreVisible.bind(this);
     this.switchPostVisible = this.switchPostVisible.bind(this);
     this.switchCodeEditor = this.switchCodeEditor.bind(this);
+    this.switchCustomTime = this.switchCustomTime.bind(this);
 
     this.handleSetTag = this.handleSetTag.bind(this);
     this.handleSetStatus = this.handleSetStatus.bind(this);
@@ -77,6 +81,7 @@ class EditArticle extends Component {
 
     this.handleSelect = this.handleSelect.bind(this);
     this.handleOk = this.handleOk.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   handleSetTag(value) {
@@ -129,6 +134,12 @@ class EditArticle extends Component {
     }));
   }
 
+  switchCustomTime() {
+    this.setState((prevState) => ({
+      customTimeVisible: !prevState.customTimeVisible,
+    }));
+  }
+
   async handleCommit(e) {
     const {
       nowStation,
@@ -139,7 +150,7 @@ class EditArticle extends Component {
       seriesInfo,
       finishCallback,
     } = this.props;
-    const { story: orginal } = this.state;
+    const { story: orginal, customTime } = this.state;
     e.preventDefault();
 
     let story = JSON.parse(JSON.stringify(orginal));
@@ -203,6 +214,9 @@ class EditArticle extends Component {
       story.title = title.innerText;
       story.content = story.content.replace(title.htmlStr, "");
     }
+    if (customTime) {
+      story.time = moment(customTime).valueOf();
+    }
 
     // memo
     // 去除标签
@@ -264,6 +278,12 @@ class EditArticle extends Component {
 
   handleSelect(value) {
     this.type = value;
+  }
+
+  onSelect(value) {
+    this.setState({
+      customTime: value,
+    });
   }
 
   handleOk() {
@@ -344,6 +364,7 @@ class EditArticle extends Component {
                 handleClickMore={this.switchMoreVisible}
                 handleClickMoreStyle={this.switchPostVisible}
                 openCodeEditor={this.switchCodeEditor}
+                openCustomTime={this.switchCustomTime}
                 inline={inline}
                 hideMenu={hideMenu}
               />
@@ -480,6 +501,23 @@ class EditArticle extends Component {
             onChange={(e) => {
               this.handleAticleChange(e.target.value);
             }}
+          />
+        </Modal>
+        <Modal
+          title="自定义时间"
+          visible={this.state.customTimeVisible}
+          onOk={this.switchCustomTime}
+          onCancel={() => {
+            this.setState({
+              customTime: null,
+            });
+            this.switchCustomTime();
+          }}
+        >
+          <Calendar
+            fullscreen={false}
+            onSelect={this.onSelect}
+            onPanelChange={this.onSelect}
           />
         </Modal>
       </div>

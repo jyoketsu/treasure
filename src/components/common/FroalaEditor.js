@@ -390,14 +390,16 @@ class MyFroalaEditor extends Component {
         ["formatOL", "formatUL", "align"],
         ["insertImage", "insertVideo", "insertTable", "insertLink"],
         // ["getPDF"],
-        ["codeEditor", "投稿主题", "更多投稿"],
+        ["codeEditor", "投稿主题", "更多投稿", "自定时间"],
       ],
 
       // Change buttons for XS screen.
       toolbarButtonsXS: [
         ["undo", "redo"],
         ["bold", "insertImage", "insertVideo"],
-        inline ? ["codeEditor"] : ["codeEditor", "投稿主题", "更多投稿"],
+        inline
+          ? ["codeEditor"]
+          : ["codeEditor", "投稿主题", "更多投稿", "自定时间"],
       ],
     };
 
@@ -472,7 +474,7 @@ class MyFroalaEditor extends Component {
                         </div>
                         <div className="story-card-time">
                           {util.common.timestamp2DataStr(
-                            story.updateTime,
+                             story.time || story.updateTime,
                             "yyyy-MM-dd"
                           )}
                         </div>
@@ -529,6 +531,7 @@ class MyFroalaEditor extends Component {
       handleClickMore,
       handleClickMoreStyle,
       openCodeEditor,
+      openCustomTime,
     } = this.props;
     document.body.addEventListener("wheel", this.handleMouseWheel);
 
@@ -541,6 +544,15 @@ class MyFroalaEditor extends Component {
       refreshAfterCallback: false,
       callback: function () {
         handleClickMore();
+      },
+    });
+    Froalaeditor.RegisterCommand("自定时间", {
+      title: "自定时间",
+      focus: false,
+      undo: false,
+      refreshAfterCallback: false,
+      callback: function () {
+        openCustomTime();
       },
     });
 

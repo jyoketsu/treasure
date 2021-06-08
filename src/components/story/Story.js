@@ -182,7 +182,7 @@ class Story extends Component {
                       : null}
 
                     <div className="story-card-time">
-                      {moment(story.updateTime).format("l")}
+                      {moment( story.time || story.updateTime).format("l")}
                     </div>
                     <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                   </div>
