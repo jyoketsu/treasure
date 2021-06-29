@@ -210,7 +210,7 @@ class StoryEntry extends Component {
             {showSiteName
               ? story.starName
               : story.memo
-              ? story.memo.replace("Powered by Froala Editor", "")
+              ? story.memo.replaceAll("Powered by Froala Editor", "")
               : ""}
           </div>
 
