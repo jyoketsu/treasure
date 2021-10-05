@@ -386,7 +386,7 @@ function StoryContent({ contents }) {
                 <div className="story-image-box">
                   <img
                     className="story-image lozad"
-                    src={`${url}?imageView2/2/w/900/`}
+                    src={`${url}?imageView2/2/w/1400/`}
                     alt="story"
                     onClick={() => handleClickImage(url)}
                   />
