@@ -80,6 +80,9 @@
   opacity: 0;
   left: 0;
 }
+.fr-view > hr {
+  height: 0 !important;
+}
 
 /* 文档模式下划线样式 */
 @media (min-width: 992px) {

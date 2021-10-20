@@ -78,7 +78,7 @@ export default function Create() {
         })),
       ],
     };
-    addStory(story, dispatch);
+    addStory(story, undefined, undefined, dispatch);
     history.push(`/${nowStation.domain}/home`);
   }
   return (

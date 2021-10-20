@@ -239,7 +239,15 @@ class EditArticle extends Component {
         type: 9,
         starKey: nowStationKey,
       });
-      addStory(story);
+      let nodeType = util.common.getSearchParamValue(
+        this.props.location.search,
+        "nodeType"
+      );
+      let nodeKey = util.common.getSearchParamValue(
+        this.props.location.search,
+        "nodeKey"
+      );
+      addStory(story, nodeType, nodeKey);
     }
 
     // 跳转

@@ -568,12 +568,21 @@ const story = {
     });
   },
 
-  addStory(story) {
+  addStory(story, nodeType, nodeKey) {
     return requests.post(
       APIURL + "/album",
       Object.assign(story, {
         token: token,
         time: new Date().getTime(),
+        relation:
+          nodeType && nodeKey
+            ? [
+                {
+                  type: Number(nodeType),
+                  value: nodeKey,
+                },
+              ]
+            : undefined,
       })
     );
   },

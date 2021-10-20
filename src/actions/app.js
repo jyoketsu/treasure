@@ -633,8 +633,8 @@ export function passAll(stationKey) {
   return { type: PASS_ALL, payload: request };
 }
 
-export function addStory(story, dispatch) {
-  let request = api.story.addStory(story);
+export function addStory(story, nodeType, nodeKey, dispatch) {
+  let request = api.story.addStory(story, nodeType, nodeKey);
   if (dispatch) {
     dispatch({ type: ADD_STORY, payload: request });
   } else {
