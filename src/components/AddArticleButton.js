@@ -206,13 +206,18 @@ class AddButton extends Component {
       window.location.search,
       "onlyContent"
     );
+    // 隐藏投稿按钮
+    const hidePostButton = util.common.getSearchParamValue(
+      window.location.search,
+      "hidePostButton"
+    );
 
     return location.pathname.includes("/editArticle") ||
       location.pathname.includes("/editStory") ||
       location.pathname.includes("/stationOptions") ||
       location.pathname.includes("/create") ? null : (
       <div className="multi-button">
-        {!onlyContent ? (
+        {onlyContent || hidePostButton ? null : (
           <Tooltip title="投稿" placement="left">
             <div
               className="story-tool add-story-multi"
@@ -222,7 +227,7 @@ class AddButton extends Component {
               投稿
             </div>
           </Tooltip>
-        ) : null}
+        )}
 
         <ReactCSSTransitionGroup
           transitionName="myFade"
