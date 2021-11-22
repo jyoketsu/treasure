@@ -8,12 +8,13 @@ import { getUserInfo } from "../actions/app";
 export default function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const token = util.common.getQueryString("token");
   const domain = localStorage.getItem("DOMAIN") || "sgkj";
-  const redirect_uri =
+  let redirect_uri =
     localStorage.getItem("REDIRECT_URI") ||
     util.common.getQueryString("redirect_uri");
+  redirect_uri = decodeURIComponent(redirect_uri);
 
   // 根据token获取用户信息
   useEffect(() => {
