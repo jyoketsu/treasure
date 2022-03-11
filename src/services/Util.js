@@ -92,9 +92,10 @@ const common = {
 
   // 生成标识符
   guid(len, radix) {
-    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(
-      ""
-    );
+    var chars =
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(
+        ""
+      );
     var uuid = [],
       i;
     radix = radix || chars.length;
@@ -557,7 +558,7 @@ const operation = {
             // 如果url包含qingtime.cn，则要求登录
             if (url.includes("qingtime.cn") && user && user.isGuest) {
               alert("请先登录！");
-              const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+              const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${domain}/home`;
               window.location.href = `https://account.qingtime.cn?apphigh=26&redirect=${redirect}`;
               break;
             }

@@ -53,7 +53,7 @@ class Header extends Component {
         return { showMenu: !prevState.showMenu };
       });
     } else {
-      const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+      const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${nowStation.domain}/home`;
       const logo = nowStation.logo;
       window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
     }
@@ -83,13 +83,8 @@ class Header extends Component {
 
   render() {
     const { location, nowStation, user } = this.props;
-    const {
-      logoSize,
-      showMenu,
-      showSubscribe,
-      showQrCode,
-      signinQR,
-    } = this.state;
+    const { logoSize, showMenu, showSubscribe, showQrCode, signinQR } =
+      this.state;
     const pathname = location.pathname;
     const stationDomain = nowStation ? nowStation.domain : "";
     const isMobile = util.common.isMobile();

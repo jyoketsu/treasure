@@ -47,7 +47,7 @@ class PortalHeader extends Component {
     if (user && !user.isGuest) {
       this.setState((prevState) => ({ showMenu: !prevState.showMenu }));
     } else {
-      const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+      const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${nowStation.domain}/home`;
       const logo = nowStation.logo;
       window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
     }
@@ -312,14 +312,8 @@ class Channel extends Component {
     );
   }
   async handleClick(tag, channelKey) {
-    const {
-      user,
-      history,
-      nowStation,
-      asyncStart,
-      asyncEnd,
-      setStoryList,
-    } = this.props;
+    const { user, history, nowStation, asyncStart, asyncEnd, setStoryList } =
+      this.props;
     asyncStart();
     const result = await util.operation.handleClickTag(
       nowStation._key,

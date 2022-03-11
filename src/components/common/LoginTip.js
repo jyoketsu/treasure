@@ -19,7 +19,7 @@ class LoginTip extends Component {
 
   handleLogin() {
     const { nowStation } = this.props;
-    const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+    const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${nowStation.domain}/home`;
     const logo = nowStation.logo;
     window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
   }

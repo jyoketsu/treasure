@@ -49,7 +49,7 @@ export default function Signin({ style }) {
               "REDIRECT_URI",
               `${window.location.pathname}${window.location.search}`
             );
-            const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+            const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${nowStation.domain}/home`;
             const logo = nowStation.logo;
             window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
             return message.info("请先登录！");
@@ -88,7 +88,7 @@ export default function Signin({ style }) {
                   "REDIRECT_URI",
                   `${window.location.pathname}${window.location.search}`
                 );
-                const redirect = `${window.location.protocol}//${window.location.host}/account/login`;
+                const redirect = `${window.location.protocol}//${window.location.host}/account/login?redirect_uri=/${nowStation.domain}/home`;
                 const logo = nowStation.logo;
                 window.location.href = `https://account.qingtime.cn?apphigh=26&logo=${logo}&redirect=${redirect}`;
                 return message.info("请先登录！");
