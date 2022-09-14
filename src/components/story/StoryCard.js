@@ -110,9 +110,15 @@ class Card extends Component {
       handleCoverClick,
       auditStory,
       groupKey,
+      nowStation,
     } = this.props;
     const isMyStory = userKey === story.userKey ? true : false;
     const isMobile = util.common.isMobile() ? "mobile" : "desktop";
+    // 卡片所在的频道
+    const storyChannel = nowStation.seriesInfo.find(
+      (series) => series._key === story.series._key
+    );
+    const noThumbnail = storyChannel.noThumbnail;
 
     // 显示项目设定
     const showAuthor = showSetting
@@ -146,7 +152,9 @@ class Card extends Component {
     let coverUrl = story.cover
       ? story.cover.indexOf("cdn-icare.qingtime.cn") !== -1
         ? story.cover.indexOf("vframe") === -1
-          ? `${story.cover}?imageView2/2/w/576/`
+          ? noThumbnail
+            ? story.cover
+            : `${story.cover}?imageView2/2/w/576/`
           : story.cover
         : story.cover
       : "/image/icon/icon-article.svg";

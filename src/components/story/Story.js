@@ -113,6 +113,8 @@ class Story extends Component {
       }
     }
 
+    const noThumbnail = nowChannel.noThumbnail;
+
     const { showSetting, commentType } = nowChannel;
     const showAuthor = showSetting
       ? showSetting.indexOf("author") === -1
@@ -182,7 +184,7 @@ class Story extends Component {
                       : null}
 
                     <div className="story-card-time">
-                      {moment( story.time || story.updateTime).format("l")}
+                      {moment(story.time || story.updateTime).format("l")}
                     </div>
                     <div className="story-card-number">{`阅读：${story.clickNumber}`}</div>
                   </div>
@@ -269,7 +271,11 @@ class Story extends Component {
                           <div className="story-image-box">
                             <img
                               className="story-image lozad"
-                              src={`${url}?imageView2/2/w/1400/`}
+                              src={
+                                noThumbnail
+                                  ? url
+                                  : `${url}?imageView2/2/w/1400/`
+                              }
                               alt="story"
                               onClick={this.handleClickImage.bind(this, url)}
                             />
@@ -327,7 +333,9 @@ class Story extends Component {
                     <div
                       className="carousel-item"
                       style={{
-                        backgroundImage: `url(${content.url}?imageView2/2/h/${window.innerHeight})`,
+                        backgroundImage: noThumbnail
+                          ? `url(${content.url})`
+                          : `url(${content.url}?imageView2/2/h/${window.innerHeight})`,
                       }}
                     ></div>
                   </SwiperSlide>

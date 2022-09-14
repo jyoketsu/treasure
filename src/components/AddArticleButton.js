@@ -105,7 +105,8 @@ class AddButton extends Component {
 
     // pc端默认进入文章编辑，手机端则进入简版
     if (!util.common.isMobile()) {
-      this.contributeType = "article";
+      // todo
+      // this.contributeType = "article";
     }
 
     switch (this.contributeType) {

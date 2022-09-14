@@ -286,7 +286,7 @@ function Content({ value, setValue, images, setImages }) {
         <FileUpload
           className="create-foot-upload"
           multiple="multiple"
-          maxSize={10000000}
+          maxSize={104857600}
           callback={uploadImageCallback}
           style={{ width: itemWidth, height: itemWidth }}
         />
@@ -304,7 +304,9 @@ function Image({ index, image, itemWidth, handleRemove }) {
         height: itemWidth,
       }}
     >
+      {/* todo */}
       <img src={`${image}?imageView2/2/w/200`} alt="上传图片"></img>
+      {/* <img src={`${image}`} alt="上传图片"></img> */}
       <div onClick={() => handleRemove(index)}></div>
     </div>
   );

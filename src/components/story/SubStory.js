@@ -261,7 +261,7 @@ function Content({ value, setValue, images, setImages }) {
         <FileUpload
           className="sub-foot-upload"
           multiple="multiple"
-          maxSize={10000000}
+          maxSize={10485760}
           callback={uploadImageCallback}
           style={{ width: itemWidth, height: itemWidth }}
         />

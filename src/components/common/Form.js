@@ -135,25 +135,25 @@ class Select extends Component {
     this.state = {
       _key: this.props._key,
       options: false,
-      text: defaultText || ""
+      text: defaultText || "",
     };
     this.switchOptions = this.switchOptions.bind(this);
   }
 
   switchOptions() {
-    this.setState(prevState => ({
-      options: !prevState.options
+    this.setState((prevState) => ({
+      options: !prevState.options,
     }));
   }
 
   handleOptionClick(option) {
     this.value = option.value;
     this.props.onChange({
-      target: { name: this.props.name, value: this.value }
+      target: { name: this.props.name, value: this.value },
     });
     this.setState({
       options: false,
-      text: option.text
+      text: option.text,
     });
   }
 
@@ -169,7 +169,7 @@ class Select extends Component {
       }
       return {
         _key: nextProps._key,
-        text: defaultText || ""
+        text: defaultText || "",
       };
     } else {
       return null;
@@ -216,7 +216,7 @@ class DropDownButton extends Component {
     this.state = {
       value: "",
       showOptions: false,
-      text: ""
+      text: "",
     };
     this.switchOptions = this.switchOptions.bind(this);
     this.collapseOptions = this.collapseOptions.bind(this);
@@ -225,14 +225,14 @@ class DropDownButton extends Component {
 
   // 切换下拉框是否显示
   switchOptions() {
-    this.setState(prevState => ({
-      showOptions: !prevState.options
+    this.setState((prevState) => ({
+      showOptions: !prevState.options,
     }));
   }
   // 收起下拉框
   collapseOptions() {
     this.setState({
-      showOptions: false
+      showOptions: false,
     });
   }
 
@@ -241,10 +241,10 @@ class DropDownButton extends Component {
     this.setState({
       showOptions: false,
       value: option.value,
-      text: option.text
+      text: option.text,
     });
     this.props.onChange({
-      target: { name: this.props.name, value: this.value }
+      target: { name: this.props.name, value: this.value },
     });
   }
 
@@ -269,7 +269,7 @@ class DropDownButton extends Component {
         }
       }
       return {
-        text: text
+        text: text,
       };
     } else {
       return null;
@@ -405,7 +405,7 @@ class FileUpload extends Component {
     super(props);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.state = {
-      uptoken: null
+      uptoken: null,
     };
 
     switch (this.props.metaType) {
@@ -440,7 +440,9 @@ class FileUpload extends Component {
 
     for (let i = 0; i < files.length; i++) {
       if (files[i].size > maxSize) {
-        message.info(`请选择小于${maxSize / 1000000}MB的文件，请保留元数据。`);
+        message.info(
+          `请选择小于${maxSize / 1024 / 1024}MB的文件，请保留元数据。`
+        );
         return;
       }
     }
@@ -451,13 +453,13 @@ class FileUpload extends Component {
       // 自定义变量
       params: {},
       // 限制上传文件类型
-      mimeType: this.mimeType
+      mimeType: this.mimeType,
     };
     let config = {
       useCdnDomain: true,
       disableStatisticsReport: false,
       retryCount: 5,
-      region: qiniu.region.z0
+      region: qiniu.region.z0,
     };
     let uploaded = [];
     let observer = {
@@ -472,7 +474,7 @@ class FileUpload extends Component {
           that.props.callback(uploaded, that.props.extParam);
           Loading.close();
         }
-      }
+      },
     };
     Loading.open({ text: "上传中，请稍候..." });
     // 上传
@@ -545,5 +547,5 @@ export {
   FileUpload,
   Select,
   Switch,
-  DropDownButton
+  DropDownButton,
 };

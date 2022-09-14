@@ -25,7 +25,7 @@ class UploadStationCover extends Component {
                         width: '50px',
                         height: '50px',
                     }}
-                    maxSize={10000000}
+                    maxSize={104857600}
                     extParam={extParam}
                     callback={uploadAvatarCallback} />
             </div>

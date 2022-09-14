@@ -615,7 +615,7 @@ class StoryEdit extends Component {
                 textAlign: "center",
               }}
               text="设置封面"
-              maxSize={10000000}
+              maxSize={20971520}
               callback={this.uploadCoverCallback}
             />
             <Button type="primary" onClick={this.switchMusic}>
@@ -900,7 +900,7 @@ class ItemPreview extends Component {
                   width: "24px",
                   height: "24px",
                 }}
-                maxSize={10000000}
+                maxSize={104857600}
                 multiple="multiple"
                 extParam={{ index: index }}
                 callback={uploadImageCallback}

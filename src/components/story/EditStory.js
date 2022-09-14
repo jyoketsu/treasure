@@ -533,7 +533,7 @@ class StoryEditButtonGroup extends Component {
                   width: "24px",
                   height: "24px",
                 }}
-                maxSize={10000000}
+                maxSize={104857600}
                 multiple="multiple"
                 extParam={{ index: this.props.index }}
                 callback={this.props.uploadImageCallback}
@@ -553,7 +553,7 @@ class StoryEditButtonGroup extends Component {
                   height: "24px",
                 }}
                 metaType="video"
-                maxSize={200000000}
+                maxSize={104857600}
                 extParam={{ index: this.props.index }}
                 callback={this.props.uploadVideoCallback}
               />

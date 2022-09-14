@@ -99,6 +99,7 @@
   background-image: url(/image/icon/me.svg);
   width: 35px;
   height: 35px;
+  background-size: cover;
 }
 
 .station-option-icon {

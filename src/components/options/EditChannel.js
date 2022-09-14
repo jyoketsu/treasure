@@ -68,6 +68,10 @@ const CustomizedForm = Form.create({
         ...props.showExif,
         value: props.showExif.value,
       }),
+      noThumbnail: Form.createFormField({
+        ...props.noThumbnail,
+        value: props.noThumbnail.value,
+      }),
       inHome: Form.createFormField({
         ...props.inHome,
         value: props.inHome.value,
@@ -189,6 +193,11 @@ const CustomizedForm = Form.create({
 
       <Form.Item label="显示图片参数">
         {getFieldDecorator("showExif", { valuePropName: "checked" })(
+          <Switch />
+        )}
+      </Form.Item>
+      <Form.Item label="禁用缩略图">
+        {getFieldDecorator("noThumbnail", { valuePropName: "checked" })(
           <Switch />
         )}
       </Form.Item>
@@ -332,6 +341,9 @@ class EditChannel extends Component {
         },
         showExif: {
           value: channelInfo ? channelInfo.showExif : true,
+        },
+        noThumbnail: {
+          value: channelInfo ? channelInfo.noThumbnail : false,
         },
         inHome: {
           value: channelInfo ? channelInfo.inHome : true,
@@ -630,14 +642,8 @@ class TagOptionList extends Component {
 
 class TagOption extends Component {
   render() {
-    const {
-      index,
-      tag,
-      onChange,
-      uploadCallback,
-      addItem,
-      removeItem,
-    } = this.props;
+    const { index, tag, onChange, uploadCallback, addItem, removeItem } =
+      this.props;
     return (
       <div className="tag-option">
         <div className="tag-option-left">

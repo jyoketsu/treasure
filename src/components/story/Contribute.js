@@ -442,7 +442,7 @@ class StoryEditButtonGroup extends Component {
                                 fontStyle: 'normal',
                                 lineHeight: '32px',
                             }}
-                            maxSize={10000000}
+                            maxSize={104857600}
                             multiple="multiple"
                             text="添加图片"
                             extParam={{ index: index }}
