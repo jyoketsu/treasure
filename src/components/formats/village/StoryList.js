@@ -21,8 +21,8 @@ export default function StoryList() {
   const tag = useSelector((state) => state.story.tag);
   const waiting = useSelector((state) => state.common.waiting);
   const statusTag = useSelector((state) => state.story.statusTag);
-
   const dispatch = useDispatch();
+  let hideHead = util.common.getQueryString("hide-head");
 
   const [columnNum, setColumnNum] = useState(
     sessionStorage.getItem("VILLAGE-COLUMN-NUM")
@@ -184,6 +184,7 @@ export default function StoryList() {
         nowChannel={nowChannel}
         titleList={tagObjList}
         onClick={handleClickTag}
+        hideHead={hideHead}
       />
       <ScrollTitle
         titleList={tagObjList}
@@ -210,7 +211,7 @@ export default function StoryList() {
   );
 }
 
-function Head({ nowChannel, titleList, onClick }) {
+function Head({ nowChannel, titleList, onClick, hideHead }) {
   const isMobile = util.common.isMobile();
   const history = useHistory();
   let data = [];
@@ -233,12 +234,14 @@ function Head({ nowChannel, titleList, onClick }) {
         backgroundImage: `url(${nowChannel ? nowChannel.cover : ""})`,
       }}
     >
-      <div className="village-banner-head" style={{ height: "45px" }}>
-        <i className="back" onClick={() => history.goBack()}></i>
-        <span className="village-banner-title">
-          {nowChannel ? nowChannel.name : ""}
-        </span>
-      </div>
+      {!hideHead ? (
+        <div className="village-banner-head" style={{ height: "45px" }}>
+          <i className="back" onClick={() => history.goBack()}></i>
+          <span className="village-banner-title">
+            {nowChannel ? nowChannel.name : ""}
+          </span>
+        </div>
+      ) : null}
       {!isMobile ? (
         <div className="tag-cloud-wrapper">
           {titleList.length > 2 ? (
