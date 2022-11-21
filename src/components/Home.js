@@ -108,18 +108,14 @@ class Home extends Component {
 
   // 查看更多
   showMore(e) {
-    const {
-      nowStationKey,
-      getStoryList,
-      sortType,
-      sortOrder,
-      nowChannelKey,
-    } = this.props;
+    const { nowStationKey, getStoryList, sortType, sortOrder, nowChannelKey } =
+      this.props;
     const { tag, statusTag } = this.state;
     let curPage = sessionStorage.getItem("home-curpage")
       ? parseInt(sessionStorage.getItem("home-curpage"), 10)
       : 1;
     curPage++;
+    sessionStorage.setItem("home-curpage", curPage);
     getStoryList(
       1,
       nowStationKey,
@@ -135,13 +131,8 @@ class Home extends Component {
   }
 
   changeChannel(channelKey) {
-    const {
-      nowStationKey,
-      getStoryList,
-      clearStoryList,
-      sortType,
-      sortOrder,
-    } = this.props;
+    const { nowStationKey, getStoryList, clearStoryList, sortType, sortOrder } =
+      this.props;
     sessionStorage.setItem("home-curpage", 1);
     this.setState({
       tag: undefined,
@@ -201,13 +192,8 @@ class Home extends Component {
   }
 
   handleFilter() {
-    const {
-      getStoryList,
-      nowStationKey,
-      nowChannelKey,
-      sortType,
-      sortOrder,
-    } = this.props;
+    const { getStoryList, nowStationKey, nowChannelKey, sortType, sortOrder } =
+      this.props;
     const { tag, statusTag } = this.state;
     sessionStorage.setItem("home-curpage", 1);
     this.setState({
